@@ -1,0 +1,88 @@
+<div class="settings-page">
+    <header class="settings-header">
+        <h1 class="uk-h2 settings-title">{{ 'app.settings.title' | translate }}</h1>
+        <p class="uk-caption settings-subtitle">{{ 'app.settings.subtitle' | translate }}</p>
+    </header>
+
+    <section class="settings-section">
+        <h2 class="uk-h3 settings-section-title">{{ 'app.settings.changePassword.title' | translate }}</h2>
+        <p class="uk-caption settings-section-subtitle">{{ 'app.settings.changePassword.description' | translate }}</p>
+
+        <form [formGroup]="form" class="settings-form" (ngSubmit)="onSubmit()">
+            <div class="field">
+                <label for="current-password" class="field-label">
+                    {{ 'app.settings.changePassword.currentPassword' | translate }}
+                </label>
+                <input
+                    id="current-password"
+                    type="password"
+                    formControlName="currentPassword"
+                    autocomplete="current-password"
+                    class="input"
+                />
+            </div>
+            <div class="field">
+                <label for="new-password" class="field-label">
+                    {{ 'app.settings.changePassword.newPassword' | translate }}
+                </label>
+                <input
+                    id="new-password"
+                    type="password"
+                    formControlName="newPassword"
+                    autocomplete="new-password"
+                    class="input"
+                />
+                <p class="field-hint">{{ 'app.auth.errors.passwordPolicy' | translate }}</p>
+            </div>
+            <div class="field">
+                <label for="confirm-password" class="field-label">
+                    {{ 'app.settings.changePassword.confirmPassword' | translate }}
+                </label>
+                <input
+                    id="confirm-password"
+                    type="password"
+                    formControlName="confirmPassword"
+                    autocomplete="new-password"
+                    class="input"
+                />
+                @if (hasMismatch()) {
+                    <p class="field-hint">{{ 'app.auth.errors.passwordMismatch' | translate }}</p>
+                }
+            </div>
+            <div class="settings-form-actions">
+                <button type="submit" class="btn btn-primary" [disabled]="form.invalid || saving()">
+                    {{ (saving() ? 'app.settings.changePassword.submitting' : 'app.settings.changePassword.submit') | translate }}
+                </button>
+            </div>
+        </form>
+    </section>
+
+    <section class="settings-section settings-section--danger">
+        <h2 class="uk-h3 settings-section-title">{{ 'app.settings.dangerZone.title' | translate }}</h2>
+        <p class="uk-caption settings-section-subtitle">{{ 'app.settings.dangerZone.subtitle' | translate }}</p>
+
+        <div class="danger-row">
+            <div class="danger-row-text">
+                <h3 class="danger-row-title">{{ 'app.settings.dangerZone.exportTitle' | translate }}</h3>
+                <p class="danger-row-description">{{ 'app.settings.dangerZone.exportDescription' | translate }}</p>
+            </div>
+            <div class="danger-row-action">
+                <button type="button" class="btn btn-secondary" [disabled]="exporting()" (click)="onExport()">
+                    {{ (exporting() ? 'app.settings.dangerZone.exporting' : 'app.settings.dangerZone.exportButton') | translate }}
+                </button>
+            </div>
+        </div>
+
+        <div class="danger-row">
+            <div class="danger-row-text">
+                <h3 class="danger-row-title">{{ 'app.settings.dangerZone.deleteTitle' | translate }}</h3>
+                <p class="danger-row-description">{{ 'app.settings.dangerZone.deleteDescription' | translate }}</p>
+            </div>
+            <div class="danger-row-action">
+                <button type="button" class="btn btn-danger" [disabled]="deleting()" (click)="onDelete()">
+                    {{ (deleting() ? 'app.settings.dangerZone.deleting' : 'app.settings.dangerZone.deleteButton') | translate }}
+                </button>
+            </div>
+        </div>
+    </section>
+</div>

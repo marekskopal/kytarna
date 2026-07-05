@@ -1,0 +1,46 @@
+@use 'variables' as *;
+
+.accept {
+    display: flex;
+    justify-content: center;
+    padding: $space-12 $space-6;
+}
+
+.accept-card {
+    max-width: 480px;
+    width: 100%;
+    padding: $space-9;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    background: $color-surface;
+    display: flex;
+    flex-direction: column;
+    gap: $space-5;
+}
+
+.accept-card h1 {
+    margin: 0;
+    font-size: $font-size-24;
+    font-weight: 600;
+    letter-spacing: $tracking-tight;
+}
+
+.muted {
+    color: $color-text-subtle;
+    margin: 0;
+    font-size: $font-size-13;
+}
+
+.error {
+    color: $color-danger;
+    background: $color-danger-soft;
+    border: 1px solid $color-danger-border;
+    padding: $space-4 $space-5;
+    border-radius: $radius-sm;
+    font-size: $font-size-13;
+}
+
+.actions {
+    display: flex;
+    gap: $space-3;
+}

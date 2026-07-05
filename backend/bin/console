@@ -1,0 +1,27 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use Symfony\Component\Console\Application;
+use Ukolio\Command\AdminCreateCommand;
+use Ukolio\Command\MigrationGenerateCommand;
+use Ukolio\Command\MigrationRunCommand;
+use Ukolio\Command\NotificationDueTickCommand;
+use Ukolio\Command\RecurringTaskTickCommand;
+use Ukolio\Command\ScriptScheduleTickCommand;
+use Ukolio\Command\SearchReindexCommand;
+
+$application = new Application();
+
+$application->addCommand(new AdminCreateCommand());
+$application->addCommand(new MigrationGenerateCommand());
+$application->addCommand(new MigrationRunCommand());
+$application->addCommand(new SearchReindexCommand());
+$application->addCommand(new ScriptScheduleTickCommand());
+$application->addCommand(new NotificationDueTickCommand());
+$application->addCommand(new RecurringTaskTickCommand());
+
+$application->run();

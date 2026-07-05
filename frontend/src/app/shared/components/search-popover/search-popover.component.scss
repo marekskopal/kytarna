@@ -1,0 +1,142 @@
+@use 'variables' as *;
+
+.search-backdrop {
+    position: fixed;
+    inset: 0;
+    background: $color-backdrop;
+    z-index: $z-overlay;
+}
+
+.search-popover {
+    position: absolute;
+    top: calc($header-height - 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(640px, calc(100vw - #{$space-6} * 2));
+    max-height: calc(100vh - #{$header-height} - #{$space-6});
+    background: $color-surface;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    box-shadow: $shadow-lg;
+    z-index: $z-drawer;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.search-field {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    padding: $space-3 $space-4;
+    border-bottom: 1px solid $color-border;
+}
+
+.search-icon {
+    color: $color-text-subtle;
+    flex-shrink: 0;
+}
+
+.search-input {
+    flex: 1;
+    border: 0;
+    background: transparent;
+    color: $color-text;
+    font: inherit;
+    font-size: $font-size-14;
+    outline: none;
+
+    &::placeholder {
+        color: $color-text-subtle;
+    }
+}
+
+.search-status {
+    font-size: $font-size-11;
+    color: $color-text-subtle;
+}
+
+.search-results {
+    overflow-y: auto;
+    padding: $space-1;
+    display: flex;
+    flex-direction: column;
+}
+
+.search-empty {
+    padding: $space-4;
+    text-align: center;
+    color: $color-text-subtle;
+    font-size: $font-size-12;
+}
+
+.search-result {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto auto;
+    column-gap: $space-3;
+    row-gap: 2px;
+    align-items: baseline;
+    padding: $space-2 $space-3;
+    border: 0;
+    background: transparent;
+    color: $color-text;
+    text-align: left;
+    font: inherit;
+    font-size: $font-size-13;
+    cursor: pointer;
+    border-radius: $radius-sm;
+
+    &--active {
+        background: $color-surface-hover;
+    }
+
+    .search-result-code {
+        grid-column: 1;
+        grid-row: 1;
+        color: $color-text-subtle;
+        font-size: $font-size-11;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .search-result-name {
+        grid-column: 2;
+        grid-row: 1;
+        font-weight: 500;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .search-result-where {
+        grid-column: 3;
+        grid-row: 1;
+        font-size: $font-size-11;
+        color: $color-text-subtle;
+    }
+
+    .search-result-snippet {
+        grid-column: 2 / span 2;
+        grid-row: 2;
+        color: $color-text-muted;
+        font-size: $font-size-12;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        ::ng-deep mark {
+            background: $color-accent-soft;
+            color: $color-text;
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+    }
+}
+
+.search-footer {
+    padding: $space-2 $space-3;
+    color: $color-text-subtle;
+    font-size: $font-size-11;
+    border-top: 1px solid $color-border;
+    text-align: center;
+}

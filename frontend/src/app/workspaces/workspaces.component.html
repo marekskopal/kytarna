@@ -1,0 +1,477 @@
+<section class="page">
+    <header class="page-header">
+        <h1>{{ 'app.workspaces.title' | translate }}</h1>
+    </header>
+
+    @if (loading()) {
+        <p class="muted">{{ 'app.actions.loading' | translate }}</p>
+    } @else {
+        <div class="ws-layout">
+            <aside class="ws-list">
+                @for (ws of workspaces(); track ws.id) {
+                    <button
+                        type="button"
+                        class="ws-item"
+                        [class.ws-item--active]="ws.id === selected()?.id"
+                        (click)="select(ws)"
+                    >
+                        <span class="ws-name">{{ ws.name }}</span>
+                        @if (ws.id === user()?.currentWorkspaceId) {
+                            <span class="ws-badge">{{ 'app.workspaces.current' | translate }}</span>
+                        }
+                    </button>
+                }
+            </aside>
+
+            @if (selected(); as ws) {
+                <div class="ws-detail">
+                    <div class="ws-toolbar">
+                        <h2>{{ ws.name }}</h2>
+                    </div>
+
+                    <nav class="uk-tabs" role="tablist">
+                        @for (tab of availableTabs(); track tab) {
+                            <button
+                                type="button"
+                                role="tab"
+                                class="uk-tab"
+                                [class.uk-tab--active]="activeTab() === tab"
+                                [attr.aria-selected]="activeTab() === tab"
+                                (click)="setTab(tab)"
+                            >{{ ('app.workspaces.tabs.' + tab) | translate }}</button>
+                        }
+                    </nav>
+
+                    @switch (activeTab()) {
+                        @case ('general') {
+                            <section class="ws-section">
+                                <div class="general-row">
+                                    <div class="general-row-text">
+                                        <h3>{{ 'app.workspaces.general.renameTitle' | translate }}</h3>
+                                        <p class="muted">{{ 'app.workspaces.general.renameDescription' | translate }}</p>
+                                    </div>
+                                    <button type="button" class="btn btn-secondary" (click)="rename()">{{ 'app.actions.rename' | translate }}</button>
+                                </div>
+                                <div class="general-row general-row--danger">
+                                    <div class="general-row-text">
+                                        <h3>{{ 'app.workspaces.general.deleteTitle' | translate }}</h3>
+                                        <p class="muted">{{ 'app.workspaces.general.deleteDescription' | translate }}</p>
+                                    </div>
+                                    <button type="button" class="btn btn-danger" (click)="deleteWorkspace()">{{ 'app.actions.delete' | translate }}</button>
+                                </div>
+                            </section>
+                        }
+
+                        @case ('members') {
+                            <section class="ws-section">
+                                <h3>{{ 'app.workspaces.members' | translate }}</h3>
+                                <ul class="member-list">
+                                    @for (member of members(); track member.userId) {
+                                        <li class="member">
+                                            <div>
+                                                <strong>{{ member.name }}</strong>
+                                                <span class="member-email">{{ member.email }}</span>
+                                            </div>
+                                            <div class="member-role">
+                                                @if (canChangeRoleOf(member)) {
+                                                    <select
+                                                        class="input role-select"
+                                                        [value]="member.role"
+                                                        (change)="changeMemberRole(member, $any($event.target).value)"
+                                                    >
+                                                        <option value="Admin">{{ 'app.workspaces.role.Admin' | translate }}</option>
+                                                        <option value="Member">{{ 'app.workspaces.role.Member' | translate }}</option>
+                                                    </select>
+                                                } @else {
+                                                    <span class="role-chip role-chip--{{ member.role.toLowerCase() }}">{{ ('app.workspaces.role.' + member.role) | translate }}</span>
+                                                }
+                                                @if (canTransferOwnership() && member.role !== 'Owner') {
+                                                    <button type="button" class="btn btn-ghost" (click)="transferOwnership(member)">{{ 'app.workspaces.transferOwnership' | translate }}</button>
+                                                }
+                                                @if (canRemoveMember(member)) {
+                                                    <button type="button" class="btn btn-ghost" (click)="removeMember(member)">{{ 'app.actions.remove' | translate }}</button>
+                                                }
+                                            </div>
+                                        </li>
+                                    } @empty {
+                                        <li class="muted">{{ 'app.workspaces.noMembers' | translate }}</li>
+                                    }
+                                </ul>
+                            </section>
+
+                            @if (canManageMembers()) {
+                                <section class="ws-section">
+                                    <h3>{{ 'app.workspaces.inviteHeading' | translate }}</h3>
+                                    <form class="invite-form" (submit)="invite(); $event.preventDefault()">
+                                        <input
+                                            type="email"
+                                            required
+                                            [placeholder]="'app.workspaces.invitePlaceholder' | translate"
+                                            class="input"
+                                            [value]="inviteEmail()"
+                                            (input)="updateInviteEmail($any($event.target).value)"
+                                        />
+                                        @if (invitableRoles().length > 1) {
+                                            <select
+                                                class="input"
+                                                [value]="inviteRole()"
+                                                (change)="updateInviteRole($any($event.target).value)"
+                                            >
+                                                @for (role of invitableRoles(); track role) {
+                                                    <option [value]="role">{{ ('app.workspaces.role.' + role) | translate }}</option>
+                                                }
+                                            </select>
+                                        }
+                                        <button type="submit" class="btn btn-primary">{{ 'app.workspaces.sendInvitation' | translate }}</button>
+                                    </form>
+
+                                    @if (invitations().length > 0) {
+                                        <h3>{{ 'app.workspaces.pendingInvitations' | translate }}</h3>
+                                        <ul class="invitation-list">
+                                            @for (invitation of invitations(); track invitation.id) {
+                                                <li class="invitation">
+                                                    <div>
+                                                        <strong>{{ invitation.email }}</strong>
+                                                        <span class="muted"> · {{ ('app.workspaces.role.' + invitation.role) | translate }}</span>
+                                                        @if (invitation.acceptedAt !== null) {
+                                                            <span class="invitation-accepted"> · {{ 'app.workspaces.accepted' | translate }}</span>
+                                                        }
+                                                    </div>
+                                                    @if (invitation.acceptedAt === null) {
+                                                        <button type="button" class="btn btn-ghost" (click)="cancelInvitation(invitation)">{{ 'app.actions.cancel' | translate }}</button>
+                                                    }
+                                                </li>
+                                            }
+                                        </ul>
+                                    }
+                                </section>
+                            }
+                        }
+
+                        @case ('tags') {
+                            <section class="ws-section">
+                                <div class="ws-section-header">
+                                    <h3>{{ 'app.tags.title' | translate }}</h3>
+                                    @if (tagEditor() === null) {
+                                        <button type="button" class="btn btn-primary" (click)="openCreateTag()">{{ 'app.tags.addTag' | translate }}</button>
+                                    }
+                                </div>
+                                <p class="muted">{{ 'app.tags.description' | translate }}</p>
+
+                                @if (tagEditor(); as ed) {
+                                    <form class="field-editor" (submit)="saveTag(); $event.preventDefault()">
+                                        <div class="field-row">
+                                            <label class="field-label">
+                                                <span>{{ 'app.tags.name' | translate }}</span>
+                                                <input
+                                                    type="text"
+                                                    required
+                                                    class="input"
+                                                    [placeholder]="'app.tags.namePlaceholder' | translate"
+                                                    [value]="ed.name"
+                                                    (input)="updateTagEditor('name', $any($event.target).value)"
+                                                />
+                                            </label>
+                                            <label class="field-label tag-color-label">
+                                                <span>{{ 'app.tags.color' | translate }}</span>
+                                                <span class="tag-color-row">
+                                                    <input
+                                                        type="color"
+                                                        class="tag-color-input"
+                                                        [value]="ed.color"
+                                                        (input)="updateTagEditor('color', $any($event.target).value)"
+                                                    />
+                                                    <span
+                                                        class="tag-chip"
+                                                        [style.background]="ed.color"
+                                                        [style.color]="tagForeground(ed.color)"
+                                                    >{{ ed.name || ('app.tags.preview' | translate) }}</span>
+                                                </span>
+                                            </label>
+                                        </div>
+                                        <div class="field-actions">
+                                            <button type="submit" class="btn btn-primary" [disabled]="tagSaving()">{{ 'app.actions.save' | translate }}</button>
+                                            <button type="button" class="btn btn-secondary" (click)="closeTagEditor()">{{ 'app.actions.cancel' | translate }}</button>
+                                        </div>
+                                    </form>
+                                }
+
+                                <ul class="field-list">
+                                    @for (tag of tags(); track tag.id) {
+                                        <li class="field-item">
+                                            <div class="field-meta">
+                                                <span
+                                                    class="tag-chip"
+                                                    [style.background]="tag.color"
+                                                    [style.color]="tagForeground(tag.color)"
+                                                >{{ tag.name }}</span>
+                                                <span class="muted">{{ tag.color }}</span>
+                                            </div>
+                                            <div class="field-actions-inline">
+                                                <button type="button" class="btn btn-ghost" (click)="openEditTag(tag)">{{ 'app.actions.edit' | translate }}</button>
+                                                <button type="button" class="btn btn-ghost" (click)="deleteTag(tag)">{{ 'app.actions.delete' | translate }}</button>
+                                            </div>
+                                        </li>
+                                    } @empty {
+                                        <li class="muted">{{ 'app.tags.empty' | translate }}</li>
+                                    }
+                                </ul>
+                            </section>
+                        }
+
+                        @case ('priorities') {
+                            <section class="ws-section">
+                                <div class="ws-section-header">
+                                    <h3>{{ 'app.priorities.title' | translate }}</h3>
+                                    @if (priorityEditor() === null) {
+                                        <button type="button" class="btn btn-primary" (click)="openCreatePriority()">{{ 'app.priorities.addPriority' | translate }}</button>
+                                    }
+                                </div>
+                                <p class="muted">{{ 'app.priorities.description' | translate }}</p>
+
+                                @if (priorityEditor(); as ed) {
+                                    <form class="field-editor" (submit)="savePriority(); $event.preventDefault()">
+                                        <div class="field-row">
+                                            <label class="field-label">
+                                                <span>{{ 'app.priorities.name' | translate }}</span>
+                                                <input
+                                                    type="text"
+                                                    required
+                                                    class="input"
+                                                    [placeholder]="'app.priorities.namePlaceholder' | translate"
+                                                    [value]="ed.name"
+                                                    (input)="updatePriorityEditor('name', $any($event.target).value)"
+                                                />
+                                            </label>
+                                            <label class="field-label tag-color-label">
+                                                <span>{{ 'app.priorities.color' | translate }}</span>
+                                                <span class="tag-color-row">
+                                                    <input
+                                                        type="color"
+                                                        class="tag-color-input"
+                                                        [value]="ed.color"
+                                                        (input)="updatePriorityEditor('color', $any($event.target).value)"
+                                                    />
+                                                    <span
+                                                        class="tag-chip"
+                                                        [style.background]="ed.color"
+                                                        [style.color]="priorityForeground(ed.color)"
+                                                    >{{ ed.name || ('app.priorities.preview' | translate) }}</span>
+                                                </span>
+                                            </label>
+                                            <label class="field-label">
+                                                <span>&nbsp;</span>
+                                                <span class="checkbox-row">
+                                                    <input
+                                                        type="checkbox"
+                                                        [checked]="ed.isDefault"
+                                                        (change)="updatePriorityEditor('isDefault', $any($event.target).checked)"
+                                                    />
+                                                    {{ 'app.priorities.default' | translate }}
+                                                </span>
+                                            </label>
+                                        </div>
+                                        <div class="field-actions">
+                                            <button type="submit" class="btn btn-primary" [disabled]="prioritySaving()">{{ 'app.actions.save' | translate }}</button>
+                                            <button type="button" class="btn btn-secondary" (click)="closePriorityEditor()">{{ 'app.actions.cancel' | translate }}</button>
+                                        </div>
+                                    </form>
+                                }
+
+                                <ul class="field-list">
+                                    @for (priority of priorities(); track priority.id; let i = $index; let last = $last) {
+                                        <li class="field-item">
+                                            <div class="field-meta">
+                                                <span
+                                                    class="tag-chip"
+                                                    [style.background]="priority.color"
+                                                    [style.color]="priorityForeground(priority.color)"
+                                                >{{ priority.name }}</span>
+                                                @if (priority.isDefault) {
+                                                    <span class="muted">{{ 'app.priorities.defaultMark' | translate }}</span>
+                                                }
+                                            </div>
+                                            <div class="field-actions-inline">
+                                                <button type="button" class="btn btn-ghost" [disabled]="i === 0" (click)="movePriorityUp(priority)">↑</button>
+                                                <button type="button" class="btn btn-ghost" [disabled]="last" (click)="movePriorityDown(priority)">↓</button>
+                                                <button type="button" class="btn btn-ghost" (click)="openEditPriority(priority)">{{ 'app.actions.edit' | translate }}</button>
+                                                <button type="button" class="btn btn-ghost" (click)="deletePriority(priority)">{{ 'app.actions.delete' | translate }}</button>
+                                            </div>
+                                        </li>
+                                    } @empty {
+                                        <li class="muted">{{ 'app.priorities.empty' | translate }}</li>
+                                    }
+                                </ul>
+                            </section>
+                        }
+
+                        @case ('fields') {
+                            <section class="ws-section">
+                                <div class="ws-section-header">
+                                    <h3>{{ 'app.fields.title' | translate }}</h3>
+                                    @if (fieldEditor() === null) {
+                                        <button type="button" class="btn btn-primary" (click)="openCreateField()">{{ 'app.fields.addField' | translate }}</button>
+                                    }
+                                </div>
+                                <p class="muted">{{ 'app.fields.description' | translate }}</p>
+
+                                @if (fieldEditor(); as ed) {
+                                    <form class="field-editor" (submit)="saveField(); $event.preventDefault()">
+                                        <div class="field-row">
+                                            <label class="field-label">
+                                                <span>{{ 'app.fields.name' | translate }}</span>
+                                                <input
+                                                    type="text"
+                                                    required
+                                                    class="input"
+                                                    [placeholder]="'app.fields.namePlaceholder' | translate"
+                                                    [value]="ed.name"
+                                                    (input)="updateEditor('name', $any($event.target).value)"
+                                                />
+                                            </label>
+                                            <label class="field-label">
+                                                <span>{{ 'app.fields.type' | translate }}</span>
+                                                <select
+                                                    class="input"
+                                                    [value]="ed.type"
+                                                    (change)="updateEditorType($any($event.target).value)"
+                                                >
+                                                    @for (t of fieldTypes; track t) {
+                                                        <option [value]="t">{{ ('app.fields.types.' + t) | translate }}</option>
+                                                    }
+                                                </select>
+                                            </label>
+                                        </div>
+                                        <div class="field-row">
+                                            <label class="field-checkbox">
+                                                <input
+                                                    type="checkbox"
+                                                    [checked]="ed.required"
+                                                    (change)="updateEditor('required', $any($event.target).checked)"
+                                                />
+                                                <span>{{ 'app.fields.required' | translate }}</span>
+                                            </label>
+                                            <label class="field-label">
+                                                <span>{{ 'app.fields.defaultValue' | translate }}</span>
+                                                <input
+                                                    type="text"
+                                                    class="input"
+                                                    [placeholder]="'app.fields.defaultValuePlaceholder' | translate"
+                                                    [value]="ed.defaultValue"
+                                                    (input)="updateEditor('defaultValue', $any($event.target).value)"
+                                                />
+                                            </label>
+                                        </div>
+                                        @if (editorHasOptions()) {
+                                            <div class="field-options">
+                                                <span class="field-label-text">{{ 'app.fields.options' | translate }}</span>
+                                                @for (opt of ed.options; track $index) {
+                                                    <div class="option-row">
+                                                        <input
+                                                            type="text"
+                                                            class="input"
+                                                            [placeholder]="'app.fields.optionPlaceholder' | translate"
+                                                            [value]="opt"
+                                                            (input)="updateOption($index, $any($event.target).value)"
+                                                        />
+                                                        <button type="button" class="btn btn-ghost" (click)="removeOption($index)">{{ 'app.fields.removeOption' | translate }}</button>
+                                                    </div>
+                                                }
+                                                <button type="button" class="btn btn-ghost" (click)="addOption()">{{ 'app.fields.addOption' | translate }}</button>
+                                            </div>
+                                        }
+                                        <div class="field-actions">
+                                            <button type="submit" class="btn btn-primary" [disabled]="fieldSaving()">{{ 'app.actions.save' | translate }}</button>
+                                            <button type="button" class="btn btn-secondary" (click)="closeFieldEditor()">{{ 'app.actions.cancel' | translate }}</button>
+                                        </div>
+                                    </form>
+                                }
+
+                                <ul class="field-list">
+                                    @for (field of fields(); track field.id) {
+                                        <li class="field-item">
+                                            <div class="field-meta">
+                                                <strong>{{ field.name }}</strong>
+                                                <span class="field-chip">{{ ('app.fields.types.' + field.type) | translate }}</span>
+                                                @if (field.required) {
+                                                    <span class="field-chip field-chip--required">{{ 'app.fields.required' | translate }}</span>
+                                                }
+                                                @if (field.options !== null && field.options.length > 0) {
+                                                    <span class="muted">· {{ field.options.join(', ') }}</span>
+                                                }
+                                            </div>
+                                            <div class="field-actions-inline">
+                                                <button type="button" class="btn btn-ghost" (click)="openEditField(field)">{{ 'app.actions.edit' | translate }}</button>
+                                                <button type="button" class="btn btn-ghost" (click)="deleteField(field)">{{ 'app.actions.delete' | translate }}</button>
+                                            </div>
+                                        </li>
+                                    } @empty {
+                                        <li class="muted">{{ 'app.fields.empty' | translate }}</li>
+                                    }
+                                </ul>
+                            </section>
+                        }
+
+                        @case ('mcp') {
+                            <section class="ws-section">
+                                <h3>{{ 'app.workspaces.mcp.heading' | translate }}</h3>
+                                @if (mcpClients().length === 0) {
+                                    <p class="muted">{{ 'app.workspaces.mcp.empty' | translate }}</p>
+                                } @else {
+                                    <ul class="mcp-list">
+                                        @for (client of mcpClients(); track client.clientId) {
+                                            <li class="mcp-item">
+                                                <span class="uk-avatar uk-avatar--ai mcp-avatar" aria-hidden="true">
+                                                    <svg width="11" height="11" viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M8 2v3M8 11v3M2 8h3M11 8h3M3.8 3.8l2 2M10.2 10.2l2 2M3.8 12.2l2-2M10.2 5.8l2-2"
+                                                            fill="none"
+                                                            stroke="currentColor"
+                                                            stroke-width="1.4"
+                                                            stroke-linecap="round"
+                                                            stroke-linejoin="round"
+                                                        />
+                                                    </svg>
+                                                </span>
+                                                <div class="mcp-body">
+                                                    <div class="mcp-name">{{ client.clientName }}</div>
+                                                    <div class="mcp-meta">
+                                                        <span>
+                                                            {{ 'app.workspaces.mcp.firstSeen' | translate }}
+                                                            {{ client.firstSeenAt | date:'mediumDate' }}
+                                                        </span>
+                                                        <span class="mcp-meta-divider" aria-hidden="true">·</span>
+                                                        <span>
+                                                            {{ 'app.workspaces.mcp.lastUsed' | translate }}
+                                                            {{ client.lastUsedAt | date:'short' }}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="mcp-stats">
+                                                    <span class="uk-badge uk-badge--ai" [attr.aria-label]="'app.workspaces.mcp.activeTokens' | translate">
+                                                        {{ client.activeTokens }} {{ 'app.workspaces.mcp.activeTokens' | translate }}
+                                                    </span>
+                                                    @if (canManageMembers()) {
+                                                        <button type="button" class="btn btn-ghost" (click)="revokeMcpClient(client)">
+                                                            {{ 'app.workspaces.mcp.revoke' | translate }}
+                                                        </button>
+                                                    }
+                                                </div>
+                                            </li>
+                                        }
+                                    </ul>
+                                    <p class="mcp-footer">
+                                        {{ 'app.workspaces.mcp.totalAuthorizations' | translate }}:
+                                        {{ totalAuthorizations() }}
+                                    </p>
+                                }
+                            </section>
+                        }
+                    }
+                </div>
+            } @else {
+                <div class="ws-empty">{{ 'app.workspaces.selectWorkspace' | translate }}</div>
+            }
+        </div>
+    }
+</section>

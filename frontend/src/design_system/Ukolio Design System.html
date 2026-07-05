@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Ukolio · Design System</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; background: #ebebed; font-family: 'Inter', sans-serif; }
+  #root { height: 100%; }
+
+  /* ===== Scripts feature — code editor ===== */
+  .ce { display: flex; height: 100%; background: var(--uk-surface); }
+  .ce-dark { background: #161619; }
+  .ce-gutter { width: 50px; flex-shrink: 0; overflow: hidden; padding: 14px 0; border-right: 1px solid var(--uk-border); background: var(--uk-bg); }
+  .ce-dark .ce-gutter { background: #1b1b20; border-color: #2a2a31; }
+  .ce-ln { height: 20px; font: 12px/20px var(--uk-font-mono); color: var(--uk-fg-faint); text-align: right; padding-right: 12px; }
+  .ce-dark .ce-ln { color: #565660; }
+  .ce-ln-err { color: var(--uk-danger); font-weight: 600; }
+  .ce-dark .ce-ln-err { color: #f87171; }
+  .ce-main { position: relative; flex: 1; min-width: 0; overflow: hidden; }
+  .ce-hl, .ce-ta { margin: 0; position: absolute; inset: 0; padding: 14px 16px; font: 13px/20px var(--uk-font-mono); letter-spacing: 0.01em; tab-size: 2; -moz-tab-size: 2; white-space: pre; border: 0; }
+  .ce-hl { pointer-events: none; color: var(--uk-fg); overflow: hidden; z-index: 1; }
+  .ce-dark .ce-hl { color: #d8d8df; }
+  .ce-ta { overflow: auto; resize: none; background: transparent; color: transparent; caret-color: var(--uk-accent); outline: none; z-index: 2; }
+  .ce-dark .ce-ta { caret-color: #8c97ee; }
+  .ce-ta::selection { background: rgba(94,106,210,0.22); }
+  .ce-dark .ce-ta::selection { background: rgba(140,151,238,0.30); }
+  .ce-row { height: 20px; min-width: 100%; white-space: pre; }
+  .ce-row-err { background: rgba(180,35,24,0.07); box-shadow: inset 2px 0 0 var(--uk-danger); }
+  .ce-dark .ce-row-err { background: rgba(248,113,113,0.12); box-shadow: inset 2px 0 0 #f87171; }
+  .tk-com { color: #8a8a92; font-style: italic; } .tk-str { color: #16794a; } .tk-num { color: #a35c00; }
+  .tk-kw { color: #6f4ed3; } .tk-lit { color: #a35c00; } .tk-builtin { color: #0f766e; }
+  .tk-method { color: #1e58b6; } .tk-host { color: var(--uk-accent); font-weight: 600; }
+  .ce-dark .tk-com { color: #6b7280; } .ce-dark .tk-str { color: #7ee0a1; } .ce-dark .tk-num { color: #fbbf24; }
+  .ce-dark .tk-kw { color: #b9a4f5; } .ce-dark .tk-lit { color: #fbbf24; } .ce-dark .tk-builtin { color: #5ad4cf; }
+  .ce-dark .tk-method { color: #7fb4ff; } .ce-dark .tk-host { color: #9aa6f2; }
+  .api-row { width: 100%; display: flex; align-items: center; gap: 7px; padding: 7px 14px; background: none; border: none; cursor: pointer; text-align: left; font: inherit; }
+  .api-row:hover { background: var(--uk-surface-2); }
+  .api-sig { font-size: 11.5px; color: var(--uk-fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .run-log { margin: 0; padding: 0 0 8px; font: 12px/1.75 var(--uk-font-mono); }
+  .run-log-line { display: flex; gap: 12px; padding: 0 16px; }
+  .run-log-line:hover { background: var(--uk-surface-2); }
+  .run-log-gut { width: 14px; text-align: right; color: var(--uk-fg-faint); flex-shrink: 0; user-select: none; }
+  .run-log-err { color: var(--uk-danger); } .run-log-err .run-log-gut { color: var(--uk-danger); }
+  @keyframes cePulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+  .ce-pulse { animation: cePulse 1s ease-in-out infinite; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="foundations.jsx"></script>
+<script type="text/babel" src="components.jsx"></script>
+<script type="text/babel" src="features.jsx"></script>
+<script type="text/babel" src="screens.jsx"></script>
+<script type="text/babel" src="task-views.jsx"></script>
+<script type="text/babel" src="onboarding.jsx"></script>
+<script type="text/babel" src="screens-dark.jsx"></script>
+<script type="text/babel" src="landing.jsx"></script>
+<script type="text/babel" src="marketing-pages.jsx"></script>
+<script type="text/babel" src="ios-frame.jsx"></script>
+<script type="text/babel" src="marketing-mobile.jsx"></script>
+<script type="text/babel" src="scripts-feature.jsx"></script>
+
+<script type="text/babel">
+const { DesignCanvas, DCSection, DCArtboard } = window;
+
+function App() {
+  return (
+    <DesignCanvas
+      title="Ukolio · Design System"
+      subtitle="Light · dense · MCP-native. Inter, 15px base, indigo accent. · v2 — adds Tags, Files, Related tasks."
+    >
+      <DCSection id="foundations" title="01 · Foundations">
+        <DCArtboard id="brand"    label="Brand"                       width={520} height={520}><BrandBoard/></DCArtboard>
+        <DCArtboard id="color"    label="Color palette"               width={780} height={680}><ColorBoard/></DCArtboard>
+        <DCArtboard id="type"     label="Typography · Inter"          width={680} height={680}><TypeBoard/></DCArtboard>
+        <DCArtboard id="metrics"  label="Spacing · Radius · Shadow"   width={520} height={680}><MetricsBoard/></DCArtboard>
+      </DCSection>
+
+      <DCSection id="components" title="02 · Components">
+        <DCArtboard id="buttons"  label="Buttons"                     width={780} height={520}><ButtonsBoard/></DCArtboard>
+        <DCArtboard id="forms"    label="Form fields"                 width={780} height={620}><FormsBoard/></DCArtboard>
+        <DCArtboard id="badges"   label="Badges · Alerts · Toast"     width={620} height={780}><BadgesBoard/></DCArtboard>
+        <DCArtboard id="lists"    label="Lists · Rows · Tables"       width={900} height={780}><ListsBoard/></DCArtboard>
+        <DCArtboard id="tasks"    label="Task cards"                  width={900} height={520}><TaskCardsBoard/></DCArtboard>
+      </DCSection>
+
+      <DCSection id="features" title="03 · Features (Tags · Files · Relations)">
+        <DCArtboard id="tags"      label="Tags · chip lib + workspace mgmt + picker"  width={1180} height={780}><TagsBoard/></DCArtboard>
+        <DCArtboard id="files"     label="Files · upload + list + states"             width={1080} height={720}><FilesBoard/></DCArtboard>
+        <DCArtboard id="relations" label="Related tasks · picker + grouped list"      width={1180} height={780}><RelationsBoard/></DCArtboard>
+      </DCSection>
+
+      <DCSection id="screens" title="04 · Application">
+        <DCArtboard id="login"    label="Login"                       width={1080} height={680}><LoginScreen/></DCArtboard>
+        <DCArtboard id="onb-1"   label="Onboarding · 1/3 · Project & workflow" width={1280} height={820}><OnboardingStep1/></DCArtboard>
+        <DCArtboard id="onb-2"   label="Onboarding · 2/3 · Invite teammates"   width={1280} height={820}><OnboardingStep2/></DCArtboard>
+        <DCArtboard id="onb-3"   label="Onboarding · 3/3 · You're set"         width={1280} height={820}><OnboardingStep3/></DCArtboard>
+        <DCArtboard id="projects" label="Projects list"               width={1280} height={760}><ProjectsScreen/></DCArtboard>
+        <DCArtboard id="kanban"   label="Kanban board"                width={1280} height={760}><KanbanScreen/></DCArtboard>
+        <DCArtboard id="drawer"   label="Task detail · drawer (with Tags, Files, Relations)"        width={1280} height={1080}><DrawerScreen/></DCArtboard>
+        <DCArtboard id="events"   label="Agent activity log"          width={1280} height={760}><EventsScreen/></DCArtboard>
+        <DCArtboard id="workspace" label="Workspace management"       width={1280} height={760}><WorkspaceScreen/></DCArtboard>
+      </DCSection>
+
+      <DCSection id="task-views" title="04c · Task views">
+        <DCArtboard id="grid"     label="List · scheduled tasks"                               width={1280} height={760}><TaskListScreen/></DCArtboard>
+        <DCArtboard id="calendar" label="Calendar · tasks by due date, drag to reschedule"     width={1280} height={840}><CalendarScreen/></DCArtboard>
+        <DCArtboard id="timeline" label="Timeline · Gantt bars start → due, grouped by project" width={1280} height={760}><TimelineScreen/></DCArtboard>
+      </DCSection>
+
+      <DCSection id="screens-dark" title="04b · Application · Dark mode">
+        <DCArtboard id="login-dark"     label="Login · dark"                   width={1080} height={680}><LoginScreenDark/></DCArtboard>
+        <DCArtboard id="projects-dark"  label="Projects list · dark"           width={1280} height={760}><ProjectsScreenDark/></DCArtboard>
+        <DCArtboard id="kanban-dark"    label="Kanban board · dark"            width={1280} height={760}><KanbanScreenDark/></DCArtboard>
+        <DCArtboard id="drawer-dark"    label="Task detail · drawer · dark"    width={1280} height={1080}><DrawerScreenDark/></DCArtboard>
+        <DCArtboard id="grid-dark"      label="Workspace tasks grid · dark"    width={1280} height={760}><TasksGridScreenDark/></DCArtboard>
+        <DCArtboard id="events-dark"    label="Agent activity log · dark"      width={1280} height={760}><EventsScreenDark/></DCArtboard>
+        <DCArtboard id="workspace-dark" label="Workspace management · dark"    width={1280} height={760}><WorkspaceScreenDark/></DCArtboard>
+      </DCSection>
+
+      <DCSection id="scripts" title="07 · Scripts · automation">
+        <DCArtboard id="scripts-list"   label="Scripts · list"            width={1280} height={760}><ScriptsListBoard/></DCArtboard>
+        <DCArtboard id="scripts-editor" label="Script editor"            width={1280} height={820}><ScriptEditorBoard/></DCArtboard>
+        <DCArtboard id="scripts-dark"   label="Script editor · dark code" width={1280} height={820}><ScriptEditorBoard dark={true}/></DCArtboard>
+        <DCArtboard id="scripts-vars"   label="Script variables"         width={1280} height={720}><VariablesBoard/></DCArtboard>
+      </DCSection>
+
+      <DCSection id="marketing" title="05 · Marketing site">
+        <DCArtboard id="landing"  label="Landing"        width={1280} height={4200}><LandingScreen/></DCArtboard>
+        <DCArtboard id="pricing"  label="Pricing"        width={1280} height={3500}><PricingScreen/></DCArtboard>
+        <DCArtboard id="contact"  label="Contact"        width={1280} height={900}><ContactScreen/></DCArtboard>
+        <DCArtboard id="textpage" label="Text · Legal"   width={1280} height={2840}><TextPageScreen/></DCArtboard>
+      </DCSection>
+
+      <DCSection id="marketing-mobile" title="06 · Marketing site · mobile">
+        <DCArtboard id="m-landing"  label="Landing · mobile"      width={402} height={2600}><MobileLandingArtboard/></DCArtboard>
+        <DCArtboard id="m-pricing"  label="Pricing · mobile"      width={402} height={2400}><MobilePricingArtboard/></DCArtboard>
+        <DCArtboard id="m-contact"  label="Contact · mobile"      width={402} height={900}><MobileContactArtboard/></DCArtboard>
+        <DCArtboard id="m-textpage" label="Text · Legal · mobile" width={402} height={1900}><MobileTextArtboard/></DCArtboard>
+      </DCSection>
+    </DesignCanvas>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

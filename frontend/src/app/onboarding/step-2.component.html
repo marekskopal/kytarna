@@ -1,0 +1,45 @@
+<div class="step-overline">{{ 'app.onboarding.step2.overline' | translate }}</div>
+<h1 class="step-title">{{ 'app.onboarding.step2.title' | translate }}</h1>
+<p class="step-lead">{{ 'app.onboarding.step2.lead' | translate }}</p>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="step-form">
+    <div class="invite-rows" formArrayName="invites">
+        @for (row of rows.controls; track $index; let i = $index) {
+            <div class="invite-row" [formGroupName]="i">
+                <input
+                    type="email"
+                    formControlName="email"
+                    class="step-input"
+                    [placeholder]="'app.onboarding.step2.emailPlaceholder' | translate"
+                    autocomplete="off"
+                />
+                <select formControlName="role" class="step-input">
+                    <option value="Member">{{ 'app.workspaces.role.Member' | translate }}</option>
+                    <option value="Admin">{{ 'app.workspaces.role.Admin' | translate }}</option>
+                </select>
+                <button
+                    type="button"
+                    class="invite-row-remove"
+                    [attr.aria-label]="'app.onboarding.step2.removeRow' | translate"
+                    [disabled]="rows.length === 1"
+                    (click)="removeRow(i)"
+                >
+                    ×
+                </button>
+            </div>
+        }
+    </div>
+
+    <button type="button" class="btn btn-ghost btn-sm invite-add" (click)="addRow()">
+        + {{ 'app.onboarding.step2.addAnother' | translate }}
+    </button>
+
+    <div class="step-actions">
+        <button type="submit" class="btn btn-primary" [disabled]="saving()">
+            {{ (saving() ? 'app.actions.loading' : 'app.onboarding.shell.continue') | translate }}
+        </button>
+        <button type="button" class="btn btn-ghost btn-sm" [disabled]="saving()" (click)="onSkip()">
+            {{ 'app.onboarding.step2.skipInvites' | translate }}
+        </button>
+    </div>
+</form>

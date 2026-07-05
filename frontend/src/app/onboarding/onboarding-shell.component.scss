@@ -1,0 +1,231 @@
+@use 'variables' as *;
+
+:host {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: $color-bg;
+    z-index: 10;
+}
+
+.onboarding-shell {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    font-size: $font-size-13;
+}
+
+.onboarding-header {
+    height: 52px;
+    padding: 0 $space-8;
+    background: $color-surface;
+    border-bottom: 1px solid $color-border;
+    display: flex;
+    align-items: center;
+    gap: $space-5;
+    flex-shrink: 0;
+}
+
+.onboarding-logo {
+    height: 22px;
+    width: auto;
+}
+
+.onboarding-divider {
+    width: 1px;
+    height: 16px;
+    background: $color-border;
+}
+
+.onboarding-spacer {
+    flex: 1;
+}
+
+.onboarding-caption {
+    font-size: $font-size-12;
+    color: $color-text-subtle;
+}
+
+.onboarding-user-email {
+    color: $color-text;
+    font-weight: 500;
+}
+
+.onboarding-mono {
+    font-family: $font-mono;
+    font-size: $font-size-12;
+    color: $color-text;
+}
+
+.onboarding-body {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: 0;
+}
+
+.onboarding-sidebar {
+    border-right: 1px solid $color-border;
+    background: $color-surface;
+    padding: $space-9 $space-7;
+    display: flex;
+    flex-direction: column;
+    gap: $space-6;
+    overflow-y: auto;
+}
+
+.onboarding-overline {
+    font-size: $font-size-11;
+    text-transform: uppercase;
+    letter-spacing: $tracking-wide;
+    color: $color-text-subtle;
+    font-weight: 600;
+}
+
+.onboarding-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: $space-1;
+}
+
+.onboarding-step {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: $space-4;
+    padding: $space-3;
+    border-radius: $radius-sm;
+    align-items: flex-start;
+
+    &.is-active {
+        background: $color-surface-muted;
+    }
+}
+
+.onboarding-step-mark {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $font-size-11;
+    font-weight: 600;
+    margin-top: 1px;
+
+    .is-done & {
+        background: $color-success;
+        color: $color-text-inverse;
+    }
+
+    .is-active & {
+        background: $color-text;
+        color: $color-text-inverse;
+    }
+
+    .is-pending & {
+        background: $color-surface;
+        border: 1px solid $color-border-strong;
+        color: $color-text-subtle;
+    }
+}
+
+.onboarding-step-meta {
+    line-height: $line-height-snug;
+}
+
+.onboarding-step-label {
+    font-size: $font-size-13;
+    font-weight: 500;
+    color: $color-text;
+
+    .is-pending & {
+        color: $color-text-subtle;
+    }
+
+    .is-active & {
+        font-weight: 600;
+    }
+}
+
+.onboarding-step-hint {
+    font-size: $font-size-11;
+    color: $color-text-subtle;
+}
+
+.onboarding-tip {
+    margin-top: auto;
+    padding: $space-5;
+    background: $color-ai-soft;
+    border: 1px solid $color-ai-border;
+    border-radius: $radius-md;
+}
+
+.onboarding-tip-title {
+    font-size: $font-size-12;
+    font-weight: 600;
+    color: $color-ai;
+    margin-bottom: $space-1;
+}
+
+.onboarding-tip-body {
+    margin: 0;
+    font-size: $font-size-11;
+    line-height: $line-height-normal;
+    color: $color-text-muted;
+}
+
+.onboarding-main {
+    overflow-y: auto;
+    background: $color-bg;
+    display: flex;
+    justify-content: center;
+    padding: $space-10 $space-8 $space-8;
+}
+
+.onboarding-main-inner {
+    width: 100%;
+    max-width: 720px;
+}
+
+.onboarding-footer {
+    height: 60px;
+    padding: 0 $space-8;
+    background: $color-surface;
+    border-top: 1px solid $color-border;
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    flex-shrink: 0;
+}
+
+.onboarding-progress {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    gap: $space-1;
+}
+
+.onboarding-progress-pill {
+    height: 6px;
+    border-radius: 3px;
+    transition: all 200ms ease;
+    background: $color-border;
+
+    &.is-active {
+        width: 22px;
+        background: $color-text;
+    }
+
+    &.is-done {
+        width: 6px;
+        background: $color-text;
+    }
+
+    &.is-pending {
+        width: 6px;
+        background: $color-border;
+    }
+}

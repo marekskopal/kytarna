@@ -1,0 +1,81 @@
+<div class="onboarding-shell">
+    <header class="onboarding-header">
+        <uk-brand-logo class="onboarding-logo" [height]="22" />
+        @if (workspaceName(); as ws) {
+            <span class="onboarding-divider"></span>
+            <span class="onboarding-caption">
+                {{ 'app.onboarding.shell.workspaceLabel' | translate }}
+                <span class="onboarding-mono">{{ ws }}</span>
+            </span>
+        }
+        <div class="onboarding-spacer"></div>
+        @if (userEmail(); as email) {
+            <span class="onboarding-caption">
+                {{ 'app.onboarding.shell.signedInAs' | translate }}
+                <span class="onboarding-user-email">{{ email }}</span>
+            </span>
+        }
+        <button type="button" class="btn btn-ghost btn-sm" (click)="onSignOut()">
+            {{ 'app.onboarding.shell.signOut' | translate }}
+        </button>
+    </header>
+
+    <div class="onboarding-body">
+        <aside class="onboarding-sidebar">
+            <div class="onboarding-overline">{{ 'app.onboarding.shell.gettingStarted' | translate }}</div>
+            <ol class="onboarding-steps">
+                @for (step of [1, 2, 3]; track step) {
+                    <li class="onboarding-step" [class]="stepStateClass(step)">
+                        <span class="onboarding-step-mark">
+                            @if (step < currentStep()) {
+                                <svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true">
+                                    <path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            } @else {
+                                {{ step }}
+                            }
+                        </span>
+                        <div class="onboarding-step-meta">
+                            <div class="onboarding-step-label">
+                                {{ ('app.onboarding.steps.step' + step + '.label') | translate }}
+                            </div>
+                            <div class="onboarding-step-hint">
+                                {{ ('app.onboarding.steps.step' + step + '.hint') | translate }}
+                            </div>
+                        </div>
+                    </li>
+                }
+            </ol>
+
+            <div class="onboarding-tip">
+                <div class="onboarding-tip-title">
+                    {{ 'app.onboarding.shell.tipTitle' | translate }}
+                </div>
+                <p class="onboarding-tip-body">
+                    {{ 'app.onboarding.shell.tipBody' | translate }}
+                </p>
+            </div>
+        </aside>
+
+        <main class="onboarding-main">
+            <div class="onboarding-main-inner">
+                <router-outlet/>
+            </div>
+        </main>
+    </div>
+
+    <footer class="onboarding-footer">
+        <span class="onboarding-caption">
+            {{ 'app.onboarding.shell.stepCounter' | translate: {step: currentStep(), total: 3} }}
+        </span>
+        <div class="onboarding-progress">
+            @for (step of [1, 2, 3]; track step) {
+                <span class="onboarding-progress-pill" [class]="progressPillClass(step)"></span>
+            }
+        </div>
+        <button type="button" class="btn btn-ghost btn-sm" [disabled]="skipping()" (click)="onSkip()">
+            {{ 'app.onboarding.shell.skip' | translate }}
+        </button>
+    </footer>
+</div>

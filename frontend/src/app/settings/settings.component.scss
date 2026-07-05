@@ -1,0 +1,96 @@
+@use 'variables' as *;
+
+.settings-page {
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+.settings-header {
+    margin-bottom: $space-7;
+}
+
+.settings-title {
+    margin: 0 0 $space-1;
+}
+
+.settings-subtitle {
+    margin: 0;
+    color: $color-text-muted;
+}
+
+.settings-section {
+    padding: $space-6;
+    background: $color-surface;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+}
+
+.settings-section-title {
+    margin: 0 0 $space-1;
+}
+
+.settings-section-subtitle {
+    margin: 0 0 $space-5;
+    color: $color-text-muted;
+}
+
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: $space-5;
+}
+
+.settings-form .field { margin-bottom: 0; }
+
+.settings-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: $space-1;
+}
+
+.settings-page > .settings-section + .settings-section {
+    margin-top: $space-6;
+}
+
+.settings-section--danger {
+    border-color: $color-danger;
+}
+
+.danger-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: $space-5;
+    padding: $space-5 0;
+    border-bottom: 1px solid $color-border;
+}
+
+.danger-row:last-of-type {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+.danger-row:first-of-type {
+    padding-top: 0;
+}
+
+.danger-row-text {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.danger-row-title {
+    margin: 0 0 $space-1;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.danger-row-description {
+    margin: 0;
+    color: $color-text-muted;
+    font-size: 0.875rem;
+}
+
+.danger-row-action {
+    flex: 0 0 auto;
+}

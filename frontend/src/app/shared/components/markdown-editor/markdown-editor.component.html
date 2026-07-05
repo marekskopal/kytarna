@@ -1,0 +1,46 @@
+<div class="md-editor">
+    <div class="md-editor-toolbar">
+        <div class="tab-group">
+            <button
+                type="button"
+                class="tab-button"
+                [class.tab-button--active]="tab() === 'edit'"
+                [disabled]="disabled()"
+                (click)="setTab('edit')"
+            >
+                {{ 'app.markdownEditor.edit' | translate }}
+            </button>
+            <button
+                type="button"
+                class="tab-button"
+                [class.tab-button--active]="tab() === 'preview'"
+                [disabled]="disabled()"
+                (click)="setTab('preview')"
+            >
+                {{ 'app.markdownEditor.preview' | translate }}
+            </button>
+        </div>
+    </div>
+    <div class="md-editor-panel">
+        @if (tab() === 'edit') {
+            <textarea
+                [id]="inputId()"
+                [value]="value()"
+                [rows]="rows()"
+                [placeholder]="placeholder()"
+                [disabled]="disabled()"
+                (input)="onInput($event)"
+                (blur)="onBlur()"
+                class="textarea md-editor-textarea"
+            ></textarea>
+        } @else {
+            <div class="md-editor-preview">
+                @if (value()) {
+                    <markdown [data]="value()" />
+                } @else {
+                    <p class="text-subtle">{{ 'app.markdownEditor.nothingToPreview' | translate }}</p>
+                }
+            </div>
+        }
+    </div>
+</div>

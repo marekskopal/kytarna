@@ -1,0 +1,83 @@
+<div class="bell">
+    <button
+        type="button"
+        class="btn btn-ghost btn-icon btn-sm bell-trigger"
+        (click)="toggle()"
+        [attr.aria-expanded]="open()"
+        aria-haspopup="menu"
+        [attr.aria-label]="'app.notifications.bell' | translate"
+    >
+        <svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true">
+            <path
+                d="M8 2a3 3 0 0 0-3 3c0 3-1.2 4-1.2 4h8.4S11 8 11 5a3 3 0 0 0-3-3zM6.5 12.5a1.5 1.5 0 0 0 3 0"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+        </svg>
+        @if (unreadCount() > 0) {
+            <span class="bell-badge" aria-hidden="true">{{ unreadCount() > 99 ? '99+' : unreadCount() }}</span>
+        }
+    </button>
+
+    @if (open()) {
+        <div class="menu menu--right notif-panel" role="menu">
+            <div class="notif-head">
+                <span class="notif-title">{{ 'app.notifications.section' | translate }}</span>
+                @if (unreadCount() > 0) {
+                    <button type="button" class="btn-link notif-markall" (click)="markAllRead()">
+                        {{ 'app.notifications.markAllAsRead' | translate }}
+                    </button>
+                }
+            </div>
+
+            <div class="notif-list">
+                @if (loading()) {
+                    <div class="notif-empty">{{ 'app.actions.loading' | translate }}</div>
+                } @else if (notifications().length === 0) {
+                    <div class="notif-empty">{{ 'app.notifications.empty' | translate }}</div>
+                } @else {
+                    @for (n of notifications(); track n.id) {
+                        <button
+                            type="button"
+                            class="notif-item"
+                            [class.notif-item--unread]="!n.read"
+                            role="menuitem"
+                            (click)="openNotification(n)"
+                        >
+                            @if (!n.read) {
+                                <span class="notif-dot" aria-hidden="true"></span>
+                            }
+                            <span class="notif-body">
+                                <span class="notif-message">{{
+                                    messageKey(n.type) | translate: {actor: n.actorName ?? '', task: n.data.taskCode ?? '', status: n.data.statusName ?? ''}
+                                }}</span>
+                                @if (n.data.taskName) {
+                                    <span class="notif-task">{{ n.data.taskName }}</span>
+                                }
+                                @if (n.data.commentSnippet) {
+                                    <span class="notif-snippet">{{ n.data.commentSnippet }}</span>
+                                }
+                                <time class="notif-time" [attr.datetime]="n.createdAt">{{ formatRelative(n.createdAt) }}</time>
+                            </span>
+                            <span
+                                class="notif-dismiss"
+                                role="button"
+                                tabindex="0"
+                                [attr.aria-label]="'app.notifications.dismiss' | translate"
+                                (click)="remove(n, $event)"
+                                (keydown.enter)="remove(n, $event)"
+                            >
+                                <svg width="11" height="11" viewBox="0 0 16 16" aria-hidden="true">
+                                    <path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                                </svg>
+                            </span>
+                        </button>
+                    }
+                }
+            </div>
+        </div>
+    }
+</div>

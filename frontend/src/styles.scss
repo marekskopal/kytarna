@@ -1,0 +1,823 @@
+@use 'styles/variables' as *;
+@use 'styles/mixins' as *;
+
+// ════════════════════════════════════════════════════════════
+// Resets
+// ════════════════════════════════════════════════════════════
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    background: $color-bg;
+    color: $color-text;
+    font-family: $font-sans;
+    font-size: $font-size-15;
+    line-height: $line-height-normal;
+    font-feature-settings: 'cv11', 'ss01', 'ss03';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+    color: $color-accent;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+button {
+    font: inherit;
+    cursor: pointer;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    color: inherit;
+}
+
+input, textarea, select {
+    font: inherit;
+    color: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    font-weight: 600;
+    color: $color-text;
+    letter-spacing: $tracking-tight;
+    line-height: $line-height-snug;
+}
+
+p {
+    margin: 0;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid $color-border;
+    margin: 0;
+}
+
+// ════════════════════════════════════════════════════════════
+// Typography scale
+// ════════════════════════════════════════════════════════════
+.uk-display {
+    font-size: $font-size-40;
+    font-weight: 600;
+    letter-spacing: $tracking-tighter;
+    line-height: 1.1;
+}
+
+.uk-h1 {
+    font-size: $font-size-30;
+    font-weight: 600;
+    letter-spacing: $tracking-tighter;
+    line-height: 1.2;
+}
+
+.uk-h2 {
+    font-size: $font-size-24;
+    font-weight: 600;
+    letter-spacing: $tracking-tight;
+    line-height: 1.25;
+}
+
+.uk-h3 {
+    font-size: $font-size-20;
+    font-weight: 600;
+    letter-spacing: $tracking-tight;
+    line-height: 1.3;
+}
+
+.uk-h4 {
+    font-size: $font-size-16;
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+.uk-h5 {
+    font-size: $font-size-14;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.uk-body {
+    font-size: $font-size-15;
+    line-height: 1.55;
+}
+
+.uk-body-sm {
+    font-size: $font-size-13;
+    line-height: 1.5;
+}
+
+.uk-caption {
+    font-size: $font-size-12;
+    line-height: 1.4;
+    color: $color-text-muted;
+}
+
+.uk-overline {
+    font-size: $font-size-11;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: $color-text-subtle;
+}
+
+.uk-mono {
+    font-family: $font-mono;
+    font-size: $font-size-12;
+    letter-spacing: $tracking-mono;
+}
+
+.uk-kbd {
+    font-family: $font-mono;
+    font-size: $font-size-11;
+    padding: 1px 5px;
+    border: 1px solid $color-border-strong;
+    border-bottom-width: 2px;
+    border-radius: $radius-xs;
+    background: $color-surface;
+    color: $color-text-muted;
+    line-height: 1.4;
+}
+
+.uk-muted  { color: $color-text-muted; }
+.uk-subtle { color: $color-text-subtle; }
+.uk-faint  { color: $color-text-faint; }
+
+// ════════════════════════════════════════════════════════════
+// Buttons — .btn + variants + sizes
+// 1 px transparent border on every variant avoids 1 px jumps.
+// ════════════════════════════════════════════════════════════
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: $space-2;
+    height: $h-md;
+    padding: 0 $space-5;
+    border-radius: $radius-sm;
+    border: 1px solid transparent;
+    background: transparent;
+    color: $color-text;
+    font: inherit;
+    font-size: $font-size-13;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    white-space: nowrap;
+    user-select: none;
+    cursor: pointer;
+    transition: background 80ms ease, border-color 80ms ease, color 80ms ease, box-shadow 80ms ease;
+
+    @include focus-ring;
+
+    &:disabled,
+    &[aria-disabled='true'] {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+.btn-xs { height: $h-xs; padding: 0 $space-3;  font-size: $font-size-11; }
+.btn-sm { height: $h-sm; padding: 0 $space-4;  font-size: $font-size-12; }
+.btn-lg { height: $h-lg; padding: 0 $space-6;  font-size: $font-size-14; }
+.btn-xl { height: $h-xl; padding: 0 $space-7;  font-size: $font-size-15; }
+
+.btn-primary {
+    background: $color-accent;
+    border-color: $color-accent;
+    color: $color-accent-fg;
+
+    &:hover:not(:disabled) {
+        background: $color-accent-hover;
+        border-color: $color-accent-hover;
+    }
+
+    &:active:not(:disabled) {
+        background: $color-accent-active;
+        border-color: $color-accent-active;
+    }
+}
+
+.btn-secondary {
+    background: $color-surface;
+    border-color: $color-border-strong;
+    color: $color-text;
+
+    &:hover:not(:disabled) {
+        background: $color-surface-muted;
+    }
+}
+
+.btn-ghost {
+    color: $color-text-muted;
+
+    &:hover:not(:disabled) {
+        background: $color-surface-muted;
+        color: $color-text;
+    }
+}
+
+.btn-danger {
+    background: $color-danger;
+    border-color: $color-danger;
+    color: #fff;
+
+    &:hover:not(:disabled) {
+        filter: brightness(0.95);
+    }
+}
+
+.btn-danger-ghost {
+    color: $color-danger;
+
+    &:hover:not(:disabled) {
+        background: $color-danger-soft;
+    }
+}
+
+.btn-icon {
+    padding: 0;
+    width: $h-md;
+
+    &.btn-xs { width: $h-xs; }
+    &.btn-sm { width: $h-sm; }
+    &.btn-lg { width: $h-lg; }
+    &.btn-xl { width: $h-xl; }
+}
+
+// ════════════════════════════════════════════════════════════
+// Form fields — .field, .input, .textarea, .select, groups
+// All controls 30 px tall by default.
+// ════════════════════════════════════════════════════════════
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: $space-6;
+
+    &-label {
+        font-size: $font-size-12;
+        font-weight: 500;
+        letter-spacing: -0.005em;
+        color: $color-text;
+    }
+
+    &-hint {
+        font-size: $font-size-11;
+        color: $color-text-subtle;
+    }
+
+    &-error {
+        font-size: $font-size-11;
+        color: $color-danger;
+    }
+}
+
+.input,
+.textarea,
+.select {
+    @include field-base;
+}
+
+.textarea {
+    height: auto;
+    padding: $space-3 $space-4;
+    min-height: 84px;
+    line-height: $line-height-normal;
+    resize: vertical;
+}
+
+.select {
+    padding-right: 28px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path fill='none' stroke='%2352525b' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round' d='M3 4.5l3 3 3-3'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right $space-3 center;
+}
+
+:root[data-theme="dark"] .select {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path fill='none' stroke='%23a1a1a8' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round' d='M3 4.5l3 3 3-3'/></svg>");
+}
+
+.input--error,
+.textarea--error,
+.select--error {
+    border-color: $color-danger;
+
+    &:focus {
+        border-color: $color-danger;
+        box-shadow: $ring-danger;
+    }
+}
+
+// Composes prefix/suffix slots around a borderless input.
+.input-group {
+    display: flex;
+    align-items: center;
+    height: $h-md;
+    padding: 0 $space-3;
+    gap: $space-2;
+    border: 1px solid $color-border-strong;
+    border-radius: $radius-sm;
+    background: $color-surface;
+    transition: border-color 80ms ease, box-shadow 80ms ease;
+
+    &:hover {
+        border-color: $color-border-hover;
+    }
+
+    &:focus-within {
+        border-color: $color-border-focus;
+        box-shadow: $ring;
+    }
+
+    .input {
+        height: 100%;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+
+        &:focus { box-shadow: none; }
+    }
+
+    &-prefix,
+    &-suffix {
+        display: inline-flex;
+        align-items: center;
+        color: $color-text-subtle;
+        font-size: $font-size-13;
+    }
+}
+
+// Custom checkbox — 15×15, 3 px radius, indigo fill on :checked.
+.uk-check {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-3;
+    font-size: $font-size-13;
+    color: $color-text;
+    cursor: pointer;
+    user-select: none;
+
+    input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    &-box {
+        width: 15px;
+        height: 15px;
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid $color-border-strong;
+        border-radius: 3px;
+        background: $color-surface;
+        transition: background 80ms ease, border-color 80ms ease, box-shadow 80ms ease;
+    }
+
+    input:checked + .uk-check-box {
+        background: $color-accent;
+        border-color: $color-accent;
+
+        &::after {
+            content: '';
+            width: 8px;
+            height: 4px;
+            border-left: 1.5px solid #fff;
+            border-bottom: 1.5px solid #fff;
+            transform: rotate(-45deg) translate(0, -1px);
+        }
+    }
+
+    input:focus-visible + .uk-check-box {
+        box-shadow: $ring;
+    }
+}
+
+.uk-radio-box {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid $color-border-strong;
+    border-radius: 50%;
+    background: $color-surface;
+    transition: border-color 80ms ease, box-shadow 80ms ease;
+
+    .uk-check input:checked + & {
+        border-color: $color-accent;
+
+        &::after {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: $color-accent;
+        }
+    }
+}
+
+// Toggle pill — 28×16. Not a checkbox replacement; for boolean prefs.
+.uk-toggle {
+    position: relative;
+    width: 28px;
+    height: 16px;
+    border-radius: $radius-pill;
+    background: $color-surface-deep;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 100ms ease;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        transition: transform 100ms ease;
+    }
+
+    &--on {
+        background: $color-accent;
+
+        &::after { transform: translateX(12px); }
+    }
+}
+
+// ════════════════════════════════════════════════════════════
+// Badges & chips
+// ════════════════════════════════════════════════════════════
+.uk-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-1;
+    height: 18px;
+    padding: 0 $space-2;
+    border-radius: $radius-xs;
+    border: 1px solid transparent;
+    background: $color-surface-muted;
+    color: $color-text-muted;
+    font-size: $font-size-11;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    line-height: 1;
+
+    &--outline { background: $color-surface; border-color: $color-border; }
+    &--accent  { background: $color-accent-soft;  color: $color-accent; }
+    &--success { background: $color-success-soft; color: $color-success; }
+    &--warn    { background: $color-warn-soft;    color: $color-warn; }
+    &--danger  { background: $color-danger-soft;  color: $color-danger; }
+    &--info    { background: $color-info-soft;    color: $color-info; }
+    &--ai      { background: $color-ai-soft;      color: $color-ai; }
+    &--solid   { background: $color-text;         color: $color-text-inverse; }
+}
+
+.uk-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+}
+
+// ════════════════════════════════════════════════════════════
+// Cards & surfaces
+// ════════════════════════════════════════════════════════════
+.card,
+.uk-card {
+    background: $color-surface;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+}
+
+.uk-card--muted { background: $color-surface-muted; }
+
+// ════════════════════════════════════════════════════════════
+// Lists & rows
+// ════════════════════════════════════════════════════════════
+.uk-list {
+    display: flex;
+    flex-direction: column;
+
+    > * + * { border-top: 1px solid $color-border; }
+}
+
+.uk-row {
+    display: flex;
+    align-items: center;
+    gap: $space-4;
+    padding: $space-3 $space-5;
+    min-height: 36px;
+    font-size: $font-size-13;
+    color: $color-text;
+    background: transparent;
+    transition: background 80ms ease;
+
+    &:hover { background: $color-surface-muted; }
+
+    &--interactive { cursor: pointer; }
+    &--selected    { background: $color-accent-soft; }
+}
+
+// ════════════════════════════════════════════════════════════
+// Tabs — underline tab strip (design canvas: workspace mgmt)
+// ════════════════════════════════════════════════════════════
+.uk-tabs {
+    display: flex;
+    align-items: flex-end;
+    border-bottom: 1px solid $color-border;
+}
+
+.uk-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    height: 34px;
+    margin-bottom: -1px;
+    padding: 0 $space-4;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    background: transparent;
+    color: $color-text-muted;
+    font: inherit;
+    font-size: $font-size-13;
+    font-weight: 400;
+    white-space: nowrap;
+    user-select: none;
+    cursor: pointer;
+    transition: color 80ms ease, border-color 80ms ease, box-shadow 80ms ease;
+
+    @include focus-ring;
+
+    &:hover { color: $color-text; }
+
+    &--active {
+        color: $color-text;
+        border-bottom-color: $color-text;
+        font-weight: 500;
+    }
+}
+
+// ════════════════════════════════════════════════════════════
+// Table
+// ════════════════════════════════════════════════════════════
+.uk-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: $font-size-13;
+
+    th {
+        text-align: left;
+        font-weight: 500;
+        font-size: $font-size-11;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: $color-text-subtle;
+        padding: $space-3 $space-5;
+        border-bottom: 1px solid $color-border;
+        background: $color-surface-muted;
+        white-space: nowrap;
+    }
+
+    td {
+        padding: $space-3 $space-5;
+        border-bottom: 1px solid $color-border;
+        color: $color-text;
+        vertical-align: middle;
+        line-height: 1.4;
+    }
+
+    tr:last-child td { border-bottom: none; }
+    tbody tr:hover td { background: $color-surface-muted; }
+}
+
+// ════════════════════════════════════════════════════════════
+// Alerts & toasts
+// ════════════════════════════════════════════════════════════
+.uk-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: $space-4;
+    padding: $space-4 $space-5;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    background: $color-surface;
+    font-size: $font-size-13;
+
+    &--info    { background: $color-info-soft;    border-color: $color-info-border; }
+    &--success { background: $color-success-soft; border-color: $color-success-border; }
+    &--warn    { background: $color-warn-soft;    border-color: $color-warn-border; }
+    &--danger  { background: $color-danger-soft;  border-color: $color-danger-border; }
+    &--ai      { background: $color-ai-soft;      border-color: $color-ai-border; }
+
+    &-title {
+        font-size: $font-size-13;
+        font-weight: 600;
+        color: $color-text;
+    }
+
+    &-body {
+        margin-top: 2px;
+        font-size: $font-size-12;
+        color: $color-text-muted;
+    }
+}
+
+.uk-toast {
+    display: flex;
+    align-items: center;
+    gap: $space-4;
+    padding: $space-4 $space-5 $space-4 14px;
+    min-width: 280px;
+    background: $color-text;
+    color: $color-text-inverse;
+    border-radius: $radius-md;
+    box-shadow: $shadow-lg;
+    font-size: $font-size-13;
+
+    &-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: $color-success;
+        flex-shrink: 0;
+    }
+}
+
+// ════════════════════════════════════════════════════════════
+// Task card (kanban)
+// 10/11 px padding, 5 px radius, agent variant + overdue cues.
+// ════════════════════════════════════════════════════════════
+.uk-task {
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
+    padding: $space-4 11px;
+    background: $color-surface;
+    border: 1px solid $color-border;
+    border-radius: $radius-sm;
+    cursor: pointer;
+    transition: border-color 80ms ease, box-shadow 80ms ease;
+
+    &:hover { border-color: $color-border-strong; }
+
+    &[data-agent='true'] {
+        border-left: 2px solid $color-ai;
+    }
+
+    &-id {
+        font-family: $font-mono;
+        font-size: $font-size-11;
+        color: $color-text-subtle;
+        letter-spacing: 0.02em;
+    }
+
+    &-title {
+        font-size: $font-size-13;
+        font-weight: 500;
+        line-height: 1.35;
+        letter-spacing: -0.005em;
+        color: $color-text;
+    }
+
+    &-meta {
+        display: flex;
+        align-items: center;
+        gap: $space-2;
+        font-size: $font-size-11;
+        color: $color-text-subtle;
+
+        .uk-divider {
+            width: 2px;
+            height: 2px;
+            border-radius: 50%;
+            background: $color-text-faint;
+        }
+    }
+}
+
+// ════════════════════════════════════════════════════════════
+// Avatars
+// ════════════════════════════════════════════════════════════
+.uk-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: $color-surface-deep;
+    border: 1px solid $color-surface;
+    color: $color-text;
+    font-size: $font-size-10;
+    font-weight: 600;
+    flex-shrink: 0;
+
+    &--ai { background: $color-ai-soft; color: $color-ai; }
+}
+
+// ════════════════════════════════════════════════════════════
+// Dividers
+// ════════════════════════════════════════════════════════════
+.uk-hr { border: 0; border-top: 1px solid $color-border; margin: 0; }
+
+.uk-vr { width: 1px; align-self: stretch; background: $color-border; }
+
+// ════════════════════════════════════════════════════════════
+// Page headings — temporary aliases until layout shell is reskinned.
+// ════════════════════════════════════════════════════════════
+.page-title {
+    font-size: $font-size-24;
+    font-weight: 600;
+    letter-spacing: $tracking-tight;
+    margin-bottom: $space-1;
+}
+
+.page-subtitle {
+    color: $color-text-muted;
+    font-size: $font-size-13;
+    margin: 0;
+}
+
+// ════════════════════════════════════════════════════════════
+// Link-style buttons (text links that act as buttons)
+// ════════════════════════════════════════════════════════════
+.btn-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    color: $color-accent;
+    font: inherit;
+    font-size: inherit;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+
+    &:hover {
+        color: $color-accent-hover;
+        text-decoration: underline;
+    }
+}
+
+.btn-danger-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    color: $color-danger;
+    font: inherit;
+    font-size: inherit;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+
+    &:hover { text-decoration: underline; }
+}
+
+// ════════════════════════════════════════════════════════════
+// Text helpers
+// ════════════════════════════════════════════════════════════
+.text-muted  { color: $color-text-muted; }
+.text-subtle { color: $color-text-subtle; }
+.text-error  { color: $color-danger; }
+
+.muted-link {
+    color: $color-text-muted;
+    font-size: $font-size-13;
+
+    &:hover { color: $color-text; }
+}
+
+// ════════════════════════════════════════════════════════════
+// Monaco code-editor error decorations (global: Monaco injects its own DOM)
+// ════════════════════════════════════════════════════════════
+.code-editor-error-line { background: $color-danger-soft; }
+.code-editor-error-gutter {
+    background: $color-danger;
+    width: 3px !important;
+    margin-left: 3px;
+}

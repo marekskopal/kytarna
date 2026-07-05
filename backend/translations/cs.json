@@ -1,0 +1,50 @@
+{
+    "email": {
+        "subject": {
+            "invitation": "Pozvánka do pracovního prostoru {workspace} v Ukolio",
+            "passwordReset": "Obnovení hesla pro Ukolio",
+            "emailVerification": "Ověřte svůj e-mail pro Ukolio",
+            "notification": {
+                "TaskMention": "{actor} vás zmínil(a) v {task}",
+                "TaskAssigned": "{actor} vám přiřadil(a) úkol {task}",
+                "DueSoon": "Úkol {task} má termín zítra",
+                "DueToday": "Úkol {task} má termín dnes"
+            }
+        },
+        "invitation": {
+            "title": "Pozvánka do Ukolio",
+            "intro": "{inviter} vás pozval(a) do pracovního prostoru <strong>{workspace}</strong>.",
+            "action": "Pozvánku přijmete kliknutím na tlačítko níže. Pokud ještě nemáte účet, budete vyzváni k registraci pomocí této e-mailové adresy.",
+            "button": "Přijmout pozvánku",
+            "fallback": "Nebo zkopírujte tento odkaz do prohlížeče:",
+            "expires": "Pozvánka vyprší za 7 dní."
+        },
+        "passwordReset": {
+            "title": "Obnovení hesla",
+            "greeting": "Dobrý den, {name},",
+            "intro": "Obdrželi jsme žádost o obnovení hesla k vašemu účtu Ukolio. Klikněte na tlačítko níže a zvolte si nové heslo.",
+            "button": "Obnovit heslo",
+            "fallback": "Nebo zkopírujte tento odkaz do prohlížeče:",
+            "expires": "Tento odkaz vyprší za 1 hodinu.",
+            "ignore": "Pokud jste o obnovení nežádali, můžete tento e-mail bez obav ignorovat — vaše heslo se nezmění."
+        },
+        "emailVerification": {
+            "title": "Ověření e-mailu",
+            "greeting": "Dobrý den, {name},",
+            "intro": "Vítejte v Ukolio! Potvrďte prosím, že vám patří tato e-mailová adresa, abyste mohli zvát kolegy a propojovat AI agenty.",
+            "button": "Ověřit e-mail",
+            "fallback": "Nebo zkopírujte tento odkaz do prohlížeče:",
+            "expires": "Tento odkaz vyprší za 24 hodin.",
+            "ignore": "Pokud jste si Ukolio nezakládal(a), můžete tento e-mail bez obav ignorovat."
+        },
+        "notification": {
+            "greeting": "Dobrý den, {name},",
+            "TaskMention": "{actor} vás zmínil(a) v {task} — {taskName}.",
+            "TaskAssigned": "{actor} vám přiřadil(a) úkol {task} ({taskName}).",
+            "DueSoon": "Úkol {task} ({taskName}) má termín zítra.",
+            "DueToday": "Úkol {task} ({taskName}) má termín dnes.",
+            "button": "Otevřít úkol",
+            "fallback": "Nebo zkopírujte tento odkaz do prohlížeče:"
+        }
+    }
+}

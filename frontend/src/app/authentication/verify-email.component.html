@@ -1,0 +1,50 @@
+<div class="auth-split">
+    <section class="auth-form-side">
+        <div class="auth-form-inner">
+            <div class="auth-brand">
+                <uk-brand-logo class="auth-brand-logo" [height]="28" />
+            </div>
+
+            <h1 class="uk-h2 auth-title">{{ 'app.auth.verifyEmail.title' | translate }}</h1>
+
+            @switch (state()) {
+                @case ('verifying') {
+                    <p class="uk-caption auth-subtitle">{{ 'app.auth.verifyEmail.verifying' | translate }}</p>
+                }
+                @case ('success') {
+                    <p class="auth-success">{{ 'app.auth.verifyEmail.success' | translate }}</p>
+                    <p class="auth-footer">
+                        @if (isLoggedIn()) {
+                            <a routerLink="/projects" class="btn-link">{{ 'app.auth.verifyEmail.backToApp' | translate }}</a>
+                        } @else {
+                            <a routerLink="/login" class="btn-link">{{ 'app.auth.verifyEmail.backToLogin' | translate }}</a>
+                        }
+                    </p>
+                }
+                @case ('invalid') {
+                    <p class="auth-success">{{ 'app.auth.verifyEmail.invalid' | translate }}</p>
+                    <p class="auth-footer">
+                        @if (isLoggedIn()) {
+                            <a routerLink="/settings" class="btn-link">{{ 'app.auth.verifyEmail.requestNew' | translate }}</a>
+                        } @else {
+                            <a routerLink="/login" class="btn-link">{{ 'app.auth.verifyEmail.backToLogin' | translate }}</a>
+                        }
+                    </p>
+                }
+            }
+        </div>
+    </section>
+
+    <aside class="auth-aside" aria-hidden="true">
+        <div class="auth-aside-content">
+            <div class="auth-aside-overline">{{ 'app.auth.asideOverline' | translate }}</div>
+            <h2 class="auth-aside-headline">{{ 'app.auth.asideHeadline' | translate }}</h2>
+            <p class="auth-aside-body">{{ 'app.auth.asideBody' | translate }}</p>
+        </div>
+
+        <div class="auth-aside-snippet">
+            <div class="auth-aside-snippet-label">{{ 'app.auth.asideSnippetLabel' | translate }}</div>
+            <pre class="auth-aside-snippet-code"><span class="auth-aside-snippet-method">POST</span> {{ mcpUrl }}</pre>
+        </div>
+    </aside>
+</div>

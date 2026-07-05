@@ -1,0 +1,36 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Ukolio\Model\Entity;
+
+use DateTimeImmutable;
+use MarekSkopal\ORM\Attribute\Column;
+use MarekSkopal\ORM\Attribute\ColumnEnum;
+use MarekSkopal\ORM\Attribute\Entity;
+use MarekSkopal\ORM\Attribute\ManyToOne;
+use MarekSkopal\ORM\Enum\Type;
+use Ukolio\Model\Entity\Enum\WorkspaceRoleEnum;
+use Ukolio\Model\Repository\InvitationRepository;
+
+#[Entity(repositoryClass: InvitationRepository::class)]
+class Invitation extends AEntity
+{
+	public function __construct(
+		#[ManyToOne(entityClass: Workspace::class)]
+		public readonly Workspace $workspace,
+		#[ManyToOne(entityClass: User::class)]
+		public readonly User $inviter,
+		#[Column(type: Type::String)]
+		public string $email,
+		#[Column(type: Type::String, size: 64)]
+		public string $tokenHash,
+		#[ColumnEnum(enum: WorkspaceRoleEnum::class)]
+		public WorkspaceRoleEnum $role,
+		#[Column(type: Type::Timestamp)]
+		public DateTimeImmutable $expiresAt,
+		#[Column(type: Type::Timestamp, nullable: true)]
+		public ?DateTimeImmutable $acceptedAt = null,
+	) {
+	}
+}

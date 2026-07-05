@@ -1,0 +1,177 @@
+<div class="shell">
+    <header class="topbar">
+        <a routerLink="/projects" class="brand" [attr.aria-label]="'app.brand' | translate">
+            <uk-brand-logo [height]="22" />
+        </a>
+
+        <span class="topbar-divider" aria-hidden="true"></span>
+
+        <div class="workspace-switcher">
+            <button
+                type="button"
+                class="btn btn-ghost btn-sm workspace-chip"
+                (click)="toggleSwitcher()"
+                [attr.aria-expanded]="switcherOpen()"
+                aria-haspopup="menu"
+            >
+                <span class="workspace-mark" aria-hidden="true">{{ workspaceInitial() }}</span>
+                <span class="workspace-name">{{ currentWorkspace()?.name ?? ('app.common.noWorkspace' | translate) }}</span>
+                <svg class="icon-down" width="10" height="10" viewBox="0 0 16 16" aria-hidden="true">
+                    <path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </button>
+            @if (switcherOpen()) {
+                <div class="menu menu--left" role="menu">
+                    @for (ws of workspaces(); track ws.id) {
+                        <button
+                            type="button"
+                            class="menu-item"
+                            [class.menu-item--active]="ws.id === currentWorkspaceId()"
+                            role="menuitem"
+                            (click)="switchTo(ws.id)"
+                        >
+                            {{ ws.name }}
+                        </button>
+                    }
+                    <div class="menu-divider" aria-hidden="true"></div>
+                    <button type="button" class="menu-item" role="menuitem" (click)="createWorkspace()">
+                        {{ 'app.nav.newWorkspace' | translate }}
+                    </button>
+                    <a class="menu-item" routerLink="/workspaces" role="menuitem" (click)="toggleSwitcher()">
+                        {{ 'app.nav.manageWorkspaces' | translate }}
+                    </a>
+                </div>
+            }
+        </div>
+
+        <nav class="nav" [attr.aria-label]="'app.nav.primary' | translate">
+            <a routerLink="/projects" routerLinkActive="nav-link--active" [routerLinkActiveOptions]="{exact: false}" class="nav-link">
+                {{ 'app.nav.projects' | translate }}
+            </a>
+            <a routerLink="/tasks" routerLinkActive="nav-link--active" [routerLinkActiveOptions]="{exact: false}" class="nav-link">
+                {{ 'app.nav.tasks' | translate }}
+            </a>
+            <a routerLink="/agents" routerLinkActive="nav-link--active" [routerLinkActiveOptions]="{exact: false}" class="nav-link">
+                {{ 'app.nav.agents' | translate }}
+            </a>
+            <a routerLink="/settings/scripts" routerLinkActive="nav-link--active" [routerLinkActiveOptions]="{exact: false}" class="nav-link">
+                {{ 'app.nav.scripts' | translate }}
+            </a>
+            <a routerLink="/workspaces" routerLinkActive="nav-link--active" [routerLinkActiveOptions]="{exact: false}" class="nav-link">
+                {{ 'app.nav.workspaces' | translate }}
+            </a>
+            @if (isSystemAdmin()) {
+                <a routerLink="/admin/users" routerLinkActive="nav-link--active" [routerLinkActiveOptions]="{exact: false}" class="nav-link">
+                    {{ 'app.nav.admin' | translate }}
+                </a>
+            }
+        </nav>
+
+        <div class="topbar-spacer"></div>
+
+        <button type="button" class="topbar-search" (click)="openSearch()" [attr.aria-label]="'app.nav.search' | translate">
+            <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
+                <circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                <path d="M10.5 10.5L14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+            </svg>
+            <span class="topbar-search-placeholder">{{ 'app.nav.search' | translate }}</span>
+            <span class="uk-kbd" aria-hidden="true">⌘K</span>
+        </button>
+
+        <uk-search-popover [open]="searchOpen()" (selected)="onSearchHit($event)" (closed)="closeSearch()" />
+
+        <button
+            type="button"
+            class="btn btn-ghost btn-icon btn-sm"
+            (click)="openCommandPalette()"
+            [attr.aria-label]="'app.nav.aiPalette' | translate"
+        >
+            <svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true">
+                <path
+                    d="M8 2v3M8 11v3M2 8h3M11 8h3M3.8 3.8l2 2M10.2 10.2l2 2M3.8 12.2l2-2M10.2 5.8l2-2"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.4"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                />
+            </svg>
+        </button>
+
+        <uk-notification-bell />
+
+        <div class="user-menu">
+            <button
+                type="button"
+                class="uk-avatar user-menu-trigger"
+                (click)="toggleUserMenu()"
+                [attr.aria-expanded]="userMenuOpen()"
+                aria-haspopup="menu"
+                [attr.aria-label]="'app.nav.openUserMenu' | translate"
+            >
+                {{ userInitials() }}
+            </button>
+            @if (userMenuOpen()) {
+                <div class="menu menu--right" role="menu">
+                    @if (user(); as u) {
+                        <div class="menu-header">
+                            <div class="menu-header-name">{{ u.name || u.email }}</div>
+                            @if (u.name) {
+                                <div class="menu-header-email">{{ u.email }}</div>
+                            }
+                        </div>
+                        <div class="menu-divider" aria-hidden="true"></div>
+                    }
+                    <div class="menu-section-title">{{ 'app.settings.language' | translate }}</div>
+                    @for (lang of supportedLangs; track lang) {
+                        <button
+                            type="button"
+                            class="menu-item"
+                            [class.menu-item--active]="lang === currentLang()"
+                            role="menuitem"
+                            (click)="setLanguage(lang)"
+                        >
+                            {{ ('app.settings.language' + (lang === 'en' ? 'En' : 'Cs')) | translate }}
+                        </button>
+                    }
+                    <div class="menu-divider" aria-hidden="true"></div>
+                    <div class="menu-section-title">{{ 'app.settings.theme' | translate }}</div>
+                    @for (theme of supportedThemes; track theme) {
+                        <button
+                            type="button"
+                            class="menu-item"
+                            [class.menu-item--active]="theme === currentTheme()"
+                            role="menuitem"
+                            (click)="setTheme(theme)"
+                        >
+                            {{ themeLabelKey(theme) | translate }}
+                        </button>
+                    }
+                    <div class="menu-divider" aria-hidden="true"></div>
+                    <a class="menu-item" routerLink="/settings" role="menuitem" (click)="toggleUserMenu()">
+                        {{ 'app.nav.settings' | translate }}
+                    </a>
+                    <button type="button" class="menu-item" role="menuitem" (click)="logout()">
+                        {{ 'app.nav.signOut' | translate }}
+                    </button>
+                </div>
+            }
+        </div>
+    </header>
+    @if (user(); as u) {
+        @if (!u.emailVerified) {
+            <div class="verify-banner" role="status">
+                <span class="verify-banner-text">{{ 'app.verifyBanner.message' | translate }}</span>
+                <button type="button" class="btn-link verify-banner-action" (click)="resendVerification()" [disabled]="resendingVerification()">
+                    {{ (resendingVerification() ? 'app.verifyBanner.resending' : 'app.verifyBanner.resend') | translate }}
+                </button>
+                <button type="button" class="btn-link verify-banner-action" (click)="refreshUser()">
+                    {{ 'app.verifyBanner.alreadyVerified' | translate }}
+                </button>
+            </div>
+        }
+    }
+    <main class="content">
+        <router-outlet />
+    </main>
+</div>

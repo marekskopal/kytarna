@@ -1,0 +1,73 @@
+<section class="variables">
+    <a class="muted-link variables-back" routerLink="/settings/scripts">‹ {{ 'app.scripts.backToList' | translate }}</a>
+    <h1 class="uk-h2">{{ 'app.scripts.variables.title' | translate }}</h1>
+    <p class="uk-caption variables-subtitle">{{ 'app.scripts.variables.subtitle' | translate }}</p>
+
+    <form class="uk-card variables-form" [formGroup]="form" (ngSubmit)="save()">
+        <label class="field variables-field-key">
+            <span class="field-label">{{ 'app.scripts.variables.key' | translate }}</span>
+            <input class="input uk-mono" type="text" formControlName="key" autocomplete="off" placeholder="SLACK_WEBHOOK_URL" [readonly]="editingExisting()" />
+        </label>
+        <label class="field variables-field-value">
+            <span class="field-label">{{ 'app.scripts.variables.value' | translate }}</span>
+            <input class="input" [type]="form.controls.isSecret.value ? 'password' : 'text'" formControlName="value" autocomplete="off" />
+        </label>
+        <label class="uk-check variables-field-secret">
+            <input type="checkbox" formControlName="isSecret" />
+            <span class="uk-check-box"></span>
+            <span>{{ 'app.scripts.variables.secret' | translate }}</span>
+        </label>
+        <div class="variables-form-actions">
+            <button type="submit" class="btn btn-primary" [disabled]="saving()">
+                {{ (editingExisting() ? 'app.common.save' : 'app.common.add') | translate }}
+            </button>
+            @if (editingExisting()) {
+                <button type="button" class="btn btn-secondary" (click)="resetForm()">{{ 'app.common.cancel' | translate }}</button>
+            }
+        </div>
+    </form>
+
+    @if (loading()) {
+        <p class="variables-empty">{{ 'app.common.loading' | translate }}</p>
+    } @else if (variables().length === 0) {
+        <p class="variables-empty">{{ 'app.scripts.variables.empty' | translate }}</p>
+    } @else {
+        <table class="uk-table variables-table">
+            <thead>
+                <tr>
+                    <th class="vc-key">{{ 'app.scripts.variables.key' | translate }}</th>
+                    <th>{{ 'app.scripts.variables.value' | translate }}</th>
+                    <th class="vc-type">{{ 'app.scripts.variables.type' | translate }}</th>
+                    <th class="vc-actions"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (variable of variables(); track variable.id) {
+                    <tr>
+                        <td class="uk-mono vc-key-cell">{{ variable.key }}</td>
+                        <td>
+                            @if (variable.isSecret) {
+                                <span class="secret-mask uk-mono">🔒 ••••••••</span>
+                            } @else {
+                                <span class="uk-mono plain-value">{{ variable.value }}</span>
+                            }
+                        </td>
+                        <td class="vc-type">
+                            @if (variable.isSecret) {
+                                <span class="uk-badge uk-badge--accent">{{ 'app.scripts.variables.secretBadge' | translate }}</span>
+                            } @else {
+                                <span class="uk-badge uk-badge--outline">{{ 'app.scripts.variables.plainBadge' | translate }}</span>
+                            }
+                        </td>
+                        <td class="vc-actions">
+                            <div class="variables-row-actions">
+                                <button type="button" class="btn btn-ghost btn-sm" (click)="edit(variable)">{{ 'app.common.edit' | translate }}</button>
+                                <button type="button" class="btn btn-danger-ghost btn-sm" (click)="remove(variable)">{{ 'app.common.delete' | translate }}</button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</section>

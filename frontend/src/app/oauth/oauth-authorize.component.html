@@ -1,0 +1,59 @@
+<div class="auth-split">
+    <section class="auth-form-side">
+        <div class="auth-form-inner">
+            <div class="auth-brand">
+                <uk-brand-logo class="auth-brand-logo" [height]="28" />
+            </div>
+
+            @if (errorKey()) {
+                <h1 class="uk-h2 auth-title">{{ 'app.auth.oauth.errorTitle' | translate }}</h1>
+                <p class="uk-caption auth-subtitle">{{ errorKey() | translate }}</p>
+            } @else if (isLoggedIn()) {
+                <h1 class="uk-h2 auth-title">{{ 'app.auth.oauth.consentTitle' | translate }}</h1>
+                <p class="uk-caption auth-subtitle">
+                    {{ 'app.auth.oauth.consentSubtitle' | translate: {clientName: clientName()} }}
+                </p>
+                <button
+                    type="button"
+                    class="btn btn-primary btn-xl auth-submit"
+                    (click)="onAuthorize()"
+                    [disabled]="authorizing()"
+                >
+                    {{ (authorizing() ? 'app.auth.oauth.authorizing' : 'app.auth.oauth.authorize') | translate }}
+                </button>
+            } @else {
+                <h1 class="uk-h2 auth-title">{{ 'app.auth.oauth.loginTitle' | translate }}</h1>
+                <p class="uk-caption auth-subtitle">
+                    {{ 'app.auth.oauth.loginSubtitle' | translate: {clientName: clientName()} }}
+                </p>
+
+                <form [formGroup]="form" class="auth-form" (ngSubmit)="onSubmit()">
+                    <div class="field">
+                        <label for="oauth-email" class="field-label">{{ 'app.common.email' | translate }}</label>
+                        <input id="oauth-email" type="email" formControlName="email" autocomplete="email" class="input" />
+                    </div>
+                    <div class="field">
+                        <label for="oauth-password" class="field-label">{{ 'app.common.password' | translate }}</label>
+                        <input id="oauth-password" type="password" formControlName="password" autocomplete="current-password" class="input" />
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-xl auth-submit" [disabled]="form.invalid || saving()">
+                        {{ (saving() ? 'app.auth.oauth.signingIn' : 'app.auth.oauth.loginAndAuthorize') | translate }}
+                    </button>
+                </form>
+            }
+        </div>
+    </section>
+
+    <aside class="auth-aside" aria-hidden="true">
+        <div class="auth-aside-content">
+            <div class="auth-aside-overline">{{ 'app.auth.asideOverline' | translate }}</div>
+            <h2 class="auth-aside-headline">{{ 'app.auth.asideHeadline' | translate }}</h2>
+            <p class="auth-aside-body">{{ 'app.auth.asideBody' | translate }}</p>
+        </div>
+
+        <div class="auth-aside-snippet">
+            <div class="auth-aside-snippet-label">{{ 'app.auth.asideSnippetLabel' | translate }}</div>
+            <pre class="auth-aside-snippet-code"><span class="auth-aside-snippet-method">POST</span> {{ mcpUrl }}</pre>
+        </div>
+    </aside>
+</div>

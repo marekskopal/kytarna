@@ -1,0 +1,82 @@
+<section class="page admin-page">
+    <header class="page-header">
+        <h1>{{ 'app.admin.title' | translate }}</h1>
+        <nav class="admin-nav">
+            <a routerLink="/admin/users" routerLinkActive="admin-nav-link--active" class="admin-nav-link">{{ 'app.admin.users.title' | translate }}</a>
+            <a routerLink="/admin/workspaces" routerLinkActive="admin-nav-link--active" class="admin-nav-link">{{ 'app.admin.workspaces.title' | translate }}</a>
+        </nav>
+    </header>
+
+    <div class="admin-toolbar">
+        <input
+            type="search"
+            class="input"
+            [placeholder]="'app.admin.workspaces.searchPlaceholder' | translate"
+            [value]="query()"
+            (input)="updateQuery($any($event.target).value)"
+        />
+    </div>
+
+    @if (loading()) {
+        <p class="muted">{{ 'app.actions.loading' | translate }}</p>
+    } @else {
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>{{ 'app.admin.workspaces.name' | translate }}</th>
+                    <th>{{ 'app.admin.workspaces.owner' | translate }}</th>
+                    <th>{{ 'app.admin.workspaces.members' | translate }}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (w of filtered(); track w.id) {
+                    <tr>
+                        <td>{{ w.name }}</td>
+                        <td>
+                            <strong>{{ w.ownerName }}</strong>
+                            <div class="muted">{{ w.ownerEmail }}</div>
+                        </td>
+                        <td>{{ w.memberCount }}</td>
+                        <td class="admin-table-actions">
+                            <button type="button" class="btn btn-ghost" (click)="openDetail(w)">{{ 'app.actions.view' | translate }}</button>
+                            <button type="button" class="btn btn-ghost" (click)="renameWorkspace(w)">{{ 'app.actions.rename' | translate }}</button>
+                            <button type="button" class="btn btn-danger-ghost" (click)="deleteWorkspace(w)">{{ 'app.actions.delete' | translate }}</button>
+                        </td>
+                    </tr>
+                } @empty {
+                    <tr><td colspan="4" class="muted">{{ 'app.admin.workspaces.empty' | translate }}</td></tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    @if (detail(); as d) {
+        <aside class="admin-detail">
+            <div class="admin-detail-header">
+                <h2>{{ d.workspace.name }}</h2>
+                <button type="button" class="btn btn-ghost" (click)="closeDetail()">{{ 'app.actions.close' | translate }}</button>
+            </div>
+            <p class="muted">
+                {{ 'app.admin.workspaces.ownerLabel' | translate }}: {{ d.workspace.ownerName }} ({{ d.workspace.ownerEmail }})
+            </p>
+            <ul class="member-list">
+                @for (m of d.members; track m.userId) {
+                    <li class="member">
+                        <div>
+                            <strong>{{ m.name }}</strong>
+                            <span class="member-email">{{ m.email }}</span>
+                        </div>
+                        <div class="member-role">
+                            <span class="role-chip role-chip--{{ m.role.toLowerCase() }}">{{ ('app.workspaces.role.' + m.role) | translate }}</span>
+                            @if (m.role !== 'Owner') {
+                                <button type="button" class="btn btn-ghost" (click)="transferOwnership(m)">{{ 'app.workspaces.transferOwnership' | translate }}</button>
+                                <button type="button" class="btn btn-ghost" (click)="removeMember(m)">{{ 'app.actions.remove' | translate }}</button>
+                            }
+                        </div>
+                    </li>
+                }
+            </ul>
+        </aside>
+    }
+</section>

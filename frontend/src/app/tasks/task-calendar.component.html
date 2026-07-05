@@ -1,0 +1,104 @@
+<div class="cal">
+    <div class="cal-toolbar">
+        <h2 class="cal-range">{{ rangeLabel() }}</h2>
+
+        <div class="cal-nav">
+            <button type="button" class="cal-nav-btn" (click)="prev()" [attr.aria-label]="'app.calendar.prev' | translate">‹</button>
+            <button type="button" class="cal-nav-btn" (click)="next()" [attr.aria-label]="'app.calendar.next' | translate">›</button>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm" (click)="goToday()">{{ 'app.calendar.today' | translate }}</button>
+
+        <div class="cal-segment" role="group">
+            <button
+                type="button"
+                class="cal-segment-btn"
+                [class.cal-segment-btn--active]="view() === 'month'"
+                (click)="setView('month')"
+            >{{ 'app.calendar.month' | translate }}</button>
+            <button
+                type="button"
+                class="cal-segment-btn"
+                [class.cal-segment-btn--active]="view() === 'week'"
+                (click)="setView('week')"
+            >{{ 'app.calendar.week' | translate }}</button>
+        </div>
+
+        @if (loading()) {
+            <span class="cal-loading">{{ 'app.actions.loading' | translate }}</span>
+        }
+    </div>
+
+    <div class="cal-weekdays">
+        @for (wd of weekdays; track wd) {
+            <div class="cal-weekday">{{ wd }}</div>
+        }
+    </div>
+
+    <div class="cal-grid" [class.cal-grid--week]="view() === 'week'" cdkDropListGroup>
+        @for (cell of cells(); track cell.iso) {
+            @let dayTasks = tasksFor(cell.iso);
+            @let shown = view() === 'week' ? dayTasks : dayTasks.slice(0, 3);
+            <div
+                class="cal-cell"
+                [class.cal-cell--out]="!cell.inMonth"
+                [class.cal-cell--weekend]="cell.isWeekend"
+                cdkDropList
+                [cdkDropListData]="cell.iso"
+                (cdkDropListDropped)="onDrop($event)"
+            >
+                <div class="cal-cell-head">
+                    @if (cell.monthLabel) {
+                        <span class="cal-cell-month">{{ cell.monthLabel }}</span>
+                    }
+                    <span class="cal-cell-day" [class.cal-cell-day--today]="cell.isToday">{{ cell.day }}</span>
+                </div>
+
+                <div class="cal-cell-tasks">
+                    @for (task of shown; track task.id) {
+                        <div
+                            class="cal-chip"
+                            [class.cal-chip--done]="isDone(task)"
+                            [style.borderLeftColor]="projColor(task.projectId)"
+                            cdkDrag
+                            [cdkDragData]="task"
+                            role="button"
+                            tabindex="0"
+                            (click)="onChipClick(task)"
+                            (keydown.enter)="onChipClick(task)"
+                            (keydown.space)="onChipClick(task)"
+                            [title]="task.code + ' · ' + task.name"
+                        >
+                            @if (task.createdByAgent) {
+                                <span class="cal-chip-agent" aria-hidden="true">✦</span>
+                            } @else {
+                                <span
+                                    class="cal-chip-dot"
+                                    [style.background]="isOverdue(task) ? 'var(--color-danger)' : projColor(task.projectId)"
+                                ></span>
+                            }
+                            <span class="cal-chip-name">{{ task.name }}</span>
+                            @if (isOverdue(task)) {
+                                <span class="cal-chip-overdue" aria-hidden="true"></span>
+                            }
+                        </div>
+                    }
+                    @if (view() === 'month' && dayTasks.length > 3) {
+                        <button type="button" class="cal-more" (click)="showDay(cell.iso)">
+                            {{ 'app.calendar.more' | translate: {count: dayTasks.length - 3} }}
+                        </button>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="cal-footer">
+        <span class="cal-hint">{{ 'app.calendar.dragHint' | translate }}</span>
+        <span class="cal-legend">
+            <span class="cal-legend-item"><span class="cal-legend-dot cal-legend-dot--overdue"></span>{{ 'app.calendar.overdue' | translate }}</span>
+            @if (truncated()) {
+                <span class="cal-legend-item cal-legend-item--warn">{{ 'app.calendar.truncated' | translate }}</span>
+            }
+        </span>
+    </div>
+</div>

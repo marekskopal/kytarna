@@ -1,0 +1,49 @@
+<div class="pagination">
+    <div class="pagination-summary">
+        @if (totalItems() > 0) {
+            <span>{{ 'app.pagination.showing' | translate: {from: rangeStart(), to: rangeEnd(), total: totalItems()} }}</span>
+        } @else {
+            <span>{{ 'app.pagination.none' | translate }}</span>
+        }
+    </div>
+
+    <div class="pagination-controls">
+        <button
+            type="button"
+            class="page-btn"
+            [disabled]="!hasPrev()"
+            (click)="goTo(currentPage() - 1)"
+            [attr.aria-label]="'app.pagination.prev' | translate"
+        >‹</button>
+
+        @for (token of pages(); track $index) {
+            @if (isNumber(token)) {
+                <button
+                    type="button"
+                    class="page-btn"
+                    [class.page-btn--active]="token === currentPage()"
+                    (click)="goTo(token)"
+                >{{ token }}</button>
+            } @else {
+                <span class="page-ellipsis">…</span>
+            }
+        }
+
+        <button
+            type="button"
+            class="page-btn"
+            [disabled]="!hasNext()"
+            (click)="goTo(currentPage() + 1)"
+            [attr.aria-label]="'app.pagination.next' | translate"
+        >›</button>
+    </div>
+
+    <label class="pagination-size">
+        <span class="pagination-size-label">{{ 'app.pagination.perPage' | translate }}</span>
+        <select class="select" [value]="pageSize()" (change)="onPageSize($event)">
+            @for (opt of pageSizeOptions(); track opt) {
+                <option [value]="opt">{{ opt }}</option>
+            }
+        </select>
+    </label>
+</div>

@@ -1,0 +1,83 @@
+<div class="form-page">
+    <h1 class="page-title">{{ (id() === null ? 'app.projects.new' : 'app.projects.edit') | translate }}</h1>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-stack">
+        <div class="field">
+            <label for="project-name" class="field-label">{{ 'app.common.name' | translate }}</label>
+            <input id="project-name" type="text" formControlName="name" class="input" />
+        </div>
+        <div class="field">
+            <label for="project-description" class="field-label">{{ 'app.common.description' | translate }}</label>
+            <uk-markdown-editor
+                formControlName="description"
+                inputId="project-description"
+                [rows]="6"
+            />
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary" [disabled]="form.invalid || saving()">
+                {{ (saving() ? 'app.actions.loading' : 'app.actions.save') | translate }}
+            </button>
+            <a routerLink="/projects" class="muted-link">{{ 'app.actions.cancel' | translate }}</a>
+        </div>
+    </form>
+
+    @if (id() !== null && canManageProjects()) {
+        <section class="pf-section">
+            <h2 class="page-title">{{ 'app.projectFields.title' | translate }}</h2>
+            <p class="muted">{{ 'app.projectFields.description' | translate }}</p>
+
+            <div class="pf-columns">
+                <div class="pf-column">
+                    <h3>{{ 'app.projectFields.attached' | translate }}</h3>
+                    <ul class="pf-list">
+                        @for (field of attachedFields(); track field.id; let i = $index) {
+                            <li class="pf-item">
+                                <div class="pf-meta">
+                                    <strong>{{ field.name }}</strong>
+                                    <span class="pf-chip">{{ ('app.fields.types.' + field.type) | translate }}</span>
+                                    @if (field.required) {
+                                        <span class="pf-chip pf-chip--required">{{ 'app.projectFields.requiredBadge' | translate }}</span>
+                                    }
+                                </div>
+                                <div class="pf-actions">
+                                    <button type="button" class="btn btn-ghost" [disabled]="i === 0" (click)="moveAttachedUp(i)">↑</button>
+                                    <button type="button" class="btn btn-ghost" [disabled]="i === attachedFields().length - 1" (click)="moveAttachedDown(i)">↓</button>
+                                    <button type="button" class="btn btn-ghost" (click)="detachField(field)">{{ 'app.projectFields.detach' | translate }}</button>
+                                </div>
+                            </li>
+                        } @empty {
+                            <li class="muted">{{ 'app.projectFields.emptyAttached' | translate }}</li>
+                        }
+                    </ul>
+                </div>
+
+                <div class="pf-column">
+                    <h3>{{ 'app.projectFields.available' | translate }}</h3>
+                    <ul class="pf-list">
+                        @for (field of availableFields(); track field.id) {
+                            <li class="pf-item">
+                                <div class="pf-meta">
+                                    <strong>{{ field.name }}</strong>
+                                    <span class="pf-chip">{{ ('app.fields.types.' + field.type) | translate }}</span>
+                                    @if (field.required) {
+                                        <span class="pf-chip pf-chip--required">{{ 'app.projectFields.requiredBadge' | translate }}</span>
+                                    }
+                                </div>
+                                <button type="button" class="btn btn-ghost" (click)="attachField(field)">{{ 'app.projectFields.attach' | translate }}</button>
+                            </li>
+                        } @empty {
+                            <li class="muted">{{ 'app.projectFields.emptyAvailable' | translate }}</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn btn-primary" [disabled]="fieldsSaving()" (click)="saveAttachedFields()">
+                    {{ (fieldsSaving() ? 'app.actions.loading' : 'app.projectFields.save') | translate }}
+                </button>
+            </div>
+        </section>
+    }
+</div>

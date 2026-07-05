@@ -1,0 +1,151 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.bell {
+    position: relative;
+    display: inline-flex;
+}
+
+.bell-trigger {
+    position: relative;
+}
+
+.bell-badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    min-width: 15px;
+    height: 15px;
+    padding: 0 3px;
+    border-radius: $radius-pill;
+    background: $color-accent;
+    color: $color-accent-fg;
+    font-size: $font-size-10;
+    font-weight: 600;
+    line-height: 15px;
+    text-align: center;
+}
+
+.notif-panel {
+    width: 340px;
+    max-width: calc(100vw - #{$space-8});
+    padding: 0;
+    overflow: hidden;
+}
+
+.notif-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $space-3 $space-4;
+    border-bottom: 1px solid $color-border;
+}
+
+.notif-title {
+    font-size: $font-size-12;
+    font-weight: 600;
+    color: $color-text;
+}
+
+.notif-markall {
+    font-size: $font-size-11;
+}
+
+.notif-list {
+    max-height: 420px;
+    overflow-y: auto;
+}
+
+.notif-empty {
+    padding: $space-7 $space-4;
+    text-align: center;
+    font-size: $font-size-12;
+    color: $color-text-subtle;
+}
+
+.notif-item {
+    display: flex;
+    align-items: flex-start;
+    gap: $space-3;
+    width: 100%;
+    padding: $space-3 $space-4;
+    border: 0;
+    border-bottom: 1px solid $color-border;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+
+    &:last-child {
+        border-bottom: 0;
+    }
+
+    &:hover {
+        background: $color-surface-hover;
+    }
+
+    &--unread {
+        background: $color-accent-soft;
+
+        &:hover {
+            background: $color-accent-soft;
+        }
+    }
+}
+
+.notif-dot {
+    flex: 0 0 auto;
+    width: 7px;
+    height: 7px;
+    margin-top: 5px;
+    border-radius: $radius-pill;
+    background: $color-accent;
+}
+
+.notif-body {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.notif-message {
+    font-size: $font-size-12;
+    line-height: $line-height-snug;
+    color: $color-text;
+}
+
+.notif-task {
+    font-size: $font-size-12;
+    font-weight: 600;
+    color: $color-text;
+    @include truncate;
+}
+
+.notif-snippet {
+    font-size: $font-size-11;
+    color: $color-text-muted;
+    @include clamp-lines(2);
+}
+
+.notif-time {
+    font-size: $font-size-10;
+    color: $color-text-subtle;
+}
+
+.notif-dismiss {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: $radius-sm;
+    color: $color-text-subtle;
+    cursor: pointer;
+
+    &:hover {
+        background: $color-surface-deep;
+        color: $color-text;
+    }
+}

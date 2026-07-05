@@ -1,0 +1,156 @@
+@use 'variables' as *;
+
+.agents-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: $space-5;
+    margin-bottom: $space-6;
+}
+
+.agents-kpis {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: $space-4;
+    margin-bottom: $space-5;
+}
+
+.kpi {
+    padding: $space-5 $space-5 $space-4;
+}
+
+.kpi-label {
+    margin-bottom: $space-2;
+}
+
+.kpi-value {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: $color-text;
+    font-variant-numeric: tabular-nums;
+}
+
+.kpi-sub {
+    margin-top: 2px;
+    font-size: $font-size-11;
+    color: $color-text-subtle;
+
+    &--success { color: $color-success; }
+    &--info    { color: $color-info; }
+    &--ai      { color: $color-ai; }
+}
+
+.agents-filters {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    margin-bottom: $space-3;
+
+    .uk-caption {
+        margin-right: $space-1;
+    }
+}
+
+.agents-chip {
+    display: inline-flex;
+    align-items: center;
+    height: 24px;
+    padding: 0 $space-4;
+    border: 0;
+    border-radius: $radius-pill;
+    background: $color-surface-muted;
+    color: $color-text-muted;
+    font: inherit;
+    font-size: $font-size-12;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 80ms ease, color 80ms ease;
+
+    &:hover { color: $color-text; }
+
+    &--active {
+        background: $color-text;
+        color: $color-text-inverse;
+    }
+}
+
+.agents-events {
+    overflow: hidden;
+}
+
+.agents-empty {
+    padding: $space-9 $space-6;
+    text-align: center;
+    color: $color-text-muted;
+    font-size: $font-size-13;
+}
+
+.event-row {
+    align-items: flex-start;
+    padding: $space-4 14px;
+    min-height: 0;
+    gap: $space-3;
+}
+
+.event-time {
+    width: 44px;
+    flex-shrink: 0;
+    padding-top: 3px;
+    color: $color-text-subtle;
+    font-size: $font-size-11;
+}
+
+.event-body {
+    flex: 1;
+    min-width: 0;
+    font-size: $font-size-13;
+    line-height: 1.5;
+}
+
+.event-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $space-2;
+}
+
+.event-actor {
+    color: $color-text;
+    font-weight: 500;
+}
+
+.event-verb {
+    color: $color-text-muted;
+}
+
+.event-target {
+    padding: 0 5px;
+    border-radius: $radius-xs;
+    background: $color-surface-muted;
+    color: $color-text;
+    font-size: $font-size-11;
+}
+
+.event-line-secondary {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    margin-top: 3px;
+    font-size: $font-size-11;
+    color: $color-text-subtle;
+}
+
+.event-line-divider {
+    color: $color-text-faint;
+}
+
+.event-mcp-badge {
+    gap: 3px;
+}
+
+@media (max-width: 1024px) {
+    .agents-kpis {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}

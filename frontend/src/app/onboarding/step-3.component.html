@@ -1,0 +1,60 @@
+<div class="step-overline">{{ 'app.onboarding.step3.overline' | translate }}</div>
+<h1 class="step-title">{{ 'app.onboarding.step3.title' | translate }}</h1>
+<p class="step-lead">{{ 'app.onboarding.step3.lead' | translate }}</p>
+
+<div class="summary-grid">
+    <div class="summary-card">
+        <div class="summary-label">{{ 'app.onboarding.step3.summaryWorkspace' | translate }}</div>
+        <div class="summary-value">{{ workspaceName() || '—' }}</div>
+    </div>
+    <div class="summary-card">
+        <div class="summary-label">{{ 'app.onboarding.step3.summaryProject' | translate }}</div>
+        <div class="summary-value">{{ state.projectName() || '—' }}</div>
+    </div>
+    <div class="summary-card">
+        <div class="summary-label">{{ 'app.onboarding.step3.summaryInvites' | translate }}</div>
+        <div class="summary-value">{{ state.invitesSent() }}</div>
+    </div>
+</div>
+
+<div class="step-section-title">{{ 'app.onboarding.step3.mcpServerTitle' | translate }}</div>
+<p class="step-section-sub">{{ 'app.onboarding.step3.mcpServerSub' | translate }}</p>
+
+<div class="mcp-block">
+    <div class="mcp-row">
+        <span class="mcp-row-label">{{ 'app.onboarding.step3.serverUrl' | translate }}</span>
+        <span class="mcp-row-value">{{ mcpUrl }}</span>
+        <button type="button" class="btn btn-ghost btn-sm" (click)="copy(mcpUrl)">
+            {{ 'app.onboarding.step3.copy' | translate }}
+        </button>
+    </div>
+</div>
+
+<div class="step-section-title">{{ 'app.onboarding.step3.claudeTitle' | translate }}</div>
+<p class="step-section-sub">{{ 'app.onboarding.step3.claudeSub' | translate }}</p>
+<div class="mcp-snippet-head">
+    <span class="mcp-snippet-title">claude_desktop_config.json</span>
+    <button type="button" class="btn btn-ghost btn-sm" (click)="copy(claudeSnippet())">
+        {{ 'app.onboarding.step3.copy' | translate }}
+    </button>
+</div>
+<pre class="mcp-snippet">{{ claudeSnippet() }}</pre>
+
+<div class="step-section-title">{{ 'app.onboarding.step3.cursorTitle' | translate }}</div>
+<p class="step-section-sub">{{ 'app.onboarding.step3.cursorSub' | translate }}</p>
+<div class="mcp-snippet-head">
+    <span class="mcp-snippet-title">.cursor/mcp.json</span>
+    <button type="button" class="btn btn-ghost btn-sm" (click)="copy(cursorSnippet())">
+        {{ 'app.onboarding.step3.copy' | translate }}
+    </button>
+</div>
+<pre class="mcp-snippet">{{ cursorSnippet() }}</pre>
+
+<div class="step-actions">
+    <button type="button" class="btn btn-primary" [disabled]="finishing()" (click)="onFinish()">
+        {{ (finishing() ? 'app.actions.loading' : 'app.onboarding.shell.openWorkspace') | translate }}
+    </button>
+    <button type="button" class="btn btn-ghost btn-sm" [disabled]="finishing()" (click)="onBack()">
+        {{ 'app.onboarding.shell.back' | translate }}
+    </button>
+</div>

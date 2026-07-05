@@ -1,0 +1,45 @@
+includes:
+	- phar://phpstan.phar/conf/bleedingEdge.neon
+
+parameters:
+	level: max
+	phpVersion: 80500
+	parallel:
+		processTimeout: 300.0
+	paths:
+		- src
+		- tests
+	tmpDir: .phpstan
+
+	cognitive_complexity:
+		function: 15
+
+	# ext-v8js exposes the sandbox host API via arbitrary dynamic properties ($v8->api = …),
+	# like stdClass. Treat it as a universal object crate so those assignments type-check.
+	universalObjectCratesClasses:
+		- V8Js
+
+	checkImplicitMixed: true
+	checkBenevolentUnionTypes: true
+	checkUninitializedProperties: true
+	checkMissingCallableSignature: true
+	checkTooWideReturnTypesInProtectedAndPublicMethods: true
+	reportAnyTypeWideningInVarTag: true
+
+	shipmonkRules:
+		allowComparingOnlyComparableTypes:
+			enabled: false
+		forbidCheckedExceptionInCallable:
+			enabled: false
+		uselessPrivatePropertyDefaultValue:
+			enabled: false
+		forbidUnusedMatchResult:
+			enabled: false
+		enforceReadonlyPublicProperty:
+			enabled: false
+
+services:
+	-
+		class: Ukolio\PhpStan\OrmReadWritePropertiesExtension
+		tags:
+			- phpstan.properties.readWriteExtension

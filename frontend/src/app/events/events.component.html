@@ -1,0 +1,24 @@
+<div class="page-header">
+    <div>
+        <h1 class="page-title">{{ 'app.events.title' | translate }}</h1>
+    </div>
+    <a [routerLink]="['/projects', projectId(), 'board']" class="muted-link">{{ 'app.workflow.backToBoard' | translate }}</a>
+</div>
+
+@if (loading()) {
+    <p class="text-muted">{{ 'app.actions.loading' | translate }}</p>
+} @else if (events().length === 0) {
+    <p class="text-muted">{{ 'app.events.empty' | translate }}</p>
+} @else {
+    <ul class="event-list">
+        @for (event of events(); track event.id) {
+            <li class="event-row">
+                <p class="event-text">
+                    <span class="event-author">{{ event.authorName ?? ('app.events.deletedAuthor' | translate) }}</span>
+                    {{ describe(event) }}
+                </p>
+                <time class="event-time">{{ formatRelative(event.createdAt) }}</time>
+            </li>
+        }
+    </ul>
+}

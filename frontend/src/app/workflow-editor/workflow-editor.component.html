@@ -1,0 +1,34 @@
+@if (board(); as board) {
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">{{ 'app.workflow.title' | translate }}</h1>
+            <p class="page-subtitle">{{ board.project.name }} · {{ board.workflow.name }}</p>
+        </div>
+        <a [routerLink]="['/projects', board.project.id, 'board']" class="muted-link">{{ 'app.workflow.backToBoard' | translate }}</a>
+    </div>
+
+    <div class="status-card">
+        <div cdkDropList (cdkDropListDropped)="onReorder($event)">
+            @for (status of statuses(); track status.id) {
+                <div cdkDrag class="status-row">
+                    <span cdkDragHandle class="status-handle" [attr.aria-label]="'app.workflow.dragHandle' | translate">⋮⋮</span>
+                    <input type="color" [(ngModel)]="status.color" (change)="save(status)" class="status-color" />
+                    <input type="text" [(ngModel)]="status.name" (blur)="save(status)" class="input status-name" />
+                    <select [(ngModel)]="status.type" (change)="save(status)" class="select status-type">
+                        <option value="Start">{{ 'app.workflow.type.Start' | translate }}</option>
+                        <option value="Normal">{{ 'app.workflow.type.Normal' | translate }}</option>
+                        <option value="Finish">{{ 'app.workflow.type.Finish' | translate }}</option>
+                    </select>
+                    <button type="button" class="btn-danger-link status-delete"
+                            [disabled]="statuses().length <= 1"
+                            (click)="onDelete(status)">{{ 'app.actions.delete' | translate }}</button>
+                </div>
+            }
+        </div>
+        <div class="status-card-footer">
+            <button type="button" class="btn-link" (click)="addStatus()">{{ 'app.workflow.addStatus' | translate }}</button>
+        </div>
+    </div>
+
+    <p class="hint">{{ 'app.workflow.hint' | translate }}</p>
+}

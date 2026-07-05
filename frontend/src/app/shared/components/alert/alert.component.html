@@ -1,0 +1,7 @@
+<div class="toast-stack">
+    @for (alert of alertService.alerts(); track alert.id) {
+        <div class="toast" role="button" tabindex="0" [class]="'toast--' + alert.kind" (click)="alertService.dismiss(alert.id)" (keydown.enter)="alertService.dismiss(alert.id)" (keydown.space)="alertService.dismiss(alert.id)">
+            {{ alert.message }}
+        </div>
+    }
+</div>

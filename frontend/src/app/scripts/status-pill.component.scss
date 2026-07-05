@@ -1,0 +1,53 @@
+@use 'variables' as *;
+
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    height: 20px;
+    padding: 0 $space-2 0 $space-2;
+    border-radius: $radius-pill;
+    border: 1px solid transparent;
+    font-size: $font-size-12;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.status-pill-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    flex: 0 0 auto;
+}
+
+.status-pill-dot--pulse { animation: status-pill-pulse 1s ease-in-out infinite; }
+
+@keyframes status-pill-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.25; }
+}
+
+.status-pill--success {
+    color: $color-success;
+    background: $color-success-soft;
+    border-color: $color-success-border;
+}
+
+.status-pill--danger {
+    color: $color-danger;
+    background: $color-danger-soft;
+    border-color: $color-danger-border;
+}
+
+.status-pill--warn {
+    color: $color-warn;
+    background: $color-warn-soft;
+    border-color: $color-warn-border;
+}
+
+.status-pill--info {
+    color: $color-info;
+    background: $color-info-soft;
+    border-color: $color-info-border;
+}

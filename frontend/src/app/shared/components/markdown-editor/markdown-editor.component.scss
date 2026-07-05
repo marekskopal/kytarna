@@ -1,0 +1,100 @@
+@use 'variables' as *;
+
+.md-editor {
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
+}
+
+.md-editor-toolbar {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.tab-group {
+    display: inline-flex;
+    gap: 2px;
+    padding: 2px;
+    border: 1px solid $color-border;
+    border-radius: $radius-sm;
+    background: $color-surface;
+}
+
+.tab-button {
+    display: inline-flex;
+    align-items: center;
+    height: 20px;
+    padding: 0 $space-3;
+    border-radius: $radius-xs;
+    background: transparent;
+    color: $color-text-muted;
+    font-size: $font-size-11;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 80ms ease, color 80ms ease;
+
+    &:hover { color: $color-text; }
+
+    &--active {
+        background: $color-surface-muted;
+        color: $color-text;
+    }
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+}
+
+.md-editor-panel {
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    background: $color-surface;
+    overflow: hidden;
+}
+
+.md-editor-textarea {
+    width: 100%;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none !important;
+    font-family: $font-mono;
+    font-size: $font-size-13;
+    min-height: 140px;
+
+    &:focus {
+        box-shadow: none !important;
+    }
+}
+
+.md-editor-preview {
+    padding: $space-4 $space-5;
+    font-size: $font-size-13;
+    line-height: 1.6;
+    min-height: 140px;
+
+    :host ::ng-deep & {
+        h1, h2, h3 {
+            margin: $space-5 0 $space-3;
+            line-height: 1.25;
+        }
+
+        p, ul, ol { margin: $space-3 0; }
+
+        code {
+            padding: 1px 4px;
+            border-radius: $radius-xs;
+            background: $color-surface-muted;
+            font-family: $font-mono;
+            font-size: 0.9em;
+        }
+
+        pre {
+            padding: $space-4;
+            border-radius: $radius-md;
+            background: $color-text;
+            color: $color-text-inverse;
+            overflow-x: auto;
+        }
+    }
+}

@@ -1,0 +1,8 @@
+services:
+    db:
+        volumes:
+            - ./backend/docker/mariadb-init:/docker-entrypoint-initdb.d:ro
+
+    backend:
+        volumes:
+            - ./backend:/app

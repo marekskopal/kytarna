@@ -1,0 +1,1009 @@
+{
+    "app": {
+        "brand": "Ukolio",
+        "actions": {
+            "save": "Save",
+            "cancel": "Cancel",
+            "delete": "Delete",
+            "edit": "Edit",
+            "create": "Create",
+            "back": "Back",
+            "loading": "Loading…",
+            "joining": "Joining…",
+            "send": "Send",
+            "confirm": "Confirm",
+            "remove": "Remove",
+            "rename": "Rename",
+            "continue": "Continue",
+            "goHome": "Go home",
+            "view": "View",
+            "close": "Close"
+        },
+        "priority": {
+            "Low": "Low",
+            "Medium": "Medium",
+            "High": "High"
+        },
+        "common": {
+            "noWorkspace": "No workspace",
+            "due": "Due",
+            "overdue": "Overdue",
+            "priority": "Priority",
+            "description": "Description",
+            "name": "Name",
+            "email": "Email",
+            "password": "Password",
+            "language": "Language",
+            "empty": "Nothing here yet.",
+            "required": "Required",
+            "loading": "Loading…",
+            "edit": "Edit",
+            "delete": "Delete",
+            "save": "Save",
+            "cancel": "Cancel",
+            "add": "Add"
+        },
+        "markdownEditor": {
+            "edit": "Edit",
+            "preview": "Preview",
+            "nothingToPreview": "Nothing to preview."
+        },
+        "nav": {
+            "primary": "Primary",
+            "projects": "Projects",
+            "tasks": "Tasks",
+            "agents": "Agents",
+            "scripts": "Scripts",
+            "workspaces": "Workspaces",
+            "admin": "Admin",
+            "signOut": "Sign out",
+            "settings": "Settings",
+            "newWorkspace": "+ New workspace",
+            "manageWorkspaces": "Manage workspaces",
+            "search": "Search or jump to…",
+            "aiPalette": "Open agent command palette",
+            "openUserMenu": "Open user menu"
+        },
+        "scripts": {
+            "title": "Scripts",
+            "subtitle": "Automate your workspace with sandboxed JavaScript.",
+            "new": "New script",
+            "edit": "Edit script",
+            "empty": "No scripts yet.",
+            "run": "Run",
+            "runQueued": "Run queued.",
+            "saved": "Script saved.",
+            "active": "Active",
+            "inactive": "Inactive",
+            "backToList": "Back to scripts",
+            "deleteConfirm": "Delete script \"{{name}}\"?",
+            "col": {
+                "name": "Name",
+                "trigger": "Trigger",
+                "status": "Status",
+                "lastRun": "Last run",
+                "active": "Active",
+                "runs": "Runs"
+            },
+            "trigger": {
+                "Manual": "Manual",
+                "Scheduled": "Scheduled",
+                "Event": "Event"
+            },
+            "status": {
+                "Running": "Running",
+                "Success": "Success",
+                "Error": "Error",
+                "Timeout": "Timeout"
+            },
+            "field": {
+                "name": "Name",
+                "trigger": "Trigger",
+                "cron": "Cron expression",
+                "cronHint": "Five-field cron, e.g. \"0 9 * * 1\" = every Monday at 09:00.",
+                "events": "Run when these events happen",
+                "active": "Active",
+                "source": "Source (JavaScript)"
+            },
+            "events": {
+                "TaskCreated": "Task created",
+                "TaskUpdated": "Task updated",
+                "TaskMoved": "Task moved",
+                "TaskArchived": "Task archived",
+                "TaskUnarchived": "Task unarchived",
+                "TaskDeleted": "Task deleted",
+                "TaskCommentAdded": "Comment added"
+            },
+            "runs": {
+                "title": "Run history",
+                "refresh": "Refresh",
+                "empty": "No runs yet.",
+                "col": {
+                    "status": "Status",
+                    "trigger": "Trigger",
+                    "started": "Started",
+                    "duration": "Duration",
+                    "output": "Output",
+                    "calls": "Calls"
+                }
+            },
+            "variables": {
+                "title": "Script variables",
+                "subtitle": "Workspace key/value store available to scripts via ukolio.vars. Secrets are encrypted and never shown again.",
+                "manage": "Variables",
+                "key": "Key",
+                "value": "Value",
+                "secret": "Secret (encrypt and hide)",
+                "saved": "Variable saved.",
+                "empty": "No variables yet.",
+                "deleteConfirm": "Delete variable \"{{key}}\"?",
+                "type": "Type",
+                "secretBadge": "Secret",
+                "plainBadge": "Plain"
+            },
+            "sandboxNote": "Scripts run as you inside a hardened V8 sandbox — 5s CPU, 64 MB, no filesystem.",
+            "neverRun": "Never run",
+            "unsaved": "Unsaved",
+            "saveChanges": "Save changes",
+            "lines": "lines",
+            "runningInSandbox": "Running in sandbox…",
+            "finishedIn": "finished in",
+            "noOutput": "No output captured for this run.",
+            "pressRun": "Press Run to execute and capture output.",
+            "problemTitle": "Execution error",
+            "goToLine": "Go to line",
+            "noProblems": "No problems — last run completed cleanly.",
+            "insertSnippet": "Insert snippet",
+            "sandboxLimits": "Per run: 5s CPU · 64 MB · 20 fetch · 200 task-API calls. No filesystem.",
+            "eventPayloadNote": "The event payload is available as ukolio.context.event.",
+            "validationRequired": "Name and source are required.",
+            "panel": {
+                "show": "Show panel",
+                "hide": "Hide panel",
+                "output": "Output",
+                "problems": "Problems",
+                "api": "API",
+                "trigger": "Trigger"
+            },
+            "meter": {
+                "cpu": "CPU time",
+                "fetch": "HTTP fetch calls",
+                "api": "Task-API calls"
+            },
+            "triggerHelp": {
+                "manual": "Runs only when you press Run here, from the list, or via the API. No automatic schedule."
+            },
+            "cronPreset": {
+                "weekly": "Mon 09:00",
+                "daily": "Daily 09:00",
+                "hourly": "Hourly",
+                "quarterHour": "Every 15 min",
+                "monthly": "Monthly"
+            }
+        },
+        "search": {
+            "label": "Workspace search",
+            "placeholder": "Search tasks, descriptions, comments, tags…",
+            "hint": "Type at least 2 characters to search.",
+            "noResults": "No matching tasks.",
+            "error": "Search is temporarily unavailable. Try again in a moment.",
+            "searching": "Searching…",
+            "moreHits": "Showing {{shown}} of {{total}} matches.",
+            "matchedIn": {
+                "name": "name",
+                "description": "description",
+                "comments": "comments",
+                "fieldValues": "fields",
+                "tags": "tags"
+            }
+        },
+        "agent": {
+            "agent": "agent",
+            "createdBy": "Created by an agent",
+            "viaMcp": "via MCP"
+        },
+        "agents": {
+            "title": "Agent activity",
+            "subtitle": "Live audit log — workspace-wide.",
+            "show": "Show:",
+            "empty": "No activity yet.",
+            "placeholder": "Pending data",
+            "kpi": {
+                "events": "Events · 24h",
+                "eventsSub": "In the last 24 hours",
+                "activeAgents": "Active agents",
+                "noAgentsConnected": "No agents connected",
+                "tasksCreated": "Tasks created",
+                "tasksCreatedSub": "Logged in the last 24 h",
+                "tasksClosed": "Tasks closed",
+                "tasksClosedSub": "Tracked via TaskMoved"
+            },
+            "chips": {
+                "all": "All",
+                "humans": "Humans",
+                "agents": "Agents",
+                "comments": "Comments",
+                "statusChanges": "Status changes"
+            },
+            "verb": {
+                "ProjectCreated": "created project",
+                "ProjectUpdated": "updated project",
+                "ProjectDeleted": "deleted project",
+                "WorkflowUpdated": "updated workflow",
+                "StatusCreated": "added status",
+                "StatusUpdated": "updated status",
+                "StatusDeleted": "removed status",
+                "StatusMoved": "reordered status",
+                "TaskCreated": "created task",
+                "TaskUpdated": "updated task",
+                "TaskDeleted": "deleted task",
+                "TaskMoved": "moved task",
+                "TaskArchived": "archived task",
+                "TaskUnarchived": "unarchived task",
+                "MemberRoleChanged": "changed member role",
+                "OwnershipTransferred": "transferred ownership",
+                "AdminDeletedWorkspace": "(admin) deleted workspace",
+                "AdminDeletedUser": "(admin) deleted user",
+                "AdminChangedSystemRole": "(admin) changed system role",
+                "FieldCreated": "created field",
+                "FieldUpdated": "updated field",
+                "FieldDeleted": "deleted field",
+                "ProjectFieldsUpdated": "updated project fields",
+                "TaskFileAdded": "attached file",
+                "TaskFileDeleted": "removed file",
+                "TaskCommentAdded": "commented",
+                "TaskCommentDeleted": "deleted a comment",
+                "UserSelfDeleted": "deleted their account"
+            },
+            "deletedAuthor": "Deleted user"
+        },
+        "tasks": {
+            "title": "Tasks",
+            "subtitle": "{{count}} task(s) across all projects",
+            "search": "Search by name…",
+            "filterStatus": "Status",
+            "filterAssignee": "Assignee",
+            "onlyActive": "Only active",
+            "clearFilters": "Clear filters",
+            "noWorkflows": "No workflows yet.",
+            "empty": "No tasks match the current filters.",
+            "col": {
+                "created": "Created",
+                "name": "Name",
+                "status": "Status",
+                "assignee": "Assignee"
+            },
+            "bulk": {
+                "selectedCount": "{{count}} selected",
+                "clear": "Clear selection",
+                "toggleRow": "Toggle selection for this task",
+                "toggleAll": "Toggle selection for all tasks on this page",
+                "move": "Move to…",
+                "addTag": "Add tag…",
+                "removeTag": "Remove tag…",
+                "assign": "Assign to…",
+                "unassign": "Unassign",
+                "priority": "Set priority…",
+                "delete": "Delete",
+                "confirmDelete": "Delete {{count}} task(s)? This cannot be undone.",
+                "partialSuccess": "{{succeeded}} updated, {{skipped}} skipped.",
+                "showSkipped": "Show details",
+                "hideSkipped": "Hide details"
+            },
+            "subtaskFilter": {
+                "label": "Subtask filter",
+                "all": "All tasks",
+                "hideSubtasks": "Hide subtasks",
+                "onlyParents": "Only parents"
+            },
+            "archivedFilter": {
+                "label": "Archived filter",
+                "active": "Active tasks",
+                "archived": "Archived only",
+                "all": "All (incl. archived)"
+            },
+            "archivedBadge": "Archived",
+            "view": {
+                "label": "View",
+                "list": "List",
+                "calendar": "Calendar",
+                "timeline": "Timeline"
+            }
+        },
+        "calendar": {
+            "prev": "Previous",
+            "next": "Next",
+            "today": "Today",
+            "month": "Month",
+            "week": "Week",
+            "more": "+{{count}} more",
+            "dragHint": "Drag a task to another day to reschedule its due date.",
+            "overdue": "Overdue",
+            "truncated": "Showing the most recent tasks only."
+        },
+        "timeline": {
+            "task": "Task",
+            "empty": "No tasks with dates in this range.",
+            "dragHint": "Drag a bar to shift both dates; drag an edge to change the start or due date."
+        },
+        "savedViews": {
+            "picker": "Views",
+            "noViews": "No saved views yet.",
+            "saveAs": "Save current filters as view…",
+            "nameLabel": "View name",
+            "save": "Save",
+            "setDefault": "Set as default",
+            "delete": "Delete view",
+            "confirmDelete": "Delete the view \"{{name}}\"?"
+        },
+        "pagination": {
+            "showing": "Showing {{from}}–{{to}} of {{total}}",
+            "none": "Nothing to show",
+            "prev": "Previous page",
+            "next": "Next page",
+            "perPage": "Per page"
+        },
+        "auth": {
+            "asideOverline": "MCP-native",
+            "asideHeadline": "Your kanban, run by agents.",
+            "asideBody": "Ukolio is a multi-tenant task manager built for AI agents as the primary actor. Connect any MCP client and let it plan, create, and close tasks alongside the team.",
+            "asideSnippetLabel": "MCP endpoint",
+            "login": {
+                "title": "Sign in",
+                "subtitle": "to your workspace",
+                "submit": "Sign in",
+                "submitting": "Signing in…",
+                "noAccount": "New here?",
+                "signUp": "Sign up",
+                "forgotPassword": "Forgot your password?",
+                "or": "or"
+            },
+            "signUp": {
+                "title": "Create your account",
+                "subtitle": "Start managing your projects.",
+                "submit": "Sign up",
+                "submitting": "Creating account…",
+                "hasAccount": "Already have an account?",
+                "logIn": "Log in"
+            },
+            "forgotPassword": {
+                "title": "Forgot your password?",
+                "subtitle": "Enter your email and we'll send you a reset link.",
+                "submit": "Send reset link",
+                "submitting": "Sending…",
+                "sent": "If an account exists for that email, a reset link is on the way. Check your inbox.",
+                "backToLogin": "Back to sign in"
+            },
+            "resetPassword": {
+                "title": "Set a new password",
+                "subtitle": "Choose a new password to regain access to your account.",
+                "newPassword": "New password",
+                "confirmPassword": "Confirm new password",
+                "submit": "Update password",
+                "submitting": "Updating…",
+                "invalidToken": "This reset link is missing or no longer valid.",
+                "requestNew": "Request a new reset link",
+                "backToLogin": "Back to sign in"
+            },
+            "verifyEmail": {
+                "title": "Verify your email",
+                "verifying": "Confirming your email address…",
+                "success": "Your email is verified. Welcome aboard!",
+                "invalid": "This verification link is missing, expired, or has already been used.",
+                "requestNew": "Request a new verification email",
+                "backToApp": "Back to the app",
+                "backToLogin": "Back to sign in"
+            },
+            "errors": {
+                "invalidCredentials": "Email or password is invalid.",
+                "passwordPolicy": "Password must be at least 8 characters and contain uppercase, lowercase, and a digit.",
+                "passwordMismatch": "Passwords do not match."
+            },
+            "oauth": {
+                "loginTitle": "Sign in to authorize",
+                "loginSubtitle": "{{clientName}} wants to connect to your workspace.",
+                "loginAndAuthorize": "Sign in and authorize",
+                "signingIn": "Signing in…",
+                "consentTitle": "Authorize access",
+                "consentSubtitle": "Allow {{clientName}} to connect to your workspace?",
+                "authorize": "Authorize",
+                "authorizing": "Authorizing…",
+                "errorTitle": "Cannot authorize",
+                "invalidRequest": "Invalid OAuth request parameters.",
+                "unknownClient": "Unknown application."
+            }
+        },
+        "projects": {
+            "title": "Projects",
+            "new": "New project",
+            "empty": "No projects yet.",
+            "openBoard": "Open board",
+            "workflow": "Workflow",
+            "history": "History",
+            "deleteConfirm": "Delete project \"{{name}}\"? This also removes all its tasks and history.",
+            "deleted": "Project deleted.",
+            "created": "Project created.",
+            "updated": "Project updated.",
+            "edit": "Edit project",
+            "namePlaceholder": "Project name",
+            "descriptionPlaceholder": "Optional description"
+        },
+        "board": {
+            "addTask": "+ Add task",
+            "newTask": "New task",
+            "viewBoard": "Board",
+            "viewWorkflow": "Workflow",
+            "viewEvents": "Events",
+            "breadcrumb": "Projects",
+            "filter": "Filter",
+            "noTasks": "No tasks in this column.",
+            "taskCreated": "Task created.",
+            "taskUpdated": "Task updated.",
+            "taskDeleted": "Task deleted.",
+            "deleteTaskConfirm": "Delete task \"{{name}}\"?",
+            "drawer": {
+                "newTask": "New task",
+                "editTask": "Edit task",
+                "close": "Close",
+                "preview": "Preview",
+                "edit": "Edit",
+                "saveChanges": "Save changes",
+                "archive": "Archive",
+                "unarchive": "Unarchive",
+                "archived": "Task archived",
+                "unarchived": "Task unarchived",
+                "titlePlaceholder": "Task title",
+                "descriptionPlaceholder": "Markdown supported…",
+                "nothingToPreview": "Nothing to preview.",
+                "dueDate": "Due date",
+                "startDate": "Start date",
+                "startAfterDue": "Start date must not be after the due date.",
+                "status": "Status",
+                "details": "Details",
+                "assignee": "Assignee",
+                "assigneeAdd": "Assign",
+                "assigneeChange": "Change",
+                "assigneeClear": "Clear",
+                "assigneePlaceholder": "Unassigned",
+                "assigneeNoMembers": "No workspace members yet.",
+                "files": {
+                    "title": "Attachments",
+                    "upload": "Upload file",
+                    "uploading": "Uploading…",
+                    "uploaded": "File uploaded.",
+                    "empty": "No files attached.",
+                    "saveFirst": "Save the task first to attach files.",
+                    "delete": "Delete",
+                    "download": "Download",
+                    "deleteConfirm": "Delete file \"{{name}}\"?",
+                    "uploadedBy": "by {{name}}",
+                    "uploadedByAgent": "by agent"
+                }
+            },
+            "deleteTaskWithSubtasksConfirm": "Delete task \"{{name}}\"? Its {{count}} subtask(s) will be kept and unlinked."
+        },
+        "workflow": {
+            "title": "Workflow",
+            "addStatus": "+ Add status",
+            "deleteStatusConfirm": "Delete status \"{{name}}\"? Tasks in this status will be orphaned.",
+            "lastStatusError": "Cannot delete the last status of a workflow.",
+            "namePlaceholder": "Status name",
+            "namePrompt": "Status name?",
+            "newStatusDefault": "New",
+            "statusAdded": "Status added.",
+            "statusDeleted": "Status deleted.",
+            "backToBoard": "← Back to board",
+            "hint": "Tip: drag the handle to reorder. Each workflow should have one Start and at least one Finish status.",
+            "dragHandle": "Drag to reorder",
+            "type": {
+                "Start": "Start",
+                "Normal": "Normal",
+                "Finish": "Finish"
+            }
+        },
+        "events": {
+            "title": "History",
+            "empty": "No activity yet.",
+            "types": {
+                "ProjectCreated": "created the project",
+                "ProjectUpdated": "updated the project",
+                "ProjectDeleted": "deleted the project",
+                "WorkflowUpdated": "updated the workflow",
+                "StatusCreated": "added status \"{{name}}\"",
+                "StatusUpdated": "updated a status",
+                "StatusDeleted": "deleted a status",
+                "StatusMoved": "reordered statuses",
+                "TaskCreated": "created task \"{{name}}\"",
+                "TaskUpdated": "updated task \"{{name}}\"",
+                "TaskDeleted": "deleted task \"{{name}}\"",
+                "TaskMoved": "moved \"{{name}}\" from {{from}} → {{to}}",
+                "TaskArchived": "archived task \"{{name}}\"",
+                "TaskUnarchived": "unarchived task \"{{name}}\"",
+                "FieldCreated": "added custom field \"{{name}}\"",
+                "FieldUpdated": "updated custom field \"{{name}}\"",
+                "FieldDeleted": "deleted custom field \"{{name}}\"",
+                "ProjectFieldsUpdated": "updated project custom fields",
+                "TaskFileAdded": "attached file \"{{filename}}\"",
+                "TaskFileDeleted": "removed file \"{{filename}}\"",
+                "TaskRelationCreated": "linked to \"{{targetTaskName}}\" ({{type}})",
+                "TaskRelationDeleted": "removed link to \"{{targetTaskName}}\" ({{type}})",
+                "TaskCommentAdded": "commented on the task",
+                "TaskCommentDeleted": "deleted a comment"
+            },
+            "deletedAuthor": "Deleted user",
+            "timeAgo": {
+                "seconds": "{{n}}s ago",
+                "minutes": "{{n}}m ago",
+                "hours": "{{n}}h ago"
+            }
+        },
+        "taskComments": {
+            "section": "Comments",
+            "empty": "No comments yet.",
+            "addPlaceholder": "Add a comment… use @ to mention someone",
+            "addButton": "Add comment",
+            "replyButton": "Reply",
+            "reply": "Reply",
+            "replyingTo": "Replying to {{name}}",
+            "edit": "Edit",
+            "edited": "(edited)",
+            "delete": "Delete",
+            "deleteConfirm": "Delete this comment? Replies will be removed too."
+        },
+        "notifications": {
+            "section": "Notifications",
+            "bell": "Notifications",
+            "empty": "You're all caught up.",
+            "markAllAsRead": "Mark all read",
+            "dismiss": "Dismiss",
+            "message": {
+                "TaskAssigned": "{{actor}} assigned {{task}} to you",
+                "TaskComment": "{{actor}} commented on {{task}}",
+                "TaskMention": "{{actor}} mentioned you on {{task}}",
+                "TaskMoved": "{{actor}} moved {{task}} to {{status}}",
+                "DueSoon": "{{task}} is due tomorrow",
+                "DueToday": "{{task}} is due today"
+            }
+        },
+        "taskWatchers": {
+            "watch": "Watch",
+            "watching": "Watching",
+            "watchHint": "Get notified about comments, moves and due dates for this task",
+            "unwatchHint": "Stop receiving notifications for this task"
+        },
+        "taskRelations": {
+            "section": "Relations",
+            "addButton": "+ Add relation",
+            "empty": "No relations.",
+            "added": "Relation added.",
+            "removed": "Relation removed.",
+            "removeConfirm": "Remove relation to \"{{name}}\"?",
+            "addModal": {
+                "searchPlaceholder": "Search tasks by name…",
+                "noResults": "No tasks found."
+            },
+            "type": {
+                "Related": "Related",
+                "Duplicates": "Duplicates",
+                "Parent": "Parent",
+                "DependsOn": "Depends on"
+            },
+            "label": {
+                "Related": "Related",
+                "DuplicateOf": "Duplicate of",
+                "DuplicatedBy": "Duplicated by",
+                "Parent": "Parent",
+                "Subtask": "Subtask",
+                "DependsOn": "Depends on",
+                "RequiredFor": "Required for"
+            },
+            "groupHeader": {
+                "Parent": "Parent",
+                "Subtasks": "Subtasks",
+                "DependsOn": "Depends on",
+                "RequiredFor": "Required for",
+                "Related": "Related",
+                "Duplicates": "Duplicates"
+            },
+            "errors": {
+                "generic": "Failed to update relation."
+            }
+        },
+        "workspaces": {
+            "title": "Workspaces",
+            "createPrompt": "New workspace name:",
+            "renamePrompt": "Workspace name:",
+            "created": "Workspace \"{{name}}\" created.",
+            "renamed": "Workspace renamed.",
+            "deleteConfirm": "Delete workspace \"{{name}}\"? This is irreversible.",
+            "deleted": "Workspace deleted.",
+            "current": "Current",
+            "members": "Members",
+            "noMembers": "No members.",
+            "inviteHeading": "Invite a member",
+            "invitePlaceholder": "name@example.com",
+            "sendInvitation": "Send invitation",
+            "invitationSent": "Invitation sent to {{email}}.",
+            "pendingInvitations": "Pending invitations",
+            "cancelInvitationConfirm": "Cancel invitation to {{email}}?",
+            "removeMemberConfirm": "Remove {{name}} from \"{{workspace}}\"?",
+            "memberRemoved": "Member removed.",
+            "selectWorkspace": "Select a workspace.",
+            "accepted": "Accepted",
+            "transferOwnership": "Transfer ownership",
+            "transferOwnershipConfirm": "Transfer ownership of \"{{workspace}}\" to {{name}}? You will become an Admin.",
+            "ownershipTransferred": "Ownership transferred.",
+            "roleChanged": "Role updated.",
+            "tabs": {
+                "general": "General",
+                "members": "Members",
+                "tags": "Tags",
+                "priorities": "Priorities",
+                "fields": "Custom fields",
+                "mcp": "MCP & agents"
+            },
+            "general": {
+                "renameTitle": "Workspace name",
+                "renameDescription": "Rename this workspace. The name is visible to all members.",
+                "deleteTitle": "Delete workspace",
+                "deleteDescription": "Permanently delete this workspace including all projects and tasks. This is irreversible."
+            },
+            "mcp": {
+                "heading": "MCP clients",
+                "empty": "No MCP clients have authorized for this workspace yet.",
+                "firstSeen": "First seen",
+                "lastUsed": "Last used",
+                "activeTokens": "active tokens",
+                "totalAuthorizations": "Total authorizations",
+                "revoke": "Revoke access",
+                "revokeConfirm": "Revoke access for \"{{name}}\"? All its tokens will stop working immediately and the client will have to authorize again.",
+                "revoked": "Client access revoked."
+            },
+            "role": {
+                "Owner": "Owner",
+                "Admin": "Admin",
+                "Member": "Member"
+            }
+        },
+        "admin": {
+            "title": "Administration",
+            "users": {
+                "title": "Users",
+                "email": "Email",
+                "name": "Name",
+                "systemRole": "System role",
+                "workspaces": "Workspaces",
+                "owned": "Owned",
+                "searchPlaceholder": "Search by name or email",
+                "promote": "Promote to admin",
+                "demote": "Demote to user",
+                "roleUpdated": "System role updated.",
+                "deleteConfirm": "Delete user {{email}}? This is irreversible.",
+                "deleted": "User deleted.",
+                "cannotDeleteSelf": "You cannot delete your own account here.",
+                "empty": "No users.",
+                "systemRole.SystemAdmin": "System admin",
+                "systemRole.User": "User"
+            },
+            "workspaces": {
+                "title": "Workspaces",
+                "name": "Name",
+                "owner": "Owner",
+                "ownerLabel": "Owner",
+                "members": "Members",
+                "searchPlaceholder": "Search by name or owner",
+                "renamePrompt": "New workspace name:",
+                "renamed": "Workspace renamed.",
+                "deleteConfirm": "Delete workspace \"{{name}}\"? All projects and tasks will be lost.",
+                "deleted": "Workspace deleted.",
+                "transferOwnershipConfirm": "Make {{name}} the owner of \"{{workspace}}\"?",
+                "ownershipTransferred": "Ownership transferred.",
+                "removeMemberConfirm": "Remove {{name}} from \"{{workspace}}\"?",
+                "empty": "No workspaces."
+            }
+        },
+        "invitation": {
+            "heading": "Workspace invitation",
+            "alreadyAccepted": "This invitation has already been accepted.",
+            "invitedAs": "{{inviter}} invited you to join {{workspace}} as {{role}}.",
+            "sentTo": "Invitation is sent to {{email}}.",
+            "accept": "Accept invitation",
+            "loginPrompt": "Sign in or create an account with this email to accept.",
+            "missingToken": "Missing invitation token.",
+            "notFound": "Invitation not found or already used.",
+            "joined": "Joined \"{{workspace}}\"."
+        },
+        "verifyBanner": {
+            "message": "Please verify your email address to invite teammates and start using all features.",
+            "resend": "Resend verification email",
+            "resending": "Sending…",
+            "resent": "Verification email sent. Check your inbox.",
+            "alreadyVerified": "I've verified — refresh"
+        },
+        "settings": {
+            "title": "Settings",
+            "subtitle": "Manage your account.",
+            "language": "Language",
+            "languageEn": "English",
+            "languageCs": "Čeština",
+            "languageUpdated": "Language updated.",
+            "theme": "Theme",
+            "themeSystem": "System",
+            "themeLight": "Light",
+            "themeDark": "Dark",
+            "changePassword": {
+                "title": "Change password",
+                "description": "Use a strong password with a mix of upper and lower case letters and at least one digit.",
+                "currentPassword": "Current password",
+                "newPassword": "New password",
+                "confirmPassword": "Confirm new password",
+                "submit": "Change password",
+                "submitting": "Updating…",
+                "success": "Password changed."
+            },
+            "dangerZone": {
+                "title": "Danger zone",
+                "subtitle": "Export your data or permanently delete your account.",
+                "exportTitle": "Export my data",
+                "exportDescription": "Download a JSON file with your profile, workspace memberships, invitations you sent, and content you authored (events, comments, files, relations).",
+                "exportButton": "Download JSON",
+                "exporting": "Preparing…",
+                "deleteTitle": "Delete account",
+                "deleteDescription": "Permanently delete your account and all data attributed to you. Workspaces you solely own must be transferred or deleted first.",
+                "deleteButton": "Delete account",
+                "deleting": "Deleting…",
+                "deleteConfirm": "This will permanently delete your account. Are you sure?"
+            }
+        },
+        "fields": {
+            "title": "Custom fields",
+            "description": "Define a workspace catalog of custom fields. Each project can attach individual fields; their values appear in the task detail.",
+            "addField": "Add field",
+            "editField": "Edit field",
+            "name": "Field name",
+            "namePlaceholder": "e.g. Severity",
+            "type": "Type",
+            "types": {
+                "Text": "Text",
+                "Textarea": "Textarea",
+                "Select": "Select",
+                "Version": "Version (semver)"
+            },
+            "required": "Required",
+            "defaultValue": "Default value",
+            "defaultValuePlaceholder": "Optional default",
+            "options": "Options",
+            "addOption": "+ Add option",
+            "removeOption": "Remove",
+            "optionPlaceholder": "Option value",
+            "fieldCreated": "Field created.",
+            "fieldUpdated": "Field updated.",
+            "fieldDeleted": "Field deleted.",
+            "deleteConfirm": "Delete field \"{{name}}\"? It will be removed from every project and all its task values will be cleared.",
+            "empty": "No custom fields yet.",
+            "noPermission": "Only Owners and Admins can manage workspace fields.",
+            "invalidSemver": "\"{{value}}\" is not a valid semver string.",
+            "optionsRequired": "Select and Version fields need at least one option."
+        },
+        "projectFields": {
+            "title": "Custom fields",
+            "description": "Attach workspace fields to this project. The order here is the order shown in the task drawer.",
+            "attached": "Attached fields",
+            "available": "Available fields",
+            "attach": "Attach",
+            "detach": "Detach",
+            "moveUp": "Move up",
+            "moveDown": "Move down",
+            "save": "Save fields",
+            "saved": "Project fields updated.",
+            "emptyAttached": "No fields attached yet.",
+            "emptyAvailable": "No more fields to attach. Add fields in the workspace settings.",
+            "requiredBadge": "Required",
+            "noPermission": "Only Owners and Admins can change attached fields."
+        },
+        "taskFields": {
+            "heading": "Custom fields",
+            "fieldRequired": "{{name}} is required."
+        },
+        "tags": {
+            "title": "Tags",
+            "description": "Workspace-wide labels you can attach to any task. Each tag has a name and a color.",
+            "addTag": "Add tag",
+            "editTag": "Edit tag",
+            "name": "Tag name",
+            "namePlaceholder": "e.g. bug",
+            "color": "Color",
+            "preview": "preview",
+            "empty": "No tags yet.",
+            "tagCreated": "Tag created.",
+            "tagUpdated": "Tag updated.",
+            "tagDeleted": "Tag deleted.",
+            "deleteConfirm": "Delete tag \"{{name}}\"? It will be removed from every task that uses it.",
+            "noPermission": "Only Owners and Admins can manage workspace tags."
+        },
+        "priorities": {
+            "title": "Priorities",
+            "description": "Workspace-configurable task priorities. Reorder with the arrows; the default is used for new tasks when none is specified.",
+            "addPriority": "Add priority",
+            "name": "Priority name",
+            "namePlaceholder": "e.g. Critical",
+            "color": "Color",
+            "default": "Default for new tasks",
+            "defaultMark": "default",
+            "preview": "preview",
+            "empty": "No priorities yet.",
+            "priorityCreated": "Priority created.",
+            "priorityUpdated": "Priority updated.",
+            "priorityDeleted": "Priority deleted.",
+            "deleteConfirm": "Delete priority \"{{name}}\"?",
+            "deleteBlocked": "Cannot delete — {{count}} task(s) still use this priority. Reassign them first.",
+            "deleteError": "Failed to delete priority."
+        },
+        "taskTags": {
+            "heading": "Tags",
+            "add": "Add tag",
+            "empty": "No tags applied.",
+            "remove": "Remove",
+            "filterTitle": "Filter by tag",
+            "noTagsAvailable": "No more tags to add."
+        },
+        "taskTemplates": {
+            "duplicate": "Duplicate",
+            "duplicated": "Task duplicated.",
+            "saveAsTemplate": "Save as template",
+            "namePrompt": "Template name:",
+            "saved": "Template saved.",
+            "startFromTemplate": "Start from template…"
+        },
+        "subtasks": {
+            "heading": "Subtasks",
+            "add": "Add",
+            "addPlaceholder": "Add a subtask…",
+            "toggle": "Toggle subtask \"{{name}}\"",
+            "removeConfirm": "Remove subtask link to \"{{name}}\"? The task itself is kept.",
+            "earliestDue": "Earliest due",
+            "highestPriority": "Highest priority",
+            "progressTitle": "{{done}} of {{total}} subtasks done"
+        },
+        "checklist": {
+            "heading": "Checklist",
+            "add": "Add",
+            "addPlaceholder": "Add a checklist item…",
+            "toggle": "Toggle \"{{text}}\"",
+            "dragHandle": "Reorder item",
+            "dueDate": "Due date",
+            "assignee": "Assignee",
+            "progressTitle": "{{done}} of {{total}} checklist items done"
+        },
+        "recurrence": {
+            "heading": "Repeat",
+            "enable": "Make recurring",
+            "remove": "Remove recurrence",
+            "ended": "Series ended",
+            "next": "Next: {{date}}",
+            "cadence": "Repeats",
+            "interval": "Every",
+            "weekday": "On",
+            "dayOfMonth": "Day of month",
+            "cron": "Cron expression",
+            "ends": "Ends",
+            "endDate": "End date",
+            "maxOccurrences": "Occurrences",
+            "cadenceOption": {
+                "Daily": "Day",
+                "Weekly": "Week",
+                "Monthly": "Month",
+                "Cron": "Custom (cron)"
+            },
+            "endOption": {
+                "Never": "Never",
+                "OnDate": "On date",
+                "AfterCount": "After N occurrences"
+            },
+            "cadenceLabel": {
+                "Daily": "Every {{interval}} day(s)",
+                "Weekly": "Every {{interval}} week(s)",
+                "Monthly": "Every {{interval}} month(s)",
+                "Cron": "Custom schedule"
+            },
+            "weekdayName": {
+                "0": "Sunday",
+                "1": "Monday",
+                "2": "Tuesday",
+                "3": "Wednesday",
+                "4": "Thursday",
+                "5": "Friday",
+                "6": "Saturday"
+            }
+        },
+        "onboarding": {
+            "shell": {
+                "gettingStarted": "Getting started",
+                "signOut": "Sign out",
+                "signedInAs": "Signed in as",
+                "workspaceLabel": "Set up workspace",
+                "tipTitle": "Why workflows?",
+                "tipBody": "Each project owns one workflow — the ordered statuses a task moves through. You can rename or add columns later.",
+                "stepCounter": "Step {{step}} of {{total}}",
+                "skip": "Skip for now",
+                "back": "Back",
+                "continue": "Continue",
+                "openWorkspace": "Open workspace"
+            },
+            "steps": {
+                "step1": {
+                    "label": "Project & workflow",
+                    "hint": "Where work lives"
+                },
+                "step2": {
+                    "label": "Invite teammates",
+                    "hint": "Bring your team in"
+                },
+                "step3": {
+                    "label": "Connect agents",
+                    "hint": "Optional · MCP"
+                }
+            },
+            "step1": {
+                "overline": "Step 01",
+                "title": "Create your first project",
+                "lead": "A project groups related tasks. Pick a name, then choose the workflow your team will use to move work to done.",
+                "nameLabel": "Project name",
+                "namePlaceholder": "Backend rewrite",
+                "descriptionLabel": "Description",
+                "descriptionPlaceholder": "Optional context for your team.",
+                "optional": "optional",
+                "workflowTitle": "Workflow",
+                "workflowSub": "The statuses tasks move through. Pick a template — you can edit it after.",
+                "errorCreate": "Could not create project. Please try again.",
+                "templates": {
+                    "kanban": {
+                        "name": "Kanban",
+                        "sub": "Classic 4-stage flow"
+                    },
+                    "engineering": {
+                        "name": "Engineering",
+                        "sub": "Backlog → Spec → Build → Ship"
+                    },
+                    "simple": {
+                        "name": "Simple",
+                        "sub": "Just open / closed"
+                    },
+                    "blank": {
+                        "name": "Start blank",
+                        "sub": "Define your own columns"
+                    }
+                }
+            },
+            "step2": {
+                "overline": "Step 02",
+                "title": "Invite your teammates",
+                "lead": "They’ll get an email with a one-click link into your workspace. Add as many as you like — you can manage roles any time.",
+                "emailPlaceholder": "teammate@example.com",
+                "addAnother": "Add another",
+                "removeRow": "Remove row",
+                "skipInvites": "Skip invites",
+                "errorNoWorkspace": "No active workspace. Refresh and try again.",
+                "errorSomeFailed": "{{count}} invitation(s) could not be sent."
+            },
+            "step3": {
+                "overline": "Step 03",
+                "title": "You’re set",
+                "lead": "Your workspace and first project are good to go. One optional step left: connect an MCP-compatible agent so Claude or Cursor can move tasks for you.",
+                "summaryWorkspace": "Workspace",
+                "summaryProject": "Project",
+                "summaryInvites": "Invites sent",
+                "mcpServerTitle": "MCP server",
+                "mcpServerSub": "Point your agent at this URL.",
+                "serverUrl": "Server URL",
+                "claudeTitle": "Claude Desktop",
+                "claudeSub": "Add this entry to ~/Library/Application Support/Claude/claude_desktop_config.json.",
+                "cursorTitle": "Cursor",
+                "cursorSub": "Add this entry to .cursor/mcp.json in your workspace.",
+                "copy": "Copy",
+                "copied": "Copied to clipboard.",
+                "copyFailed": "Couldn’t copy. Select the text manually."
+            }
+        }
+    }
+}

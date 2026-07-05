@@ -1,0 +1,111 @@
+<header class="agents-header">
+    <div>
+        <h1 class="uk-h2">{{ 'app.agents.title' | translate }}</h1>
+        <p class="uk-caption">{{ 'app.agents.subtitle' | translate }}</p>
+    </div>
+</header>
+
+<div class="agents-kpis">
+    <div class="uk-card kpi">
+        <div class="uk-overline kpi-label">{{ 'app.agents.kpi.events' | translate }}</div>
+        <div class="kpi-value">{{ stats()?.eventsLast24h ?? '—' }}</div>
+        <div class="kpi-sub kpi-sub--success">{{ 'app.agents.kpi.eventsSub' | translate }}</div>
+    </div>
+    <div class="uk-card kpi">
+        <div class="uk-overline kpi-label">{{ 'app.agents.kpi.activeAgents' | translate }}</div>
+        <div class="kpi-value">{{ stats()?.activeAgents ?? '—' }}</div>
+        <div class="kpi-sub kpi-sub--ai">
+            @if ((stats()?.activeAgentNames?.length ?? 0) > 0) {
+                {{ stats()!.activeAgentNames.join(' · ') }}
+            } @else {
+                {{ 'app.agents.kpi.noAgentsConnected' | translate }}
+            }
+        </div>
+    </div>
+    <div class="uk-card kpi">
+        <div class="uk-overline kpi-label">{{ 'app.agents.kpi.tasksCreated' | translate }}</div>
+        <div class="kpi-value">{{ stats()?.tasksCreatedLast24h ?? '—' }}</div>
+        <div class="kpi-sub kpi-sub--info">{{ 'app.agents.kpi.tasksCreatedSub' | translate }}</div>
+    </div>
+    <div class="uk-card kpi">
+        <div class="uk-overline kpi-label">{{ 'app.agents.kpi.tasksClosed' | translate }}</div>
+        <div class="kpi-value">{{ stats()?.tasksClosedLast24h ?? '—' }}</div>
+        <div class="kpi-sub kpi-sub--success">{{ 'app.agents.kpi.tasksClosedSub' | translate }}</div>
+    </div>
+</div>
+
+<div class="agents-filters">
+    <span class="uk-caption">{{ 'app.agents.show' | translate }}</span>
+    @for (chip of chips; track chip.key) {
+        <button
+            type="button"
+            class="agents-chip"
+            [class.agents-chip--active]="activeChip() === chip.key"
+            (click)="setChip(chip.key)"
+        >{{ chip.label | translate }}</button>
+    }
+</div>
+
+<div class="uk-card agents-events">
+    @if (loading() && events().length === 0) {
+        <div class="agents-empty">{{ 'app.actions.loading' | translate }}</div>
+    } @else if (events().length === 0) {
+        <div class="agents-empty">{{ 'app.agents.empty' | translate }}</div>
+    } @else {
+        <div class="uk-list">
+            @for (event of events(); track event.id) {
+                <div class="uk-row event-row" [class.event-row--agent]="isAgent(event)">
+                    <span class="event-time uk-mono">{{ event.createdAt | date:'HH:mm' }}</span>
+                    <span
+                        class="uk-avatar"
+                        [class.uk-avatar--ai]="isAgent(event)"
+                        [attr.aria-label]="agentLabel(event.actorType)"
+                    >
+                        @if (isAgent(event)) {
+                            <svg width="11" height="11" viewBox="0 0 16 16" aria-hidden="true">
+                                <path
+                                    d="M8 2v3M8 11v3M2 8h3M11 8h3M3.8 3.8l2 2M10.2 10.2l2 2M3.8 12.2l2-2M10.2 5.8l2-2"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.4"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                />
+                            </svg>
+                        } @else {
+                            {{ (event.authorName || '?').charAt(0).toUpperCase() }}
+                        }
+                    </span>
+                    <div class="event-body">
+                        <div class="event-line">
+                            <span class="event-actor">{{ actorTypeLabel(event) }}</span>
+                            <span class="event-verb">{{ eventVerbKey(event) | translate }}</span>
+                            @if (eventTarget(event)) {
+                                <span class="uk-mono event-target">{{ eventTarget(event) }}</span>
+                            }
+                        </div>
+                        <div class="event-line-secondary">
+                            <span>{{ event.createdAt | date:'mediumDate' }}</span>
+                            @if (isAgent(event)) {
+                                <span class="event-line-divider" aria-hidden="true">·</span>
+                                <span class="uk-badge uk-badge--ai event-mcp-badge">
+                                    <svg width="9" height="9" viewBox="0 0 16 16" aria-hidden="true">
+                                        <path
+                                            d="M8 2v3M8 11v3M2 8h3M11 8h3M3.8 3.8l2 2M10.2 10.2l2 2M3.8 12.2l2-2M10.2 5.8l2-2"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="1.4"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        />
+                                    </svg>
+                                    {{ 'app.agent.viaMcp' | translate }}
+                                </span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

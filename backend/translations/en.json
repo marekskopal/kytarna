@@ -1,0 +1,50 @@
+{
+    "email": {
+        "subject": {
+            "invitation": "You've been invited to {workspace} on Ukolio",
+            "passwordReset": "Reset your Ukolio password",
+            "emailVerification": "Verify your Ukolio email",
+            "notification": {
+                "TaskMention": "{actor} mentioned you on {task}",
+                "TaskAssigned": "{actor} assigned {task} to you",
+                "DueSoon": "{task} is due tomorrow",
+                "DueToday": "{task} is due today"
+            }
+        },
+        "invitation": {
+            "title": "You've been invited to Ukolio",
+            "intro": "{inviter} has invited you to join the workspace <strong>{workspace}</strong>.",
+            "action": "Click the button below to accept the invitation. If you don't have an account yet, you'll be asked to sign up first using this email address.",
+            "button": "Accept invitation",
+            "fallback": "Or copy this link into your browser:",
+            "expires": "This invitation expires in 7 days."
+        },
+        "passwordReset": {
+            "title": "Reset your password",
+            "greeting": "Hi {name},",
+            "intro": "We received a request to reset the password for your Ukolio account. Click the button below to choose a new password.",
+            "button": "Reset password",
+            "fallback": "Or copy this link into your browser:",
+            "expires": "This link expires in 1 hour.",
+            "ignore": "If you didn't request this, you can safely ignore this email — your password won't change."
+        },
+        "emailVerification": {
+            "title": "Verify your email",
+            "greeting": "Hi {name},",
+            "intro": "Welcome to Ukolio! Please confirm this is your email address so you can start inviting teammates and connecting AI agents.",
+            "button": "Verify email",
+            "fallback": "Or copy this link into your browser:",
+            "expires": "This link expires in 24 hours.",
+            "ignore": "If you didn't sign up for Ukolio, you can safely ignore this email."
+        },
+        "notification": {
+            "greeting": "Hi {name},",
+            "TaskMention": "{actor} mentioned you on {task} — {taskName}.",
+            "TaskAssigned": "{actor} assigned the task {task} ({taskName}) to you.",
+            "DueSoon": "The task {task} ({taskName}) is due tomorrow.",
+            "DueToday": "The task {task} ({taskName}) is due today.",
+            "button": "Open task",
+            "fallback": "Or copy this link into your browser:"
+        }
+    }
+}

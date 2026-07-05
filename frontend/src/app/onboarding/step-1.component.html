@@ -1,0 +1,76 @@
+<div class="step-overline">{{ 'app.onboarding.step1.overline' | translate }}</div>
+<h1 class="step-title">{{ 'app.onboarding.step1.title' | translate }}</h1>
+<p class="step-lead">{{ 'app.onboarding.step1.lead' | translate }}</p>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="step-form">
+    <div class="step-field">
+        <label for="ob-name" class="step-label">{{ 'app.onboarding.step1.nameLabel' | translate }}</label>
+        <input
+            id="ob-name"
+            type="text"
+            formControlName="name"
+            class="step-input"
+            [placeholder]="'app.onboarding.step1.namePlaceholder' | translate"
+            autocomplete="off"
+        />
+    </div>
+
+    <div class="step-field">
+        <label for="ob-description" class="step-label">
+            {{ 'app.onboarding.step1.descriptionLabel' | translate }}
+            <span class="step-hint">{{ 'app.onboarding.step1.optional' | translate }}</span>
+        </label>
+        <textarea
+            id="ob-description"
+            formControlName="description"
+            class="step-textarea"
+            rows="2"
+            [placeholder]="'app.onboarding.step1.descriptionPlaceholder' | translate"
+        ></textarea>
+    </div>
+
+    <div class="step-section-title">{{ 'app.onboarding.step1.workflowTitle' | translate }}</div>
+    <p class="step-section-sub">{{ 'app.onboarding.step1.workflowSub' | translate }}</p>
+
+    <div class="workflow-grid">
+        @for (w of workflows; track w.id) {
+            <button
+                type="button"
+                class="workflow-card"
+                [class.is-active]="selectedTemplate() === w.id"
+                (click)="selectTemplate(w.id)"
+            >
+                <div class="workflow-card-head">
+                    <span class="workflow-radio" [class.is-active]="selectedTemplate() === w.id">
+                        @if (selectedTemplate() === w.id) {
+                            <span class="workflow-radio-dot"></span>
+                        }
+                    </span>
+                    <span class="workflow-card-name">
+                        {{ ('app.onboarding.step1.templates.' + w.id + '.name') | translate }}
+                    </span>
+                    <span class="workflow-card-sub">
+                        {{ ('app.onboarding.step1.templates.' + w.id + '.sub') | translate }}
+                    </span>
+                </div>
+                <div class="workflow-cols">
+                    @for (col of w.columns; track col.name; let i = $index) {
+                        <span class="workflow-col">
+                            <span class="workflow-col-dot" [style.background]="col.color"></span>
+                            {{ col.name }}
+                        </span>
+                        @if (i < w.columns.length - 1) {
+                            <span class="workflow-col-sep">›</span>
+                        }
+                    }
+                </div>
+            </button>
+        }
+    </div>
+
+    <div class="step-actions">
+        <button type="submit" class="btn btn-primary" [disabled]="form.invalid || saving()">
+            {{ (saving() ? 'app.actions.loading' : 'app.onboarding.shell.continue') | translate }}
+        </button>
+    </div>
+</form>

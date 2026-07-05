@@ -1,0 +1,51 @@
+@use 'variables' as *;
+
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-5;
+    margin-bottom: $space-6;
+}
+
+.event-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background: $color-surface;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    overflow: hidden;
+}
+
+.event-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: $space-4;
+    padding: $space-3 $space-5;
+    border-bottom: 1px solid $color-border;
+    font-size: $font-size-13;
+
+    &:last-child { border-bottom: 0; }
+}
+
+.event-text {
+    margin: 0;
+    color: $color-text-muted;
+    line-height: 1.5;
+}
+
+.event-author {
+    color: $color-text;
+    font-weight: 500;
+}
+
+.event-time {
+    flex-shrink: 0;
+    font-family: $font-mono;
+    font-size: $font-size-11;
+    color: $color-text-subtle;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+}

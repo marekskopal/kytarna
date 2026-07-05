@@ -1,0 +1,306 @@
+// Ukolio design tokens — light, dense, indigo accent (+ dark theme).
+// Theme-aware tokens are exposed as CSS custom properties on :root and
+// :root[data-theme="dark"]. SCSS $color-* / $shadow-* / $ring variables
+// alias those so existing component SCSS picks up the theme switch
+// automatically. Non-color tokens (spacing, radii, type, heights, layout,
+// z-index) are SCSS-only — they do not change between themes.
+
+// ─── CSS custom properties (light, default) ───────────────────────────
+:root {
+    color-scheme: light;
+
+    // Surfaces
+    --color-bg:              #fafafa;
+    --color-surface:         #ffffff;
+    --color-surface-muted:   #f4f4f5;
+    --color-surface-deep:    #ebebed;
+    --color-surface-hover:   #f7f7f8;
+
+    // Borders
+    --color-border:          #e7e7ea;
+    --color-border-strong:   #d4d4d8;
+    --color-border-hover:    #b8b8be;
+    --color-border-focus:    #5e6ad2;
+
+    // Text
+    --color-text:            #18181b;
+    --color-text-muted:      #52525b;
+    --color-text-subtle:     #8a8a92;
+    --color-text-faint:      #b4b4ba;
+    --color-text-inverse:    #ffffff;
+
+    // Accent · Indigo
+    --color-accent:          #5e6ad2;
+    --color-accent-hover:    #4f5bbf;
+    --color-accent-active:   #424ea8;
+    --color-accent-soft:     #eef0fb;
+    --color-accent-fg:       #ffffff;
+
+    // Semantic
+    --color-success:         #16794a;
+    --color-success-soft:    #e6f5ee;
+    --color-success-border:  #b6e1c8;
+
+    --color-warn:            #a35c00;
+    --color-warn-soft:       #fbf2dd;
+    --color-warn-border:     #f1d795;
+
+    --color-danger:          #b42318;
+    --color-danger-soft:     #fdecea;
+    --color-danger-border:   #f4b8b0;
+
+    --color-info:            #1e58b6;
+    --color-info-soft:       #e6efff;
+    --color-info-border:     #b6cff7;
+
+    --color-ai:              #6f4ed3;
+    --color-ai-soft:         #f0ebfb;
+    --color-ai-border:       #d4c5f3;
+
+    // Workflow status dots
+    --color-status-todo:     #94a3a8;
+    --color-status-doing:    #c98a14;
+    --color-status-review:   #4a8fd6;
+    --color-status-done:     #16794a;
+    --color-status-blocked:  #b42318;
+
+    // Priority chip pairs
+    --prio-low-bg:           #f1f1f3;
+    --prio-low-fg:           #52525b;
+    --prio-med-bg:           #fbf2dd;
+    --prio-med-fg:           #a35c00;
+    --prio-high-bg:          #fdecea;
+    --prio-high-fg:          #b42318;
+    --prio-urgent-bg:        #18181b;
+    --prio-urgent-fg:        #ffffff;
+
+    // Backdrop dim (drawers, modals)
+    --color-backdrop:        rgba(24, 24, 27, 0.32);
+
+    // Shadows + focus ring
+    --shadow-xs: 0 1px 0 rgba(24, 24, 27, 0.04);
+    --shadow-sm: 0 1px 2px rgba(24, 24, 27, 0.06), 0 1px 1px rgba(24, 24, 27, 0.04);
+    --shadow-md: 0 6px 16px -4px rgba(24, 24, 27, 0.10), 0 2px 4px rgba(24, 24, 27, 0.05);
+    --shadow-lg: 0 16px 40px -8px rgba(24, 24, 27, 0.14), 0 4px 8px rgba(24, 24, 27, 0.06);
+    --ring:        0 0 0 3px rgba(94, 106, 210, 0.20);
+    --ring-danger: 0 0 0 3px rgba(180, 35, 24, 0.18);
+}
+
+// ─── CSS custom properties (dark) ─────────────────────────────────────
+:root[data-theme="dark"] {
+    color-scheme: dark;
+
+    --color-bg:              #0a0a0c;
+    --color-surface:         #161619;
+    --color-surface-muted:   #1f1f23;
+    --color-surface-deep:    #27272b;
+    --color-surface-hover:   #1b1b1e;
+
+    --color-border:          #2a2a2e;
+    --color-border-strong:   #3a3a40;
+    --color-border-hover:    #4d4d54;
+    --color-border-focus:    #7c87e0;
+
+    --color-text:            #fafafa;
+    --color-text-muted:      #a1a1a8;
+    --color-text-subtle:     #71717a;
+    --color-text-faint:      #52525b;
+    --color-text-inverse:    #18181b;
+
+    --color-accent:          #7c87e0;
+    --color-accent-hover:    #6b76d6;
+    --color-accent-active:   #5a64c4;
+    --color-accent-soft:     #1e2150;
+    --color-accent-fg:       #ffffff;
+
+    --color-success:         #22c55e;
+    --color-success-soft:    #0f3a25;
+    --color-success-border:  #1d6840;
+
+    --color-warn:            #fbbf24;
+    --color-warn-soft:       #2d2107;
+    --color-warn-border:     #5a4310;
+
+    --color-danger:          #f87171;
+    --color-danger-soft:     #2a0f0f;
+    --color-danger-border:   #5a1f1f;
+
+    --color-info:            #60a5fa;
+    --color-info-soft:       #0f1a35;
+    --color-info-border:     #1d3a6e;
+
+    --color-ai:              #a78bfa;
+    --color-ai-soft:         #1c1530;
+    --color-ai-border:       #3a2c5e;
+
+    --color-status-todo:     #71717a;
+    --color-status-doing:    #fbbf24;
+    --color-status-review:   #60a5fa;
+    --color-status-done:     #22c55e;
+    --color-status-blocked:  #f87171;
+
+    --prio-low-bg:           #1f1f23;
+    --prio-low-fg:           #a1a1a8;
+    --prio-med-bg:           #2d2107;
+    --prio-med-fg:           #fbbf24;
+    --prio-high-bg:          #2a0f0f;
+    --prio-high-fg:          #f87171;
+    --prio-urgent-bg:        #fafafa;
+    --prio-urgent-fg:        #18181b;
+
+    --color-backdrop:        rgba(0, 0, 0, 0.55);
+
+    --shadow-xs: 0 1px 0 rgba(0, 0, 0, 0.4);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5), 0 1px 1px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 6px 16px -4px rgba(0, 0, 0, 0.55), 0 2px 4px rgba(0, 0, 0, 0.35);
+    --shadow-lg: 0 16px 40px -8px rgba(0, 0, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.4);
+    --ring:        0 0 0 3px rgba(124, 135, 224, 0.30);
+    --ring-danger: 0 0 0 3px rgba(248, 113, 113, 0.30);
+}
+
+// ─── SCSS aliases over CSS vars ───────────────────────────────────────
+// Existing component SCSS keeps using $color-* / $shadow-* / $ring etc.
+// without change; values resolve through the CSS custom properties above,
+// so swapping data-theme on <html> retints the whole app live.
+
+// Surfaces
+$color-bg:            var(--color-bg);
+$color-surface:       var(--color-surface);
+$color-surface-muted: var(--color-surface-muted);
+$color-surface-deep:  var(--color-surface-deep);
+$color-surface-hover: var(--color-surface-hover);
+
+// Borders
+$color-border:        var(--color-border);
+$color-border-strong: var(--color-border-strong);
+$color-border-hover:  var(--color-border-hover);
+$color-border-focus:  var(--color-border-focus);
+
+// Text
+$color-text:          var(--color-text);
+$color-text-muted:    var(--color-text-muted);
+$color-text-subtle:   var(--color-text-subtle);
+$color-text-faint:    var(--color-text-faint);
+$color-text-inverse:  var(--color-text-inverse);
+
+// Accent · Indigo
+$color-accent:        var(--color-accent);
+$color-accent-hover:  var(--color-accent-hover);
+$color-accent-active: var(--color-accent-active);
+$color-accent-soft:   var(--color-accent-soft);
+$color-accent-fg:     var(--color-accent-fg);
+
+// Semantic
+$color-success:        var(--color-success);
+$color-success-soft:   var(--color-success-soft);
+$color-success-border: var(--color-success-border);
+
+$color-warn:           var(--color-warn);
+$color-warn-soft:      var(--color-warn-soft);
+$color-warn-border:    var(--color-warn-border);
+
+$color-danger:         var(--color-danger);
+$color-danger-soft:    var(--color-danger-soft);
+$color-danger-border:  var(--color-danger-border);
+
+$color-info:           var(--color-info);
+$color-info-soft:      var(--color-info-soft);
+$color-info-border:    var(--color-info-border);
+
+$color-ai:             var(--color-ai);
+$color-ai-soft:        var(--color-ai-soft);
+$color-ai-border:      var(--color-ai-border);
+
+// Workflow status dots
+$color-status-todo:    var(--color-status-todo);
+$color-status-doing:   var(--color-status-doing);
+$color-status-review:  var(--color-status-review);
+$color-status-done:    var(--color-status-done);
+$color-status-blocked: var(--color-status-blocked);
+
+// Priority chip pairs
+$prio-low-bg:     var(--prio-low-bg);
+$prio-low-fg:     var(--prio-low-fg);
+$prio-med-bg:     var(--prio-med-bg);
+$prio-med-fg:     var(--prio-med-fg);
+$prio-high-bg:    var(--prio-high-bg);
+$prio-high-fg:    var(--prio-high-fg);
+$prio-urgent-bg:  var(--prio-urgent-bg);
+$prio-urgent-fg:  var(--prio-urgent-fg);
+
+// Backdrop dim
+$color-backdrop:  var(--color-backdrop);
+
+// Shadows + rings
+$shadow-xs:   var(--shadow-xs);
+$shadow-sm:   var(--shadow-sm);
+$shadow-md:   var(--shadow-md);
+$shadow-lg:   var(--shadow-lg);
+$ring:        var(--ring);
+$ring-danger: var(--ring-danger);
+
+// ─── Spacing (4 px base) ──────────────────────────────────
+$space-0:  0;
+$space-1:  4px;
+$space-2:  6px;
+$space-3:  8px;
+$space-4:  10px;
+$space-5:  12px;
+$space-6:  16px;
+$space-7:  20px;
+$space-8:  24px;
+$space-9:  32px;
+$space-10: 40px;
+$space-11: 56px;
+$space-12: 72px;
+
+// ─── Radii ────────────────────────────────────────────────
+$radius-xs:   3px;   // chips
+$radius-sm:   5px;   // buttons, inputs
+$radius-md:   7px;   // cards, alerts
+$radius-lg:   10px;  // big panels
+$radius-xl:   14px;  // hero / modal
+$radius-pill: 999px;
+
+// ─── Type ─────────────────────────────────────────────────
+$font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+$font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+$font-size-10: 10px;
+$font-size-11: 11px;
+$font-size-12: 12px;
+$font-size-13: 13px;
+$font-size-14: 14px;
+$font-size-15: 15px; // base body
+$font-size-16: 16px;
+$font-size-18: 18px;
+$font-size-20: 20px;
+$font-size-24: 24px;
+$font-size-30: 30px;
+$font-size-40: 40px;
+
+$line-height-tight:  1.2;
+$line-height-snug:   1.35;
+$line-height-normal: 1.5;
+
+$tracking-tight:   -0.012em;
+$tracking-tighter: -0.022em;
+$tracking-wide:     0.04em;
+$tracking-mono:     0.01em;
+
+// ─── Control heights (density tokens) ─────────────────────
+$h-xs: 22px;
+$h-sm: 26px;
+$h-md: 30px;   // default control
+$h-lg: 36px;
+$h-xl: 44px;
+
+// ─── Layout ───────────────────────────────────────────────
+$layout-max:    1280px;
+$header-height: 48px;
+$drawer-width:  560px;
+
+// ─── z-index ──────────────────────────────────────────────
+$z-overlay: 40;
+$z-drawer:  50;
+$z-toast:   60;

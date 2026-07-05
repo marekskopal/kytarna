@@ -1,0 +1,336 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.cal {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    background: $color-surface;
+    overflow: hidden;
+}
+
+// ── Toolbar (date nav + view sub-switcher) ──
+.cal-toolbar {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    padding: $space-4 $space-5;
+    border-bottom: 1px solid $color-border;
+}
+
+.cal-range {
+    margin: 0;
+    font-size: $font-size-14;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: $color-text;
+    min-width: 150px;
+}
+
+.cal-nav {
+    display: inline-flex;
+    border: 1px solid $color-border-strong;
+    border-radius: $radius-sm;
+    overflow: hidden;
+}
+
+.cal-nav-btn {
+    width: 26px;
+    height: 26px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: $color-surface;
+    color: $color-text-muted;
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+
+    & + & {
+        border-left: 1px solid $color-border-strong;
+    }
+
+    &:hover {
+        background: $color-surface-muted;
+        color: $color-text;
+    }
+}
+
+.cal-segment {
+    display: inline-flex;
+    border: 1px solid $color-border-strong;
+    border-radius: $radius-sm;
+    overflow: hidden;
+}
+
+.cal-segment-btn {
+    height: 26px;
+    padding: 0 $space-4;
+    border: none;
+    border-right: 1px solid $color-border-strong;
+    background: transparent;
+    color: $color-text-muted;
+    font-size: $font-size-12;
+    cursor: pointer;
+
+    &:last-child {
+        border-right: none;
+    }
+
+    &--active {
+        background: $color-surface-muted;
+        color: $color-text;
+        font-weight: 500;
+    }
+}
+
+.cal-loading {
+    margin-left: auto;
+    font-size: $font-size-11;
+    color: $color-text-subtle;
+}
+
+// ── Weekday header ──
+.cal-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    border-bottom: 1px solid $color-border;
+    background: $color-bg;
+}
+
+.cal-weekday {
+    padding: $space-2 $space-4;
+    font-size: $font-size-11;
+    font-weight: 600;
+    color: $color-text-subtle;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-align: right;
+}
+
+// ── Grid ──
+.cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-auto-rows: minmax(104px, 1fr);
+    gap: 1px;
+    background: $color-border;
+
+    &--week {
+        grid-auto-rows: minmax(420px, 1fr);
+    }
+}
+
+.cal-cell {
+    display: flex;
+    flex-direction: column;
+    gap: $space-1;
+    padding: $space-2;
+    background: $color-surface;
+    min-height: 0;
+    overflow: hidden;
+
+    &--weekend {
+        background: $color-surface-hover;
+    }
+
+    &--out {
+        background: $color-bg;
+    }
+
+    // CDK drop target highlight while dragging a chip over the cell.
+    &.cdk-drop-list-receiving,
+    &.cdk-drop-list-dragging {
+        outline: 1.5px dashed $color-border-focus;
+        outline-offset: -2px;
+        background: $color-accent-soft;
+    }
+}
+
+.cal-cell-head {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: $space-1;
+}
+
+.cal-cell-month {
+    margin-right: auto;
+    font-size: $font-size-10;
+    color: $color-text-faint;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.cal-cell-day {
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $radius-pill;
+    font-size: $font-size-11;
+    font-weight: 500;
+    color: $color-text;
+
+    .cal-cell--out & {
+        color: $color-text-faint;
+    }
+
+    &--today {
+        background: $color-accent;
+        color: $color-accent-fg;
+        font-weight: 600;
+    }
+}
+
+.cal-cell-tasks {
+    display: flex;
+    flex-direction: column;
+    gap: $space-1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+// ── Task chip ──
+.cal-chip {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    padding: 2px $space-2 2px 5px;
+    border: 1px solid $color-border;
+    border-left: 2px solid $color-border-strong;
+    border-radius: $radius-xs;
+    background: $color-surface;
+    font-size: $font-size-11;
+    line-height: 1.3;
+    cursor: grab;
+    user-select: none;
+
+    &:hover {
+        background: $color-surface-muted;
+    }
+
+    &--done {
+        opacity: 0.6;
+
+        .cal-chip-name {
+            text-decoration: line-through;
+            color: $color-text-subtle;
+        }
+    }
+
+    // CDK drag artifacts.
+    &.cdk-drag-preview {
+        box-shadow: $shadow-md;
+        transform: rotate(-1.5deg);
+    }
+
+    &.cdk-drag-placeholder {
+        opacity: 0.3;
+    }
+}
+
+.cal-chip-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.cal-chip-agent {
+    flex-shrink: 0;
+    font-size: 9px;
+    color: $color-ai;
+    line-height: 1;
+}
+
+.cal-chip-name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 500;
+    color: $color-text;
+}
+
+.cal-chip-overdue {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: $color-danger;
+    flex-shrink: 0;
+}
+
+.cal-more {
+    align-self: flex-start;
+    padding: 0 $space-1;
+    border: none;
+    background: transparent;
+    color: $color-text-subtle;
+    font-size: $font-size-10;
+    cursor: pointer;
+
+    &:hover {
+        color: $color-text;
+        text-decoration: underline;
+    }
+}
+
+// CDK drag preview lives at the body level — keep it readable while detached.
+::ng-deep .cal-chip.cdk-drag-preview {
+    border: 1px solid $color-border;
+    border-left: 2px solid $color-border-strong;
+    border-radius: $radius-xs;
+    background: $color-surface;
+    padding: 2px $space-2 2px 5px;
+}
+
+.cdk-drag-animating {
+    transition: transform 180ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+// ── Footer ──
+.cal-footer {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    padding: $space-2 $space-5;
+    border-top: 1px solid $color-border;
+    font-size: $font-size-11;
+    color: $color-text-subtle;
+}
+
+.cal-hint {
+    flex: 1;
+    min-width: 0;
+}
+
+.cal-legend {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-4;
+}
+
+.cal-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+
+    &--warn {
+        color: $color-warn;
+    }
+}
+
+.cal-legend-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+
+    &--overdue {
+        background: $color-danger;
+    }
+}

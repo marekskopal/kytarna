@@ -1,0 +1,29 @@
+.env
+.idea/
+.vscode/
+.DS_Store
+
+# Backend
+backend/vendor/
+backend/.phpunit.result.cache
+backend/.phpunit.cache/
+backend/.phpstan/
+backend/log/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/coverage/
+frontend/e2e/.auth/
+frontend/playwright-report/
+frontend/test-results/
+frontend/out-tsc/
+
+log/
+
+test-ssl/
+
+docker-compose.override.yml
+/.playwright-mcp/
+/.claude/

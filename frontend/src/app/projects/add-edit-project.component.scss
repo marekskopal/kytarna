@@ -1,0 +1,99 @@
+@use 'variables' as *;
+
+.form-page {
+    max-width: 760px;
+}
+
+.page-title {
+    margin-bottom: $space-6;
+}
+
+.form-stack {
+    display: flex;
+    flex-direction: column;
+    gap: $space-5;
+}
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    margin-top: $space-3;
+}
+
+.pf-section {
+    margin-top: $space-9;
+    padding-top: $space-6;
+    border-top: 1px solid $color-border;
+    display: flex;
+    flex-direction: column;
+    gap: $space-5;
+}
+
+.pf-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $space-6;
+}
+
+.pf-column h3 {
+    margin: 0 0 $space-4;
+    font-size: $font-size-15;
+    font-weight: 600;
+}
+
+.pf-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
+}
+
+.pf-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $space-3 $space-4;
+    border: 1px solid $color-border;
+    border-radius: $radius-sm;
+    background: $color-surface;
+    gap: $space-3;
+    font-size: $font-size-13;
+}
+
+.pf-meta {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    flex-wrap: wrap;
+    min-width: 0;
+}
+
+.pf-chip {
+    display: inline-flex;
+    align-items: center;
+    height: 18px;
+    padding: 0 $space-2;
+    border-radius: $radius-xs;
+    background: $color-surface-muted;
+    color: $color-text-muted;
+    font-size: $font-size-11;
+    font-weight: 500;
+
+    &--required {
+        background: $color-danger-soft;
+        color: $color-danger;
+    }
+}
+
+.pf-actions {
+    display: flex;
+    gap: $space-2;
+    flex-shrink: 0;
+}
+
+.muted {
+    color: $color-text-subtle;
+}

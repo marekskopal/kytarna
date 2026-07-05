@@ -1,0 +1,61 @@
+<section class="page admin-page">
+    <header class="page-header">
+        <h1>{{ 'app.admin.title' | translate }}</h1>
+        <nav class="admin-nav">
+            <a routerLink="/admin/users" routerLinkActive="admin-nav-link--active" class="admin-nav-link">{{ 'app.admin.users.title' | translate }}</a>
+            <a routerLink="/admin/workspaces" routerLinkActive="admin-nav-link--active" class="admin-nav-link">{{ 'app.admin.workspaces.title' | translate }}</a>
+        </nav>
+    </header>
+
+    <div class="admin-toolbar">
+        <input
+            type="search"
+            class="input"
+            [placeholder]="'app.admin.users.searchPlaceholder' | translate"
+            [value]="query()"
+            (input)="updateQuery($any($event.target).value)"
+        />
+    </div>
+
+    @if (loading()) {
+        <p class="muted">{{ 'app.actions.loading' | translate }}</p>
+    } @else {
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>{{ 'app.admin.users.email' | translate }}</th>
+                    <th>{{ 'app.admin.users.name' | translate }}</th>
+                    <th>{{ 'app.admin.users.systemRole' | translate }}</th>
+                    <th>{{ 'app.admin.users.workspaces' | translate }}</th>
+                    <th>{{ 'app.admin.users.owned' | translate }}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (u of filtered(); track u.id) {
+                    <tr>
+                        <td>{{ u.email }}</td>
+                        <td>{{ u.name }}</td>
+                        <td>
+                            <span class="role-chip role-chip--{{ u.systemRole.toLowerCase() }}">{{ ('app.admin.users.systemRole.' + u.systemRole) | translate }}</span>
+                        </td>
+                        <td>{{ u.workspaceCount }}</td>
+                        <td>{{ u.ownedWorkspaceCount }}</td>
+                        <td class="admin-table-actions">
+                            <button type="button" class="btn btn-ghost" (click)="toggleSystemRole(u)">
+                                @if (u.systemRole === 'SystemAdmin') {
+                                    {{ 'app.admin.users.demote' | translate }}
+                                } @else {
+                                    {{ 'app.admin.users.promote' | translate }}
+                                }
+                            </button>
+                            <button type="button" class="btn btn-danger-ghost" (click)="deleteUser(u)">{{ 'app.actions.delete' | translate }}</button>
+                        </td>
+                    </tr>
+                } @empty {
+                    <tr><td colspan="6" class="muted">{{ 'app.admin.users.empty' | translate }}</td></tr>
+                }
+            </tbody>
+        </table>
+    }
+</section>
