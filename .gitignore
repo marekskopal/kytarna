@@ -27,3 +27,6 @@ test-ssl/
 docker-compose.override.yml
 /.playwright-mcp/
 /.claude/
+
+# Tab service
+tab-service/node_modules/
