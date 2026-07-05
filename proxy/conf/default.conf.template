@@ -15,14 +15,6 @@ upstream http_backend {
     keepalive 8;
 }
 
-# SaaS marketing/landing site. Mirror fingather's web upstream — the actual
-# `web` service is not yet defined in docker-compose; requests to `/` will
-# 502 until it lands.
-upstream http_web {
-    server web:80;
-    keepalive 16;
-}
-
 server {
     listen 80;
 
@@ -59,7 +51,7 @@ server {
     # attach_file tool carries base64 payloads) may go up to 100m.
     client_max_body_size 2m;
 
-    location ~ ^/api/tasks/[A-Z0-9][A-Z0-9-]*/files$ {
+    location ~ ^/api/lectures/[A-Z0-9][A-Z0-9-]*/files$ {
         client_max_body_size 100m;
 
         proxy_pass http://http_backend;
@@ -79,21 +71,6 @@ server {
 
     if ($host != "${PROXY_HOST}") {
         return  301 $scheme://www.kytario.com$request_uri;
-    }
-
-    location /typo3-web/mcp {
-        proxy_pass http://http_web;
-
-        proxy_http_version 1.1;
-        proxy_set_header Connection "";
-
-        proxy_set_header X-Forwarded-Host $http_host;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header X-Real-IP $remote_addr;
-
-        proxy_buffering off;
-        proxy_cache off;
     }
 
     location = /api/authentication/login {
@@ -247,32 +224,6 @@ server {
         add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
     }
 
-    # RFC 8414 §3.1 / RFC 9728 §3 path-insert discovery URLs for the TYPO3 MCP
-    # extension (issuer = https://host/typo3-web/mcp). `^~` precedence keeps
-    # these out of the catch-all `^/\.well-known/oauth-` regex below, which
-    # routes to the Kytario backend.
-    location ^~ /.well-known/oauth-authorization-server/typo3-web/mcp {
-        proxy_pass http://http_web;
-        proxy_http_version 1.1;
-        proxy_set_header Connection "";
-
-        proxy_set_header X-Forwarded-Host $http_host;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header X-Real-IP $remote_addr;
-    }
-
-    location ^~ /.well-known/oauth-protected-resource/typo3-web/mcp {
-        proxy_pass http://http_web;
-        proxy_http_version 1.1;
-        proxy_set_header Connection "";
-
-        proxy_set_header X-Forwarded-Host $http_host;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header X-Real-IP $remote_addr;
-    }
-
     location ~ ^/\.well-known/oauth- {
         proxy_pass http://http_backend;
         proxy_http_version 1.1;
@@ -287,50 +238,6 @@ server {
         add_header Cache-Control "no-store" always;
         add_header X-Content-Type-Options nosniff always;
         add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
-    }
-
-    location /.well-known/mercure {
-        proxy_pass http://http_backend;
-        proxy_http_version 1.1;
-        proxy_set_header Connection "";
-        proxy_set_header Host $http_host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        # Never trust a client-supplied forwarded host (discovery-URL poisoning).
-        proxy_set_header X-Forwarded-Host "";
-
-        proxy_buffering off;
-        proxy_cache off;
-        proxy_read_timeout 24h;
-        chunked_transfer_encoding off;
-        gzip off;
-
-        add_header Cache-Control "no-store" always;
-        add_header X-Accel-Buffering "no" always;
-        add_header X-Content-Type-Options nosniff always;
-        add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
-    }
-
-    # Monaco editor assets. The TypeScript language worker requires eval, so this
-    # path carries a relaxed CSP that governs ONLY the worker context (the worker
-    # is started from the same-origin worker-proxy.js, not a blob/data URL). The
-    # app document at `location /app` keeps its strict, eval-free policy.
-    location ^~ /app/assets/monaco/ {
-        proxy_pass http://http_frontend;
-        proxy_http_version 1.1;
-        proxy_set_header Connection "";
-        proxy_set_header Host $http_host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        # Never trust a client-supplied forwarded host (discovery-URL poisoning).
-        proxy_set_header X-Forwarded-Host "";
-
-        add_header Referrer-Policy strict-origin-when-cross-origin always;
-        add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
-        add_header X-Content-Type-Options nosniff always;
-        add_header Content-Security-Policy "default-src 'none'; script-src 'self' 'unsafe-eval'; connect-src 'self'; worker-src 'self'" always;
     }
 
     location /app {
@@ -353,30 +260,21 @@ server {
         add_header X-Frame-Options DENY always;
         add_header X-Content-Type-Options nosniff always;
         add_header Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()" always;
-        # style-src uses 'unsafe-inline' (no nonce) because Monaco injects its own
+        # style-src uses 'unsafe-inline' (no nonce) because alphaTab injects its own
         # <style> elements at runtime without a nonce, and per CSP3 a nonce in
         # style-src disables 'unsafe-inline'. script-src stays nonce-based and
-        # eval-free; the eval Monaco's worker needs is scoped to /app/assets/monaco/
-        # above. worker-src 'self' allows the same-origin worker.
+        # eval-free. worker-src 'self' allows same-origin workers (e.g. alphaTab's
+        # rendering/audio worker).
         add_header Content-Security-Policy "default-src 'none'; script-src 'self' 'nonce-$request_id' https://accounts.google.com/gsi/client; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://accounts.google.com/gsi/style; object-src 'none'; base-uri 'self'; connect-src 'self' https://accounts.google.com/gsi/; font-src 'self' https://fonts.gstatic.com; frame-src 'self' https://accounts.google.com/gsi/; frame-ancestors 'none'; img-src 'self' data: https://*.googleusercontent.com; form-action 'self'; manifest-src 'self'; media-src 'self'; worker-src 'self'" always;
 
         sub_filter_once off;
         sub_filter random_nonce_value $request_id;
     }
 
-    location / {
-        proxy_pass http://http_web;
-        proxy_http_version 1.1;
-        proxy_set_header Connection "";
-        proxy_set_header Host $http_host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-
-        add_header Referrer-Policy strict-origin-when-cross-origin always;
-        add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
-        add_header X-Frame-Options SAMEORIGIN always;
-        add_header X-Content-Type-Options nosniff always;
+    # No marketing site in this build — the SPA lives under /app, so the root
+    # just forwards there.
+    location = / {
+        return 301 /app;
     }
 
     location /adminer {

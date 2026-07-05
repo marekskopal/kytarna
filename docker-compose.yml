@@ -33,29 +33,6 @@ services:
             - ${PROXY_SSL_CERT}:/etc/nginx/ssl/server.pem:ro
             - ${PROXY_SSL_KEY}:/etc/nginx/ssl/server.key:ro
 
-    web:
-        build:
-            context: ./web
-            dockerfile: Dockerfile
-        environment:
-            MYSQL_HOST: ${MYSQL_HOST}
-            MYSQL_DATABASE: ${MYSQL_DATABASE_WEB}
-            MYSQL_USER: ${MYSQL_USER}
-            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-            TYPO3_CONTEXT: ${TYPO3_CONTEXT}
-            REVERSE_PROXY_IP: ${REVERSE_PROXY_IP}
-        depends_on:
-            - proxy
-        restart: unless-stopped
-        networks:
-            - frontend
-            - backend
-        volumes:
-            - kytario_web_public:/var/www/html/public
-            - kytario_web_var:/var/www/html/var
-            - kytario_web_config:/var/www/html/config
-            - ./log:/var/www/html/var/log
-
     frontend:
         build:
             context: ./frontend
@@ -99,7 +76,7 @@ services:
             S3_ACCESS_KEY: ${S3_ACCESS_KEY}
             S3_SECRET_KEY: ${S3_SECRET_KEY}
             S3_USE_PATH_STYLE: ${S3_USE_PATH_STYLE}
-            TASK_FILE_MAX_SIZE_MB: ${TASK_FILE_MAX_SIZE_MB}
+            LECTURE_FILE_MAX_SIZE_MB: ${LECTURE_FILE_MAX_SIZE_MB}
             REDIS_HOST: ${REDIS_HOST}
             REDIS_PORT: ${REDIS_PORT}
             REDIS_PASSWORD: ${REDIS_PASSWORD}
@@ -111,12 +88,15 @@ services:
             RABBITMQ_USER: ${RABBITMQ_USER}
             RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD}
             BACKEND_AMQP_CONSUMER_PREFETCH: ${BACKEND_AMQP_CONSUMER_PREFETCH}
+            TAB_SERVICE_URL: ${TAB_SERVICE_URL}
         depends_on:
             redis:
                 condition: service_healthy
             memcached:
                 condition: service_started
             rabbitmq:
+                condition: service_healthy
+            tab-service:
                 condition: service_healthy
         restart: unless-stopped
         healthcheck:
@@ -129,6 +109,23 @@ services:
             - backend
         volumes:
             - ./log:/app/log
+
+    tab-service:
+        build:
+            context: ./tab-service
+            dockerfile: Dockerfile
+        environment:
+            TAB_SERVICE_PORT: ${TAB_SERVICE_PORT}
+            TAB_SERVICE_MAX_BODY_BYTES: ${TAB_SERVICE_MAX_BODY_BYTES}
+        restart: unless-stopped
+        healthcheck:
+            test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:'+(process.env.TAB_SERVICE_PORT||8080)+'/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+            start_period: 10s
+        networks:
+            - backend
 
     db:
         image: mariadb:11.8
@@ -258,9 +255,3 @@ volumes:
         name: kytario_redis
     kytario_rabbitmq:
         name: kytario_rabbitmq
-    kytario_web_public:
-        name: kytario_web_public
-    kytario_web_var:
-        name: kytario_web_var
-    kytario_web_config:
-        name: kytario_web_config
