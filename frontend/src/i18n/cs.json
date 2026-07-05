@@ -52,7 +52,10 @@
       "newWorkspace": "+ Nový pracovní prostor",
       "manageWorkspaces": "Spravovat pracovní prostory",
       "aiPalette": "Otevřít paletu příkazů agenta",
-      "openUserMenu": "Otevřít uživatelské menu"
+      "openUserMenu": "Otevřít uživatelské menu",
+      "library": "Knihovna",
+      "search": "Hledat…",
+      "toggleTheme": "Přepnout motiv"
     },
     "agent": {
       "agent": "agent",
@@ -243,7 +246,18 @@
       "updated": "Kurz aktualizován.",
       "edit": "Upravit kurz",
       "namePlaceholder": "Název kurzu",
-      "descriptionPlaceholder": "Volitelný popis"
+      "descriptionPlaceholder": "Volitelný popis",
+      "workspaceOverline": "Pracovní prostor",
+      "librarySubtitle": "{{courses}} kurzů · {{mastered}} zvládnuto · {{working}} rozpracováno",
+      "workingOn": "Na čem pracuji",
+      "inProgress": "{{count}} rozpracováno",
+      "coursesSection": "Kurzy",
+      "recentlyMastered": "Nedávno zvládnuto",
+      "masteredTotal": "{{count}} celkem",
+      "lectureCount": "{{count}} lekcí",
+      "agentCreated": "Vytvořeno agentem",
+      "noWorking": "Zatím nic rozpracováno.",
+      "formOverline": "Kurz"
     },
     "board": {
       "addLecture": "+ Přidat lekci",
@@ -299,6 +313,7 @@
           "capo": "Kapodastr (pražec)",
           "targetTempo": "Cílové tempo (BPM)",
           "difficulty": "Obtížnost",
+          "currentTarget": "Aktuální · Cíl",
           "difficultyNone": "—",
           "difficulties": {
             "Beginner": "Začátečník",
@@ -308,7 +323,17 @@
         }
       },
       "card": {
-        "capo": "Kapo"
+        "capo": "Kapo",
+        "masteredAt": "Zvládnuto na {{bpm}} BPM",
+        "mastered": "Zvládnuto",
+        "targetBpm": "Cíl {{bpm}} BPM"
+      },
+      "course": {
+        "overline": "Kurz",
+        "ringLabel": "Zvládnuto",
+        "lecturesCount": "{{count}} lekcí",
+        "masteredCount": "{{count}} zvládnuto",
+        "learningCount": "{{count}} v učení"
       }
     },
     "workflow": {
@@ -633,6 +658,7 @@
     },
     "tabs": {
       "new": "Nový tab",
+      "read": "Číst",
       "import": "Importovat .gp",
       "importing": "Importuji…",
       "imported": "Tab importován.",
@@ -649,6 +675,7 @@
         "validationFailed": "Validace alphaTex selhala:",
         "lineCol": "řádek {{line}}:{{col}}",
         "validateAndPreview": "Ověřit a zobrazit",
+        "sourceLabel": "Zdroj alphaTex",
         "preview": "Náhled"
       },
       "meta": {
@@ -660,6 +687,9 @@
     "progress": {
       "totalSessions": "Lekcí",
       "totalMinutes": "Minut",
+      "currentBpm": "Aktuální BPM",
+      "summaryClimbing": "Tempo roste",
+      "practiceLog": "Deník cvičení",
       "bpmTrend": "Vývoj BPM",
       "date": "Datum",
       "bpm": "Dosažené BPM",

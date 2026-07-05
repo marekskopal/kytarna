@@ -28,29 +28,78 @@
 
 // ─── Topbar ───────────────────────────────────────────────
 .topbar {
+    position: sticky;
+    top: 0;
+    z-index: $z-overlay;
     display: flex;
     align-items: center;
     gap: 14px;
-    height: $header-height;
-    padding: 0 $space-6;
-    background: $color-surface;
-    border-bottom: 1px solid $color-border;
+    height: 64px;
+    padding: 0 $space-8;
+    background: $color-surface-deep;
+    border-bottom: 1px solid $color-border-strong;
+    transition: background 0.4s ease;
+
+    @media (max-width: 640px) {
+        gap: 10px;
+        padding: 0 $space-5;
+    }
 }
 
 .brand {
     display: inline-flex;
     align-items: center;
+    gap: 11px;
+    flex: 0 0 auto;
     color: $color-text;
     text-decoration: none;
 
     &:hover { text-decoration: none; }
 }
 
+.brand-tile {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: $radius-sm;
+    background: $color-accent;
+    box-shadow: 0 2px 8px $color-accent-soft;
+    flex: 0 0 auto;
+}
+
+.brand-tile-mark {
+    width: 11px;
+    height: 11px;
+    border: 2px solid #fff;
+    border-radius: 2px;
+    transform: rotate(45deg);
+}
+
+.brand-name {
+    font-family: $font-display;
+    font-size: $font-size-24;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0.2px;
+    color: $color-text;
+
+    @media (max-width: 520px) {
+        display: none;
+    }
+}
+
 .topbar-divider {
     width: 1px;
-    height: 18px;
-    background: $color-border;
+    height: 26px;
+    background: $color-border-strong;
     margin: 0 $space-1;
+    flex: 0 0 auto;
+
+    @media (max-width: 720px) {
+        display: none;
+    }
 }
 
 .topbar-spacer {
@@ -84,6 +133,10 @@
     .workspace-name {
         color: $color-text;
         font-weight: 500;
+
+        @media (max-width: 640px) {
+            display: none;
+        }
     }
 
     .icon-down {
@@ -96,32 +149,129 @@
 .nav {
     display: flex;
     align-items: center;
-    gap: 2px;
+    gap: 4px;
+    flex: 1 1 auto;
+    min-width: 0;
     margin-left: $space-3;
+    overflow-x: auto;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar { height: 0; }
 }
 
 .nav-link {
     display: inline-flex;
     align-items: center;
-    padding: $space-2 $space-4;
-    border-radius: $radius-sm;
+    gap: $space-3;
+    flex: 0 0 auto;
+    padding: $space-3 13px;
+    border-radius: 9px;
     background: transparent;
     color: $color-text-muted;
-    font-size: $font-size-13;
+    font-size: 13.5px;
+    font-weight: 600;
+    white-space: nowrap;
     text-decoration: none;
-    transition: background 80ms ease, color 80ms ease;
+    transition: background 120ms ease, color 120ms ease, box-shadow 120ms ease;
 
     &:hover {
-        background: $color-surface-muted;
         color: $color-text;
         text-decoration: none;
     }
 
     &--active {
-        background: $color-surface-muted;
+        background: $color-surface;
         color: $color-text;
-        font-weight: 500;
+        box-shadow: $shadow-sm;
     }
+}
+
+.nav-bullet {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+    flex: 0 0 auto;
+
+    &--library {
+        border-radius: 2px;
+        background: $color-accent;
+        transform: rotate(45deg);
+    }
+
+    &--gold  { background: $color-warn; }
+    &--green { background: $color-success; }
+    &--info  { background: $color-info; }
+    &--muted { background: $color-text-subtle; }
+}
+
+// ─── Search pill + theme toggle ───────────────────────────
+.search-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-3;
+    flex: 0 0 auto;
+    height: 36px;
+    padding: 0 $space-5;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    background: $color-surface;
+    color: $color-text-subtle;
+    font: inherit;
+    font-size: $font-size-13;
+    cursor: pointer;
+    transition: border-color 120ms ease, color 120ms ease;
+
+    &:hover { border-color: $color-border-hover; color: $color-text-muted; }
+    &:focus-visible { outline: none; box-shadow: $ring; }
+
+    @media (max-width: 860px) {
+        .search-pill-label { display: none; }
+        padding: 0;
+        width: 36px;
+        justify-content: center;
+    }
+}
+
+.search-pill-ico {
+    position: relative;
+    width: 13px;
+    height: 13px;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    flex: 0 0 auto;
+
+    &::after {
+        content: '';
+        position: absolute;
+        right: -3px;
+        bottom: -3px;
+        width: 5px;
+        height: 2px;
+        background: currentColor;
+        border-radius: 2px;
+        transform: rotate(45deg);
+    }
+}
+
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 36px;
+    height: 36px;
+    border: 1px solid $color-border-strong;
+    border-radius: 9px;
+    background: $color-surface;
+    color: $color-text-muted;
+    font-size: $font-size-15;
+    line-height: 1;
+    cursor: pointer;
+    transition: border-color 120ms ease, color 120ms ease;
+
+    &:hover { border-color: $color-border-hover; color: $color-text; }
+    &:focus-visible { outline: none; box-shadow: $ring; }
 }
 
 // ─── User avatar trigger ──────────────────────────────────
@@ -130,14 +280,17 @@
 }
 
 .user-menu-trigger {
-    width: 24px;
-    height: 24px;
-    font-size: 10px;
+    width: 34px;
+    height: 34px;
+    font-size: $font-size-12;
+    font-weight: 700;
     cursor: pointer;
-    background: $color-warn-soft;
-    color: $color-warn;
-    border: 1px solid $color-surface;
-    transition: box-shadow 80ms ease;
+    background: linear-gradient(135deg, $color-warn, $color-accent);
+    color: #fff;
+    border: none;
+    transition: box-shadow 80ms ease, filter 120ms ease;
+
+    &:hover { filter: brightness(1.05); }
 
     &:focus-visible {
         outline: none;

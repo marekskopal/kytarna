@@ -94,6 +94,11 @@ export class LectureLinksComponent implements OnInit {
         return `${link.url}${sep}t=${link.timestampSeconds}`;
     }
 
+    /** Short glyph label for the tile of a non-YouTube link (PDF documents vs. generic references). */
+    protected glyphLabel(link: LectureLink): string {
+        return /\.pdf(\?|#|$)/i.test(link.url) ? 'PDF' : 'REF';
+    }
+
     protected formatTimestamp(seconds: number): string {
         const m = Math.floor(seconds / 60);
         const s = seconds % 60;

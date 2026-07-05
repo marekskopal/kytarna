@@ -1,46 +1,134 @@
-<div class="page-header">
-    <div>
-        <h1 class="page-title">{{ 'app.courses.title' | translate }}</h1>
-    </div>
-    @if (canManageCourses()) {
-        <a routerLink="/courses/new" class="btn btn-primary">{{ 'app.courses.new' | translate }}</a>
+<div class="library">
+    @if (loading()) {
+        <p class="text-muted">{{ 'app.actions.loading' | translate }}</p>
+    } @else {
+        <header class="lib-header">
+            <div class="lib-header-main">
+                <div class="lib-overline">{{ 'app.courses.workspaceOverline' | translate }}</div>
+                <h1 class="lib-title">{{ workspaceName() || ('app.courses.title' | translate) }}</h1>
+                <p class="lib-subtitle">
+                    {{ 'app.courses.librarySubtitle' | translate:{courses: courses().length, mastered: masteredCount(), working: workingCount()} }}
+                </p>
+            </div>
+            @if (canManageCourses()) {
+                <a routerLink="/courses/new" class="btn btn-primary btn-lg">{{ 'app.courses.new' | translate }}</a>
+            }
+        </header>
+
+        @if (courses().length === 0) {
+            <div class="empty-state">
+                <p>{{ 'app.courses.empty' | translate }}</p>
+                @if (canManageCourses()) {
+                    <a routerLink="/courses/new" class="btn-link">{{ 'app.courses.new' | translate }} →</a>
+                }
+            </div>
+        } @else {
+            @if (workingCards().length > 0) {
+                <div class="section-head">
+                    <h2 class="section-title">{{ 'app.courses.workingOn' | translate }}</h2>
+                    <span class="section-meta">{{ 'app.courses.inProgress' | translate:{count: workingCount()} }}</span>
+                </div>
+                <div class="working-grid">
+                    @for (w of workingCards(); track w.id) {
+                        <a class="working-card" [routerLink]="['/courses', w.courseId, 'board']" [queryParams]="{openLecture: w.id}">
+                            <div class="working-card-top">
+                                <span class="course-overline">{{ w.courseName }}</span>
+                                @if (w.agent) {
+                                    <span class="agent-badge" [attr.title]="'app.courses.agentCreated' | translate" aria-hidden="true">
+                                        <span class="agent-badge-mark"></span>
+                                    </span>
+                                }
+                            </div>
+                            <div class="working-card-title">{{ w.name }}</div>
+                            <div class="chip-row">
+                                @if (w.tuning) {
+                                    <span class="chip">{{ w.tuning }}</span>
+                                }
+                                @if (w.difficulty) {
+                                    <span class="chip" [style.color]="diffColor(w.difficulty)">{{ w.difficulty }}</span>
+                                }
+                            </div>
+                            <div class="progress-block">
+                                <div class="progress-labels">
+                                    <span>{{ w.current ?? '—' }} → {{ w.target ?? '—' }} BPM</span>
+                                    <span>{{ w.pct }}%</span>
+                                </div>
+                                <div class="progress-track">
+                                    <div class="progress-fill" [style.width.%]="w.pct"></div>
+                                </div>
+                            </div>
+                        </a>
+                    }
+                </div>
+            }
+
+            <div class="section-head">
+                <h2 class="section-title">{{ 'app.courses.coursesSection' | translate }}</h2>
+            </div>
+            <div class="course-grid">
+                @for (c of courseCards(); track c.id) {
+                    <div class="course-card">
+                        <a class="course-card-main" [routerLink]="['/courses', c.id, 'board']">
+                            <div class="course-card-top">
+                                <div class="course-card-name">{{ c.name }}</div>
+                                <div class="ring">
+                                    <svg width="42" height="42" viewBox="0 0 42 42" class="ring-svg" aria-hidden="true">
+                                        <circle cx="21" cy="21" r="18" fill="none" stroke="var(--color-border-strong)" stroke-width="4" />
+                                        <circle
+                                            cx="21"
+                                            cy="21"
+                                            r="18"
+                                            fill="none"
+                                            [attr.stroke]="c.dot"
+                                            stroke-width="4"
+                                            stroke-linecap="round"
+                                            [attr.stroke-dasharray]="c.ringDash"
+                                        />
+                                    </svg>
+                                    <div class="ring-label">{{ c.ringPct }}%</div>
+                                </div>
+                            </div>
+                            @if (c.description) {
+                                <p class="course-card-desc">{{ c.description }}</p>
+                            }
+                            <div class="course-card-foot">
+                                <span class="lecture-count">{{ 'app.courses.lectureCount' | translate:{count: c.total} }}</span>
+                            </div>
+                        </a>
+                        @if (canManageCourses()) {
+                            <div class="course-card-actions">
+                                <a [routerLink]="['/courses', c.id, 'edit']" class="muted-link">{{ 'app.actions.edit' | translate }}</a>
+                                <span class="sep" aria-hidden="true">·</span>
+                                <button type="button" class="btn-danger-link" (click)="onDelete(c)">{{ 'app.actions.delete' | translate }}</button>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+
+            @if (masteredRows().length > 0) {
+                <div class="section-head">
+                    <h2 class="section-title">{{ 'app.courses.recentlyMastered' | translate }}</h2>
+                    <span class="section-meta section-meta--green">◆ {{ 'app.courses.masteredTotal' | translate:{count: masteredCount()} }}</span>
+                </div>
+                <div class="mastered-list">
+                    @for (m of masteredRows(); track m.id) {
+                        <a class="mastered-row" [routerLink]="['/courses', m.courseId, 'board']" [queryParams]="{openLecture: m.id}">
+                            <span class="check-circle" aria-hidden="true"><span class="check-mark"></span></span>
+                            <div class="mastered-row-main">
+                                <div class="mastered-row-name">{{ m.name }}</div>
+                                <div class="mastered-row-course">{{ m.courseName }}</div>
+                            </div>
+                            @if (m.tuning) {
+                                <span class="chip">{{ m.tuning }}</span>
+                            }
+                            @if (m.bpm !== null) {
+                                <span class="mastered-bpm">{{ m.bpm }} BPM</span>
+                            }
+                        </a>
+                    }
+                </div>
+            }
+        }
     }
 </div>
-
-@if (loading()) {
-    <p class="text-muted">{{ 'app.actions.loading' | translate }}</p>
-} @else if (courses().length === 0) {
-    <div class="empty-state">
-        <p>{{ 'app.courses.empty' | translate }}</p>
-        @if (canManageCourses()) {
-            <a routerLink="/courses/new" class="btn-link">{{ 'app.courses.new' | translate }} →</a>
-        }
-    </div>
-} @else {
-    <ul class="course-grid">
-        @for (course of courses(); track course.id) {
-            <li class="course-card">
-                <div class="course-card-head">
-                    <a [routerLink]="['/courses', course.id, 'board']" class="course-name">{{ course.name }}</a>
-                    @if (canManageCourses()) {
-                        <div class="course-actions">
-                            <a [routerLink]="['/courses', course.id, 'edit']" class="muted-link">{{ 'app.actions.edit' | translate }}</a>
-                            <span class="separator">·</span>
-                            <button type="button" class="btn-danger-link course-delete" (click)="onDelete(course)">{{ 'app.actions.delete' | translate }}</button>
-                        </div>
-                    }
-                </div>
-                @if (course.description) {
-                    <p class="course-description">{{ course.description }}</p>
-                }
-                <div class="course-links">
-                    <a [routerLink]="['/courses', course.id, 'board']" class="btn-link">{{ 'app.courses.openBoard' | translate }}</a>
-                    @if (canManageCourses()) {
-                        <a [routerLink]="['/courses', course.id, 'workflow']" class="muted-link">{{ 'app.courses.workflow' | translate }}</a>
-                    }
-                    <a [routerLink]="['/courses', course.id, 'events']" class="muted-link">{{ 'app.courses.history' | translate }}</a>
-                </div>
-            </li>
-        }
-    </ul>
-}

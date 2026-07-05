@@ -14,15 +14,34 @@
                     }
                 </button>
             }
+            <button type="button" class="lecture-tab-add" (click)="startCreate()">
+                + {{ 'app.tabs.new' | translate }}
+            </button>
         </div>
         <div class="lecture-tabs-actions">
-            <button type="button" class="btn btn-ghost btn-sm" (click)="startCreate()">
-                {{ 'app.tabs.new' | translate }}
-            </button>
-            <label class="btn btn-ghost btn-sm file-upload-trigger" [class.is-disabled]="importing()">
+            <label class="tab-import-btn file-upload-trigger" [class.is-disabled]="importing()">
+                <svg width="12" height="12" viewBox="0 0 16 16" aria-hidden="true">
+                    <path d="M8 10V2M5 5l3-3 3 3M3 11.5A1.5 1.5 0 0 0 4.5 13h7a1.5 1.5 0 0 0 1.5-1.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
                 {{ (importing() ? 'app.tabs.importing' : 'app.tabs.import') | translate }}
                 <input type="file" class="file-upload-input" accept=".gp,.gp3,.gp4,.gp5,.gpx,.gp7" (change)="onImportSelected($event)" [disabled]="importing()" />
             </label>
+            @if (selectedTab() && mode() !== 'create') {
+                <div class="tab-mode-toggle" role="group">
+                    <button
+                        type="button"
+                        class="tab-mode-btn"
+                        [class.tab-mode-btn--active]="mode() === 'view'"
+                        (click)="cancelEdit()"
+                    >{{ 'app.tabs.read' | translate }}</button>
+                    <button
+                        type="button"
+                        class="tab-mode-btn"
+                        [class.tab-mode-btn--active]="mode() === 'edit'"
+                        (click)="startEdit()"
+                    >{{ 'app.actions.edit' | translate }}</button>
+                </div>
+            }
         </div>
     </div>
 
@@ -36,25 +55,35 @@
         @if (mode() === 'edit') {
             <uk-tab-editor [lectureId]="lectureId()" [tab]="tab" (saved)="onSaved($event)" (cancelled)="cancelEdit()" />
         } @else {
-            <div class="lecture-tab-meta">
-                @if (tab.tuning) {
-                    <span class="uk-badge">{{ 'app.tabs.meta.tuning' | translate }}: {{ tab.tuning }}</span>
-                }
-                @if (tab.tempo !== null) {
-                    <span class="uk-badge">{{ 'app.tabs.meta.tempo' | translate }}: {{ tab.tempo }}</span>
-                }
-                @if (tab.trackCount !== null) {
-                    <span class="uk-badge">{{ 'app.tabs.meta.tracks' | translate }}: {{ tab.trackCount }}</span>
-                }
-                <span class="lecture-tab-meta-spacer"></span>
-                <button type="button" class="btn btn-ghost btn-sm" (click)="startEdit()">
-                    {{ 'app.actions.edit' | translate }}
-                </button>
-                <button type="button" class="btn btn-danger-ghost btn-sm" (click)="onDelete()">
-                    {{ 'app.actions.delete' | translate }}
-                </button>
+            <div class="tab-sheet">
+                <div class="tab-sheet-head">
+                    <div class="tab-sheet-title">{{ tab.name }}</div>
+                    <div class="tab-sheet-meta uk-mono">
+                        @if (tab.tempo !== null) {
+                            <span>&#9833; = {{ tab.tempo }}</span>
+                        }
+                        @if (tab.trackCount !== null) {
+                            <span>{{ 'app.tabs.meta.tracks' | translate }}: {{ tab.trackCount }}</span>
+                        }
+                        @if (tab.tuning) {
+                            <span>{{ 'app.tabs.meta.tuning' | translate }}: {{ tab.tuning }}</span>
+                        }
+                        <button
+                            type="button"
+                            class="btn btn-danger-ghost btn-icon btn-sm tab-sheet-delete"
+                            (click)="onDelete()"
+                            [attr.aria-label]="'app.actions.delete' | translate"
+                        >
+                            <svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true">
+                                <path d="M3 3l10 10M13 3L3 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="tab-sheet-paper">
+                    <uk-tab-viewer [alphaTex]="tab.alphatexContent" />
+                </div>
             </div>
-            <uk-tab-viewer [alphaTex]="tab.alphatexContent" />
         }
     }
 </div>

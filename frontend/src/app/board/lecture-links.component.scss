@@ -1,68 +1,126 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
 .lecture-links {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: $space-7;
 }
 
 .links-form-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: $space-3;
     align-items: center;
 }
 
-.links-url {
-    flex: 2 1 220px;
+.links-url { flex: 2 1 220px; }
+.links-label { flex: 1 1 140px; }
+.links-ts { flex: 0 1 110px; }
+
+.links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: $space-4;
 }
 
-.links-label {
-    flex: 1 1 140px;
+.link-card {
+    display: flex;
+    align-items: center;
+    gap: $space-5;
+    padding: $space-5;
+    border: 1px solid $color-border;
+    border-radius: $radius-lg;
+    background: $color-surface;
+    box-shadow: $shadow-sm;
+    transition: border-color 120ms ease, box-shadow 120ms ease, transform 120ms ease;
+
+    &:hover {
+        border-color: $color-border-hover;
+        box-shadow: $shadow-md;
+        transform: translateY(-2px);
+    }
 }
 
-.links-ts {
-    flex: 0 1 110px;
+.link-tile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: $radius-md;
+    flex-shrink: 0;
+    background: $color-warn; // gold for references / PDFs
+
+    .link-card--youtube & {
+        background: $color-accent; // terracotta for YouTube
+    }
 }
 
-.links-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+.link-tile-play {
+    width: 0;
+    height: 0;
+    border-left: 12px solid $color-accent-fg;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    margin-left: 3px;
+}
+
+.link-tile-label {
+    font-family: $font-mono;
+    font-size: $font-size-11;
+    font-weight: 700;
+    color: $color-accent-fg;
+}
+
+.link-body {
+    flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: $space-1;
 }
 
-.links-item {
+.link-title {
+    color: $color-text;
+    font-size: $font-size-14;
+    font-weight: 600;
+    line-height: 1.3;
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &:hover { text-decoration: underline; }
+    @include focus-ring;
+}
+
+.link-meta {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 6px 0;
-    border-bottom: 1px solid var(--uk-color-border, #f0f0f2);
+    gap: $space-3;
+    font-size: $font-size-11;
+    color: $color-text-subtle;
 }
 
-.links-icon {
+.link-ts { color: $color-text-muted; }
+
+.link-chevron {
     display: inline-flex;
-    color: var(--uk-color-text-subtle, #71717a);
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: $color-text-subtle;
 }
 
-.links-item--youtube .links-icon {
-    color: #c4302b;
+.link-chevron-glyph {
+    width: 7px;
+    height: 7px;
+    border-top: 2px solid currentColor;
+    border-right: 2px solid currentColor;
+    transform: rotate(45deg);
 }
 
-.links-anchor {
-    text-decoration: none;
-    word-break: break-all;
-}
-
-.links-anchor:hover {
-    text-decoration: underline;
-}
-
-.links-ts-badge {
-    font-size: 11px;
-    opacity: 0.7;
-}
-
-.links-item-spacer {
-    flex: 1 1 auto;
+.link-delete {
+    flex-shrink: 0;
 }

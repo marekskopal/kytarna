@@ -1,116 +1,230 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
 .lecture-progress {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: $space-7;
 }
 
-.progress-summary {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 24px;
-    align-items: flex-end;
-}
-
-.progress-totals {
-    display: flex;
-    gap: 24px;
-}
-
-.progress-total-value {
-    font-size: 26px;
-    font-weight: 700;
-    line-height: 1.1;
-}
-
-.progress-spark {
+// ═══ Summary + sparkline ════════════════════════════════════
+.progress-summary-card {
+    border: 1px solid $color-border;
+    border-radius: $radius-xl;
+    background: $color-surface;
+    box-shadow: $shadow-sm;
+    padding: $space-7;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: $space-6;
+}
+
+.progress-summary-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-4;
+}
+
+.progress-summary-title {
+    margin: 0;
+    font-family: $font-display;
+    font-weight: 400;
+    font-style: italic;
+    font-size: $font-size-24;
+    color: $color-text;
+}
+
+.progress-summary-gain {
+    font-size: $font-size-12;
+    color: $color-success;
+    white-space: nowrap;
+}
+
+.progress-stats {
+    display: flex;
+    gap: $space-9;
+    flex-wrap: wrap;
+}
+
+.progress-stat-value {
+    font-family: $font-display;
+    font-size: $font-size-30;
+    line-height: 1;
+    color: $color-text;
+
+    &--accent { color: $color-accent; }
+}
+
+.progress-stat-label {
+    margin-top: $space-2;
+    font-size: $font-size-10;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $color-text-subtle;
 }
 
 .progress-spark-svg {
-    max-width: 100%;
-    height: 48px;
+    width: 100%;
+    height: 96px;
+    overflow: visible;
 }
 
 .progress-spark-range {
-    font-size: 11px;
-    opacity: 0.7;
+    font-size: $font-size-11;
+    color: $color-text-subtle;
 }
 
-.progress-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 12px;
-    border: 1px solid var(--uk-color-border, #e4e4e7);
-    border-radius: 8px;
-}
-
-.progress-form-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.progress-field {
-    flex: 1 1 120px;
-}
-
-.field {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.progress-form-actions {
-    display: flex;
-    justify-content: flex-end;
-}
-
+// ═══ Practice log timeline ══════════════════════════════════
 .progress-timeline {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: $space-5;
+}
+
+.progress-timeline-heading {
+    margin: 0;
+    font-size: $font-size-11;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: $color-text-subtle;
 }
 
 .progress-list {
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 0 0 0 $space-7;
+    position: relative;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: $space-5;
+
+    // the vertical timeline rail
+    &::before {
+        content: '';
+        position: absolute;
+        left: 5px;
+        top: 6px;
+        bottom: 6px;
+        width: 2px;
+        background: $color-border-strong;
+    }
 }
 
 .progress-item {
+    position: relative;
+}
+
+.progress-item-dot {
+    position: absolute;
+    left: -20px;
+    top: 6px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: $color-border-strong;
+    border: 2px solid $color-surface;
+    box-shadow: 0 0 0 1px $color-border-strong;
+
+    &--current {
+        background: $color-accent;
+        box-shadow: 0 0 0 1px $color-accent;
+    }
+}
+
+.progress-item-card {
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    background: $color-surface;
+    padding: $space-4 $space-5;
+}
+
+.progress-item-top {
     display: flex;
-    gap: 12px;
-    align-items: flex-start;
-    padding: 8px 0;
-    border-bottom: 1px solid var(--uk-color-border, #f0f0f2);
+    align-items: center;
+    gap: $space-3;
 }
 
 .progress-item-date {
-    font-size: 12px;
-    min-width: 84px;
-    padding-top: 2px;
-}
-
-.progress-item-body {
-    flex: 1 1 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+    font-weight: 600;
+    font-size: $font-size-13;
+    color: $color-text;
 }
 
 .progress-item-stats {
     display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
+    gap: $space-4;
+    margin-left: auto;
+    font-size: $font-size-12;
+}
+
+.progress-item-bpm { color: $color-accent; }
+.progress-item-min { color: $color-text-subtle; }
+
+.progress-item-delete {
+    flex-shrink: 0;
 }
 
 .progress-item-note {
+    margin: $space-2 0 0;
+    font-size: $font-size-13;
+    line-height: 1.5;
+    color: $color-text-muted;
+}
+
+// ═══ Log a session form ═════════════════════════════════════
+.progress-form {
+    border: 1px solid $color-border;
+    border-radius: $radius-xl;
+    background: $color-surface;
+    box-shadow: $shadow-sm;
+    padding: $space-7;
+    display: flex;
+    flex-direction: column;
+    gap: $space-5;
+}
+
+.progress-form-title {
     margin: 0;
-    font-size: 13px;
+    font-family: $font-display;
+    font-weight: 400;
+    font-style: italic;
+    font-size: $font-size-24;
+    color: $color-text;
+}
+
+.progress-form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-4;
+}
+
+.progress-field {
+    flex: 1 1 100px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
+}
+
+.field-label {
+    font-size: $font-size-10;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $color-text-subtle;
+}
+
+.progress-note {
+    height: auto;
+    min-height: 60px;
+    padding: $space-3 $space-4;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+.progress-form-actions {
+    display: flex;
+    justify-content: flex-end;
 }

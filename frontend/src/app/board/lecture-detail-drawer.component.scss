@@ -1,4 +1,5 @@
 @use 'variables' as *;
+@use 'mixins' as *;
 
 .drawer-backdrop {
     position: fixed;
@@ -23,113 +24,280 @@
     flex-direction: column;
 }
 
-// ─── Header (48 px) ─────────────────────────────────────────
-.drawer-header {
-    display: flex;
-    align-items: center;
-    gap: $space-3;
-    height: $header-height;
-    padding: 0 $space-5;
-    border-bottom: 1px solid $color-border;
-    flex-shrink: 0;
-}
-
-.drawer-id {
-    color: $color-text-subtle;
-    font-size: $font-size-12;
-    letter-spacing: 0.02em;
-}
-
-.drawer-divider {
-    width: 1px;
-    height: 18px;
-    background: $color-border;
-}
-
-.drawer-status {
-    display: inline-flex;
-    align-items: center;
-    gap: $space-2;
-    padding: 0 $space-3;
-    height: $h-sm;
-    border: 1px solid $color-border-strong;
-    border-radius: $radius-sm;
-    background: $color-surface;
-    cursor: pointer;
-    transition: border-color 80ms ease, box-shadow 80ms ease;
-
-    &:hover { border-color: $color-border-focus; }
-    &:focus-within {
-        border-color: $color-border-focus;
-        box-shadow: $ring;
-    }
-}
-
-.drawer-status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-}
-
-.drawer-status-select {
-    appearance: none;
-    -webkit-appearance: none;
-    background: transparent;
-    border: 0;
-    padding: 0 16px 0 0;
-    font: inherit;
-    font-size: $font-size-13;
-    color: $color-text;
-    cursor: pointer;
-    outline: none;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'><path fill='none' stroke='%2352525b' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round' d='M3 4.5l3 3 3-3'/></svg>");
-    background-repeat: no-repeat;
-    background-position: right center;
-}
-
 .drawer-spacer {
     flex: 1;
 }
 
-// ─── Body ───────────────────────────────────────────────────
-.drawer-body {
-    flex: 1;
-    overflow-y: auto;
-    padding: $space-7 $space-6;
-    display: flex;
-    flex-direction: column;
-    gap: $space-7;
+// ═══ Header band ════════════════════════════════════════════
+.lecture-hero {
+    flex-shrink: 0;
+    padding: $space-5 $space-7 0;
+    background: $color-surface-deep;
+    border-bottom: 1px solid $color-border-strong;
 }
 
-// Inline-editable title — no border, just type.
-.drawer-title-input {
+.hero-topbar {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    margin-bottom: $space-4;
+}
+
+.hero-back {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-3;
+    padding: $space-1 0;
+    border: 0;
+    background: none;
+    color: $color-text-muted;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+
+    @include focus-ring;
+
+    &:hover { color: $color-text; }
+
+    .uk-mono { font-size: $font-size-12; }
+}
+
+.hero-back-glyph {
+    width: 7px;
+    height: 7px;
+    border-left: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg);
+    flex-shrink: 0;
+}
+
+.hero-main {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: $space-6;
+    flex-wrap: wrap;
+}
+
+.hero-lead {
+    min-width: 0;
+    flex: 1 1 240px;
+}
+
+.hero-badges {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    flex-wrap: wrap;
+    min-height: 22px;
+    margin-bottom: $space-3;
+}
+
+.hero-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    padding: 3px $space-4;
+    border-radius: $radius-pill;
+    border: 1px solid currentColor;
+    background: $color-surface;
+    font-family: $font-mono;
+    font-size: $font-size-11;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 1;
+}
+
+.hero-status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+
+    &--glow {
+        box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 28%, transparent);
+        animation: hero-dot-glow 2s ease infinite;
+    }
+}
+
+@keyframes hero-dot-glow {
+    0%, 100% { box-shadow: 0 0 0 2px color-mix(in srgb, currentColor 26%, transparent); }
+    50% { box-shadow: 0 0 0 4px color-mix(in srgb, currentColor 12%, transparent); }
+}
+
+.hero-agent-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    padding: 3px $space-4;
+    border-radius: $radius-pill;
+    border: 1px solid $color-ai-border;
+    background: $color-ai-soft;
+    color: $color-ai;
+    font-family: $font-mono;
+    font-size: $font-size-11;
+    line-height: 1;
+}
+
+.hero-agent-glyph {
+    width: 7px;
+    height: 7px;
+    background: $color-ai;
+    transform: rotate(45deg);
+    flex-shrink: 0;
+}
+
+.hero-title-input {
     width: 100%;
     margin: 0;
     padding: 0;
     border: 0;
     background: transparent;
     color: $color-text;
-    font-family: inherit;
-    font-size: $font-size-20;
-    font-weight: 600;
+    font-family: $font-display;
+    font-weight: 400;
+    font-size: $font-size-40;
+    line-height: 1.05;
     letter-spacing: $tracking-tight;
-    line-height: 1.3;
 
-    &:focus {
-        outline: none;
-        box-shadow: none;
+    &:focus { outline: none; box-shadow: none; }
+    &::placeholder { color: $color-text-faint; }
+}
+
+.hero-bpm {
+    flex: 0 0 auto;
+    text-align: right;
+}
+
+.hero-bpm-caption {
+    font-size: $font-size-10;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $color-text-subtle;
+    margin-bottom: $space-1;
+}
+
+.hero-bpm-value {
+    font-family: $font-display;
+    font-size: $font-size-40;
+    line-height: 1;
+    color: $color-accent;
+}
+
+.hero-bpm-sep {
+    color: $color-text-subtle;
+    font-size: $font-size-24;
+}
+
+.hero-bpm-unit {
+    font-size: $font-size-10;
+    color: $color-text-subtle;
+    margin-top: 2px;
+}
+
+.hero-chips {
+    display: flex;
+    gap: $space-3;
+    flex-wrap: wrap;
+    margin-top: $space-6;
+}
+
+.hero-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-3;
+    padding: $space-2 $space-4;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    background: $color-surface;
+}
+
+.hero-chip-label {
+    font-size: $font-size-10;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: $color-text-subtle;
+}
+
+.hero-chip-value {
+    font-size: $font-size-13;
+    font-weight: 700;
+    color: $color-text;
+}
+
+// segmented nav — accent underline via inset shadow
+.hero-nav {
+    display: flex;
+    gap: $space-1;
+    margin-top: $space-7;
+}
+
+.hero-nav-tab {
+    appearance: none;
+    background: none;
+    border: 0;
+    padding: $space-4 $space-5;
+    border-radius: $radius-sm $radius-sm 0 0;
+    font: inherit;
+    font-size: $font-size-14;
+    font-weight: 600;
+    color: $color-text-subtle;
+    cursor: pointer;
+    box-shadow: inset 0 -2px 0 transparent;
+    transition: color 80ms ease, box-shadow 80ms ease;
+
+    &:hover { color: $color-text-muted; }
+
+    &:focus-visible { outline: none; box-shadow: inset 0 -2px 0 $color-accent, $ring; }
+
+    &--active {
+        color: $color-accent;
+        box-shadow: inset 0 -2px 0 $color-accent;
     }
+}
 
-    &::placeholder {
-        color: $color-text-faint;
+// ═══ Body ═══════════════════════════════════════════════════
+.drawer-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: $space-8 $space-7;
+    display: flex;
+    flex-direction: column;
+    gap: $space-7;
+}
+
+.drawer-body.is-hidden {
+    display: none;
+}
+
+.drawer-panel-body {
+    overflow-y: auto;
+}
+
+// Two-column details: description/files left, guitar/status/tags right.
+.details-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $space-8;
+}
+
+.details-main,
+.details-side {
+    display: flex;
+    flex-direction: column;
+    gap: $space-7;
+    min-width: 0;
+}
+
+@media (min-width: 620px) {
+    .details-grid {
+        grid-template-columns: minmax(0, 1fr) 200px;
     }
 }
 
 .drawer-section {
     display: flex;
     flex-direction: column;
-    gap: $space-3;
+    gap: $space-4;
 }
 
 .drawer-section-head {
@@ -157,13 +325,77 @@
     line-height: 1;
 }
 
-// ─── Footer (48 px) ─────────────────────────────────────────
+// ═══ Guitar fields ══════════════════════════════════════════
+.guitar-fields {
+    display: flex;
+    flex-direction: column;
+    gap: $space-4;
+}
+
+.guitar-field {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
+}
+
+.guitar-field .field-label {
+    font-size: $font-size-10;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: $color-text-subtle;
+}
+
+// ═══ Status picker ══════════════════════════════════════════
+.status-picker {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    background: $color-border;
+    overflow: hidden;
+}
+
+.status-option {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    width: 100%;
+    text-align: left;
+    padding: $space-4 $space-5;
+    border: 0;
+    background: $color-surface;
+    color: $color-text-muted;
+    font: inherit;
+    font-size: $font-size-13;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 80ms ease, color 80ms ease;
+
+    &:hover { background: $color-surface-hover; }
+    &:focus-visible { outline: none; box-shadow: $ring; z-index: 1; }
+
+    &--active {
+        background: $color-surface-muted;
+        color: $color-text;
+    }
+}
+
+.status-option-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+// ═══ Footer ═════════════════════════════════════════════════
 .drawer-footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: $header-height;
-    padding: 0 $space-5;
+    padding: 0 $space-7;
     border-top: 1px solid $color-border;
     flex-shrink: 0;
 }
@@ -174,7 +406,7 @@
     gap: $space-3;
 }
 
-// ─── Attachments ────────────────────────────────────────────
+// ═══ Attachments ════════════════════════════════════════════
 .file-upload-trigger {
     position: relative;
     cursor: pointer;
@@ -285,10 +517,26 @@
     font-size: $font-size-11;
 }
 
+// ═══ Tags ═══════════════════════════════════════════════════
+.tag-add {
+    margin-left: auto;
+    border: 0;
+    background: none;
+    padding: 0;
+    color: $color-accent;
+    font: inherit;
+    font-family: $font-mono;
+    font-size: $font-size-11;
+    cursor: pointer;
+
+    &:hover { color: $color-accent-hover; }
+    @include focus-ring;
+}
+
 .tag-chip-row {
     display: flex;
     flex-wrap: wrap;
-    gap: $space-1;
+    gap: $space-2;
     align-items: center;
 }
 
@@ -296,11 +544,12 @@
     display: inline-flex;
     align-items: center;
     gap: $space-1;
-    height: 20px;
-    padding: 0 $space-2;
+    height: 22px;
+    padding: 0 $space-3;
     border-radius: $radius-xs;
     background: $color-surface-muted;
     color: $color-text;
+    font-family: $font-mono;
     font-size: $font-size-11;
     font-weight: 500;
     white-space: nowrap;
@@ -313,6 +562,7 @@
         border: 0;
         cursor: pointer;
         font: inherit;
+        font-family: $font-mono;
     }
 }
 
@@ -339,8 +589,8 @@
     margin-top: $space-2;
     display: flex;
     flex-wrap: wrap;
-    gap: $space-1;
-    padding: $space-2;
+    gap: $space-2;
+    padding: $space-3;
     border: 1px solid $color-border;
     border-radius: $radius-sm;
     background: $color-surface;
@@ -359,58 +609,4 @@
     font-size: $font-size-10;
     font-weight: 600;
     line-height: 16px;
-}
-
-
-// ── Guitar-domain additions (phase 2) ──────────────────────
-.drawer-panels {
-    display: flex;
-    gap: 4px;
-    padding: 0 20px;
-    border-bottom: 1px solid var(--uk-color-border, #e4e4e7);
-}
-
-.drawer-panel-tab {
-    appearance: none;
-    background: transparent;
-    border: none;
-    border-bottom: 2px solid transparent;
-    padding: 10px 8px;
-    font: inherit;
-    font-size: 13px;
-    color: var(--uk-color-text-subtle, #71717a);
-    cursor: pointer;
-}
-
-.drawer-panel-tab--active {
-    color: var(--uk-color-accent, #5e6ad2);
-    border-bottom-color: var(--uk-color-accent, #5e6ad2);
-    font-weight: 600;
-}
-
-.drawer-body.is-hidden {
-    display: none;
-}
-
-.drawer-panel-body {
-    overflow-y: auto;
-}
-
-.guitar-fields {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 6px;
-}
-
-.guitar-field {
-    flex: 1 1 120px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.guitar-field .field-label {
-    font-size: 12px;
-    color: var(--uk-color-text-subtle, #71717a);
 }

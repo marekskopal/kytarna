@@ -1,60 +1,153 @@
 @use 'variables' as *;
+@use 'mixins' as *;
 
 :host {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    min-height: 0;
+    display: block;
 }
 
-// ─── Header bar ─────────────────────────────────────────────
-.board-header {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: $space-6;
-    padding-bottom: $space-5;
-    margin-bottom: $space-6;
-    border-bottom: 1px solid $color-border;
-}
-
-.board-header-titles {
-    display: flex;
-    flex-direction: column;
-    gap: $space-2;
-    min-width: 0;
-}
-
-.board-header-actions {
-    display: flex;
-    align-items: center;
-    gap: $space-3;
-}
-
-.board-breadcrumb {
+// ─── Back link ──────────────────────────────────────────────
+.course-back {
     display: inline-flex;
     align-items: center;
     gap: $space-2;
+    margin-bottom: $space-6;
+    font-family: $font-mono;
     font-size: $font-size-12;
+    letter-spacing: 0.03em;
     color: $color-text-subtle;
+    text-decoration: none;
+    @include focus-ring;
 
-    a {
-        color: $color-text-muted;
+    &:hover {
+        color: $color-text;
         text-decoration: none;
-
-        &:hover { color: $color-text; text-decoration: none; }
     }
 }
 
-.board-breadcrumb-arrow {
-    color: $color-text-faint;
+.course-back-chevron {
+    flex: 0 0 auto;
 }
 
-.board-title {
+// ─── Course header ──────────────────────────────────────────
+.course-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: $space-9;
+    flex-wrap: wrap;
+    margin-bottom: $space-8;
+}
+
+.course-header-main {
+    min-width: 0;
+    max-width: 640px;
+}
+
+.course-overline {
+    margin: 0 0 $space-3;
+    font-family: $font-mono;
+    font-size: $font-size-11;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: $color-text-subtle;
+}
+
+.course-title {
+    margin: 0 0 $space-5;
+    font-family: $font-display;
+    font-weight: 400;
+    font-size: 46px;
+    line-height: 1.02;
+    color: $color-text;
+    word-break: break-word;
+}
+
+.course-desc {
     margin: 0;
+    font-size: $font-size-16;
+    line-height: 1.6;
+    color: $color-text-muted;
 }
 
-// ─── View switcher (segmented control) ──────────────────────
+// ─── Progress ring + stats ──────────────────────────────────
+.course-header-side {
+    display: flex;
+    align-items: center;
+    gap: $space-7;
+    flex: 0 0 auto;
+}
+
+.course-ring {
+    position: relative;
+    width: 76px;
+    height: 76px;
+    flex: 0 0 auto;
+}
+
+.course-ring-svg {
+    transform: rotate(-90deg);
+}
+
+.course-ring-track {
+    stroke: $color-border-strong;
+}
+
+.course-ring-value {
+    stroke: $color-accent;
+    transition: stroke-dasharray 400ms ease;
+}
+
+.course-ring-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.course-ring-pct {
+    font-family: $font-display;
+    font-size: $font-size-20;
+    line-height: 1;
+    color: $color-text;
+}
+
+.course-ring-sub {
+    font-family: $font-mono;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $color-text-subtle;
+}
+
+.course-stats {
+    display: flex;
+    flex-direction: column;
+    gap: $space-1;
+    flex: 0 0 auto;
+    font-family: $font-mono;
+    font-size: $font-size-12;
+    color: $color-text-subtle;
+}
+
+.course-stat {
+    white-space: nowrap;
+
+    &--mastered { color: $color-success; }
+    &--learning { color: $color-accent; }
+}
+
+// ─── Toolbar (view switcher + new lecture) ──────────────────
+.course-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-5;
+    flex-wrap: wrap;
+    margin-bottom: $space-6;
+}
+
 .board-views {
     display: inline-flex;
     align-items: center;
@@ -67,11 +160,12 @@
 .board-views-tab {
     display: inline-flex;
     align-items: center;
-    height: 22px;
+    height: 24px;
     padding: 0 $space-3;
     border-radius: $radius-xs;
-    font-size: $font-size-12;
-    font-weight: 500;
+    font-family: $font-mono;
+    font-size: $font-size-11;
+    letter-spacing: 0.02em;
     color: $color-text-muted;
     text-decoration: none;
     cursor: pointer;
@@ -88,102 +182,87 @@
     }
 }
 
-// ─── Kanban columns (no fill — cards float on page bg) ──────
+// ─── Board columns (responsive grid; cards float on page bg) ─
 .kanban {
-    display: flex;
-    align-items: stretch;
-    gap: 0;
-    flex: 1;
-    min-height: 0;
-    overflow-x: scroll;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: $space-7;
+    align-items: start;
 }
 
 .column {
     display: flex;
     flex-direction: column;
-    gap: 0;
-    flex-shrink: 0;
-    width: 304px;
-    padding: 0 $space-5;
-    min-height: 0;
-
-    & + .column {
-        border-left: 1px solid $color-border;
-    }
+    min-width: 0;
 }
 
-// Sticky so the status name stays pinned at the top of the page while its
-// column scrolls past. The opaque background + bottom padding hide cards
-// sliding underneath; it releases (turns static again) at the column's end.
 .column-header {
-    position: sticky;
-    top: 0;
-    z-index: 2;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: $space-2 $space-1 $space-3;
-    background: $color-bg;
-    flex-shrink: 0;
-}
-
-.column-title {
-    display: flex;
-    align-items: center;
-    gap: $space-2;
-
-    h3 {
-        margin: 0;
-        font-size: $font-size-13;
-        font-weight: 600;
-        color: $color-text;
-    }
+    gap: $space-3;
+    padding: 0 $space-1 $space-5;
 }
 
 .column-dot {
     display: inline-block;
-    width: 8px;
-    height: 8px;
+    width: 9px;
+    height: 9px;
     border-radius: 50%;
-    flex-shrink: 0;
+    flex: 0 0 auto;
+}
+
+.column-label {
+    margin: 0;
+    font-family: $font-mono;
+    font-size: $font-size-12;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: $color-text;
+    @include truncate;
 }
 
 .column-count {
-    font-size: $font-size-11;
+    font-family: $font-mono;
+    font-size: $font-size-12;
     color: $color-text-subtle;
 }
 
 .column-lectures {
     display: flex;
     flex-direction: column;
-    gap: $space-3;
-    flex: 1;
+    gap: $space-5;
     min-height: 40px;
 }
 
 .column-add-ghost {
-    display: inline-flex;
-    align-items: center;
-    justify-content: flex-start;
-    height: $h-md;
-    padding: 0 11px;
-    border: 1px dashed transparent;
-    border-radius: $radius-sm;
-    background: transparent;
+    display: block;
+    width: 100%;
+    margin-top: $space-5;
+    padding: $space-5;
+    border: 1px dashed $color-border-strong;
+    border-radius: $radius-lg;
+    background: none;
     color: $color-text-subtle;
-    font: inherit;
-    font-size: $font-size-13;
-    text-align: left;
+    font-family: $font-mono;
+    font-size: $font-size-12;
+    text-align: center;
     cursor: pointer;
-    flex-shrink: 0;
-    margin-top: $space-3;
     transition: background 80ms ease, color 80ms ease, border-color 80ms ease;
+    @include focus-ring;
 
     &:hover {
         background: $color-surface-muted;
         color: $color-text-muted;
-        border-color: $color-border;
+        border-color: $color-border-hover;
     }
+}
+
+// ─── responsive ─────────────────────────────────────────────
+@media (max-width: 640px) {
+    .course-title { font-size: 34px; }
+
+    .course-header-side { width: 100%; }
 }
 
 // ─── cdk-drag visuals ───────────────────────────────────────

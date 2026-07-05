@@ -1,13 +1,16 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
 .lecture-tabs {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: $space-6;
 }
 
 .lecture-tabs-bar {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: $space-3;
     align-items: center;
     justify-content: space-between;
 }
@@ -15,51 +18,90 @@
 .lecture-tabs-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: $space-2;
 }
 
 .lecture-tab-chip {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 4px 10px;
-    border: 1px solid var(--uk-color-border, #d4d4d8);
-    border-radius: 999px;
-    background: transparent;
+    gap: $space-2;
+    padding: $space-2 $space-4;
+    border: 1px solid $color-border;
+    border-radius: $radius-sm;
+    background: $color-surface;
+    color: $color-text-muted;
     cursor: pointer;
-    font: inherit;
-    font-size: 13px;
-}
+    font-family: $font-mono;
+    font-size: $font-size-12;
+    transition: background 80ms ease, border-color 80ms ease, color 80ms ease;
 
-.lecture-tab-chip--active {
-    border-color: var(--uk-color-accent, #5e6ad2);
-    color: var(--uk-color-accent, #5e6ad2);
-    font-weight: 600;
+    @include focus-ring;
+
+    &:hover { border-color: $color-border-hover; }
+
+    &--active {
+        background: $color-accent;
+        border-color: $color-accent;
+        color: $color-accent-fg;
+    }
 }
 
 .lecture-tab-badge {
-    font-size: 10px;
+    font-family: $font-mono;
+    font-size: $font-size-10;
     font-weight: 700;
     padding: 1px 4px;
-    border-radius: 3px;
-    background: #e0f2fe;
-    color: #0e7490;
+    border-radius: $radius-xs;
+    background: color-mix(in srgb, currentColor 16%, transparent);
+}
+
+.lecture-tab-add {
+    display: inline-flex;
+    align-items: center;
+    padding: $space-2 $space-4;
+    border: 1px dashed $color-border-strong;
+    border-radius: $radius-sm;
+    background: none;
+    color: $color-text-subtle;
+    cursor: pointer;
+    font-family: $font-mono;
+    font-size: $font-size-12;
+
+    @include focus-ring;
+
+    &:hover { color: $color-text-muted; border-color: $color-border-hover; }
 }
 
 .lecture-tabs-actions {
     display: flex;
-    gap: 6px;
+    gap: $space-3;
+    align-items: center;
+}
+
+.tab-import-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    padding: $space-2 $space-4;
+    border: 1px solid $color-border;
+    border-radius: $radius-sm;
+    background: $color-surface;
+    color: $color-text-muted;
+    cursor: pointer;
+    font-family: $font-mono;
+    font-size: $font-size-12;
+
+    &:hover { border-color: $color-border-hover; }
 }
 
 .file-upload-trigger {
     position: relative;
     overflow: hidden;
-    cursor: pointer;
-}
 
-.file-upload-trigger.is-disabled {
-    opacity: 0.6;
-    pointer-events: none;
+    &.is-disabled {
+        opacity: 0.6;
+        pointer-events: none;
+    }
 }
 
 .file-upload-input {
@@ -69,13 +111,76 @@
     cursor: pointer;
 }
 
-.lecture-tab-meta {
+.tab-mode-toggle {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 6px;
+    gap: 1px;
+    border: 1px solid $color-border;
+    border-radius: $radius-sm;
+    overflow: hidden;
+    background: $color-border;
 }
 
-.lecture-tab-meta-spacer {
-    flex: 1 1 auto;
+.tab-mode-btn {
+    border: 0;
+    padding: $space-2 $space-5;
+    background: $color-surface;
+    color: $color-text-muted;
+    font: inherit;
+    font-size: $font-size-13;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:focus-visible { outline: none; box-shadow: $ring; }
+
+    &--active {
+        background: $color-accent;
+        color: $color-accent-fg;
+    }
+}
+
+// ═══ Read sheet ═════════════════════════════════════════════
+.tab-sheet {
+    border: 1px solid $color-border;
+    border-radius: $radius-xl;
+    background: $color-surface;
+    box-shadow: $shadow-sm;
+    overflow: hidden;
+}
+
+.tab-sheet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-5;
+    flex-wrap: wrap;
+    padding: $space-4 $space-6;
+    border-bottom: 1px solid $color-border;
+    background: $color-surface-muted;
+}
+
+.tab-sheet-title {
+    font-family: $font-display;
+    font-size: $font-size-20;
+    color: $color-text;
+    min-width: 0;
+}
+
+.tab-sheet-meta {
+    display: flex;
+    align-items: center;
+    gap: $space-5;
+    flex-wrap: wrap;
+    font-size: $font-size-11;
+    color: $color-text-subtle;
+}
+
+.tab-sheet-delete {
+    margin-left: $space-2;
+}
+
+.tab-sheet-paper {
+    padding: $space-8 $space-7;
+    background: $color-surface;
+    // alphaTab render target lives inside <uk-tab-viewer>, which handles its own x-scroll.
+    overflow-x: auto;
 }

@@ -1,45 +1,59 @@
 <form class="tab-editor" [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div class="field">
-        <label class="field-label" for="tab-name">{{ 'app.tabs.editor.nameLabel' | translate }}</label>
-        <input id="tab-name" type="text" class="input" formControlName="name" autocomplete="off" />
-    </div>
+    <div class="tab-editor-panel">
+        <div class="tab-editor-head">
+            <div class="tab-editor-head-left">
+                <span class="tab-editor-source uk-mono">{{ 'app.tabs.editor.sourceLabel' | translate }} —</span>
+                <input
+                    id="tab-name"
+                    type="text"
+                    class="tab-editor-name uk-mono"
+                    formControlName="name"
+                    autocomplete="off"
+                    [placeholder]="'app.tabs.editor.nameLabel' | translate"
+                    [attr.aria-label]="'app.tabs.editor.nameLabel' | translate"
+                />
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm" [disabled]="form.invalid || saving()">
+                {{ (saving() ? 'app.actions.loading' : 'app.tabs.editor.validateAndPreview') | translate }}
+            </button>
+        </div>
 
-    <div class="field">
-        <label class="field-label" for="tab-alphatex">{{ 'app.tabs.editor.alphaTexLabel' | translate }}</label>
         <textarea
             id="tab-alphatex"
-            class="input tab-alphatex"
+            class="tab-alphatex"
             formControlName="alphaTex"
-            rows="8"
+            rows="9"
             spellcheck="false"
             [placeholder]="'app.tabs.editor.alphaTexPlaceholder' | translate"
+            [attr.aria-label]="'app.tabs.editor.alphaTexLabel' | translate"
         ></textarea>
-    </div>
 
-    @if (errors().length > 0) {
-        <div class="tab-errors" role="alert">
-            <div class="tab-errors-title">{{ 'app.tabs.editor.validationFailed' | translate }}</div>
-            <ul class="tab-errors-list">
-                @for (error of errors(); track $index) {
-                    <li class="tab-error">
-                        @if (error.line !== null) {
-                            <span class="tab-error-loc uk-mono">
-                                {{ 'app.tabs.editor.lineCol' | translate: {line: error.line, col: error.col ?? 0} }}
-                            </span>
+        @if (errors().length > 0) {
+            <div class="tab-errors" role="alert">
+                <span class="tab-errors-badge" aria-hidden="true">!</span>
+                <div class="tab-errors-body">
+                    <div class="tab-errors-title">{{ 'app.tabs.editor.validationFailed' | translate }}</div>
+                    <ul class="tab-errors-list">
+                        @for (error of errors(); track $index) {
+                            <li class="tab-error">
+                                @if (error.line !== null) {
+                                    <span class="tab-error-loc uk-mono">
+                                        {{ 'app.tabs.editor.lineCol' | translate: {line: error.line, col: error.col ?? 0} }}
+                                    </span>
+                                }
+                                <span class="tab-error-msg">{{ error.message }}</span>
+                            </li>
                         }
-                        <span class="tab-error-msg">{{ error.message }}</span>
-                    </li>
-                }
-            </ul>
-        </div>
-    }
+                    </ul>
+                </div>
+                <span class="tab-errors-count uk-mono">{{ errors().length }}</span>
+            </div>
+        }
+    </div>
 
     <div class="tab-editor-actions">
         <button type="button" class="btn btn-ghost btn-sm" (click)="onCancel()">
             {{ 'app.actions.cancel' | translate }}
-        </button>
-        <button type="submit" class="btn btn-primary btn-sm" [disabled]="form.invalid || saving()">
-            {{ (saving() ? 'app.actions.loading' : 'app.tabs.editor.validateAndPreview') | translate }}
         </button>
     </div>
 </form>
@@ -47,6 +61,8 @@
 @if (previewTex(); as tex) {
     <div class="tab-editor-preview">
         <div class="uk-overline">{{ 'app.tabs.editor.preview' | translate }}</div>
-        <uk-tab-viewer [alphaTex]="tex" />
+        <div class="tab-editor-preview-paper">
+            <uk-tab-viewer [alphaTex]="tex" />
+        </div>
     </div>
 }

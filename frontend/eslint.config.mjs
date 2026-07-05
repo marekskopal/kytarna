@@ -6,7 +6,7 @@ import unusedImports from 'eslint-plugin-unused-imports';
 
 export default tseslint.config(
     {
-        ignores: ['projects/**/*', 'dist/**/*', 'coverage/**/*', '.angular/**/*'],
+        ignores: ['projects/**/*', 'dist/**/*', 'coverage/**/*', '.angular/**/*', 'src/design_system/**/*'],
     },
     {
         files: ['**/*.ts'],

@@ -1,58 +1,132 @@
 <div class="lecture-progress">
-    <section class="progress-summary">
-        <div class="progress-totals">
-            <div class="progress-total">
-                <div class="progress-total-value">{{ summary()?.totalEntries ?? 0 }}</div>
-                <div class="uk-overline">{{ 'app.progress.totalSessions' | translate }}</div>
+    <section class="progress-summary-card">
+        <div class="progress-summary-head">
+            @if (bpmGain() !== null && bpmGain()! > 0) {
+                <h3 class="progress-summary-title">{{ 'app.progress.summaryClimbing' | translate }}</h3>
+                <span class="progress-summary-gain uk-mono">+{{ bpmGain() }} BPM</span>
+            } @else {
+                <h3 class="progress-summary-title">{{ 'app.progress.bpmTrend' | translate }}</h3>
+            }
+        </div>
+
+        <div class="progress-stats">
+            <div class="progress-stat">
+                <div class="progress-stat-value progress-stat-value--accent">{{ currentBpm() ?? '—' }}</div>
+                <div class="progress-stat-label uk-mono">{{ 'app.progress.currentBpm' | translate }}</div>
             </div>
-            <div class="progress-total">
-                <div class="progress-total-value">{{ summary()?.totalMinutes ?? 0 }}</div>
-                <div class="uk-overline">{{ 'app.progress.totalMinutes' | translate }}</div>
+            <div class="progress-stat">
+                <div class="progress-stat-value">{{ summary()?.totalEntries ?? 0 }}</div>
+                <div class="progress-stat-label uk-mono">{{ 'app.progress.totalSessions' | translate }}</div>
+            </div>
+            <div class="progress-stat">
+                <div class="progress-stat-value">{{ summary()?.totalMinutes ?? 0 }}</div>
+                <div class="progress-stat-label uk-mono">{{ 'app.progress.totalMinutes' | translate }}</div>
             </div>
         </div>
+
         @if (sparkline(); as spark) {
-            <div class="progress-spark">
-                <div class="uk-overline">{{ 'app.progress.bpmTrend' | translate }}</div>
-                <svg
-                    class="progress-spark-svg"
-                    [attr.viewBox]="'0 0 ' + spark.width + ' ' + spark.height"
-                    [attr.width]="spark.width"
-                    [attr.height]="spark.height"
-                    preserveAspectRatio="none"
-                    aria-hidden="true"
-                >
-                    <polyline
-                        [attr.points]="spark.points"
-                        fill="none"
-                        stroke="var(--uk-color-accent, #5e6ad2)"
-                        stroke-width="2"
-                        stroke-linejoin="round"
-                        stroke-linecap="round"
+            <svg
+                class="progress-spark-svg"
+                [attr.viewBox]="'0 0 ' + spark.width + ' ' + spark.height"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+            >
+                <defs>
+                    <linearGradient id="progress-spark-fill" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="var(--color-accent)" stop-opacity="0.22" />
+                        <stop offset="100%" stop-color="var(--color-accent)" stop-opacity="0" />
+                    </linearGradient>
+                </defs>
+                @if (spark.targetY !== null) {
+                    <line
+                        [attr.x1]="0" [attr.y1]="spark.targetY" [attr.x2]="spark.width" [attr.y2]="spark.targetY"
+                        stroke="var(--color-success)" stroke-width="1" stroke-dasharray="4 3" vector-effect="non-scaling-stroke"
                     />
-                </svg>
-                <div class="progress-spark-range uk-mono">{{ spark.min }}–{{ spark.max }} BPM</div>
-            </div>
+                }
+                <path [attr.d]="spark.area" fill="url(#progress-spark-fill)" />
+                <polyline
+                    [attr.points]="spark.points"
+                    fill="none"
+                    stroke="var(--color-accent)"
+                    stroke-width="2"
+                    stroke-linejoin="round"
+                    stroke-linecap="round"
+                    vector-effect="non-scaling-stroke"
+                />
+                @for (dot of spark.dots; track $index) {
+                    <circle
+                        [attr.cx]="dot.x" [attr.cy]="dot.y" [attr.r]="dot.last ? 3.5 : 2.5"
+                        [attr.fill]="dot.last ? 'var(--color-accent)' : 'var(--color-surface)'"
+                        stroke="var(--color-accent)" stroke-width="1.5" vector-effect="non-scaling-stroke"
+                    />
+                }
+            </svg>
+            <div class="progress-spark-range uk-mono">{{ spark.min }}–{{ spark.max }} BPM</div>
+        }
+    </section>
+
+    <section class="progress-timeline">
+        <h3 class="progress-timeline-heading uk-mono">{{ 'app.progress.practiceLog' | translate }}</h3>
+        @if (loading()) {
+            <p class="text-subtle">{{ 'app.actions.loading' | translate }}</p>
+        } @else if (sortedEntries().length === 0) {
+            <p class="text-subtle">{{ 'app.progress.empty' | translate }}</p>
+        } @else {
+            <ul class="progress-list">
+                @for (entry of sortedEntries(); track entry.id; let first = $first) {
+                    <li class="progress-item">
+                        <span class="progress-item-dot" [class.progress-item-dot--current]="first"></span>
+                        <div class="progress-item-card">
+                            <div class="progress-item-top">
+                                <time class="progress-item-date">{{ entry.practicedAt }}</time>
+                                <span class="progress-item-stats uk-mono">
+                                    @if (entry.tempoBpm !== null) {
+                                        <span class="progress-item-bpm">{{ entry.tempoBpm }} BPM</span>
+                                    }
+                                    @if (entry.durationMinutes !== null) {
+                                        <span class="progress-item-min">{{ entry.durationMinutes }} {{ 'app.progress.minShort' | translate }}</span>
+                                    }
+                                </span>
+                                <button
+                                    type="button"
+                                    class="btn btn-danger-ghost btn-icon btn-sm progress-item-delete"
+                                    (click)="onDelete(entry)"
+                                    [attr.aria-label]="'app.actions.delete' | translate"
+                                >
+                                    <svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true">
+                                        <path d="M3 3l10 10M13 3L3 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                                    </svg>
+                                </button>
+                            </div>
+                            @if (entry.note) {
+                                <p class="progress-item-note">{{ entry.note }}</p>
+                            }
+                        </div>
+                    </li>
+                }
+            </ul>
         }
     </section>
 
     <form class="progress-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <h3 class="progress-form-title">{{ 'app.progress.logSession' | translate }}</h3>
         <div class="progress-form-row">
             <label class="field progress-field">
-                <span class="field-label">{{ 'app.progress.date' | translate }}</span>
+                <span class="field-label uk-mono">{{ 'app.progress.date' | translate }}</span>
                 <input type="date" class="input" formControlName="practicedAt" />
             </label>
             <label class="field progress-field">
-                <span class="field-label">{{ 'app.progress.bpm' | translate }}</span>
+                <span class="field-label uk-mono">{{ 'app.progress.bpm' | translate }}</span>
                 <input type="number" class="input" formControlName="tempoBpm" min="0" inputmode="numeric" />
             </label>
             <label class="field progress-field">
-                <span class="field-label">{{ 'app.progress.minutes' | translate }}</span>
+                <span class="field-label uk-mono">{{ 'app.progress.minutes' | translate }}</span>
                 <input type="number" class="input" formControlName="durationMinutes" min="0" inputmode="numeric" />
             </label>
         </div>
         <label class="field">
-            <span class="field-label">{{ 'app.progress.note' | translate }}</span>
-            <input type="text" class="input" formControlName="note" autocomplete="off" />
+            <span class="field-label uk-mono">{{ 'app.progress.note' | translate }}</span>
+            <textarea class="input progress-note" formControlName="note" rows="2" autocomplete="off"></textarea>
         </label>
         <div class="progress-form-actions">
             <button type="submit" class="btn btn-primary btn-sm" [disabled]="form.invalid || saving()">
@@ -60,44 +134,4 @@
             </button>
         </div>
     </form>
-
-    <section class="progress-timeline">
-        <div class="uk-overline">{{ 'app.progress.timeline' | translate }}</div>
-        @if (loading()) {
-            <p class="text-subtle">{{ 'app.actions.loading' | translate }}</p>
-        } @else if (sortedEntries().length === 0) {
-            <p class="text-subtle">{{ 'app.progress.empty' | translate }}</p>
-        } @else {
-            <ul class="progress-list">
-                @for (entry of sortedEntries(); track entry.id) {
-                    <li class="progress-item">
-                        <time class="progress-item-date uk-mono">{{ entry.practicedAt }}</time>
-                        <div class="progress-item-body">
-                            <div class="progress-item-stats">
-                                @if (entry.tempoBpm !== null) {
-                                    <span class="uk-badge">{{ entry.tempoBpm }} BPM</span>
-                                }
-                                @if (entry.durationMinutes !== null) {
-                                    <span class="uk-badge">{{ entry.durationMinutes }} {{ 'app.progress.minShort' | translate }}</span>
-                                }
-                            </div>
-                            @if (entry.note) {
-                                <p class="progress-item-note">{{ entry.note }}</p>
-                            }
-                        </div>
-                        <button
-                            type="button"
-                            class="btn btn-danger-ghost btn-icon btn-sm"
-                            (click)="onDelete(entry)"
-                            [attr.aria-label]="'app.actions.delete' | translate"
-                        >
-                            <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
-                                <path d="M3 3l10 10M13 3L3 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
-                            </svg>
-                        </button>
-                    </li>
-                }
-            </ul>
-        }
-    </section>
 </div>

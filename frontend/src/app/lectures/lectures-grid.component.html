@@ -385,11 +385,22 @@
                                     <span class="archived-badge">{{ 'app.lectures.archivedBadge' | translate }}</span>
                                 }
                             </span>
-                            <span class="lecture-course">{{ lecture.courseName }}</span>
+                            <span class="lecture-meta">
+                                <span class="lecture-course">{{ lecture.courseName }}</span>
+                                @if (lecture.difficulty) {
+                                    <span class="lecture-meta-item" [style.color]="difficultyColor(lecture.difficulty)">{{ 'app.board.drawer.guitar.difficulties.' + lecture.difficulty | translate }}</span>
+                                }
+                                @if (lecture.tuning) {
+                                    <span class="lecture-meta-item">{{ lecture.tuning }}</span>
+                                }
+                                @if (lecture.targetTempoBpm !== null) {
+                                    <span class="lecture-meta-item">{{ lecture.targetTempoBpm }} BPM</span>
+                                }
+                            </span>
                         </td>
                         <td class="td-status">
                             <span class="status-pill">
-                                <span class="status-pill-dot" [style.background]="lecture.status.color"></span>
+                                <span class="status-pill-dot" [style.background]="statusDotColor(lecture.status)"></span>
                                 {{ lecture.status.name }}
                             </span>
                         </td>

@@ -1,4 +1,5 @@
 import {ChangeDetectionStrategy, Component, computed, inject, input, OnInit, output, signal} from '@angular/core';
+import {toSignal} from '@angular/core/rxjs-interop';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Difficulty, Lecture} from '@app/models/lecture';
 import {LectureFile} from '@app/models/lecture-file';
@@ -129,11 +130,59 @@ export class LectureDetailDrawerComponent implements OnInit {
 
     private readonly statusId = signal<number>(0);
 
+    /** Live view of the form so the header band (chips + BPM) reflects unsaved edits. */
+    private readonly formValue = toSignal(this.form.valueChanges, {initialValue: this.form.getRawValue()});
+
     protected readonly currentStatusColor = computed<string>(() => {
         const id = this.statusId();
         const match = this.statuses().find((s) => s.id === id);
         return match?.color ?? '#94a3a8';
     });
+
+    protected readonly currentStatus = computed(() => {
+        const id = this.statusId();
+        return this.statuses().find((s) => s.id === id) ?? null;
+    });
+
+    /** The "Learning"-equivalent status (a mid-workflow / Normal step) gets the soft glow dot. */
+    protected readonly currentStatusIsActive = computed<boolean>(() => this.currentStatus()?.type === 'Normal');
+
+    protected readonly tuningDisplay = computed<string>(() => {
+        const v = (this.formValue().tuning ?? '').trim();
+        return v === '' ? '—' : v;
+    });
+
+    protected readonly capoDisplay = computed<string>(() => {
+        const c = this.formValue().capo;
+        return c === null || c === undefined ? '—' : String(c);
+    });
+
+    protected readonly targetDisplay = computed<string>(() => {
+        const t = this.formValue().targetTempoBpm;
+        return t === null || t === undefined ? '—' : String(t);
+    });
+
+    protected readonly difficultyDisplay = computed<string>(() => {
+        const d = this.formValue().difficulty;
+        return d === null || d === undefined || d === '' ? '—' : d;
+    });
+
+    /** Difficulty value colour, matching the design (Advanced=accent, Intermediate=gold, Beginner=olive). */
+    protected readonly difficultyColor = computed<string>(() => {
+        switch (this.formValue().difficulty) {
+            case 'Advanced': return 'var(--color-accent)';
+            case 'Intermediate': return 'var(--color-warn)';
+            case 'Beginner': return 'var(--color-success)';
+            default: return 'var(--color-text-subtle)';
+        }
+    });
+
+    // Current tempo is tracked in the Progress panel, not here, so the header shows a dash.
+    protected readonly currentBpmDisplay = '—';
+
+    protected selectStatus(id: number): void {
+        this.form.controls.statusId.setValue(id);
+    }
 
     public ngOnInit(): void {
         const existing = this.lecture();

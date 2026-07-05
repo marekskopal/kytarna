@@ -1,48 +1,68 @@
 @if (loading()) {
     <p class="text-muted">{{ 'app.actions.loading' | translate }}</p>
 } @else if (board(); as board) {
-    <header class="board-header">
-        <div class="board-header-titles">
-            <nav class="board-breadcrumb" aria-label="Breadcrumb">
-                <a routerLink="/courses">{{ 'app.board.breadcrumb' | translate }}</a>
-                <svg class="board-breadcrumb-arrow" width="10" height="10" viewBox="0 0 16 16" aria-hidden="true">
-                    <path d="M6 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-                <span>{{ board.course.name }}</span>
-            </nav>
-            <h1 class="uk-h2 board-title">{{ board.course.name }}</h1>
+    <a routerLink="/courses" class="course-back">
+        <svg class="course-back-chevron" width="9" height="9" viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M10 4L6 8l4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        {{ 'app.board.breadcrumb' | translate }}
+    </a>
+
+    <header class="course-header">
+        <div class="course-header-main">
+            <p class="course-overline">{{ 'app.board.course.overline' | translate }}</p>
+            <h1 class="course-title">{{ board.course.name }}</h1>
+            @if (board.course.description) {
+                <p class="course-desc">{{ board.course.description }}</p>
+            }
         </div>
-        <div class="board-header-actions">
-            <div class="board-views" role="tablist">
-                <a class="board-views-tab board-views-tab--active" aria-current="page">{{ 'app.board.viewBoard' | translate }}</a>
-                <a class="board-views-tab" [routerLink]="['/courses', board.course.id, 'workflow']">{{ 'app.board.viewWorkflow' | translate }}</a>
-                <a class="board-views-tab" [routerLink]="['/courses', board.course.id, 'events']">{{ 'app.board.viewEvents' | translate }}</a>
+
+        <div class="course-header-side">
+            <div class="course-ring" role="img" [attr.aria-label]="'app.board.course.masteredCount' | translate: {count: masteredCount()}">
+                <svg class="course-ring-svg" width="76" height="76" viewBox="0 0 76 76" aria-hidden="true">
+                    <circle class="course-ring-track" cx="38" cy="38" r="33" fill="none" stroke-width="6" />
+                    <circle
+                        class="course-ring-value"
+                        cx="38"
+                        cy="38"
+                        r="33"
+                        fill="none"
+                        stroke-width="6"
+                        stroke-linecap="round"
+                        [attr.stroke-dasharray]="ringDash()"
+                    />
+                </svg>
+                <div class="course-ring-label">
+                    <span class="course-ring-pct">{{ masteredPercent() }}%</span>
+                    <span class="course-ring-sub">{{ 'app.board.course.ringLabel' | translate }}</span>
+                </div>
             </div>
-            <button type="button" class="btn btn-primary btn-sm" (click)="openCreate(board.statuses[0])">
-                {{ 'app.board.newLecture' | translate }}
-            </button>
+            <div class="course-stats">
+                <span class="course-stat">{{ 'app.board.course.lecturesCount' | translate: {count: totalCount()} }}</span>
+                <span class="course-stat course-stat--mastered">{{ 'app.board.course.masteredCount' | translate: {count: masteredCount()} }}</span>
+                <span class="course-stat course-stat--learning">{{ 'app.board.course.learningCount' | translate: {count: learningCount()} }}</span>
+            </div>
         </div>
     </header>
+
+    <div class="course-toolbar">
+        <div class="board-views" role="tablist">
+            <a class="board-views-tab board-views-tab--active" aria-current="page">{{ 'app.board.viewBoard' | translate }}</a>
+            <a class="board-views-tab" [routerLink]="['/courses', board.course.id, 'workflow']">{{ 'app.board.viewWorkflow' | translate }}</a>
+            <a class="board-views-tab" [routerLink]="['/courses', board.course.id, 'events']">{{ 'app.board.viewEvents' | translate }}</a>
+        </div>
+        <button type="button" class="btn btn-primary btn-sm" (click)="openCreate(board.statuses[0])">
+            {{ 'app.board.newLecture' | translate }}
+        </button>
+    </div>
 
     <div cdkDropListGroup class="kanban">
         @for (col of columns(); track col.status.id) {
             <div class="column">
                 <header class="column-header">
-                    <div class="column-title">
-                        <span class="column-dot" [style.background]="col.status.color"></span>
-                        <h3>{{ col.status.name }}</h3>
-                        <span class="column-count">{{ col.lectures.length }}</span>
-                    </div>
-                    <button
-                        type="button"
-                        class="btn btn-ghost btn-icon btn-xs"
-                        (click)="openCreate(col.status)"
-                        [attr.aria-label]="'app.board.addLecture' | translate"
-                    >
-                        <svg width="11" height="11" viewBox="0 0 16 16" aria-hidden="true">
-                            <path d="M8 3v10M3 8h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
-                        </svg>
-                    </button>
+                    <span class="column-dot" [style.background]="statusDotColor(col.status)"></span>
+                    <h3 class="column-label">{{ col.status.name }}</h3>
+                    <span class="column-count">{{ col.lectures.length }}</span>
                 </header>
 
                 <div
@@ -60,7 +80,7 @@
                             (keydown.enter)="openEdit(lecture)"
                             (keydown.space)="openEdit(lecture)"
                         >
-                            <uk-lecture-card [lecture]="lecture" [workspaceTags]="workspaceTags()" />
+                            <uk-lecture-card [lecture]="lecture" [status]="col.status" [workspaceTags]="workspaceTags()" />
                         </div>
                     }
                 </div>

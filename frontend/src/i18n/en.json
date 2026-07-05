@@ -52,7 +52,10 @@
       "newWorkspace": "+ New workspace",
       "manageWorkspaces": "Manage workspaces",
       "aiPalette": "Open agent command palette",
-      "openUserMenu": "Open user menu"
+      "openUserMenu": "Open user menu",
+      "library": "Library",
+      "search": "Search…",
+      "toggleTheme": "Toggle theme"
     },
     "agent": {
       "agent": "agent",
@@ -243,7 +246,18 @@
       "updated": "Course updated.",
       "edit": "Edit course",
       "namePlaceholder": "Course name",
-      "descriptionPlaceholder": "Optional description"
+      "descriptionPlaceholder": "Optional description",
+      "workspaceOverline": "Workspace",
+      "librarySubtitle": "{{courses}} courses · {{mastered}} mastered · {{working}} in progress",
+      "workingOn": "What I'm working on",
+      "inProgress": "{{count}} in progress",
+      "coursesSection": "Courses",
+      "recentlyMastered": "Recently mastered",
+      "masteredTotal": "{{count}} total",
+      "lectureCount": "{{count}} lectures",
+      "agentCreated": "Created by an agent",
+      "noWorking": "Nothing in progress yet.",
+      "formOverline": "Course"
     },
     "board": {
       "addLecture": "+ Add lecture",
@@ -299,6 +313,7 @@
           "capo": "Capo (fret)",
           "targetTempo": "Target tempo (BPM)",
           "difficulty": "Difficulty",
+          "currentTarget": "Current · Target",
           "difficultyNone": "—",
           "difficulties": {
             "Beginner": "Beginner",
@@ -308,7 +323,17 @@
         }
       },
       "card": {
-        "capo": "Capo"
+        "capo": "Capo",
+        "masteredAt": "Mastered at {{bpm}} BPM",
+        "mastered": "Mastered",
+        "targetBpm": "Target {{bpm}} BPM"
+      },
+      "course": {
+        "overline": "Course",
+        "ringLabel": "Mastered",
+        "lecturesCount": "{{count}} lectures",
+        "masteredCount": "{{count}} mastered",
+        "learningCount": "{{count}} learning"
       }
     },
     "workflow": {
@@ -633,6 +658,7 @@
     },
     "tabs": {
       "new": "New tab",
+      "read": "Read",
       "import": "Import .gp",
       "importing": "Importing…",
       "imported": "Tab imported.",
@@ -649,6 +675,7 @@
         "validationFailed": "alphaTex validation failed:",
         "lineCol": "line {{line}}:{{col}}",
         "validateAndPreview": "Validate & preview",
+        "sourceLabel": "alphaTex source",
         "preview": "Preview"
       },
       "meta": {
@@ -660,6 +687,9 @@
     "progress": {
       "totalSessions": "Sessions",
       "totalMinutes": "Minutes",
+      "currentBpm": "Current BPM",
+      "summaryClimbing": "Tempo is climbing",
+      "practiceLog": "Practice log",
       "bpmTrend": "BPM trend",
       "date": "Date",
       "bpm": "Achieved BPM",

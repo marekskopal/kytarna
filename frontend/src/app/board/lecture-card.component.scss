@@ -5,16 +5,19 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: $space-2;
-    padding: $space-4 11px;
+    gap: 11px;
+    padding: $space-6;
     background: $color-surface;
     border: 1px solid $color-border;
-    border-radius: $radius-sm;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-sm;
     cursor: pointer;
-    transition: border-color 80ms ease;
+    transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
 
     &:hover {
+        transform: translateY(-2px);
         border-color: $color-border-strong;
+        box-shadow: $shadow-md;
     }
 
     &[data-agent='true'] {
@@ -24,86 +27,116 @@
 
 .lecture-card-head {
     display: flex;
-    align-items: center;
-    gap: $space-2;
-}
-
-.lecture-card-agent-badge {
-    gap: 3px;
-}
-
-.lecture-card-id {
-    color: $color-text-subtle;
-    font-size: $font-size-11;
-    letter-spacing: 0.02em;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: $space-3;
 }
 
 .lecture-card-title {
     margin: 0;
-    font-size: $font-size-13;
-    font-weight: 500;
-    letter-spacing: -0.005em;
-    line-height: 1.35;
+    font-family: $font-display;
+    font-weight: 400;
+    font-size: $font-size-18;
+    line-height: 1.15;
     color: $color-text;
     word-break: break-word;
 }
 
+// Agent marker: gold rotated square inside a ring.
+.lecture-card-agent {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    flex: 0 0 auto;
+    border: 1px solid $color-border-strong;
+    border-radius: 50%;
+    background: $color-surface-muted;
+}
+
+.lecture-card-agent-mark {
+    width: 6px;
+    height: 6px;
+    background: $color-ai;
+    transform: rotate(45deg);
+}
+
 .lecture-card-desc {
     margin: 0;
-    font-size: $font-size-12;
+    font-size: $font-size-13;
     color: $color-text-muted;
-    line-height: 1.4;
+    line-height: 1.45;
     @include clamp-lines(2);
 }
 
+// ─── Chips (difficulty / tuning / capo) ─────────────────────
+.lecture-card-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-2;
+}
+
+.lecture-card-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 7px;
+    border: 1px solid $color-border;
+    border-radius: $radius-xs;
+    background: $color-surface-muted;
+    font-family: $font-mono;
+    font-size: 10.5px;
+    line-height: 1;
+    white-space: nowrap;
+
+    &--muted {
+        color: $color-text-muted;
+    }
+}
+
+// ─── Tags ───────────────────────────────────────────────────
 .lecture-card-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 3px;
-    margin-top: $space-2;
+    gap: $space-2;
 }
 
 .lecture-card-tag {
-    display: inline-flex;
-    align-items: center;
-    height: 16px;
-    padding: 0 $space-2;
-    border-radius: $radius-xs;
-    font-size: 10px;
-    font-weight: 500;
-    line-height: 1;
-    white-space: nowrap;
+    font-family: $font-mono;
+    font-size: $font-size-10;
+    color: $color-text-subtle;
+    line-height: 1.4;
+
+    &--overflow {
+        color: $color-text-faint;
+    }
 }
 
-.lecture-card-tag-overflow {
-    display: inline-flex;
-    align-items: center;
-    height: 16px;
-    padding: 0 $space-2;
-    border-radius: $radius-xs;
-    background: $color-surface-muted;
-    color: $color-text-muted;
-    font-size: 10px;
-    font-weight: 500;
-}
-
-
-.lecture-card-guitar {
+// ─── Footer ─────────────────────────────────────────────────
+.lecture-card-footer {
     display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-    margin-top: 4px;
+    align-items: center;
+    gap: $space-2;
+    font-family: $font-mono;
+    line-height: 1.3;
+
+    &--mastered {
+        font-size: $font-size-11;
+        color: $color-success;
+    }
+
+    &--target {
+        font-size: 10.5px;
+        color: $color-text-subtle;
+    }
 }
 
-.lecture-card-meta {
-    font-size: 11px;
-    padding: 1px 6px;
-    border-radius: 4px;
-    background: var(--uk-color-surface-sunken, #f4f4f5);
-    color: var(--uk-color-text-subtle, #71717a);
-}
-
-.lecture-card-meta--difficulty {
-    background: #eef1fd;
-    color: #4550b8;
+.lecture-card-check {
+    width: 8px;
+    height: 5px;
+    border-left: 2px solid $color-success;
+    border-bottom: 2px solid $color-success;
+    transform: rotate(-45deg);
+    margin-top: -2px;
+    flex: 0 0 auto;
 }

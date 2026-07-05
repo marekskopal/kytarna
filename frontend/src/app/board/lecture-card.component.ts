@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, computed, input} from '@angular/core';
-import {Lecture} from '@app/models/lecture';
+import {Difficulty, Lecture} from '@app/models/lecture';
+import {Status} from '@app/models/status';
 import {Tag} from '@app/models/tag';
-import {pickReadableForeground} from '@app/shared/color-contrast';
 import {TranslatePipe} from '@ngx-translate/core';
 
 const MAX_VISIBLE_TAGS = 3;
@@ -16,7 +16,11 @@ const MAX_VISIBLE_TAGS = 3;
 })
 export class LectureCardComponent {
     public readonly lecture = input.required<Lecture>();
+    public readonly status = input<Status | null>(null);
     public readonly workspaceTags = input<Tag[]>([]);
+
+    // A lecture is "mastered" when it sits in a workflow Finish-type status.
+    protected readonly isMastered = computed<boolean>(() => this.status()?.type === 'Finish');
 
     protected readonly visibleTags = computed<Tag[]>(() => this.lectureTags().slice(0, MAX_VISIBLE_TAGS));
 
@@ -40,7 +44,16 @@ export class LectureCardComponent {
         return s.replace(/[#*_`~>-]/g, '').replace(/\s+/g, ' ').trim();
     }
 
-    protected tagForeground(color: string): string {
-        return pickReadableForeground(color);
+    // Difficulty hue rule (theme-aware tokens):
+    //   Advanced → accent · Intermediate → gold/warn · Beginner → olive/success
+    protected difficultyColor(difficulty: Difficulty): string {
+        switch (difficulty) {
+            case 'Advanced':
+                return 'var(--color-accent)';
+            case 'Intermediate':
+                return 'var(--color-warn)';
+            default:
+                return 'var(--color-success)';
+        }
     }
 }

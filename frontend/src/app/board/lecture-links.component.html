@@ -15,35 +15,46 @@
     } @else if (links().length === 0) {
         <p class="text-subtle">{{ 'app.links.empty' | translate }}</p>
     } @else {
-        <ul class="links-list">
+        <div class="links-grid">
             @for (link of links(); track link.id) {
-                <li class="links-item" [class.links-item--youtube]="link.kind === 'youtube'">
-                    <span class="links-icon" aria-hidden="true">
+                <div class="link-card" [class.link-card--youtube]="link.kind === 'youtube'">
+                    <span class="link-tile" aria-hidden="true">
                         @if (link.kind === 'youtube') {
-                            <svg width="16" height="16" viewBox="0 0 16 16"><path d="M6 4.5l5 3.5-5 3.5z" fill="currentColor" /></svg>
+                            <span class="link-tile-play"></span>
                         } @else {
-                            <svg width="14" height="14" viewBox="0 0 16 16"><path d="M6.5 9.5l3-3M7 4h4a2 2 0 0 1 0 4H9M9 12H5a2 2 0 0 1 0-4h2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" /></svg>
+                            <span class="link-tile-label">{{ glyphLabel(link) }}</span>
                         }
                     </span>
-                    <a class="links-anchor" [href]="outboundUrl(link)" target="_blank" rel="noopener noreferrer">
-                        {{ link.label || link.url }}
+                    <div class="link-body">
+                        <a class="link-title" [href]="outboundUrl(link)" target="_blank" rel="noopener noreferrer">
+                            {{ link.label || link.url }}
+                        </a>
+                        <div class="link-meta uk-mono">
+                            @if (link.kind === 'youtube') {
+                                <span>YouTube</span>
+                            } @else {
+                                <span>{{ glyphLabel(link) }}</span>
+                            }
+                            @if (link.kind === 'youtube' && link.timestampSeconds !== null && link.timestampSeconds > 0) {
+                                <span class="link-ts">&#64;{{ formatTimestamp(link.timestampSeconds) }}</span>
+                            }
+                        </div>
+                    </div>
+                    <a class="link-chevron" [href]="outboundUrl(link)" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
+                        <span class="link-chevron-glyph"></span>
                     </a>
-                    @if (link.kind === 'youtube' && link.timestampSeconds !== null && link.timestampSeconds > 0) {
-                        <span class="links-ts-badge uk-mono">@{{ formatTimestamp(link.timestampSeconds) }}</span>
-                    }
-                    <span class="links-item-spacer"></span>
                     <button
                         type="button"
-                        class="btn btn-danger-ghost btn-icon btn-sm"
+                        class="btn btn-danger-ghost btn-icon btn-sm link-delete"
                         (click)="onDelete(link)"
                         [attr.aria-label]="'app.actions.delete' | translate"
                     >
-                        <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
+                        <svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true">
                             <path d="M3 3l10 10M13 3L3 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
                         </svg>
                     </button>
-                </li>
+                </div>
             }
-        </ul>
+        </div>
     }
 </div>

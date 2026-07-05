@@ -4,16 +4,26 @@ import {PracticeSummary, ProgressEntry} from '@app/models/progress';
 import {ProgressService} from '@app/services/progress.service';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
+interface SparkPoint {
+    x: number;
+    y: number;
+    last: boolean;
+}
+
 interface Sparkline {
     points: string;
+    area: string;
+    dots: SparkPoint[];
+    targetY: number | null;
     min: number;
     max: number;
     width: number;
     height: number;
 }
 
-const SPARK_W = 240;
-const SPARK_H = 48;
+const SPARK_W = 300;
+const SPARK_H = 96;
+const SPARK_PAD = 12;
 
 /** Practice log for a lecture: timeline (newest first), a log form, and a summary + BPM sparkline. */
 @Component({
@@ -26,6 +36,8 @@ const SPARK_H = 48;
 })
 export class LectureProgressComponent implements OnInit {
     public readonly lectureId = input.required<number | string>();
+    /** Target tempo (from the lecture) drawn as a dashed goal line on the sparkline. */
+    public readonly targetBpm = input<number | null>(null);
 
     private readonly fb = inject(FormBuilder);
     private readonly progressService = inject(ProgressService);
@@ -54,18 +66,42 @@ export class LectureProgressComponent implements OnInit {
             return null;
         }
         const values = trend.map((p) => p.tempoBpm);
+        const target = this.targetBpm();
         const min = Math.min(...values);
         const max = Math.max(...values);
-        const span = max - min || 1;
-        const step = trend.length > 1 ? SPARK_W / (trend.length - 1) : 0;
-        const points = trend
-            .map((p, i) => {
-                const x = i * step;
-                const y = SPARK_H - ((p.tempoBpm - min) / span) * SPARK_H;
-                return `${x.toFixed(1)},${y.toFixed(1)}`;
-            })
-            .join(' ');
-        return {points, min, max, width: SPARK_W, height: SPARK_H};
+        // Include the target in the drawn range so the goal line is always visible.
+        const domainMin = target !== null ? Math.min(min, target) : min;
+        const domainMax = target !== null ? Math.max(max, target) : max;
+        const span = domainMax - domainMin || 1;
+        const step = SPARK_W / (trend.length - 1);
+        const y = (v: number): number => SPARK_PAD + (1 - (v - domainMin) / span) * (SPARK_H - 2 * SPARK_PAD);
+        const dots: SparkPoint[] = trend.map((p, i) => ({
+            x: Number((i * step).toFixed(1)),
+            y: Number(y(p.tempoBpm).toFixed(1)),
+            last: i === trend.length - 1,
+        }));
+        const points = dots.map((d) => `${d.x},${d.y}`).join(' ');
+        const baseline = SPARK_H - SPARK_PAD;
+        const area = `M${dots[0].x},${dots[0].y} `
+            + dots.slice(1).map((d) => `L${d.x},${d.y}`).join(' ')
+            + ` L${dots[dots.length - 1].x},${baseline} L${dots[0].x},${baseline} Z`;
+        const targetY = target !== null ? Number(y(target).toFixed(1)) : null;
+        return {points, area, dots, targetY, min, max, width: SPARK_W, height: SPARK_H};
+    });
+
+    /** Latest logged tempo, or null when nothing has been logged. */
+    protected readonly currentBpm = computed<number | null>(() => {
+        const trend = this.summary()?.bpmTrend ?? [];
+        return trend.length > 0 ? trend[trend.length - 1].tempoBpm : null;
+    });
+
+    /** BPM gained from the first to the latest logged session (positive = improving). */
+    protected readonly bpmGain = computed<number | null>(() => {
+        const trend = this.summary()?.bpmTrend ?? [];
+        if (trend.length < 2) {
+            return null;
+        }
+        return trend[trend.length - 1].tempoBpm - trend[0].tempoBpm;
     });
 
     public ngOnInit(): void {

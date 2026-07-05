@@ -1,27 +1,117 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
 .tab-editor {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: $space-4;
+}
+
+.tab-editor-panel {
+    border: 1px solid $color-border;
+    border-radius: $radius-xl;
+    background: $color-surface;
+    box-shadow: $shadow-sm;
+    overflow: hidden;
+}
+
+.tab-editor-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-4;
+    padding: $space-3 $space-5;
+    border-bottom: 1px solid $color-border;
+    background: $color-surface-muted;
+}
+
+.tab-editor-head-left {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    min-width: 0;
+    flex: 1;
+}
+
+.tab-editor-source {
+    font-size: $font-size-11;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $color-text-subtle;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.tab-editor-name {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    background: transparent;
+    color: $color-text;
+    font-family: $font-mono;
+    font-size: $font-size-13;
+    padding: $space-1 0;
+
+    &:focus { outline: none; }
+    &::placeholder { color: $color-text-faint; }
 }
 
 .tab-alphatex {
-    font-family: var(--uk-font-mono, monospace);
+    display: block;
+    width: 100%;
+    min-height: 200px;
     resize: vertical;
-    min-height: 140px;
+    border: 0;
+    outline: none;
+    padding: $space-6 $space-7;
+    background: $color-surface;
+    color: $color-text;
+    font-family: $font-mono;
+    font-size: $font-size-13;
+    line-height: 1.7;
     white-space: pre;
+
+    &::placeholder { color: $color-text-faint; }
 }
 
+// Soft, non-alarming validation banner (real 422 data, gentle styling).
 .tab-errors {
-    border: 1px solid #b42318;
-    background: #fdecea;
-    border-radius: 6px;
-    padding: 10px 12px;
-    color: #7a1c12;
+    display: flex;
+    align-items: flex-start;
+    gap: $space-5;
+    padding: $space-4 $space-6;
+    border-top: 1px solid $color-warn-border;
+    background: $color-warn-soft;
+}
+
+.tab-errors-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    border-radius: 50%;
+    background: $color-surface;
+    border: 1.5px solid $color-warn;
+    color: $color-warn;
+    font-family: $font-mono;
+    font-size: $font-size-12;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.tab-errors-body {
+    flex: 1;
+    min-width: 0;
 }
 
 .tab-errors-title {
     font-weight: 600;
-    margin-bottom: 6px;
+    font-size: $font-size-13;
+    color: $color-text;
+    margin-bottom: 2px;
 }
 
 .tab-errors-list {
@@ -30,30 +120,50 @@
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: $space-1;
 }
 
 .tab-error {
     display: flex;
-    gap: 8px;
+    gap: $space-2;
     align-items: baseline;
+    flex-wrap: wrap;
+    font-size: $font-size-12;
+    color: $color-text-muted;
 }
 
 .tab-error-loc {
-    font-size: 12px;
-    opacity: 0.85;
+    font-size: $font-size-12;
+    font-weight: 700;
+    color: $color-warn;
+    white-space: nowrap;
+}
+
+.tab-errors-count {
+    flex-shrink: 0;
+    margin-top: 2px;
+    font-size: $font-size-11;
+    color: $color-warn;
     white-space: nowrap;
 }
 
 .tab-editor-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 8px;
+    gap: $space-3;
 }
 
 .tab-editor-preview {
-    margin-top: 16px;
+    margin-top: $space-6;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: $space-3;
+}
+
+.tab-editor-preview-paper {
+    border: 1px solid $color-border;
+    border-radius: $radius-lg;
+    background: $color-surface;
+    padding: $space-6 $space-7;
+    overflow-x: auto;
 }

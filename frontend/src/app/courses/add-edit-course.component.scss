@@ -1,11 +1,46 @@
 @use 'variables' as *;
 
 .form-page {
-    max-width: 760px;
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+    padding: $space-5 0 $space-11;
 }
 
-.page-title {
-    margin-bottom: $space-6;
+.form-head {
+    margin-bottom: $space-7;
+}
+
+.form-overline {
+    font-family: $font-mono;
+    font-size: $font-size-11;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: $color-text-subtle;
+    margin-bottom: $space-3;
+}
+
+.form-title {
+    font-family: $font-display;
+    font-weight: 400;
+    font-size: clamp(32px, 6vw, 46px);
+    line-height: 1.02;
+    margin: 0;
+}
+
+.form-card {
+    display: flex;
+    flex-direction: column;
+    gap: $space-6;
+    padding: $space-8;
+    background: $color-surface;
+    border: 1px solid $color-border;
+    border-radius: $radius-xl;
+    box-shadow: $shadow-sm;
+}
+
+.form-card .field {
+    margin-bottom: 0;
 }
 
 .form-stack {
@@ -18,7 +53,7 @@
     display: flex;
     align-items: center;
     gap: $space-3;
-    margin-top: $space-3;
+    margin-top: $space-2;
 }
 
 .pf-section {

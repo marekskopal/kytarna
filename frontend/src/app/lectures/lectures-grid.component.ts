@@ -3,7 +3,7 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {LectureDetailDrawerComponent} from '@app/board/lecture-detail-drawer.component';
-import {ArchivedFilter, Lecture, LectureListItem, LectureOrderBy,OrderDirection} from '@app/models/lecture';
+import {ArchivedFilter, Difficulty, Lecture, LectureListItem, LectureOrderBy,OrderDirection} from '@app/models/lecture';
 import {SavedView, SavedViewFilters} from '@app/models/saved-view';
 import {Status} from '@app/models/status';
 import {Tag} from '@app/models/tag';
@@ -613,6 +613,30 @@ export class LecturesGridComponent implements OnInit {
 
     protected tagForeground(color: string): string {
         return pickReadableForeground(color);
+    }
+
+    // Difficulty hue rule (theme-aware tokens), shared with the lecture card.
+    protected difficultyColor(difficulty: Difficulty): string {
+        switch (difficulty) {
+            case 'Advanced':
+                return 'var(--color-accent)';
+            case 'Intermediate':
+                return 'var(--color-warn)';
+            default:
+                return 'var(--color-success)';
+        }
+    }
+
+    // Status dot color by workflow role (theme-aware; flips in dark mode).
+    protected statusDotColor(status: Status): string {
+        switch (status.type) {
+            case 'Start':
+                return 'var(--color-status-todo)';
+            case 'Finish':
+                return 'var(--color-status-done)';
+            default:
+                return 'var(--color-status-doing)';
+        }
     }
 
     protected onPageChange(page: number): void {

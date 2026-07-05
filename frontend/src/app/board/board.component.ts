@@ -5,7 +5,7 @@ import {LectureCardComponent} from '@app/board/lecture-card.component';
 import {LectureDetailDrawerComponent} from '@app/board/lecture-detail-drawer.component';
 import {Board} from '@app/models/board';
 import {Lecture} from '@app/models/lecture';
-import {Status} from '@app/models/status';
+import {Status, StatusType} from '@app/models/status';
 import {Tag} from '@app/models/tag';
 import {BoardService} from '@app/services/board.service';
 import {CurrentUserService} from '@app/services/current-user.service';
@@ -58,6 +58,50 @@ export class BoardComponent implements OnInit {
                     .sort((a, b) => a.position - b.position),
             }));
     });
+
+    // ─── Course header stats ────────────────────────────────────
+    // Ring geometry (matches the design's 76px ring, r=33, 6px stroke).
+    protected readonly ringCircumference = 2 * Math.PI * 33;
+
+    protected readonly totalCount = computed<number>(() => this.board()?.lectures.length ?? 0);
+
+    protected readonly masteredCount = computed<number>(() => this.countByStatusType('Finish'));
+
+    protected readonly learningCount = computed<number>(() => this.countByStatusType('Normal'));
+
+    protected readonly masteredPercent = computed<number>(() => {
+        const total = this.totalCount();
+        return total === 0 ? 0 : Math.round((this.masteredCount() / total) * 100);
+    });
+
+    // stroke-dasharray for the progress arc: "<filled> <remaining>".
+    protected readonly ringDash = computed<string>(() => {
+        const c = this.ringCircumference;
+        const filled = (this.masteredPercent() / 100) * c;
+        return `${filled} ${c - filled}`;
+    });
+
+    private countByStatusType(type: StatusType): number {
+        const board = this.board();
+        if (!board) {
+            return 0;
+        }
+        const ids = new Set(board.statuses.filter((s) => s.type === type).map((s) => s.id));
+        return board.lectures.filter((l) => ids.has(l.statusId)).length;
+    }
+
+    // Status dot color by workflow role, mapped to theme-aware tokens so it
+    // flips in dark mode (backend status.color is a static hex).
+    protected statusDotColor(status: Status): string {
+        switch (status.type) {
+            case 'Start':
+                return 'var(--color-status-todo)';
+            case 'Finish':
+                return 'var(--color-status-done)';
+            default:
+                return 'var(--color-status-doing)';
+        }
+    }
 
     public async ngOnInit(): Promise<void> {
         const id = Number(this.route.snapshot.paramMap.get('id'));

@@ -9,14 +9,13 @@ import {LanguageService} from '@app/services/language.service';
 import {PermissionsService} from '@app/services/permissions.service';
 import {ThemeService} from '@app/services/theme.service';
 import {WorkspaceService} from '@app/services/workspace.service';
-import {BrandLogoComponent} from '@app/shared/components/brand-logo/brand-logo.component';
 import {NotificationBellComponent} from '@app/shared/components/notification-bell/notification-bell.component';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
 @Component({
     selector: 'uk-layout',
     standalone: true,
-    imports: [BrandLogoComponent, RouterOutlet, RouterLink, RouterLinkActive, TranslatePipe, NotificationBellComponent],
+    imports: [RouterOutlet, RouterLink, RouterLinkActive, TranslatePipe, NotificationBellComponent],
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './layout.component.html',
     styleUrl: './layout.component.scss',
@@ -62,6 +61,9 @@ export class LayoutComponent implements OnInit {
     protected readonly supportedLangs = this.languageService.supportedLangs;
     protected readonly currentTheme = this.themeService.currentTheme;
     protected readonly supportedThemes = this.themeService.supportedThemes;
+    protected readonly resolvedTheme = this.themeService.resolvedTheme;
+    // Sun when dark (tap to go light), moon when light (tap to go dark).
+    protected readonly themeIcon = computed<string>(() => (this.resolvedTheme() === 'dark' ? '☀' : '☾'));
 
     public async ngOnInit(): Promise<void> {
         try {
@@ -116,6 +118,11 @@ export class LayoutComponent implements OnInit {
     protected setTheme(theme: Theme): void {
         this.userMenuOpen.set(false);
         this.themeService.use(theme, {persist: true, sync: true});
+    }
+
+    protected toggleTheme(): void {
+        const next: Theme = this.resolvedTheme() === 'dark' ? 'light' : 'dark';
+        this.themeService.use(next, {persist: true, sync: true});
     }
 
     protected themeLabelKey(theme: Theme): string {

@@ -1,10 +1,13 @@
 <div class="form-page">
-    <h1 class="page-title">{{ (id() === null ? 'app.courses.new' : 'app.courses.edit') | translate }}</h1>
+    <div class="form-head">
+        <div class="form-overline">{{ 'app.courses.formOverline' | translate }}</div>
+        <h1 class="form-title">{{ (id() === null ? 'app.courses.new' : 'app.courses.edit') | translate }}</h1>
+    </div>
 
-    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-stack">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-card">
         <div class="field">
             <label for="course-name" class="field-label">{{ 'app.common.name' | translate }}</label>
-            <input id="course-name" type="text" formControlName="name" class="input" />
+            <input id="course-name" type="text" formControlName="name" class="input" [placeholder]="'app.courses.namePlaceholder' | translate" />
         </div>
         <div class="field">
             <label for="course-description" class="field-label">{{ 'app.common.description' | translate }}</label>
@@ -15,11 +18,10 @@
             />
         </div>
         <div class="form-actions">
-            <button type="submit" class="btn btn-primary" [disabled]="form.invalid || saving()">
+            <button type="submit" class="btn btn-primary btn-lg" [disabled]="form.invalid || saving()">
                 {{ (saving() ? 'app.actions.loading' : 'app.actions.save') | translate }}
             </button>
-            <a routerLink="/courses" class="muted-link">{{ 'app.actions.cancel' | translate }}</a>
+            <a routerLink="/courses" class="btn btn-secondary btn-lg">{{ 'app.actions.cancel' | translate }}</a>
         </div>
     </form>
-
 </div>
