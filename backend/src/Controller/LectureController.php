@@ -161,7 +161,10 @@ final readonly class LectureController
 				name: $dto->name,
 				description: $dto->description,
 				tagIds: $dto->tagIds,
-				startDate: $dto->startDate,
+				tuning: $dto->tuning,
+				capo: $dto->capo,
+				targetTempoBpm: $dto->targetTempoBpm,
+				difficulty: $dto->difficulty,
 			);
 		} catch (RuntimeException $e) {
 			return new ErrorResponse($e->getMessage(), 422);
@@ -210,7 +213,10 @@ final readonly class LectureController
 				description: $dto->description,
 				status: $status,
 				tagIds: $dto->tagIds,
-				startDate: $dto->startDate,
+				tuning: $dto->tuning,
+				capo: $dto->capo,
+				targetTempoBpm: $dto->targetTempoBpm,
+				difficulty: $dto->difficulty,
 			);
 		} catch (RuntimeException $e) {
 			return new ErrorResponse($e->getMessage(), 422);

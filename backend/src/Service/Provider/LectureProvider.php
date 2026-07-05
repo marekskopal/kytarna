@@ -7,6 +7,7 @@ namespace Kytario\Service\Provider;
 use DateTimeImmutable;
 use Iterator;
 use Kytario\Model\Entity\Course;
+use Kytario\Model\Entity\Enum\DifficultyEnum;
 use Kytario\Model\Entity\Enum\EventTypeEnum;
 use Kytario\Model\Entity\Lecture;
 use Kytario\Model\Entity\Status;
@@ -120,7 +121,10 @@ final readonly class LectureProvider implements LectureProviderInterface
 		string $name,
 		?string $description,
 		?array $tagIds = null,
-		?DateTimeImmutable $startDate = null,
+		?string $tuning = null,
+		?int $capo = null,
+		?int $targetTempoBpm = null,
+		?DifficultyEnum $difficulty = null,
 	): Lecture {
 		$name = TextFieldValidator::validateName($name, 'Lecture');
 		$description = TextFieldValidator::validateDescription($description);
@@ -136,7 +140,10 @@ final readonly class LectureProvider implements LectureProviderInterface
 			description: $description,
 			position: $position,
 			sequenceNumber: $sequenceNumber,
-			startDate: $startDate,
+			tuning: $tuning,
+			capo: $capo,
+			targetTempoBpm: $targetTempoBpm,
+			difficulty: $difficulty,
 			createdByAgent: $this->actorContext->isAgent(),
 		);
 		$lecture->createdAt = $now;
@@ -177,7 +184,10 @@ final readonly class LectureProvider implements LectureProviderInterface
 		Status $status,
 		?array $tagIds = null,
 		bool $recordEvent = true,
-		?DateTimeImmutable $startDate = null,
+		?string $tuning = null,
+		?int $capo = null,
+		?int $targetTempoBpm = null,
+		?DifficultyEnum $difficulty = null,
 	): Lecture {
 		$name = TextFieldValidator::validateName($name, 'Lecture');
 		$description = TextFieldValidator::validateDescription($description);
@@ -187,7 +197,10 @@ final readonly class LectureProvider implements LectureProviderInterface
 
 		$lecture->name = $name;
 		$lecture->description = $description;
-		$lecture->startDate = $startDate;
+		$lecture->tuning = $tuning;
+		$lecture->capo = $capo;
+		$lecture->targetTempoBpm = $targetTempoBpm;
+		$lecture->difficulty = $difficulty;
 		if ($statusChanged) {
 			$lecture->status = $status;
 			$lecture->position = $this->positionManager->nextPosition($status);

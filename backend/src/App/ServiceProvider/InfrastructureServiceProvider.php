@@ -14,6 +14,8 @@ use Kytario\Service\Queue\QueuePublisher;
 use Kytario\Service\Storage\FileStorageInterface;
 use Kytario\Service\Storage\S3Config;
 use Kytario\Service\Storage\S3FileStorage;
+use Kytario\Service\Tab\TabServiceClient;
+use Kytario\Service\Tab\TabServiceClientInterface;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use Predis\Client;
 use Predis\ClientInterface;
@@ -34,6 +36,7 @@ final class InfrastructureServiceProvider extends AbstractServiceProvider
 			CacheFactoryInterface::class,
 			CorsPolicy::class,
 			QueuePublisher::class,
+			TabServiceClientInterface::class,
 		], true);
 	}
 
@@ -96,5 +99,7 @@ final class InfrastructureServiceProvider extends AbstractServiceProvider
 		);
 
 		$container->add(QueuePublisher::class, static fn (): QueuePublisher => new QueuePublisher());
+
+		$container->add(TabServiceClientInterface::class, static fn (): TabServiceClientInterface => new TabServiceClient());
 	}
 }

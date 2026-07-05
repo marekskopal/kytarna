@@ -117,49 +117,61 @@ final class LectureControllerTest extends IntegrationTestCase
 		self::assertSame(4, $pagedBody['count']);
 	}
 
-	public function testStartDateRoundTrip(): void
+	public function testGuitarFieldsRoundTrip(): void
 	{
 		$owner = Fixture::createUser();
 		$workspace = Fixture::createWorkspace($owner);
 		$course = Fixture::createCourse($owner, $workspace);
 		$todoId = $this->firstStatusId($course->id);
 
-		// Create with a start date — it round-trips in the response.
+		// Create with guitar metadata — it round-trips in the response.
 		$create = $this->request('POST', '/api/courses/' . $course->id . '/lectures', body: [
 			'statusId' => $todoId,
-			'name' => 'Spanning lecture',
+			'name' => 'Blackbird',
 			'description' => null,
-			'startDate' => '2026-05-10',
+			'tuning' => 'Drop D',
+			'capo' => 3,
+			'targetTempoBpm' => 96,
+			'difficulty' => 'Intermediate',
 		], authenticatedAs: $owner);
 		self::assertSame(200, $create->getStatusCode());
 		$created = $this->jsonBody($create);
-		self::assertSame('2026-05-10', $created['startDate']);
+		self::assertSame('Drop D', $created['tuning']);
+		self::assertSame(3, $created['capo']);
+		self::assertSame(96, $created['targetTempoBpm']);
+		self::assertSame('Intermediate', $created['difficulty']);
 		$code = self::stringField($created['code']);
 
-		// Updating the start date round-trips too.
+		// Updating guitar metadata round-trips too.
 		$update = $this->request('PUT', '/api/lectures/' . $code, body: [
 			'statusId' => $todoId,
-			'name' => 'Spanning lecture',
+			'name' => 'Blackbird',
 			'description' => null,
-			'startDate' => '2026-05-12',
+			'tuning' => 'Standard',
+			'capo' => null,
+			'targetTempoBpm' => 108,
+			'difficulty' => 'Advanced',
 		], authenticatedAs: $owner);
 		self::assertSame(200, $update->getStatusCode());
-		self::assertSame('2026-05-12', $this->jsonBody($update)['startDate']);
+		$updated = $this->jsonBody($update);
+		self::assertSame('Standard', $updated['tuning']);
+		self::assertNull($updated['capo']);
+		self::assertSame('Advanced', $updated['difficulty']);
 	}
 
-	public function testMalformedBodyDateIsRejectedWith422(): void
+	public function testInvalidDifficultyIsRejectedWith422(): void
 	{
 		$owner = Fixture::createUser();
 		$workspace = Fixture::createWorkspace($owner);
 		$course = Fixture::createCourse($owner, $workspace);
 		$todoId = $this->firstStatusId($course->id);
 
-		// A malformed start date must answer 422, not crash with an uncaught date-parse error (500).
+		// An unknown difficulty must answer 422, not crash with an uncaught enum error (500).
 		$response = $this->request('POST', '/api/courses/' . $course->id . '/lectures', body: [
 			'statusId' => $todoId,
-			'name' => 'Bad date',
+			'name' => 'Bad difficulty',
 			'description' => null,
-			'startDate' => 'not-a-date',
+			'difficulty' => 'Impossible',
 		], authenticatedAs: $owner);
 		self::assertSame(422, $response->getStatusCode());
 	}

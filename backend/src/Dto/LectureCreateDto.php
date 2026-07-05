@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace Kytario\Dto;
 
-use DateTimeImmutable;
+use Kytario\Model\Entity\Enum\DifficultyEnum;
+use RuntimeException;
 
 /**
  * @implements ArrayFactoryInterface<array{
  *     statusId: int,
  *     name: string,
  *     description?: ?string,
- *     startDate?: ?string,
+ *     tuning?: ?string,
+ *     capo?: ?int,
+ *     targetTempoBpm?: ?int,
+ *     difficulty?: ?string,
  *     tagIds?: ?list<int>,
  * }>
  */
@@ -22,7 +26,10 @@ final readonly class LectureCreateDto implements ArrayFactoryInterface
 		public int $statusId,
 		public string $name,
 		public ?string $description,
-		public ?DateTimeImmutable $startDate,
+		public ?string $tuning,
+		public ?int $capo,
+		public ?int $targetTempoBpm,
+		public ?DifficultyEnum $difficulty,
 		public ?array $tagIds,
 	) {
 	}
@@ -33,9 +40,21 @@ final readonly class LectureCreateDto implements ArrayFactoryInterface
 			statusId: $data['statusId'],
 			name: $data['name'],
 			description: $data['description'] ?? null,
-			startDate: DateInput::parse($data['startDate'] ?? null, 'startDate'),
+			tuning: $data['tuning'] ?? null,
+			capo: $data['capo'] ?? null,
+			targetTempoBpm: $data['targetTempoBpm'] ?? null,
+			difficulty: self::parseDifficulty($data['difficulty'] ?? null),
 			tagIds: self::parseTagIds($data['tagIds'] ?? null),
 		);
+	}
+
+	public static function parseDifficulty(?string $raw): ?DifficultyEnum
+	{
+		if ($raw === null || $raw === '') {
+			return null;
+		}
+		return DifficultyEnum::tryFrom($raw)
+			?? throw new RuntimeException('Invalid difficulty; expected Beginner, Intermediate or Advanced.');
 	}
 
 	/**

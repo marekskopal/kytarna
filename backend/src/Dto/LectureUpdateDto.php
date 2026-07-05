@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace Kytario\Dto;
 
-use DateTimeImmutable;
+use Kytario\Model\Entity\Enum\DifficultyEnum;
 
 /**
  * @implements ArrayFactoryInterface<array{
  *     statusId: int,
  *     name: string,
  *     description?: ?string,
- *     startDate?: ?string,
+ *     tuning?: ?string,
+ *     capo?: ?int,
+ *     targetTempoBpm?: ?int,
+ *     difficulty?: ?string,
  *     tagIds?: ?list<int>,
  * }>
  */
@@ -22,7 +25,10 @@ final readonly class LectureUpdateDto implements ArrayFactoryInterface
 		public int $statusId,
 		public string $name,
 		public ?string $description,
-		public ?DateTimeImmutable $startDate,
+		public ?string $tuning,
+		public ?int $capo,
+		public ?int $targetTempoBpm,
+		public ?DifficultyEnum $difficulty,
 		public ?array $tagIds,
 	) {
 	}
@@ -33,7 +39,10 @@ final readonly class LectureUpdateDto implements ArrayFactoryInterface
 			statusId: $data['statusId'],
 			name: $data['name'],
 			description: $data['description'] ?? null,
-			startDate: DateInput::parse($data['startDate'] ?? null, 'startDate'),
+			tuning: $data['tuning'] ?? null,
+			capo: $data['capo'] ?? null,
+			targetTempoBpm: $data['targetTempoBpm'] ?? null,
+			difficulty: LectureCreateDto::parseDifficulty($data['difficulty'] ?? null),
 			tagIds: self::parseTagIds($data['tagIds'] ?? null),
 		);
 	}

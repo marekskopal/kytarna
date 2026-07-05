@@ -47,6 +47,7 @@ enum Routes: string
 	case CourseEvents = '/api/courses/{courseId:number}/events';
 	case CourseWorkflow = '/api/courses/{courseId:number}/workflow';
 	case CourseLectures = '/api/courses/{courseId:number}/lectures';
+	case CoursePracticeSummary = '/api/courses/{courseId:number}/practice-summary';
 
 	case Workflows = '/api/workflows';
 	case WorkflowStatuses = '/api/workflows/{workflowId:number}/statuses';
@@ -66,6 +67,17 @@ enum Routes: string
 	case LectureFileContent = '/api/lectures/{lectureId:[A-Z0-9][A-Z0-9-]*}/files/{fileId:number}/content';
 	case LectureWatchers = '/api/lectures/{lectureId:[A-Z0-9][A-Z0-9-]*}/watchers';
 	case LectureWatch = '/api/lectures/{lectureId:[A-Z0-9][A-Z0-9-]*}/watch';
+
+	case LectureTabs = '/api/lectures/{lectureId:[A-Z0-9][A-Z0-9-]*}/tabs';
+	case LectureTabsImport = '/api/lectures/{lectureId:[A-Z0-9][A-Z0-9-]*}/tabs/import';
+	case Tab = '/api/tabs/{tabId:number}';
+
+	case LectureProgress = '/api/lectures/{lectureId:[A-Z0-9][A-Z0-9-]*}/progress';
+	case LecturePracticeSummary = '/api/lectures/{lectureId:[A-Z0-9][A-Z0-9-]*}/practice-summary';
+	case ProgressEntry = '/api/progress/{progressEntryId:number}';
+
+	case LectureLinks = '/api/lectures/{lectureId:[A-Z0-9][A-Z0-9-]*}/links';
+	case LectureLink = '/api/lectures/{lectureId:[A-Z0-9][A-Z0-9-]*}/links/{linkId:number}';
 
 	case Notifications = '/api/notifications';
 	case NotificationsReadAll = '/api/notifications/read-all';

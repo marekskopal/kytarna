@@ -38,7 +38,15 @@ final readonly class KytarioServer
 				. '2) call move_lecture with statusName="Learning" to start practising it; '
 				. '3) once it is mastered, call move_lecture with statusName="Mastered". '
 				. 'Use list_statuses to discover the column names for a given course — workflows are per-course and customizable. '
-				. 'Lectures also support tags, file attachments, watchers, and an audit log (list_events).',
+				. 'Lectures also support tags, file attachments, watchers, and an audit log (list_events). '
+				. 'Each lecture can hold tabs, practice progress, and reference links: '
+				. 'tabs store notation as alphaTex (create_tab/update_tab validate the alphaTex via the tab-service and '
+				. 'return the errors if it is invalid; import_gp_file converts an uploaded Guitar Pro file to alphaTex); '
+				. 'progress entries log practice sessions (create_progress_entry) and get_practice_summary aggregates '
+				. 'totals, per-week counts, and the BPM trend for a lecture or course; '
+				. 'add_lecture_link attaches YouTube or other reference links. '
+				. 'Guitar metadata (tuning, capo, targetTempoBpm, difficulty) lives directly on the lecture — '
+				. 'list_lectures can filter by tuning (e.g. "Drop D").',
 			);
 
 		if ($sessionStore !== null) {

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Kytario\Service\Provider;
 
-use DateTimeImmutable;
 use Iterator;
 use Kytario\Model\Entity\Course;
+use Kytario\Model\Entity\Enum\DifficultyEnum;
 use Kytario\Model\Entity\Lecture;
 use Kytario\Model\Entity\Status;
 use Kytario\Model\Entity\User;
@@ -61,7 +61,10 @@ interface LectureProviderInterface
 		string $name,
 		?string $description,
 		?array $tagIds = null,
-		?DateTimeImmutable $startDate = null,
+		?string $tuning = null,
+		?int $capo = null,
+		?int $targetTempoBpm = null,
+		?DifficultyEnum $difficulty = null,
 	): Lecture;
 
 	/** @param list<int>|null $tagIds */
@@ -73,7 +76,10 @@ interface LectureProviderInterface
 		Status $status,
 		?array $tagIds = null,
 		bool $recordEvent = true,
-		?DateTimeImmutable $startDate = null,
+		?string $tuning = null,
+		?int $capo = null,
+		?int $targetTempoBpm = null,
+		?DifficultyEnum $difficulty = null,
 	): Lecture;
 
 	public function moveLecture(User $author, Lecture $lecture, Status $newStatus, int $newPosition, bool $recordEvent = true): Lecture;

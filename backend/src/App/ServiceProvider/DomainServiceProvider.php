@@ -47,14 +47,20 @@ use Kytario\Service\Provider\LectureTagProvider;
 use Kytario\Service\Provider\LectureTagProviderInterface;
 use Kytario\Service\Provider\LectureWatcherProvider;
 use Kytario\Service\Provider\LectureWatcherProviderInterface;
+use Kytario\Service\Provider\LinkProvider;
+use Kytario\Service\Provider\LinkProviderInterface;
 use Kytario\Service\Provider\NotificationProvider;
 use Kytario\Service\Provider\NotificationProviderInterface;
 use Kytario\Service\Provider\PasswordResetProvider;
 use Kytario\Service\Provider\PasswordResetProviderInterface;
+use Kytario\Service\Provider\ProgressProvider;
+use Kytario\Service\Provider\ProgressProviderInterface;
 use Kytario\Service\Provider\SavedViewProvider;
 use Kytario\Service\Provider\SavedViewProviderInterface;
 use Kytario\Service\Provider\StatusProvider;
 use Kytario\Service\Provider\StatusProviderInterface;
+use Kytario\Service\Provider\TabProvider;
+use Kytario\Service\Provider\TabProviderInterface;
 use Kytario\Service\Provider\TagProvider;
 use Kytario\Service\Provider\TagProviderInterface;
 use Kytario\Service\Provider\UserProvider;
@@ -96,6 +102,9 @@ final class DomainServiceProvider extends AbstractServiceProvider
 			BulkLectureProviderInterface::class,
 			LectureCodeResolverInterface::class,
 			LectureFileProviderInterface::class,
+			TabProviderInterface::class,
+			ProgressProviderInterface::class,
+			LinkProviderInterface::class,
 			TagProviderInterface::class,
 			LectureTagProviderInterface::class,
 			SavedViewProviderInterface::class,
@@ -140,6 +149,9 @@ final class DomainServiceProvider extends AbstractServiceProvider
 		$c->add(BulkLectureProviderInterface::class, BulkLectureProvider::class);
 		$c->add(LectureCodeResolverInterface::class, LectureCodeResolver::class);
 		$c->add(LectureFileProviderInterface::class, LectureFileProvider::class);
+		$c->add(TabProviderInterface::class, TabProvider::class);
+		$c->add(ProgressProviderInterface::class, ProgressProvider::class);
+		$c->add(LinkProviderInterface::class, LinkProvider::class);
 		$c->add(TagProviderInterface::class, TagProvider::class);
 		$c->add(LectureTagProviderInterface::class, LectureTagProvider::class);
 		$c->add(SavedViewProviderInterface::class, SavedViewProvider::class);

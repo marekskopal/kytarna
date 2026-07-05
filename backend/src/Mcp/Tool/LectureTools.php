@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Kytario\Mcp\Tool;
 
-use DateTimeImmutable;
-use Kytario\Dto\DateInput;
 use Kytario\Mcp\Dto\McpLectureDto;
 use Kytario\Mcp\Dto\McpLectureListDto;
 use Kytario\Mcp\McpUserContextInterface;
 use Kytario\Mcp\Tool\Helper\StatusResolver;
 use Kytario\Model\Entity\Course;
+use Kytario\Model\Entity\Enum\DifficultyEnum;
 use Kytario\Model\Entity\Enum\StatusTypeEnum;
 use Kytario\Model\Entity\Lecture;
 use Kytario\Model\Entity\Workspace;
@@ -41,24 +40,40 @@ final readonly class LectureTools
 	}
 
 	/**
-	 * List all lectures in a course, ordered by status then position. Optionally filter by status.
+	 * List all lectures in a course, ordered by status then position. Optionally filter by status or tuning.
 	 * Archived lectures are hidden by default; pass includeArchived=true to include them.
 	 *
 	 * @param int $courseId Course ID
 	 * @param int|null $statusId Optional: only return lectures in this status
+	 * @param string|null $tuning Optional: only return lectures whose tuning matches (case-insensitive substring,
+	 *     e.g. "drop d")
 	 * @param bool $includeArchived Include archived lectures (default false)
 	 */
 	#[McpTool(
 		name: 'list_lectures',
-		description: 'List lectures in a course, optionally filtered by status. Hides archived lectures by default.',
+		description: 'List lectures in a course, optionally filtered by status or tuning. Hides archived lectures by default.',
 	)]
-	public function listLectures(int $courseId, ?int $statusId = null, bool $includeArchived = false): McpLectureListDto
-	{
+	public function listLectures(
+		int $courseId,
+		?int $statusId = null,
+		?string $tuning = null,
+		bool $includeArchived = false,
+	): McpLectureListDto {
 		$course = $this->requireCourse($courseId);
+		$tuningNeedle = $tuning !== null && $tuning !== '' ? mb_strtolower($tuning) : null;
 
 		$lectures = [];
 		foreach ($this->lectureProvider->getLecturesByCourse($course, $includeArchived) as $lecture) {
 			if ($statusId !== null && $lecture->status->id !== $statusId) {
+				continue;
+			}
+			if (
+				$tuningNeedle !== null
+				&& (
+					$lecture->tuning === null
+					|| !str_contains(mb_strtolower($lecture->tuning), $tuningNeedle)
+				)
+			) {
 				continue;
 			}
 			$lectures[] = McpLectureDto::fromEntity($lecture, $this->lectureTagProvider->getTagIdsForLecture($lecture));
@@ -124,7 +139,10 @@ final readonly class LectureTools
 	 * @param string|null $description Optional markdown description
 	 * @param int|null $statusId Optional explicit status ID
 	 * @param string|null $statusName Optional status name (case-insensitive); ignored if statusId is given
-	 * @param string|null $startDate Optional start date (YYYY-MM-DD). Used by the Timeline view.
+	 * @param string|null $tuning Optional tuning, e.g. "E A D G B E" or "Drop D"
+	 * @param int|null $capo Optional capo fret number
+	 * @param int|null $targetTempoBpm Optional target practice tempo in BPM
+	 * @param string|null $difficulty Optional difficulty: "Beginner", "Intermediate" or "Advanced"
 	 * @param list<int>|null $tagIds Optional list of workspace tag IDs to apply to the new lecture
 	 */
 	#[McpTool(name: 'create_lecture', description: 'Create a lecture in a course. Lands in Start status by default.')]
@@ -134,7 +152,10 @@ final readonly class LectureTools
 		?string $description = null,
 		?int $statusId = null,
 		?string $statusName = null,
-		?string $startDate = null,
+		?string $tuning = null,
+		?int $capo = null,
+		?int $targetTempoBpm = null,
+		?string $difficulty = null,
 		?array $tagIds = null,
 	): McpLectureDto {
 		$user = $this->userContext->getUser();
@@ -150,7 +171,10 @@ final readonly class LectureTools
 			name: $name,
 			description: $description,
 			tagIds: $tagIds,
-			startDate: DateInput::parse($startDate, 'startDate'),
+			tuning: $tuning,
+			capo: $capo,
+			targetTempoBpm: $targetTempoBpm,
+			difficulty: self::parseDifficulty($difficulty),
 		);
 
 		return McpLectureDto::fromEntity($lecture, $this->lectureTagProvider->getTagIdsForLecture($lecture));
@@ -162,7 +186,10 @@ final readonly class LectureTools
 	 * @param int|string $lectureId Lecture ID or code (e.g. "MP-3")
 	 * @param string|null $name New name
 	 * @param string|null $description New description
-	 * @param string|null $startDate New start date (YYYY-MM-DD), or empty string to clear
+	 * @param string|null $tuning New tuning; empty string clears it
+	 * @param int|null $capo New capo fret number
+	 * @param int|null $targetTempoBpm New target tempo in BPM
+	 * @param string|null $difficulty New difficulty ("Beginner"|"Intermediate"|"Advanced"); empty string clears it
 	 * @param list<int>|null $tagIds Optional list of workspace tag IDs to apply (replaces the full set)
 	 */
 	#[McpTool(name: 'update_lecture', description: 'Update a lecture. Use move_lecture to change its status.')]
@@ -170,13 +197,14 @@ final readonly class LectureTools
 		int|string $lectureId,
 		?string $name = null,
 		?string $description = null,
-		?string $startDate = null,
+		?string $tuning = null,
+		?int $capo = null,
+		?int $targetTempoBpm = null,
+		?string $difficulty = null,
 		?array $tagIds = null,
 	): McpLectureDto {
 		$user = $this->userContext->getUser();
 		$lecture = $this->requireLecture($lectureId);
-
-		$newStartDate = $this->resolveNewDate($lecture->startDate, $startDate);
 
 		$updated = $this->lectureProvider->updateLecture(
 			author: $user,
@@ -185,7 +213,12 @@ final readonly class LectureTools
 			description: $description ?? $lecture->description,
 			status: $lecture->status,
 			tagIds: $tagIds,
-			startDate: $newStartDate,
+			tuning: self::resolveStringField($lecture->tuning, $tuning),
+			capo: $capo ?? $lecture->capo,
+			targetTempoBpm: $targetTempoBpm ?? $lecture->targetTempoBpm,
+			difficulty: $difficulty === null
+				? $lecture->difficulty
+				: self::parseDifficulty($difficulty),
 		);
 
 		return McpLectureDto::fromEntity($updated, $this->lectureTagProvider->getTagIdsForLecture($updated));
@@ -328,13 +361,22 @@ final readonly class LectureTools
 		return $lecture;
 	}
 
-	/** Partial-update date semantics: null leaves the value unchanged, '' clears it, otherwise parse. */
-	private function resolveNewDate(?DateTimeImmutable $current, ?string $value): ?DateTimeImmutable
+	/** Partial-update string semantics: null leaves the value unchanged, '' clears it, otherwise sets it. */
+	private static function resolveStringField(?string $current, ?string $value): ?string
 	{
 		if ($value === null) {
 			return $current;
 		}
-		return DateInput::parse($value, 'date');
+		return $value === '' ? null : $value;
+	}
+
+	private static function parseDifficulty(?string $raw): ?DifficultyEnum
+	{
+		if ($raw === null || $raw === '') {
+			return null;
+		}
+		return DifficultyEnum::tryFrom($raw)
+			?? throw new RuntimeException('Invalid difficulty; expected Beginner, Intermediate or Advanced.');
 	}
 
 	private function nextPositionInStatus(int $statusId): int

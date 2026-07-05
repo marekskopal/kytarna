@@ -120,7 +120,7 @@ final class LectureToolsTest extends IntegrationTestCase
 		$lectureTools->getLecture($lecture->id);
 	}
 
-	public function testStartDateCreateUpdateAndClear(): void
+	public function testGuitarFieldsCreateUpdateClearAndTuningFilter(): void
 	{
 		$user = Fixture::createUser();
 		$workspace = Fixture::createWorkspace($user);
@@ -128,15 +128,43 @@ final class LectureToolsTest extends IntegrationTestCase
 
 		[$lectureTools] = $this->bootAs($user);
 
-		// Create carries startDate through to the DTO.
-		$lecture = $lectureTools->createLecture(courseId: $course->id, name: 'Spanning', startDate: '2026-05-10');
-		self::assertSame('2026-05-10', $lecture->startDate);
+		// Create carries the guitar metadata through to the DTO.
+		$lecture = $lectureTools->createLecture(
+			courseId: $course->id,
+			name: 'Blackbird',
+			tuning: 'Drop D',
+			capo: 3,
+			targetTempoBpm: 96,
+			difficulty: 'Intermediate',
+		);
+		self::assertSame('Drop D', $lecture->tuning);
+		self::assertSame(3, $lecture->capo);
+		self::assertSame(96, $lecture->targetTempoBpm);
+		self::assertSame('Intermediate', $lecture->difficulty);
 
-		// Omitting startDate on update leaves it unchanged; empty string clears it.
-		$nameOnly = $lectureTools->updateLecture(lectureId: $lecture->id, name: 'Spanning 2');
-		self::assertSame('2026-05-10', $nameOnly->startDate);
-		$cleared = $lectureTools->updateLecture(lectureId: $lecture->id, startDate: '');
-		self::assertNull($cleared->startDate);
+		// Omitting tuning on update leaves it unchanged; empty string clears it.
+		$nameOnly = $lectureTools->updateLecture(lectureId: $lecture->id, name: 'Blackbird 2');
+		self::assertSame('Drop D', $nameOnly->tuning);
+		$cleared = $lectureTools->updateLecture(lectureId: $lecture->id, tuning: '');
+		self::assertNull($cleared->tuning);
+
+		// The tuning filter on list_lectures matches case-insensitive substrings.
+		$lectureTools->updateLecture(lectureId: $lecture->id, tuning: 'Drop D');
+		$lectureTools->createLecture(courseId: $course->id, name: 'Standard song', tuning: 'E A D G B E');
+		self::assertCount(1, $lectureTools->listLectures($course->id, tuning: 'drop d')->lectures);
+		self::assertCount(2, $lectureTools->listLectures($course->id)->lectures);
+	}
+
+	public function testInvalidDifficultyThrows(): void
+	{
+		$user = Fixture::createUser();
+		$workspace = Fixture::createWorkspace($user);
+		$course = Fixture::createCourse($user, $workspace);
+
+		[$lectureTools] = $this->bootAs($user);
+
+		$this->expectException(\RuntimeException::class);
+		$lectureTools->createLecture(courseId: $course->id, name: 'Bad', difficulty: 'Impossible');
 	}
 
 	public function testArchiveHidesLectureFromListByDefault(): void

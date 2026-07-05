@@ -10,14 +10,17 @@ use Kytario\Model\Entity\Event;
 use Kytario\Model\Entity\Invitation;
 use Kytario\Model\Entity\Lecture;
 use Kytario\Model\Entity\LectureFile;
+use Kytario\Model\Entity\LectureLink;
 use Kytario\Model\Entity\LectureTag;
 use Kytario\Model\Entity\LectureWatcher;
 use Kytario\Model\Entity\Notification;
 use Kytario\Model\Entity\OAuthAuthorization;
 use Kytario\Model\Entity\OAuthClient;
 use Kytario\Model\Entity\PasswordResetToken;
+use Kytario\Model\Entity\ProgressEntry;
 use Kytario\Model\Entity\SavedView;
 use Kytario\Model\Entity\Status;
+use Kytario\Model\Entity\Tab;
 use Kytario\Model\Entity\Tag;
 use Kytario\Model\Entity\User;
 use Kytario\Model\Entity\Workflow;
@@ -28,6 +31,7 @@ use Kytario\Model\Repository\EmailVerificationTokenRepository;
 use Kytario\Model\Repository\EventRepository;
 use Kytario\Model\Repository\InvitationRepository;
 use Kytario\Model\Repository\LectureFileRepository;
+use Kytario\Model\Repository\LectureLinkRepository;
 use Kytario\Model\Repository\LectureRepository;
 use Kytario\Model\Repository\LectureTagRepository;
 use Kytario\Model\Repository\LectureWatcherRepository;
@@ -35,8 +39,10 @@ use Kytario\Model\Repository\NotificationRepository;
 use Kytario\Model\Repository\OAuthAuthorizationRepository;
 use Kytario\Model\Repository\OAuthClientRepository;
 use Kytario\Model\Repository\PasswordResetTokenRepository;
+use Kytario\Model\Repository\ProgressEntryRepository;
 use Kytario\Model\Repository\SavedViewRepository;
 use Kytario\Model\Repository\StatusRepository;
+use Kytario\Model\Repository\TabRepository;
 use Kytario\Model\Repository\TagRepository;
 use Kytario\Model\Repository\UserRepository;
 use Kytario\Model\Repository\WorkflowRepository;
@@ -79,6 +85,9 @@ final class OrmServiceProvider extends AbstractServiceProvider
 			OAuthAuthorizationRepository::class,
 			NotificationRepository::class,
 			LectureWatcherRepository::class,
+			TabRepository::class,
+			ProgressEntryRepository::class,
+			LectureLinkRepository::class,
 		], true);
 	}
 
@@ -111,6 +120,9 @@ final class OrmServiceProvider extends AbstractServiceProvider
 		$this->addRepository($container, $orm, OAuthAuthorizationRepository::class, OAuthAuthorization::class);
 		$this->addRepository($container, $orm, NotificationRepository::class, Notification::class);
 		$this->addRepository($container, $orm, LectureWatcherRepository::class, LectureWatcher::class);
+		$this->addRepository($container, $orm, TabRepository::class, Tab::class);
+		$this->addRepository($container, $orm, ProgressEntryRepository::class, ProgressEntry::class);
+		$this->addRepository($container, $orm, LectureLinkRepository::class, LectureLink::class);
 	}
 
 	/**
