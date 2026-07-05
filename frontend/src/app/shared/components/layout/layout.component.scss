@@ -124,39 +124,6 @@
     }
 }
 
-// ─── Search field (button styled as input) ─────────────────
-.topbar-search {
-    display: inline-flex;
-    align-items: center;
-    gap: $space-2;
-    height: $h-sm;
-    min-width: 220px;
-    padding: 0 $space-3;
-    border: 1px solid $color-border;
-    border-radius: $radius-sm;
-    background: $color-bg;
-    color: $color-text-subtle;
-    font: inherit;
-    font-size: $font-size-12;
-    text-align: left;
-    cursor: pointer;
-    transition: border-color 80ms ease, box-shadow 80ms ease;
-
-    &:hover {
-        border-color: $color-border-strong;
-    }
-
-    &:focus-visible {
-        outline: none;
-        border-color: $color-border-focus;
-        box-shadow: $ring;
-    }
-
-    .topbar-search-placeholder {
-        flex: 1;
-    }
-}
-
 // ─── User avatar trigger ──────────────────────────────────
 .user-menu {
     position: relative;

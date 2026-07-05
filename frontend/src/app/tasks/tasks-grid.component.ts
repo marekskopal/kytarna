@@ -3,20 +3,13 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {TaskDetailDrawerComponent} from '@app/board/task-detail-drawer.component';
-import {ProjectField} from '@app/models/field';
-import {Priority} from '@app/models/priority';
-import {RealtimeEvent, TASK_EVENT_TYPES} from '@app/models/realtime-event';
 import {SavedView, SavedViewFilters} from '@app/models/saved-view';
 import {Status} from '@app/models/status';
 import {Tag} from '@app/models/tag';
-import {ArchivedFilter, OrderDirection, SubtaskFilter, Task, TaskListItem, TaskOrderBy} from '@app/models/task';
+import {ArchivedFilter, OrderDirection, Task, TaskListItem, TaskOrderBy} from '@app/models/task';
 import {WorkflowWithStatuses} from '@app/models/workflow';
-import {WorkspaceMember} from '@app/models/workspace';
 import {BoardService} from '@app/services/board.service';
 import {CurrentUserService} from '@app/services/current-user.service';
-import {FieldService} from '@app/services/field.service';
-import {PriorityService} from '@app/services/priority.service';
-import {RealtimeService} from '@app/services/realtime.service';
 import {SavedViewService} from '@app/services/saved-view.service';
 import {TagService} from '@app/services/tag.service';
 import {BulkOp, BulkResult, TaskService} from '@app/services/task.service';
@@ -24,8 +17,6 @@ import {WorkflowService} from '@app/services/workflow.service';
 import {WorkspaceService} from '@app/services/workspace.service';
 import {pickReadableForeground} from '@app/shared/color-contrast';
 import {PaginationComponent} from '@app/shared/components/pagination/pagination.component';
-import {CalendarTaskFilters, TaskCalendarComponent} from '@app/tasks/task-calendar.component';
-import {TaskTimelineComponent} from '@app/tasks/task-timeline.component';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {debounceTime, distinctUntilChanged} from 'rxjs';
 
@@ -33,10 +24,7 @@ interface DrawerContext {
     task: Task;
     statuses: Status[];
     projectId: number;
-    projectFields: ProjectField[];
 }
-
-export type TasksView = 'list' | 'calendar' | 'timeline';
 
 interface QueryParams {
     limit: number;
@@ -46,9 +34,7 @@ interface QueryParams {
     search: string | undefined;
     statusIds: number[] | undefined;
     tagIds: number[] | undefined;
-    assigneeIds: number[] | undefined;
     onlyActive: boolean | undefined;
-    subtaskFilter: SubtaskFilter | undefined;
     archived: ArchivedFilter | undefined;
 }
 
@@ -56,8 +42,7 @@ interface QueryParams {
     selector: 'uk-tasks-grid',
     standalone: true,
     imports: [
-        ReactiveFormsModule, PaginationComponent, TaskDetailDrawerComponent,
-        TaskCalendarComponent, TaskTimelineComponent, TranslatePipe,
+        ReactiveFormsModule, PaginationComponent, TaskDetailDrawerComponent, TranslatePipe,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './tasks-grid.component.html',
@@ -67,40 +52,26 @@ export class TasksGridComponent implements OnInit {
     private readonly taskService = inject(TaskService);
     private readonly workflowService = inject(WorkflowService);
     private readonly boardService = inject(BoardService);
-    private readonly fieldService = inject(FieldService);
     private readonly tagService = inject(TagService);
-    private readonly priorityService = inject(PriorityService);
     private readonly workspaceService = inject(WorkspaceService);
     private readonly currentUserService = inject(CurrentUserService);
-    private readonly realtimeService = inject(RealtimeService);
     private readonly translate = inject(TranslateService);
     private readonly route = inject(ActivatedRoute);
     private readonly router = inject(Router);
     private readonly savedViewService = inject(SavedViewService);
-
-    private refreshTimer: ReturnType<typeof setTimeout> | null = null;
 
     protected readonly searchControl = new FormControl<string>('', {nonNullable: true});
     protected readonly search = signal<string>('');
 
     protected readonly selectedStatusIds = signal<number[]>([]);
     protected readonly selectedTagIds = signal<number[]>([]);
-    protected readonly selectedAssigneeIds = signal<number[]>([]);
     protected readonly workspaceTags = signal<Tag[]>([]);
-    protected readonly priorities = signal<Priority[]>([]);
-    protected readonly members = this.workspaceService.currentMembers;
     protected readonly onlyActive = signal<boolean>(false);
-    protected readonly subtaskFilter = signal<SubtaskFilter>('all');
     protected readonly archived = signal<ArchivedFilter>('active');
     protected readonly sortBy = signal<TaskOrderBy>('created_at');
     protected readonly sortDirection = signal<OrderDirection>('DESC');
     protected readonly page = signal<number>(1);
     protected readonly pageSize = signal<number>(50);
-
-    // List / Calendar / Timeline switcher. Reflected in the URL (?view=) but kept out of saved views.
-    protected readonly view = signal<TasksView>('list');
-    // Bumped after a drawer save/delete so embedded views (Calendar) know to refetch.
-    protected readonly calendarRefreshKey = signal<number>(0);
 
     protected readonly tasks = signal<TaskListItem[]>([]);
     protected readonly count = signal<number>(0);
@@ -130,29 +101,13 @@ export class TasksGridComponent implements OnInit {
 
     private readonly statusDetails = viewChild<ElementRef<HTMLDetailsElement>>('statusDetails');
     private readonly tagDetails = viewChild<ElementRef<HTMLDetailsElement>>('tagDetails');
-    private readonly assigneeDetails = viewChild<ElementRef<HTMLDetailsElement>>('assigneeDetails');
     private readonly viewsDetails = viewChild<ElementRef<HTMLDetailsElement>>('viewsDetails');
     private readonly bulkMoveDetails = viewChild<ElementRef<HTMLDetailsElement>>('bulkMoveDetails');
     private readonly bulkAddTagDetails = viewChild<ElementRef<HTMLDetailsElement>>('bulkAddTagDetails');
     private readonly bulkRemoveTagDetails = viewChild<ElementRef<HTMLDetailsElement>>('bulkRemoveTagDetails');
-    private readonly bulkAssignDetails = viewChild<ElementRef<HTMLDetailsElement>>('bulkAssignDetails');
-    private readonly bulkPriorityDetails = viewChild<ElementRef<HTMLDetailsElement>>('bulkPriorityDetails');
 
     protected readonly tagById = computed<Map<number, Tag>>(() => {
         return new Map(this.workspaceTags().map((t) => [t.id, t]));
-    });
-
-    protected readonly memberById = computed<Map<number, WorkspaceMember>>(() => {
-        return new Map(this.members().map((m) => [m.userId, m]));
-    });
-
-    protected readonly sortedMembers = computed<WorkspaceMember[]>(() => {
-        const me = this.currentUserService.currentUser()?.id;
-        return [...this.members()].sort((a, b) => {
-            if (a.userId === me && b.userId !== me) return -1;
-            if (b.userId === me && a.userId !== me) return 1;
-            return a.name.localeCompare(b.name);
-        });
     });
 
     protected readonly offset = computed<number>(() => (this.page() - 1) * this.pageSize());
@@ -183,31 +138,14 @@ export class TasksGridComponent implements OnInit {
         search: this.search() === '' ? undefined : this.search(),
         statusIds: this.selectedStatusIds().length > 0 ? this.selectedStatusIds() : undefined,
         tagIds: this.selectedTagIds().length > 0 ? this.selectedTagIds() : undefined,
-        assigneeIds: this.selectedAssigneeIds().length > 0 ? this.selectedAssigneeIds() : undefined,
         onlyActive: this.onlyActive() ? true : undefined,
-        subtaskFilter: this.subtaskFilter() === 'all' ? undefined : this.subtaskFilter(),
-        archived: this.archived() === 'active' ? undefined : this.archived(),
-    }));
-
-    // Filters shared with the Calendar view (no pagination / sort — it scopes by date itself).
-    protected readonly calendarFilters = computed<CalendarTaskFilters>(() => ({
-        search: this.search() === '' ? undefined : this.search(),
-        statusIds: this.selectedStatusIds().length > 0 ? this.selectedStatusIds() : undefined,
-        tagIds: this.selectedTagIds().length > 0 ? this.selectedTagIds() : undefined,
-        assigneeIds: this.selectedAssigneeIds().length > 0 ? this.selectedAssigneeIds() : undefined,
-        onlyActive: this.onlyActive() ? true : undefined,
-        subtaskFilter: this.subtaskFilter() === 'all' ? undefined : this.subtaskFilter(),
         archived: this.archived() === 'active' ? undefined : this.archived(),
     }));
 
     public ngOnInit(): void {
         void this.loadWorkflows();
         void this.loadWorkspaceTags();
-        void this.loadWorkspacePriorities();
         void this.loadSavedViews();
-        if (this.workspaceService.currentMembers().length === 0) {
-            void this.workspaceService.loadCurrentMembers();
-        }
     }
 
     public constructor() {
@@ -254,10 +192,6 @@ export class TasksGridComponent implements OnInit {
                 }
             }
         });
-
-        this.realtimeService.events$
-            .pipe(takeUntilDestroyed())
-            .subscribe((event) => this.onRealtimeEvent(event));
     }
 
     private applyQueryParams(map: ParamMap): void {
@@ -273,16 +207,8 @@ export class TasksGridComponent implements OnInit {
         const tagIds = parseIdList(map.get('tagIds'));
         if (tagIds.length > 0) this.selectedTagIds.set(tagIds);
 
-        const assigneeIds = parseIdList(map.get('assigneeIds'));
-        if (assigneeIds.length > 0) this.selectedAssigneeIds.set(assigneeIds);
-
         if (map.get('onlyActive') === '1') {
             this.onlyActive.set(true);
-        }
-
-        const subtaskFilter = map.get('subtaskFilter');
-        if (subtaskFilter === 'hideSubtasks' || subtaskFilter === 'onlyParents') {
-            this.subtaskFilter.set(subtaskFilter);
         }
 
         const archived = map.get('archived');
@@ -309,11 +235,6 @@ export class TasksGridComponent implements OnInit {
         if (Number.isFinite(pageSize) && pageSize > 0) {
             this.pageSize.set(pageSize);
         }
-
-        const view = map.get('view');
-        if (view === 'calendar' || view === 'timeline') {
-            this.view.set(view);
-        }
     }
 
     private readonly urlParams = computed<Record<string, string>>(() => {
@@ -322,44 +243,14 @@ export class TasksGridComponent implements OnInit {
         if (s !== '') out['q'] = s;
         if (this.selectedStatusIds().length > 0) out['statusIds'] = this.selectedStatusIds().join('|');
         if (this.selectedTagIds().length > 0) out['tagIds'] = this.selectedTagIds().join('|');
-        if (this.selectedAssigneeIds().length > 0) out['assigneeIds'] = this.selectedAssigneeIds().join('|');
         if (this.onlyActive()) out['onlyActive'] = '1';
-        if (this.subtaskFilter() !== 'all') out['subtaskFilter'] = this.subtaskFilter();
         if (this.archived() !== 'active') out['archived'] = this.archived();
         if (this.sortBy() !== 'created_at') out['orderBy'] = this.sortBy();
         if (this.sortDirection() !== 'DESC') out['orderDirection'] = this.sortDirection();
         if (this.page() !== 1) out['page'] = String(this.page());
         if (this.pageSize() !== 50) out['pageSize'] = String(this.pageSize());
-        if (this.view() !== 'list') out['view'] = this.view();
         return out;
     });
-
-    private onRealtimeEvent(event: RealtimeEvent): void {
-        if (event.type !== 'RealtimeReconnected' && !TASK_EVENT_TYPES.has(event.type)) {
-            return;
-        }
-        if (this.refreshTimer !== null) {
-            clearTimeout(this.refreshTimer);
-        }
-        this.refreshTimer = setTimeout(() => {
-            this.refreshTimer = null;
-            void this.fetchTasks(this.queryParams());
-            this.calendarRefreshKey.update((k) => k + 1);
-        }, 150);
-    }
-
-    protected setView(view: TasksView): void {
-        this.view.set(view);
-    }
-
-    protected async onCalendarOpenTask(event: {id: number; projectId: number}): Promise<void> {
-        await this.openTaskById(event.id, event.projectId);
-    }
-
-    protected onCalendarChanged(): void {
-        // A drag-reschedule changed a due date — keep the list in sync too.
-        void this.fetchTasks(this.queryParams());
-    }
 
     private async loadWorkflows(): Promise<void> {
         try {
@@ -379,19 +270,6 @@ export class TasksGridComponent implements OnInit {
             this.workspaceTags.set(await this.tagService.loadWorkspaceTags(workspaceId));
         } catch {
             this.workspaceTags.set([]);
-        }
-    }
-
-    private async loadWorkspacePriorities(): Promise<void> {
-        const workspaceId = await this.resolveCurrentWorkspaceId();
-        if (workspaceId === null) {
-            this.priorities.set([]);
-            return;
-        }
-        try {
-            this.priorities.set(await this.priorityService.loadWorkspacePriorities(workspaceId));
-        } catch {
-            this.priorities.set([]);
         }
     }
 
@@ -422,9 +300,7 @@ export class TasksGridComponent implements OnInit {
         return this.search() === ''
             && this.selectedStatusIds().length === 0
             && this.selectedTagIds().length === 0
-            && this.selectedAssigneeIds().length === 0
             && !this.onlyActive()
-            && this.subtaskFilter() === 'all'
             && this.archived() === 'active'
             && this.page() === 1
             && this.sortBy() === 'created_at'
@@ -451,14 +327,8 @@ export class TasksGridComponent implements OnInit {
         if (filters.tagIds && filters.tagIds.length > 0) {
             this.selectedTagIds.set([...filters.tagIds]);
         }
-        if (filters.assigneeIds && filters.assigneeIds.length > 0) {
-            this.selectedAssigneeIds.set([...filters.assigneeIds]);
-        }
         if (filters.onlyActive) {
             this.onlyActive.set(true);
-        }
-        if (filters.subtaskFilter === 'hideSubtasks' || filters.subtaskFilter === 'onlyParents') {
-            this.subtaskFilter.set(filters.subtaskFilter);
         }
         if (filters.archived === 'archived' || filters.archived === 'all') {
             this.archived.set(filters.archived);
@@ -500,9 +370,7 @@ export class TasksGridComponent implements OnInit {
         if (this.search() !== '') filters.q = this.search();
         if (this.selectedStatusIds().length > 0) filters.statusIds = [...this.selectedStatusIds()];
         if (this.selectedTagIds().length > 0) filters.tagIds = [...this.selectedTagIds()];
-        if (this.selectedAssigneeIds().length > 0) filters.assigneeIds = [...this.selectedAssigneeIds()];
         if (this.onlyActive()) filters.onlyActive = true;
-        if (this.subtaskFilter() !== 'all') filters.subtaskFilter = this.subtaskFilter();
         if (this.archived() !== 'active') filters.archived = this.archived();
         if (this.sortBy() !== 'created_at') filters.orderBy = this.sortBy();
         if (this.sortDirection() !== 'DESC') filters.orderDirection = this.sortDirection();
@@ -568,9 +436,7 @@ export class TasksGridComponent implements OnInit {
         return this.search() === (saved.q ?? '')
             && sameArray(this.selectedStatusIds(), saved.statusIds)
             && sameArray(this.selectedTagIds(), saved.tagIds)
-            && sameArray(this.selectedAssigneeIds(), saved.assigneeIds)
             && this.onlyActive() === (saved.onlyActive ?? false)
-            && this.subtaskFilter() === (saved.subtaskFilter ?? 'all')
             && this.archived() === (saved.archived ?? 'active')
             && this.sortBy() === (saved.orderBy ?? 'created_at')
             && this.sortDirection() === (saved.orderDirection ?? 'DESC')
@@ -600,9 +466,7 @@ export class TasksGridComponent implements OnInit {
                 search: params.search,
                 statusIds: params.statusIds,
                 tagIds: params.tagIds,
-                assigneeIds: params.assigneeIds,
                 onlyActive: params.onlyActive,
-                subtaskFilter: params.subtaskFilter,
                 archived: params.archived,
             });
             this.tasks.set(result.tasks);
@@ -640,9 +504,8 @@ export class TasksGridComponent implements OnInit {
             return;
         }
         const refs = [
-            this.statusDetails(), this.tagDetails(), this.assigneeDetails(), this.viewsDetails(),
+            this.statusDetails(), this.tagDetails(), this.viewsDetails(),
             this.bulkMoveDetails(), this.bulkAddTagDetails(), this.bulkRemoveTagDetails(),
-            this.bulkAssignDetails(), this.bulkPriorityDetails(),
         ];
         for (const ref of refs) {
             const el = ref?.nativeElement;
@@ -699,29 +562,8 @@ export class TasksGridComponent implements OnInit {
         return this.selectedTagIds().includes(tagId);
     }
 
-    protected onAssigneeToggle(userId: number, event: Event): void {
-        const checked = (event.target as HTMLInputElement).checked;
-        const current = this.selectedAssigneeIds();
-        if (checked && !current.includes(userId)) {
-            this.selectedAssigneeIds.set([...current, userId]);
-        } else if (!checked) {
-            this.selectedAssigneeIds.set(current.filter((id) => id !== userId));
-        }
-        this.page.set(1);
-    }
-
-    protected isAssigneeSelected(userId: number): boolean {
-        return this.selectedAssigneeIds().includes(userId);
-    }
-
     protected onOnlyActiveToggle(event: Event): void {
         this.onlyActive.set((event.target as HTMLInputElement).checked);
-        this.page.set(1);
-    }
-
-    protected onSubtaskFilterChange(event: Event): void {
-        const value = (event.target as HTMLSelectElement).value;
-        this.subtaskFilter.set(value === 'hideSubtasks' || value === 'onlyParents' ? value : 'all');
         this.page.set(1);
     }
 
@@ -735,23 +577,9 @@ export class TasksGridComponent implements OnInit {
         this.searchControl.setValue('');
         this.selectedStatusIds.set([]);
         this.selectedTagIds.set([]);
-        this.selectedAssigneeIds.set([]);
         this.onlyActive.set(false);
-        this.subtaskFilter.set('all');
         this.archived.set('active');
         this.page.set(1);
-    }
-
-    protected memberName(userId: number | null): string {
-        if (userId === null) return '';
-        return this.memberById().get(userId)?.name ?? '';
-    }
-
-    protected memberInitials(name: string): string {
-        const parts = name.trim().split(/\s+/);
-        if (parts.length === 0 || parts[0] === '') return '?';
-        if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
-        return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
     }
 
     protected tagsForTask(taskTagIds: number[] | undefined): Tag[] {
@@ -836,16 +664,6 @@ export class TasksGridComponent implements OnInit {
         await this.runBulk('untag', {tagIds: [tagId]});
     }
 
-    protected async onBulkAssign(userId: number | null): Promise<void> {
-        this.closeBulkPopovers();
-        await this.runBulk('assign', {assigneeId: userId});
-    }
-
-    protected async onBulkPriority(priorityId: number): Promise<void> {
-        this.closeBulkPopovers();
-        await this.runBulk('priority', {priorityId});
-    }
-
     protected async onBulkDelete(): Promise<void> {
         this.closeBulkPopovers();
         const count = this.selectionCount();
@@ -907,8 +725,6 @@ export class TasksGridComponent implements OnInit {
             this.bulkMoveDetails(),
             this.bulkAddTagDetails(),
             this.bulkRemoveTagDetails(),
-            this.bulkAssignDetails(),
-            this.bulkPriorityDetails(),
         ];
         for (const ref of refs) {
             const el = ref?.nativeElement;
@@ -922,24 +738,16 @@ export class TasksGridComponent implements OnInit {
         await this.openTaskById(row.id, row.projectId);
     }
 
-    protected async onOpenRelatedTask(item: TaskListItem): Promise<void> {
-        // Close + reopen so the drawer re-initializes for the new task.
-        this.drawer.set(null);
-        await this.openTaskById(item.id, item.projectId);
-    }
-
     private async openTaskById(taskId: number, projectId: number): Promise<void> {
         try {
-            const [task, board, fields] = await Promise.all([
+            const [task, board] = await Promise.all([
                 this.taskService.getTask(taskId),
                 this.boardService.getBoard(projectId),
-                this.fieldService.listProjectFields(projectId).catch(() => [] as ProjectField[]),
             ]);
             this.drawer.set({
                 task,
                 statuses: board.statuses,
                 projectId,
-                projectFields: fields,
             });
         } catch {
             // error interceptor will surface failure
@@ -953,13 +761,11 @@ export class TasksGridComponent implements OnInit {
     protected onTaskSaved(): void {
         this.closeDrawer();
         void this.fetchTasks(this.queryParams());
-        this.calendarRefreshKey.update((k) => k + 1);
     }
 
     protected onTaskDeleted(): void {
         this.closeDrawer();
         void this.fetchTasks(this.queryParams());
-        this.calendarRefreshKey.update((k) => k + 1);
     }
 
     protected formatCreated(iso: string): string {

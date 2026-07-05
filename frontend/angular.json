@@ -26,9 +26,7 @@
                         "tsConfig": "tsconfig.app.json",
                         "assets": [
                             {"glob": "**/*", "input": "src/i18n", "output": "i18n"},
-                            {"glob": "**/*", "input": "src/assets", "output": "assets"},
-                            {"glob": "**/*", "input": "node_modules/monaco-editor/min/vs", "output": "assets/monaco/vs"},
-                            {"glob": "worker-proxy.js", "input": "src/monaco", "output": "assets/monaco"}
+                            {"glob": "**/*", "input": "src/assets", "output": "assets"}
                         ],
                         "styles": ["src/styles.scss"],
                         "stylePreprocessorOptions": {

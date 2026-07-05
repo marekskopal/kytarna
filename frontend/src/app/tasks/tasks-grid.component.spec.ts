@@ -6,16 +6,12 @@ import {provideRouter} from '@angular/router';
 import {OrderDirection, TaskListItem, TaskOrderBy} from '@app/models/task';
 import {BoardService} from '@app/services/board.service';
 import {CurrentUserService} from '@app/services/current-user.service';
-import {FieldService} from '@app/services/field.service';
-import {PriorityService} from '@app/services/priority.service';
-import {RealtimeService} from '@app/services/realtime.service';
 import {SavedViewService} from '@app/services/saved-view.service';
 import {TagService} from '@app/services/tag.service';
 import {BulkResult, TaskService} from '@app/services/task.service';
 import {WorkflowService} from '@app/services/workflow.service';
 import {WorkspaceService} from '@app/services/workspace.service';
 import {provideTranslateStub} from '@app/testing/test-providers';
-import {Subject} from 'rxjs';
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 
 import {TasksGridComponent} from './tasks-grid.component';
@@ -114,9 +110,7 @@ function createComponent(options: CreateOptions = {}): TasksGridComponent {
             }},
             {provide: WorkflowService, useValue: {getWorkflows: vi.fn().mockResolvedValue([])}},
             {provide: BoardService, useValue: {getBoard: vi.fn().mockResolvedValue({statuses: []})}},
-            {provide: FieldService, useValue: {listProjectFields: vi.fn().mockResolvedValue([])}},
             {provide: TagService, useValue: {loadWorkspaceTags: vi.fn().mockResolvedValue([])}},
-            {provide: PriorityService, useValue: {loadWorkspacePriorities: vi.fn().mockResolvedValue([])}},
             {provide: WorkspaceService, useValue: {
                 currentWorkspaceId: vi.fn(() => null),
                 currentMembers: signal([]),
@@ -126,7 +120,6 @@ function createComponent(options: CreateOptions = {}): TasksGridComponent {
                 load: vi.fn().mockResolvedValue({currentWorkspaceId: null}),
                 currentUser: signal(null),
             }},
-            {provide: RealtimeService, useValue: {events$: new Subject()}},
             {provide: SavedViewService, useValue: {
                 views: signal([]),
                 loadForWorkspace: vi.fn().mockResolvedValue([]),
@@ -148,14 +141,12 @@ function fakeTask(id: number): TaskListItem {
         projectName: 'P',
         statusId: 1,
         status: {id: 1, name: 'To Do', color: '#000', position: 0, type: 'Start'} as unknown as TaskListItem['status'],
-        assigneeId: null,
         name: 'task ' + id,
         description: null,
-        priority: {id: 1, name: 'Medium'} as unknown as TaskListItem['priority'],
-        dueDate: null,
         position: 0,
         sequenceNumber: id,
         createdByAgent: false,
+        archivedAt: null,
         createdAt: '2026-05-26T00:00:00Z',
         updatedAt: '2026-05-26T00:00:00Z',
         tagIds: [],

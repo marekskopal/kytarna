@@ -101,22 +101,6 @@ export const appRoutes: Routes = [
                 loadComponent: () => import('@app/settings/settings.component').then((m) => m.SettingsComponent),
             },
             {
-                path: 'settings/scripts',
-                loadComponent: () => import('@app/scripts/scripts.component').then((m) => m.ScriptsComponent),
-            },
-            {
-                path: 'settings/scripts/new',
-                loadComponent: () => import('@app/scripts/script-edit.component').then((m) => m.ScriptEditComponent),
-            },
-            {
-                path: 'settings/scripts/:id',
-                loadComponent: () => import('@app/scripts/script-edit.component').then((m) => m.ScriptEditComponent),
-            },
-            {
-                path: 'settings/variables',
-                loadComponent: () => import('@app/scripts/script-variables.component').then((m) => m.ScriptVariablesComponent),
-            },
-            {
                 path: 'admin',
                 canActivate: [SystemAdminGuard],
                 children: [

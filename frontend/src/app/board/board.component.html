@@ -60,7 +60,7 @@
                             (keydown.enter)="openEdit(task)"
                             (keydown.space)="openEdit(task)"
                         >
-                            <uk-task-card [task]="task" [workspaceTags]="workspaceTags()" [members]="members()" />
+                            <uk-task-card [task]="task" [workspaceTags]="workspaceTags()" />
                         </div>
                     }
                 </div>
@@ -79,12 +79,9 @@
         [statuses]="board()?.statuses ?? []"
         [projectId]="projectId()!"
         [defaultStatusId]="defaultStatusId()"
-        [projectFields]="projectFields()"
         [workspaceTags]="workspaceTags()"
-        [workspacePriorities]="workspacePriorities()"
         (saved)="onTaskSaved($event)"
         (deleted)="onTaskDeleted($event)"
         (cancelled)="closeDrawer()"
-        (openTask)="onOpenRelatedTask($event)"
     />
 }

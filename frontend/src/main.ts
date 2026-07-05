@@ -6,7 +6,6 @@ import {AppComponent} from '@app/app.component';
 import {appRoutes} from '@app/app-routes';
 import {errorInterceptor} from '@app/core/interceptors/error.interceptor';
 import {jwtInterceptor} from '@app/core/interceptors/jwt.interceptor';
-import {realtimeOriginInterceptor} from '@app/core/interceptors/realtime-origin.interceptor';
 import {environment} from '@environments/environment';
 import {provideTranslateService} from '@ngx-translate/core';
 import {provideTranslateHttpLoader} from '@ngx-translate/http-loader';
@@ -19,7 +18,7 @@ if (environment.production) {
 bootstrapApplication(AppComponent, {
     providers: [
         provideRouter(appRoutes),
-        provideHttpClient(withXhr(), withInterceptors([realtimeOriginInterceptor, jwtInterceptor, errorInterceptor])),
+        provideHttpClient(withXhr(), withInterceptors([jwtInterceptor, errorInterceptor])),
         provideTranslateService({
             loader: provideTranslateHttpLoader({
                 prefix: environment.i18nPath,

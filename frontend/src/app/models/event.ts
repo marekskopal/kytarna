@@ -5,7 +5,6 @@ export type EventType =
     | 'TaskCreated' | 'TaskUpdated' | 'TaskDeleted' | 'TaskMoved' | 'TaskArchived' | 'TaskUnarchived'
     | 'MemberRoleChanged' | 'OwnershipTransferred'
     | 'AdminDeletedWorkspace' | 'AdminDeletedUser' | 'AdminChangedSystemRole'
-    | 'FieldCreated' | 'FieldUpdated' | 'FieldDeleted' | 'ProjectFieldsUpdated'
     | 'UserSelfDeleted';
 
 export type ActorType = 'Human' | 'Agent';

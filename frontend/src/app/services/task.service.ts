@@ -1,8 +1,6 @@
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
-import {TaskFieldValue} from '@app/models/field';
-import {Subtask} from '@app/models/subtask';
-import {ArchivedFilter, OrderDirection, SubtaskFilter, Task, TaskList, TaskOrderBy} from '@app/models/task';
+import {ArchivedFilter, OrderDirection, Task, TaskList, TaskOrderBy} from '@app/models/task';
 import {TaskFile} from '@app/models/task-file';
 import {environment} from '@environments/environment';
 import {firstValueFrom} from 'rxjs';
@@ -11,11 +9,6 @@ export interface TaskWritePayload {
     statusId: number;
     name: string;
     description: string | null;
-    priorityId: number;
-    dueDate: string | null;
-    startDate?: string | null;
-    assigneeId?: number | null;
-    fieldValues?: TaskFieldValue[];
     tagIds?: number[];
 }
 
@@ -27,15 +20,11 @@ export interface TaskListParams {
     search?: string;
     statusIds?: number[];
     tagIds?: number[];
-    assigneeIds?: number[];
     onlyActive?: boolean;
-    subtaskFilter?: SubtaskFilter;
     archived?: ArchivedFilter;
-    dueFrom?: string;
-    dueTo?: string;
 }
 
-export type BulkOp = 'move' | 'tag' | 'untag' | 'assign' | 'priority' | 'delete';
+export type BulkOp = 'move' | 'tag' | 'untag' | 'delete';
 
 export interface BulkSkipped {
     id: number;
@@ -66,23 +55,11 @@ export class TaskService {
         if (params.tagIds && params.tagIds.length > 0) {
             httpParams = httpParams.set('tagIds', params.tagIds.join('|'));
         }
-        if (params.assigneeIds && params.assigneeIds.length > 0) {
-            httpParams = httpParams.set('assigneeIds', params.assigneeIds.join('|'));
-        }
         if (params.onlyActive) {
             httpParams = httpParams.set('onlyActive', '1');
         }
-        if (params.subtaskFilter && params.subtaskFilter !== 'all') {
-            httpParams = httpParams.set('subtaskFilter', params.subtaskFilter);
-        }
         if (params.archived && params.archived !== 'active') {
             httpParams = httpParams.set('archived', params.archived);
-        }
-        if (params.dueFrom) {
-            httpParams = httpParams.set('dueFrom', params.dueFrom);
-        }
-        if (params.dueTo) {
-            httpParams = httpParams.set('dueTo', params.dueTo);
         }
         return firstValueFrom(this.http.get<TaskList>(`${environment.apiUrl}/tasks`, {params: httpParams}));
     }
@@ -103,24 +80,12 @@ export class TaskService {
         return firstValueFrom(this.http.put<Task>(`${environment.apiUrl}/tasks/${taskId}/move`, {statusId, position}));
     }
 
-    public duplicateTask(taskId: number): Promise<Task> {
-        return firstValueFrom(this.http.post<Task>(`${environment.apiUrl}/tasks/${taskId}/duplicate`, {}));
-    }
-
     public archiveTask(taskId: number): Promise<Task> {
         return firstValueFrom(this.http.post<Task>(`${environment.apiUrl}/tasks/${taskId}/archive`, {}));
     }
 
     public unarchiveTask(taskId: number): Promise<Task> {
         return firstValueFrom(this.http.post<Task>(`${environment.apiUrl}/tasks/${taskId}/unarchive`, {}));
-    }
-
-    public listSubtasks(taskId: number): Promise<Subtask[]> {
-        return firstValueFrom(this.http.get<Subtask[]>(`${environment.apiUrl}/tasks/${taskId}/subtasks`));
-    }
-
-    public createSubtask(taskId: number, name: string): Promise<Subtask> {
-        return firstValueFrom(this.http.post<Subtask>(`${environment.apiUrl}/tasks/${taskId}/subtasks`, {name}));
     }
 
     public deleteTask(taskId: number): Promise<void> {

@@ -1,6 +1,5 @@
 import {ChangeDetectionStrategy, Component, computed, ElementRef, HostListener, inject, OnInit, signal} from '@angular/core';
 import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
-import {SearchHit} from '@app/models/search';
 import {Locale, Theme, User} from '@app/models/user';
 import {Workspace} from '@app/models/workspace';
 import {AlertService} from '@app/services/alert.service';
@@ -8,18 +7,16 @@ import {AuthenticationService} from '@app/services/authentication.service';
 import {CurrentUserService} from '@app/services/current-user.service';
 import {LanguageService} from '@app/services/language.service';
 import {PermissionsService} from '@app/services/permissions.service';
-import {RealtimeService} from '@app/services/realtime.service';
 import {ThemeService} from '@app/services/theme.service';
 import {WorkspaceService} from '@app/services/workspace.service';
 import {BrandLogoComponent} from '@app/shared/components/brand-logo/brand-logo.component';
 import {NotificationBellComponent} from '@app/shared/components/notification-bell/notification-bell.component';
-import {SearchPopoverComponent} from '@app/shared/components/search-popover/search-popover.component';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
 @Component({
     selector: 'uk-layout',
     standalone: true,
-    imports: [BrandLogoComponent, RouterOutlet, RouterLink, RouterLinkActive, TranslatePipe, SearchPopoverComponent, NotificationBellComponent],
+    imports: [BrandLogoComponent, RouterOutlet, RouterLink, RouterLinkActive, TranslatePipe, NotificationBellComponent],
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './layout.component.html',
     styleUrl: './layout.component.scss',
@@ -35,8 +32,6 @@ export class LayoutComponent implements OnInit {
     private readonly alertService = inject(AlertService);
     private readonly router = inject(Router);
     private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
-    // Instantiate the realtime service so its workspace-id effect is wired up while the user is signed in.
-    private readonly _realtime = inject(RealtimeService);
 
     protected readonly isSystemAdmin = this.permissionsService.isSystemAdmin;
 
@@ -63,7 +58,6 @@ export class LayoutComponent implements OnInit {
     });
     protected readonly switcherOpen = signal(false);
     protected readonly userMenuOpen = signal(false);
-    protected readonly searchOpen = signal(false);
     protected readonly currentLang = this.languageService.currentLang;
     protected readonly supportedLangs = this.languageService.supportedLangs;
     protected readonly currentTheme = this.themeService.currentTheme;
@@ -78,18 +72,6 @@ export class LayoutComponent implements OnInit {
             await this.workspaceService.loadCurrentMembers();
         } catch {
             // Interceptor handles 401 -> refresh / logout
-        }
-    }
-
-    @HostListener('document:keydown', ['$event'])
-    protected onDocumentKeydown(event: KeyboardEvent): void {
-        if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
-            event.preventDefault();
-            this.openSearch();
-            return;
-        }
-        if (event.key === 'Escape' && this.searchOpen()) {
-            this.closeSearch();
         }
     }
 
@@ -166,21 +148,6 @@ export class LayoutComponent implements OnInit {
         } catch {
             // error interceptor
         }
-    }
-
-    protected openSearch(): void {
-        this.searchOpen.set(true);
-        this.switcherOpen.set(false);
-        this.userMenuOpen.set(false);
-    }
-
-    protected closeSearch(): void {
-        this.searchOpen.set(false);
-    }
-
-    protected async onSearchHit(hit: SearchHit): Promise<void> {
-        this.searchOpen.set(false);
-        await this.router.navigate(['/tasks'], {queryParams: {open: hit.code}});
     }
 
     protected openCommandPalette(): void {

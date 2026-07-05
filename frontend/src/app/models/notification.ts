@@ -1,11 +1,9 @@
-export type NotificationType = 'TaskAssigned' | 'TaskComment' | 'TaskMention' | 'TaskMoved' | 'DueSoon' | 'DueToday';
+export type NotificationType = 'TaskMoved';
 
 export interface NotificationData {
     taskCode?: string;
     taskName?: string;
     statusName?: string;
-    commentSnippet?: string;
-    dueDate?: string;
 }
 
 export interface Notification {

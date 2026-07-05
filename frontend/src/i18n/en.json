@@ -19,16 +19,8 @@
             "view": "View",
             "close": "Close"
         },
-        "priority": {
-            "Low": "Low",
-            "Medium": "Medium",
-            "High": "High"
-        },
         "common": {
             "noWorkspace": "No workspace",
-            "due": "Due",
-            "overdue": "Overdue",
-            "priority": "Priority",
             "description": "Description",
             "name": "Name",
             "email": "Email",
@@ -53,149 +45,14 @@
             "projects": "Projects",
             "tasks": "Tasks",
             "agents": "Agents",
-            "scripts": "Scripts",
             "workspaces": "Workspaces",
             "admin": "Admin",
             "signOut": "Sign out",
             "settings": "Settings",
             "newWorkspace": "+ New workspace",
             "manageWorkspaces": "Manage workspaces",
-            "search": "Search or jump to…",
             "aiPalette": "Open agent command palette",
             "openUserMenu": "Open user menu"
-        },
-        "scripts": {
-            "title": "Scripts",
-            "subtitle": "Automate your workspace with sandboxed JavaScript.",
-            "new": "New script",
-            "edit": "Edit script",
-            "empty": "No scripts yet.",
-            "run": "Run",
-            "runQueued": "Run queued.",
-            "saved": "Script saved.",
-            "active": "Active",
-            "inactive": "Inactive",
-            "backToList": "Back to scripts",
-            "deleteConfirm": "Delete script \"{{name}}\"?",
-            "col": {
-                "name": "Name",
-                "trigger": "Trigger",
-                "status": "Status",
-                "lastRun": "Last run",
-                "active": "Active",
-                "runs": "Runs"
-            },
-            "trigger": {
-                "Manual": "Manual",
-                "Scheduled": "Scheduled",
-                "Event": "Event"
-            },
-            "status": {
-                "Running": "Running",
-                "Success": "Success",
-                "Error": "Error",
-                "Timeout": "Timeout"
-            },
-            "field": {
-                "name": "Name",
-                "trigger": "Trigger",
-                "cron": "Cron expression",
-                "cronHint": "Five-field cron, e.g. \"0 9 * * 1\" = every Monday at 09:00.",
-                "events": "Run when these events happen",
-                "active": "Active",
-                "source": "Source (JavaScript)"
-            },
-            "events": {
-                "TaskCreated": "Task created",
-                "TaskUpdated": "Task updated",
-                "TaskMoved": "Task moved",
-                "TaskArchived": "Task archived",
-                "TaskUnarchived": "Task unarchived",
-                "TaskDeleted": "Task deleted",
-                "TaskCommentAdded": "Comment added"
-            },
-            "runs": {
-                "title": "Run history",
-                "refresh": "Refresh",
-                "empty": "No runs yet.",
-                "col": {
-                    "status": "Status",
-                    "trigger": "Trigger",
-                    "started": "Started",
-                    "duration": "Duration",
-                    "output": "Output",
-                    "calls": "Calls"
-                }
-            },
-            "variables": {
-                "title": "Script variables",
-                "subtitle": "Workspace key/value store available to scripts via kytario.vars. Secrets are encrypted and never shown again.",
-                "manage": "Variables",
-                "key": "Key",
-                "value": "Value",
-                "secret": "Secret (encrypt and hide)",
-                "saved": "Variable saved.",
-                "empty": "No variables yet.",
-                "deleteConfirm": "Delete variable \"{{key}}\"?",
-                "type": "Type",
-                "secretBadge": "Secret",
-                "plainBadge": "Plain"
-            },
-            "sandboxNote": "Scripts run as you inside a hardened V8 sandbox — 5s CPU, 64 MB, no filesystem.",
-            "neverRun": "Never run",
-            "unsaved": "Unsaved",
-            "saveChanges": "Save changes",
-            "lines": "lines",
-            "runningInSandbox": "Running in sandbox…",
-            "finishedIn": "finished in",
-            "noOutput": "No output captured for this run.",
-            "pressRun": "Press Run to execute and capture output.",
-            "problemTitle": "Execution error",
-            "goToLine": "Go to line",
-            "noProblems": "No problems — last run completed cleanly.",
-            "insertSnippet": "Insert snippet",
-            "sandboxLimits": "Per run: 5s CPU · 64 MB · 20 fetch · 200 task-API calls. No filesystem.",
-            "eventPayloadNote": "The event payload is available as kytario.context.event.",
-            "validationRequired": "Name and source are required.",
-            "panel": {
-                "show": "Show panel",
-                "hide": "Hide panel",
-                "output": "Output",
-                "problems": "Problems",
-                "api": "API",
-                "trigger": "Trigger"
-            },
-            "meter": {
-                "cpu": "CPU time",
-                "fetch": "HTTP fetch calls",
-                "api": "Task-API calls"
-            },
-            "triggerHelp": {
-                "manual": "Runs only when you press Run here, from the list, or via the API. No automatic schedule."
-            },
-            "cronPreset": {
-                "weekly": "Mon 09:00",
-                "daily": "Daily 09:00",
-                "hourly": "Hourly",
-                "quarterHour": "Every 15 min",
-                "monthly": "Monthly"
-            }
-        },
-        "search": {
-            "label": "Workspace search",
-            "placeholder": "Search tasks, descriptions, comments, tags…",
-            "hint": "Type at least 2 characters to search.",
-            "noResults": "No matching tasks.",
-            "error": "Search is temporarily unavailable. Try again in a moment.",
-            "searching": "Searching…",
-            "moreHits": "Showing {{shown}} of {{total}} matches.",
-            "matchedIn": {
-                "name": "name",
-                "description": "description",
-                "comments": "comments",
-                "fieldValues": "fields",
-                "tags": "tags"
-            }
         },
         "agent": {
             "agent": "agent",
@@ -222,7 +79,6 @@
                 "all": "All",
                 "humans": "Humans",
                 "agents": "Agents",
-                "comments": "Comments",
                 "statusChanges": "Status changes"
             },
             "verb": {
@@ -245,14 +101,8 @@
                 "AdminDeletedWorkspace": "(admin) deleted workspace",
                 "AdminDeletedUser": "(admin) deleted user",
                 "AdminChangedSystemRole": "(admin) changed system role",
-                "FieldCreated": "created field",
-                "FieldUpdated": "updated field",
-                "FieldDeleted": "deleted field",
-                "ProjectFieldsUpdated": "updated project fields",
                 "TaskFileAdded": "attached file",
                 "TaskFileDeleted": "removed file",
-                "TaskCommentAdded": "commented",
-                "TaskCommentDeleted": "deleted a comment",
                 "UserSelfDeleted": "deleted their account"
             },
             "deletedAuthor": "Deleted user"
@@ -262,7 +112,6 @@
             "subtitle": "{{count}} task(s) across all projects",
             "search": "Search by name…",
             "filterStatus": "Status",
-            "filterAssignee": "Assignee",
             "onlyActive": "Only active",
             "clearFilters": "Clear filters",
             "noWorkflows": "No workflows yet.",
@@ -270,8 +119,7 @@
             "col": {
                 "created": "Created",
                 "name": "Name",
-                "status": "Status",
-                "assignee": "Assignee"
+                "status": "Status"
             },
             "bulk": {
                 "selectedCount": "{{count}} selected",
@@ -281,20 +129,11 @@
                 "move": "Move to…",
                 "addTag": "Add tag…",
                 "removeTag": "Remove tag…",
-                "assign": "Assign to…",
-                "unassign": "Unassign",
-                "priority": "Set priority…",
                 "delete": "Delete",
                 "confirmDelete": "Delete {{count}} task(s)? This cannot be undone.",
                 "partialSuccess": "{{succeeded}} updated, {{skipped}} skipped.",
                 "showSkipped": "Show details",
                 "hideSkipped": "Hide details"
-            },
-            "subtaskFilter": {
-                "label": "Subtask filter",
-                "all": "All tasks",
-                "hideSubtasks": "Hide subtasks",
-                "onlyParents": "Only parents"
             },
             "archivedFilter": {
                 "label": "Archived filter",
@@ -302,29 +141,7 @@
                 "archived": "Archived only",
                 "all": "All (incl. archived)"
             },
-            "archivedBadge": "Archived",
-            "view": {
-                "label": "View",
-                "list": "List",
-                "calendar": "Calendar",
-                "timeline": "Timeline"
-            }
-        },
-        "calendar": {
-            "prev": "Previous",
-            "next": "Next",
-            "today": "Today",
-            "month": "Month",
-            "week": "Week",
-            "more": "+{{count}} more",
-            "dragHint": "Drag a task to another day to reschedule its due date.",
-            "overdue": "Overdue",
-            "truncated": "Showing the most recent tasks only."
-        },
-        "timeline": {
-            "task": "Task",
-            "empty": "No tasks with dates in this range.",
-            "dragHint": "Drag a bar to shift both dates; drag an edge to change the start or due date."
+            "archivedBadge": "Archived"
         },
         "savedViews": {
             "picker": "Views",
@@ -455,17 +272,7 @@
                 "titlePlaceholder": "Task title",
                 "descriptionPlaceholder": "Markdown supported…",
                 "nothingToPreview": "Nothing to preview.",
-                "dueDate": "Due date",
-                "startDate": "Start date",
-                "startAfterDue": "Start date must not be after the due date.",
                 "status": "Status",
-                "details": "Details",
-                "assignee": "Assignee",
-                "assigneeAdd": "Assign",
-                "assigneeChange": "Change",
-                "assigneeClear": "Clear",
-                "assigneePlaceholder": "Unassigned",
-                "assigneeNoMembers": "No workspace members yet.",
                 "files": {
                     "title": "Attachments",
                     "upload": "Upload file",
@@ -479,8 +286,7 @@
                     "uploadedBy": "by {{name}}",
                     "uploadedByAgent": "by agent"
                 }
-            },
-            "deleteTaskWithSubtasksConfirm": "Delete task \"{{name}}\"? Its {{count}} subtask(s) will be kept and unlinked."
+            }
         },
         "workflow": {
             "title": "Workflow",
@@ -519,16 +325,8 @@
                 "TaskMoved": "moved \"{{name}}\" from {{from}} → {{to}}",
                 "TaskArchived": "archived task \"{{name}}\"",
                 "TaskUnarchived": "unarchived task \"{{name}}\"",
-                "FieldCreated": "added custom field \"{{name}}\"",
-                "FieldUpdated": "updated custom field \"{{name}}\"",
-                "FieldDeleted": "deleted custom field \"{{name}}\"",
-                "ProjectFieldsUpdated": "updated project custom fields",
                 "TaskFileAdded": "attached file \"{{filename}}\"",
-                "TaskFileDeleted": "removed file \"{{filename}}\"",
-                "TaskRelationCreated": "linked to \"{{targetTaskName}}\" ({{type}})",
-                "TaskRelationDeleted": "removed link to \"{{targetTaskName}}\" ({{type}})",
-                "TaskCommentAdded": "commented on the task",
-                "TaskCommentDeleted": "deleted a comment"
+                "TaskFileDeleted": "removed file \"{{filename}}\""
             },
             "deletedAuthor": "Deleted user",
             "timeAgo": {
@@ -537,19 +335,6 @@
                 "hours": "{{n}}h ago"
             }
         },
-        "taskComments": {
-            "section": "Comments",
-            "empty": "No comments yet.",
-            "addPlaceholder": "Add a comment… use @ to mention someone",
-            "addButton": "Add comment",
-            "replyButton": "Reply",
-            "reply": "Reply",
-            "replyingTo": "Replying to {{name}}",
-            "edit": "Edit",
-            "edited": "(edited)",
-            "delete": "Delete",
-            "deleteConfirm": "Delete this comment? Replies will be removed too."
-        },
         "notifications": {
             "section": "Notifications",
             "bell": "Notifications",
@@ -557,12 +342,7 @@
             "markAllAsRead": "Mark all read",
             "dismiss": "Dismiss",
             "message": {
-                "TaskAssigned": "{{actor}} assigned {{task}} to you",
-                "TaskComment": "{{actor}} commented on {{task}}",
-                "TaskMention": "{{actor}} mentioned you on {{task}}",
-                "TaskMoved": "{{actor}} moved {{task}} to {{status}}",
-                "DueSoon": "{{task}} is due tomorrow",
-                "DueToday": "{{task}} is due today"
+                "TaskMoved": "{{actor}} moved {{task}} to {{status}}"
             }
         },
         "taskWatchers": {
@@ -570,44 +350,6 @@
             "watching": "Watching",
             "watchHint": "Get notified about comments, moves and due dates for this task",
             "unwatchHint": "Stop receiving notifications for this task"
-        },
-        "taskRelations": {
-            "section": "Relations",
-            "addButton": "+ Add relation",
-            "empty": "No relations.",
-            "added": "Relation added.",
-            "removed": "Relation removed.",
-            "removeConfirm": "Remove relation to \"{{name}}\"?",
-            "addModal": {
-                "searchPlaceholder": "Search tasks by name…",
-                "noResults": "No tasks found."
-            },
-            "type": {
-                "Related": "Related",
-                "Duplicates": "Duplicates",
-                "Parent": "Parent",
-                "DependsOn": "Depends on"
-            },
-            "label": {
-                "Related": "Related",
-                "DuplicateOf": "Duplicate of",
-                "DuplicatedBy": "Duplicated by",
-                "Parent": "Parent",
-                "Subtask": "Subtask",
-                "DependsOn": "Depends on",
-                "RequiredFor": "Required for"
-            },
-            "groupHeader": {
-                "Parent": "Parent",
-                "Subtasks": "Subtasks",
-                "DependsOn": "Depends on",
-                "RequiredFor": "Required for",
-                "Related": "Related",
-                "Duplicates": "Duplicates"
-            },
-            "errors": {
-                "generic": "Failed to update relation."
-            }
         },
         "workspaces": {
             "title": "Workspaces",
@@ -638,8 +380,6 @@
                 "general": "General",
                 "members": "Members",
                 "tags": "Tags",
-                "priorities": "Priorities",
-                "fields": "Custom fields",
                 "mcp": "MCP & agents"
             },
             "general": {
@@ -755,56 +495,6 @@
                 "deleteConfirm": "This will permanently delete your account. Are you sure?"
             }
         },
-        "fields": {
-            "title": "Custom fields",
-            "description": "Define a workspace catalog of custom fields. Each project can attach individual fields; their values appear in the task detail.",
-            "addField": "Add field",
-            "editField": "Edit field",
-            "name": "Field name",
-            "namePlaceholder": "e.g. Severity",
-            "type": "Type",
-            "types": {
-                "Text": "Text",
-                "Textarea": "Textarea",
-                "Select": "Select",
-                "Version": "Version (semver)"
-            },
-            "required": "Required",
-            "defaultValue": "Default value",
-            "defaultValuePlaceholder": "Optional default",
-            "options": "Options",
-            "addOption": "+ Add option",
-            "removeOption": "Remove",
-            "optionPlaceholder": "Option value",
-            "fieldCreated": "Field created.",
-            "fieldUpdated": "Field updated.",
-            "fieldDeleted": "Field deleted.",
-            "deleteConfirm": "Delete field \"{{name}}\"? It will be removed from every project and all its task values will be cleared.",
-            "empty": "No custom fields yet.",
-            "noPermission": "Only Owners and Admins can manage workspace fields.",
-            "invalidSemver": "\"{{value}}\" is not a valid semver string.",
-            "optionsRequired": "Select and Version fields need at least one option."
-        },
-        "projectFields": {
-            "title": "Custom fields",
-            "description": "Attach workspace fields to this project. The order here is the order shown in the task drawer.",
-            "attached": "Attached fields",
-            "available": "Available fields",
-            "attach": "Attach",
-            "detach": "Detach",
-            "moveUp": "Move up",
-            "moveDown": "Move down",
-            "save": "Save fields",
-            "saved": "Project fields updated.",
-            "emptyAttached": "No fields attached yet.",
-            "emptyAvailable": "No more fields to attach. Add fields in the workspace settings.",
-            "requiredBadge": "Required",
-            "noPermission": "Only Owners and Admins can change attached fields."
-        },
-        "taskFields": {
-            "heading": "Custom fields",
-            "fieldRequired": "{{name}} is required."
-        },
         "tags": {
             "title": "Tags",
             "description": "Workspace-wide labels you can attach to any task. Each tag has a name and a color.",
@@ -821,24 +511,6 @@
             "deleteConfirm": "Delete tag \"{{name}}\"? It will be removed from every task that uses it.",
             "noPermission": "Only Owners and Admins can manage workspace tags."
         },
-        "priorities": {
-            "title": "Priorities",
-            "description": "Workspace-configurable task priorities. Reorder with the arrows; the default is used for new tasks when none is specified.",
-            "addPriority": "Add priority",
-            "name": "Priority name",
-            "namePlaceholder": "e.g. Critical",
-            "color": "Color",
-            "default": "Default for new tasks",
-            "defaultMark": "default",
-            "preview": "preview",
-            "empty": "No priorities yet.",
-            "priorityCreated": "Priority created.",
-            "priorityUpdated": "Priority updated.",
-            "priorityDeleted": "Priority deleted.",
-            "deleteConfirm": "Delete priority \"{{name}}\"?",
-            "deleteBlocked": "Cannot delete — {{count}} task(s) still use this priority. Reassign them first.",
-            "deleteError": "Failed to delete priority."
-        },
         "taskTags": {
             "heading": "Tags",
             "add": "Add tag",
@@ -846,75 +518,6 @@
             "remove": "Remove",
             "filterTitle": "Filter by tag",
             "noTagsAvailable": "No more tags to add."
-        },
-        "taskTemplates": {
-            "duplicate": "Duplicate",
-            "duplicated": "Task duplicated.",
-            "saveAsTemplate": "Save as template",
-            "namePrompt": "Template name:",
-            "saved": "Template saved.",
-            "startFromTemplate": "Start from template…"
-        },
-        "subtasks": {
-            "heading": "Subtasks",
-            "add": "Add",
-            "addPlaceholder": "Add a subtask…",
-            "toggle": "Toggle subtask \"{{name}}\"",
-            "removeConfirm": "Remove subtask link to \"{{name}}\"? The task itself is kept.",
-            "earliestDue": "Earliest due",
-            "highestPriority": "Highest priority",
-            "progressTitle": "{{done}} of {{total}} subtasks done"
-        },
-        "checklist": {
-            "heading": "Checklist",
-            "add": "Add",
-            "addPlaceholder": "Add a checklist item…",
-            "toggle": "Toggle \"{{text}}\"",
-            "dragHandle": "Reorder item",
-            "dueDate": "Due date",
-            "assignee": "Assignee",
-            "progressTitle": "{{done}} of {{total}} checklist items done"
-        },
-        "recurrence": {
-            "heading": "Repeat",
-            "enable": "Make recurring",
-            "remove": "Remove recurrence",
-            "ended": "Series ended",
-            "next": "Next: {{date}}",
-            "cadence": "Repeats",
-            "interval": "Every",
-            "weekday": "On",
-            "dayOfMonth": "Day of month",
-            "cron": "Cron expression",
-            "ends": "Ends",
-            "endDate": "End date",
-            "maxOccurrences": "Occurrences",
-            "cadenceOption": {
-                "Daily": "Day",
-                "Weekly": "Week",
-                "Monthly": "Month",
-                "Cron": "Custom (cron)"
-            },
-            "endOption": {
-                "Never": "Never",
-                "OnDate": "On date",
-                "AfterCount": "After N occurrences"
-            },
-            "cadenceLabel": {
-                "Daily": "Every {{interval}} day(s)",
-                "Weekly": "Every {{interval}} week(s)",
-                "Monthly": "Every {{interval}} month(s)",
-                "Cron": "Custom schedule"
-            },
-            "weekdayName": {
-                "0": "Sunday",
-                "1": "Monday",
-                "2": "Tuesday",
-                "3": "Wednesday",
-                "4": "Thursday",
-                "5": "Friday",
-                "6": "Saturday"
-            }
         },
         "onboarding": {
             "shell": {

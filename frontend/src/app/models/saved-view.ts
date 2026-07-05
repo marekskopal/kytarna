@@ -1,12 +1,10 @@
-import {ArchivedFilter, OrderDirection, SubtaskFilter, TaskOrderBy} from '@app/models/task';
+import {ArchivedFilter, OrderDirection, TaskOrderBy} from '@app/models/task';
 
 export interface SavedViewFilters {
     q?: string;
     statusIds?: number[];
     tagIds?: number[];
-    assigneeIds?: number[];
     onlyActive?: boolean;
-    subtaskFilter?: SubtaskFilter;
     archived?: ArchivedFilter;
     orderBy?: TaskOrderBy;
     orderDirection?: OrderDirection;

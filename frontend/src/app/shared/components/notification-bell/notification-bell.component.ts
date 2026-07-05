@@ -1,11 +1,7 @@
 import {ChangeDetectionStrategy, Component, ElementRef, HostListener, inject, OnInit, signal} from '@angular/core';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {Router} from '@angular/router';
 import {Notification} from '@app/models/notification';
-import {RealtimeEvent} from '@app/models/realtime-event';
-import {CurrentUserService} from '@app/services/current-user.service';
 import {NotificationService} from '@app/services/notification.service';
-import {RealtimeService} from '@app/services/realtime.service';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
 @Component({
@@ -18,8 +14,6 @@ import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 })
 export class NotificationBellComponent implements OnInit {
     private readonly notificationService = inject(NotificationService);
-    private readonly realtimeService = inject(RealtimeService);
-    private readonly currentUserService = inject(CurrentUserService);
     private readonly translate = inject(TranslateService);
     private readonly router = inject(Router);
     private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
@@ -28,12 +22,6 @@ export class NotificationBellComponent implements OnInit {
     protected readonly open = signal(false);
     protected readonly loading = signal(false);
     protected readonly notifications = signal<Notification[]>([]);
-
-    public constructor() {
-        this.realtimeService.events$
-            .pipe(takeUntilDestroyed())
-            .subscribe((event) => void this.onRealtimeEvent(event));
-    }
 
     public ngOnInit(): void {
         void this.notificationService.refreshUnreadCount();
@@ -117,21 +105,4 @@ export class NotificationBellComponent implements OnInit {
         }
     }
 
-    private async onRealtimeEvent(event: RealtimeEvent): Promise<void> {
-        if (event.type === 'RealtimeReconnected') {
-            await this.notificationService.refreshUnreadCount();
-            return;
-        }
-        if (event.type !== 'NotificationCreated') {
-            return;
-        }
-        // Notifications are broadcast on the workspace topic; act only on pings addressed to me.
-        if (event.userId !== this.currentUserService.currentUser()?.id) {
-            return;
-        }
-        await this.notificationService.refreshUnreadCount();
-        if (this.open()) {
-            await this.load();
-        }
-    }
 }

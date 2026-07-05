@@ -8,7 +8,7 @@ import {firstValueFrom} from 'rxjs';
 export class NotificationService {
     private readonly http = inject(HttpClient);
 
-    /** Shared unread badge count — read by the topbar bell, kept current on load + realtime pings. */
+    /** Shared unread badge count — read by the topbar bell, refreshed on load. */
     public readonly unreadCount = signal(0);
 
     public async list(unreadOnly = false, limit = 30, offset = 0): Promise<NotificationList> {

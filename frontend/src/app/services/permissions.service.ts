@@ -36,25 +36,7 @@ export class PermissionsService {
         return role === 'Owner' || role === 'Admin';
     }
 
-    public canManageFields(members: WorkspaceMember[] | null | undefined): boolean {
-        if (this.isSystemAdmin()) return true;
-        const role = this.roleForCurrentUser(members);
-        return role === 'Owner' || role === 'Admin';
-    }
-
     public canManageTags(members: WorkspaceMember[] | null | undefined): boolean {
-        if (this.isSystemAdmin()) return true;
-        const role = this.roleForCurrentUser(members);
-        return role === 'Owner' || role === 'Admin';
-    }
-
-    public canManagePriorities(members: WorkspaceMember[] | null | undefined): boolean {
-        if (this.isSystemAdmin()) return true;
-        const role = this.roleForCurrentUser(members);
-        return role === 'Owner' || role === 'Admin';
-    }
-
-    public canManageScripts(members: WorkspaceMember[] | null | undefined): boolean {
         if (this.isSystemAdmin()) return true;
         const role = this.roleForCurrentUser(members);
         return role === 'Owner' || role === 'Admin';

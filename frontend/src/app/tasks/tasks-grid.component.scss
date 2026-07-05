@@ -9,42 +9,6 @@
     margin-bottom: $space-6;
 }
 
-// ─── List / Calendar / Timeline switcher ────────────────────
-.view-switch {
-    display: inline-flex;
-    flex-shrink: 0;
-    border: 1px solid $color-border-strong;
-    border-radius: $radius-sm;
-    overflow: hidden;
-}
-
-.view-switch-btn {
-    height: $h-sm;
-    padding: 0 $space-4;
-    border: none;
-    border-right: 1px solid $color-border-strong;
-    background: $color-surface;
-    color: $color-text-muted;
-    font-size: $font-size-12;
-    cursor: pointer;
-    transition: background 80ms ease, color 80ms ease;
-
-    &:last-child {
-        border-right: none;
-    }
-
-    &:hover {
-        background: $color-surface-hover;
-        color: $color-text;
-    }
-
-    &--active {
-        background: $color-surface-muted;
-        color: $color-text;
-        font-weight: 500;
-    }
-}
-
 .view-placeholder {
     display: flex;
     align-items: center;
@@ -450,7 +414,6 @@
     .th-select   { width: 36px; }
     .th-created  { width: 140px; }
     .th-status   { width: 200px; }
-    .th-assignee { width: 180px; }
 }
 
 .td-select,
@@ -528,31 +491,6 @@
     flex-shrink: 0;
 }
 
-.td-assignee {
-    white-space: nowrap;
-    font-size: $font-size-12;
-}
-
-.assignee-cell {
-    display: inline-flex;
-    align-items: center;
-    gap: $space-2;
-}
-
-.assignee-cell-avatar {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: $color-accent;
-    color: $color-accent-fg;
-    font-size: 9px;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-}
-
 .td-tags {
     width: 1%;
     max-width: 280px;
@@ -580,28 +518,6 @@
     flex-wrap: wrap;
     gap: 3px;
     max-width: 100%;
-}
-
-.subtask-progress-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
-    padding: 1px 6px;
-    border-radius: 999px;
-    background: $color-surface-deep;
-    color: $color-text-subtle;
-    font-size: 11px;
-    font-weight: 500;
-    flex-shrink: 0;
-
-    &--complete {
-        background: $color-success-soft;
-        color: $color-success;
-    }
-}
-
-.filter-subtasks {
-    width: auto;
 }
 
 .filter-archived {

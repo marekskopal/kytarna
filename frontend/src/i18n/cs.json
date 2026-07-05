@@ -19,16 +19,8 @@
             "view": "Zobrazit",
             "close": "Zavřít"
         },
-        "priority": {
-            "Low": "Nízká",
-            "Medium": "Střední",
-            "High": "Vysoká"
-        },
         "common": {
             "noWorkspace": "Žádný pracovní prostor",
-            "due": "Termín",
-            "overdue": "Po termínu",
-            "priority": "Priorita",
             "description": "Popis",
             "name": "Název",
             "email": "E-mail",
@@ -53,149 +45,14 @@
             "projects": "Projekty",
             "tasks": "Úkoly",
             "agents": "Agenti",
-            "scripts": "Skripty",
             "workspaces": "Pracovní prostory",
             "admin": "Správa",
             "signOut": "Odhlásit se",
             "settings": "Nastavení",
             "newWorkspace": "+ Nový pracovní prostor",
             "manageWorkspaces": "Spravovat pracovní prostory",
-            "search": "Hledat nebo přejít…",
             "aiPalette": "Otevřít paletu příkazů agenta",
             "openUserMenu": "Otevřít uživatelské menu"
-        },
-        "scripts": {
-            "title": "Skripty",
-            "subtitle": "Automatizujte svůj pracovní prostor pomocí izolovaného JavaScriptu.",
-            "new": "Nový skript",
-            "edit": "Upravit skript",
-            "empty": "Zatím žádné skripty.",
-            "run": "Spustit",
-            "runQueued": "Spuštění zařazeno do fronty.",
-            "saved": "Skript uložen.",
-            "active": "Aktivní",
-            "inactive": "Neaktivní",
-            "backToList": "Zpět na skripty",
-            "deleteConfirm": "Smazat skript „{{name}}“?",
-            "col": {
-                "name": "Název",
-                "trigger": "Spouštěč",
-                "status": "Stav",
-                "lastRun": "Poslední spuštění",
-                "active": "Aktivní",
-                "runs": "Běhů"
-            },
-            "trigger": {
-                "Manual": "Ruční",
-                "Scheduled": "Plánovaný",
-                "Event": "Událost"
-            },
-            "status": {
-                "Running": "Probíhá",
-                "Success": "Úspěch",
-                "Error": "Chyba",
-                "Timeout": "Vypršel čas"
-            },
-            "field": {
-                "name": "Název",
-                "trigger": "Spouštěč",
-                "cron": "Cron výraz",
-                "cronHint": "Pětipoložkový cron, např. „0 9 * * 1“ = každé pondělí v 09:00.",
-                "events": "Spustit při těchto událostech",
-                "active": "Aktivní",
-                "source": "Zdrojový kód (JavaScript)"
-            },
-            "events": {
-                "TaskCreated": "Úkol vytvořen",
-                "TaskUpdated": "Úkol upraven",
-                "TaskMoved": "Úkol přesunut",
-                "TaskArchived": "Úkol archivován",
-                "TaskUnarchived": "Úkol obnoven z archivu",
-                "TaskDeleted": "Úkol smazán",
-                "TaskCommentAdded": "Přidán komentář"
-            },
-            "runs": {
-                "title": "Historie spuštění",
-                "refresh": "Obnovit",
-                "empty": "Zatím žádná spuštění.",
-                "col": {
-                    "status": "Stav",
-                    "trigger": "Spouštěč",
-                    "started": "Začátek",
-                    "duration": "Doba",
-                    "output": "Výstup",
-                    "calls": "Volání"
-                }
-            },
-            "variables": {
-                "title": "Proměnné skriptů",
-                "subtitle": "Úložiště klíč/hodnota pro pracovní prostor dostupné skriptům přes kytario.vars. Tajné hodnoty jsou šifrovány a už se nezobrazí.",
-                "manage": "Proměnné",
-                "key": "Klíč",
-                "value": "Hodnota",
-                "secret": "Tajné (šifrovat a skrýt)",
-                "saved": "Proměnná uložena.",
-                "empty": "Zatím žádné proměnné.",
-                "deleteConfirm": "Smazat proměnnou „{{key}}“?",
-                "type": "Typ",
-                "secretBadge": "Tajné",
-                "plainBadge": "Prosté"
-            },
-            "sandboxNote": "Skripty běží pod tvým účtem v zabezpečeném V8 sandboxu — 5 s CPU, 64 MB, bez přístupu k souborům.",
-            "neverRun": "Nikdy nespuštěno",
-            "unsaved": "Neuloženo",
-            "saveChanges": "Uložit změny",
-            "lines": "řádků",
-            "runningInSandbox": "Běží v sandboxu…",
-            "finishedIn": "dokončeno za",
-            "noOutput": "Tento běh nezachytil žádný výstup.",
-            "pressRun": "Stiskni Spustit pro vykonání a zachycení výstupu.",
-            "problemTitle": "Chyba vykonání",
-            "goToLine": "Přejít na řádek",
-            "noProblems": "Žádné problémy — poslední běh proběhl v pořádku.",
-            "insertSnippet": "Vložit úryvek",
-            "sandboxLimits": "Na běh: 5 s CPU · 64 MB · 20 fetch · 200 volání task-API. Bez přístupu k souborům.",
-            "eventPayloadNote": "Data události jsou dostupná jako kytario.context.event.",
-            "validationRequired": "Název a zdrojový kód jsou povinné.",
-            "panel": {
-                "show": "Zobrazit panel",
-                "hide": "Skrýt panel",
-                "output": "Výstup",
-                "problems": "Problémy",
-                "api": "API",
-                "trigger": "Spouštěč"
-            },
-            "meter": {
-                "cpu": "CPU čas",
-                "fetch": "HTTP volání fetch",
-                "api": "Volání task-API"
-            },
-            "triggerHelp": {
-                "manual": "Spustí se pouze když stiskneš Spustit zde, ze seznamu nebo přes API. Žádné automatické plánování."
-            },
-            "cronPreset": {
-                "weekly": "Po 09:00",
-                "daily": "Denně 09:00",
-                "hourly": "Každou hodinu",
-                "quarterHour": "Každých 15 min",
-                "monthly": "Měsíčně"
-            }
-        },
-        "search": {
-            "label": "Hledání v pracovním prostoru",
-            "placeholder": "Hledat úkoly, popisy, komentáře, štítky…",
-            "hint": "Zadejte alespoň 2 znaky.",
-            "noResults": "Žádné odpovídající úkoly.",
-            "error": "Hledání je dočasně nedostupné. Zkuste to za chvíli znovu.",
-            "searching": "Hledání…",
-            "moreHits": "Zobrazeno {{shown}} z {{total}} výsledků.",
-            "matchedIn": {
-                "name": "název",
-                "description": "popis",
-                "comments": "komentáře",
-                "fieldValues": "pole",
-                "tags": "štítky"
-            }
         },
         "agent": {
             "agent": "agent",
@@ -222,7 +79,6 @@
                 "all": "Vše",
                 "humans": "Lidé",
                 "agents": "Agenti",
-                "comments": "Komentáře",
                 "statusChanges": "Změny stavu"
             },
             "verb": {
@@ -245,14 +101,8 @@
                 "AdminDeletedWorkspace": "(admin) smazal pracovní prostor",
                 "AdminDeletedUser": "(admin) smazal uživatele",
                 "AdminChangedSystemRole": "(admin) změnil systémovou roli",
-                "FieldCreated": "vytvořil(a) pole",
-                "FieldUpdated": "upravil(a) pole",
-                "FieldDeleted": "smazal(a) pole",
-                "ProjectFieldsUpdated": "upravil(a) pole projektu",
                 "TaskFileAdded": "přidal(a) přílohu",
                 "TaskFileDeleted": "odebral(a) přílohu",
-                "TaskCommentAdded": "okomentoval(a)",
-                "TaskCommentDeleted": "smazal(a) komentář",
                 "UserSelfDeleted": "smazal(a) svůj účet"
             },
             "deletedAuthor": "Smazaný uživatel"
@@ -262,7 +112,6 @@
             "subtitle": "{{count}} úkolů napříč všemi projekty",
             "search": "Hledat podle názvu…",
             "filterStatus": "Stav",
-            "filterAssignee": "Řešitel",
             "onlyActive": "Pouze aktivní",
             "clearFilters": "Vymazat filtry",
             "noWorkflows": "Zatím žádné pracovní postupy.",
@@ -270,8 +119,7 @@
             "col": {
                 "created": "Vytvořeno",
                 "name": "Název",
-                "status": "Stav",
-                "assignee": "Řešitel"
+                "status": "Stav"
             },
             "bulk": {
                 "selectedCount": "Vybráno: {{count}}",
@@ -281,20 +129,11 @@
                 "move": "Přesunout do…",
                 "addTag": "Přidat štítek…",
                 "removeTag": "Odebrat štítek…",
-                "assign": "Přiřadit…",
-                "unassign": "Zrušit přiřazení",
-                "priority": "Nastavit prioritu…",
                 "delete": "Smazat",
                 "confirmDelete": "Smazat {{count}} úkol(y)? Tuto akci nelze vrátit.",
                 "partialSuccess": "{{succeeded}} aktualizováno, {{skipped}} přeskočeno.",
                 "showSkipped": "Zobrazit detail",
                 "hideSkipped": "Skrýt detail"
-            },
-            "subtaskFilter": {
-                "label": "Filtr podúkolů",
-                "all": "Všechny úkoly",
-                "hideSubtasks": "Skrýt podúkoly",
-                "onlyParents": "Jen rodičovské"
             },
             "archivedFilter": {
                 "label": "Filtr archivace",
@@ -302,29 +141,7 @@
                 "archived": "Jen archivované",
                 "all": "Vše (vč. archivu)"
             },
-            "archivedBadge": "Archivováno",
-            "view": {
-                "label": "Zobrazení",
-                "list": "Seznam",
-                "calendar": "Kalendář",
-                "timeline": "Časová osa"
-            }
-        },
-        "calendar": {
-            "prev": "Předchozí",
-            "next": "Další",
-            "today": "Dnes",
-            "month": "Měsíc",
-            "week": "Týden",
-            "more": "+{{count}} dalších",
-            "dragHint": "Přetažením úkolu na jiný den změníte termín dokončení.",
-            "overdue": "Po termínu",
-            "truncated": "Zobrazeny jsou jen nejnovější úkoly."
-        },
-        "timeline": {
-            "task": "Úkol",
-            "empty": "V tomto rozsahu nejsou žádné úkoly s daty.",
-            "dragHint": "Přetažením pruhu posunete oba termíny; přetažením okraje změníte začátek nebo termín."
+            "archivedBadge": "Archivováno"
         },
         "savedViews": {
             "picker": "Pohledy",
@@ -455,17 +272,7 @@
                 "titlePlaceholder": "Název úkolu",
                 "descriptionPlaceholder": "Podporuje Markdown…",
                 "nothingToPreview": "Není co zobrazit.",
-                "dueDate": "Termín",
-                "startDate": "Začátek",
-                "startAfterDue": "Začátek nesmí být po termínu dokončení.",
                 "status": "Stav",
-                "details": "Detaily",
-                "assignee": "Řešitel",
-                "assigneeAdd": "Přiřadit",
-                "assigneeChange": "Změnit",
-                "assigneeClear": "Zrušit",
-                "assigneePlaceholder": "Nepřiřazeno",
-                "assigneeNoMembers": "Žádní členové pracovního prostoru.",
                 "files": {
                     "title": "Přílohy",
                     "upload": "Nahrát soubor",
@@ -479,8 +286,7 @@
                     "uploadedBy": "od {{name}}",
                     "uploadedByAgent": "od agenta"
                 }
-            },
-            "deleteTaskWithSubtasksConfirm": "Smazat úkol \"{{name}}\"? Jeho podúkoly ({{count}}) zůstanou zachovány a budou odpojeny."
+            }
         },
         "workflow": {
             "title": "Pracovní postup",
@@ -519,16 +325,8 @@
                 "TaskMoved": "přesunul(a) „{{name}}\" z {{from}} → {{to}}",
                 "TaskArchived": "archivoval(a) úkol „{{name}}\"",
                 "TaskUnarchived": "obnovil(a) úkol „{{name}}\" z archivu",
-                "FieldCreated": "přidal(a) vlastní pole „{{name}}\"",
-                "FieldUpdated": "upravil(a) vlastní pole „{{name}}\"",
-                "FieldDeleted": "smazal(a) vlastní pole „{{name}}\"",
-                "ProjectFieldsUpdated": "upravil(a) vlastní pole projektu",
                 "TaskFileAdded": "přidal(a) přílohu „{{filename}}\"",
-                "TaskFileDeleted": "odebral(a) přílohu „{{filename}}\"",
-                "TaskRelationCreated": "propojil(a) s „{{targetTaskName}}\" ({{type}})",
-                "TaskRelationDeleted": "odebral(a) vazbu na „{{targetTaskName}}\" ({{type}})",
-                "TaskCommentAdded": "okomentoval(a) úkol",
-                "TaskCommentDeleted": "smazal(a) komentář"
+                "TaskFileDeleted": "odebral(a) přílohu „{{filename}}\""
             },
             "deletedAuthor": "Smazaný uživatel",
             "timeAgo": {
@@ -537,19 +335,6 @@
                 "hours": "před {{n}}h"
             }
         },
-        "taskComments": {
-            "section": "Komentáře",
-            "empty": "Zatím žádné komentáře.",
-            "addPlaceholder": "Přidat komentář… pomocí @ zmíníte člena",
-            "addButton": "Přidat komentář",
-            "replyButton": "Odpovědět",
-            "reply": "Odpovědět",
-            "replyingTo": "Odpověď na {{name}}",
-            "edit": "Upravit",
-            "edited": "(upraveno)",
-            "delete": "Smazat",
-            "deleteConfirm": "Smazat tento komentář? Odpovědi budou také odstraněny."
-        },
         "notifications": {
             "section": "Oznámení",
             "bell": "Oznámení",
@@ -557,12 +342,7 @@
             "markAllAsRead": "Označit vše",
             "dismiss": "Zavřít",
             "message": {
-                "TaskAssigned": "{{actor}} vám přiřadil(a) {{task}}",
-                "TaskComment": "{{actor}} okomentoval(a) {{task}}",
-                "TaskMention": "{{actor}} vás zmínil(a) v {{task}}",
-                "TaskMoved": "{{actor}} přesunul(a) {{task}} do {{status}}",
-                "DueSoon": "{{task}} má termín zítra",
-                "DueToday": "{{task}} má termín dnes"
+                "TaskMoved": "{{actor}} přesunul(a) {{task}} do {{status}}"
             }
         },
         "taskWatchers": {
@@ -570,44 +350,6 @@
             "watching": "Sleduji",
             "watchHint": "Dostávat oznámení o komentářích, přesunech a termínech tohoto úkolu",
             "unwatchHint": "Přestat dostávat oznámení o tomto úkolu"
-        },
-        "taskRelations": {
-            "section": "Vazby",
-            "addButton": "+ Přidat vazbu",
-            "empty": "Žádné vazby.",
-            "added": "Vazba přidána.",
-            "removed": "Vazba odebrána.",
-            "removeConfirm": "Odebrat vazbu na „{{name}}\"?",
-            "addModal": {
-                "searchPlaceholder": "Hledat úkoly podle názvu…",
-                "noResults": "Žádné úkoly nenalezeny."
-            },
-            "type": {
-                "Related": "Souvisí",
-                "Duplicates": "Duplikuje",
-                "Parent": "Rodič",
-                "DependsOn": "Závisí na"
-            },
-            "label": {
-                "Related": "Souvisí",
-                "DuplicateOf": "Duplikát",
-                "DuplicatedBy": "Duplikováno",
-                "Parent": "Rodič",
-                "Subtask": "Podúkol",
-                "DependsOn": "Závisí na",
-                "RequiredFor": "Vyžadováno pro"
-            },
-            "groupHeader": {
-                "Parent": "Rodič",
-                "Subtasks": "Podúkoly",
-                "DependsOn": "Závisí na",
-                "RequiredFor": "Vyžadováno pro",
-                "Related": "Souvisí",
-                "Duplicates": "Duplikáty"
-            },
-            "errors": {
-                "generic": "Nepodařilo se aktualizovat vazbu."
-            }
         },
         "workspaces": {
             "title": "Pracovní prostory",
@@ -638,8 +380,6 @@
                 "general": "Obecné",
                 "members": "Členové",
                 "tags": "Štítky",
-                "priorities": "Priority",
-                "fields": "Vlastní pole",
                 "mcp": "MCP a agenti"
             },
             "general": {
@@ -755,56 +495,6 @@
                 "deleteConfirm": "Tato akce trvale smaže váš účet. Opravdu chcete pokračovat?"
             }
         },
-        "fields": {
-            "title": "Vlastní pole",
-            "description": "Definujte katalog vlastních polí pracovního prostoru. Každý projekt může přiřadit jednotlivá pole; jejich hodnoty se objeví v detailu úkolu.",
-            "addField": "Přidat pole",
-            "editField": "Upravit pole",
-            "name": "Název pole",
-            "namePlaceholder": "např. Závažnost",
-            "type": "Typ",
-            "types": {
-                "Text": "Text",
-                "Textarea": "Víceřádkový text",
-                "Select": "Výběr",
-                "Version": "Verze (semver)"
-            },
-            "required": "Povinné",
-            "defaultValue": "Výchozí hodnota",
-            "defaultValuePlaceholder": "Volitelně",
-            "options": "Možnosti",
-            "addOption": "+ Přidat možnost",
-            "removeOption": "Odebrat",
-            "optionPlaceholder": "Hodnota možnosti",
-            "fieldCreated": "Pole vytvořeno.",
-            "fieldUpdated": "Pole upraveno.",
-            "fieldDeleted": "Pole smazáno.",
-            "deleteConfirm": "Smazat pole „{{name}}\"? Bude odebráno ze všech projektů a všechny hodnoty v úkolech budou vymazány.",
-            "empty": "Zatím žádná vlastní pole.",
-            "noPermission": "Pouze Vlastník a Admin mohou spravovat pole pracovního prostoru.",
-            "invalidSemver": "„{{value}}\" není platná semver hodnota.",
-            "optionsRequired": "Pole typu Výběr a Verze potřebují alespoň jednu možnost."
-        },
-        "projectFields": {
-            "title": "Vlastní pole",
-            "description": "Přiřaďte pole z pracovního prostoru k tomuto projektu. Pořadí zde určuje pořadí v detailu úkolu.",
-            "attached": "Přiřazená pole",
-            "available": "Dostupná pole",
-            "attach": "Přiřadit",
-            "detach": "Odebrat",
-            "moveUp": "Posunout nahoru",
-            "moveDown": "Posunout dolů",
-            "save": "Uložit pole",
-            "saved": "Pole projektu aktualizována.",
-            "emptyAttached": "Zatím nepřiřazená žádná pole.",
-            "emptyAvailable": "Žádná další pole k přiřazení. Přidejte pole v nastavení pracovního prostoru.",
-            "requiredBadge": "Povinné",
-            "noPermission": "Pouze Vlastník a Admin mohou upravovat přiřazená pole."
-        },
-        "taskFields": {
-            "heading": "Vlastní pole",
-            "fieldRequired": "{{name}} je povinné."
-        },
         "tags": {
             "title": "Štítky",
             "description": "Štítky v rámci workspace, které lze připojit ke kterémukoli úkolu. Každý štítek má název a barvu.",
@@ -821,24 +511,6 @@
             "deleteConfirm": "Smazat štítek „{{name}}“? Odstraní se ze všech úkolů, které jej používají.",
             "noPermission": "Spravovat štítky mohou pouze vlastník a admin."
         },
-        "priorities": {
-            "title": "Priority",
-            "description": "Konfigurovatelné priority úkolů v rámci workspace. Pořadí měníte šipkami; výchozí priorita se použije při vytvoření nového úkolu bez explicitní volby.",
-            "addPriority": "Přidat prioritu",
-            "name": "Název priority",
-            "namePlaceholder": "např. Kritická",
-            "color": "Barva",
-            "default": "Výchozí pro nové úkoly",
-            "defaultMark": "výchozí",
-            "preview": "náhled",
-            "empty": "Zatím žádné priority.",
-            "priorityCreated": "Priorita vytvořena.",
-            "priorityUpdated": "Priorita upravena.",
-            "priorityDeleted": "Priorita smazána.",
-            "deleteConfirm": "Smazat prioritu „{{name}}“?",
-            "deleteBlocked": "Nelze smazat — {{count}} úkol(ů) ji stále používá. Nejprve je přiřaďte jinam.",
-            "deleteError": "Smazání priority selhalo."
-        },
         "taskTags": {
             "heading": "Štítky",
             "add": "Přidat štítek",
@@ -846,75 +518,6 @@
             "remove": "Odebrat",
             "filterTitle": "Filtrovat podle štítku",
             "noTagsAvailable": "Žádné další štítky k přidání."
-        },
-        "taskTemplates": {
-            "duplicate": "Duplikovat",
-            "duplicated": "Úkol zduplikován.",
-            "saveAsTemplate": "Uložit jako šablonu",
-            "namePrompt": "Název šablony:",
-            "saved": "Šablona uložena.",
-            "startFromTemplate": "Začít ze šablony…"
-        },
-        "subtasks": {
-            "heading": "Podúkoly",
-            "add": "Přidat",
-            "addPlaceholder": "Přidat podúkol…",
-            "toggle": "Přepnout podúkol \"{{name}}\"",
-            "removeConfirm": "Odebrat vazbu na podúkol \"{{name}}\"? Úkol samotný zůstane zachován.",
-            "earliestDue": "Nejbližší termín",
-            "highestPriority": "Nejvyšší priorita",
-            "progressTitle": "Hotovo {{done}} z {{total}} podúkolů"
-        },
-        "checklist": {
-            "heading": "Kontrolní seznam",
-            "add": "Přidat",
-            "addPlaceholder": "Přidat položku…",
-            "toggle": "Přepnout \"{{text}}\"",
-            "dragHandle": "Změnit pořadí",
-            "dueDate": "Termín",
-            "assignee": "Řešitel",
-            "progressTitle": "Hotovo {{done}} z {{total}} položek"
-        },
-        "recurrence": {
-            "heading": "Opakování",
-            "enable": "Nastavit opakování",
-            "remove": "Zrušit opakování",
-            "ended": "Série skončila",
-            "next": "Příště: {{date}}",
-            "cadence": "Opakuje se",
-            "interval": "Každé",
-            "weekday": "V den",
-            "dayOfMonth": "Den v měsíci",
-            "cron": "Cron výraz",
-            "ends": "Konec",
-            "endDate": "Datum konce",
-            "maxOccurrences": "Počet opakování",
-            "cadenceOption": {
-                "Daily": "Den",
-                "Weekly": "Týden",
-                "Monthly": "Měsíc",
-                "Cron": "Vlastní (cron)"
-            },
-            "endOption": {
-                "Never": "Nikdy",
-                "OnDate": "K datu",
-                "AfterCount": "Po N opakováních"
-            },
-            "cadenceLabel": {
-                "Daily": "Každý {{interval}}. den",
-                "Weekly": "Každý {{interval}}. týden",
-                "Monthly": "Každý {{interval}}. měsíc",
-                "Cron": "Vlastní rozvrh"
-            },
-            "weekdayName": {
-                "0": "Neděle",
-                "1": "Pondělí",
-                "2": "Úterý",
-                "3": "Středa",
-                "4": "Čtvrtek",
-                "5": "Pátek",
-                "6": "Sobota"
-            }
         },
         "onboarding": {
             "shell": {

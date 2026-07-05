@@ -811,13 +811,3 @@ hr {
 
     &:hover { color: $color-text; }
 }
-
-// ════════════════════════════════════════════════════════════
-// Monaco code-editor error decorations (global: Monaco injects its own DOM)
-// ════════════════════════════════════════════════════════════
-.code-editor-error-line { background: $color-danger-soft; }
-.code-editor-error-gutter {
-    background: $color-danger;
-    width: 3px !important;
-    margin-left: 3px;
-}

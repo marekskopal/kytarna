@@ -5,7 +5,7 @@ import {EventService} from '@app/services/event.service';
 import {WorkspaceService} from '@app/services/workspace.service';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
-type ChipKey = 'All' | 'Humans' | 'Agents' | 'Comments' | 'StatusChanges';
+type ChipKey = 'All' | 'Humans' | 'Agents' | 'StatusChanges';
 
 @Component({
     selector: 'uk-agents',
@@ -35,8 +35,6 @@ export class AgentsComponent {
                 return events.filter((e) => e.actorType === 'Agent');
             case 'StatusChanges':
                 return events.filter((e) => e.type === 'TaskMoved' || e.type === 'StatusUpdated');
-            case 'Comments':
-                return [];
             case 'All':
             default:
                 return events;
@@ -47,7 +45,6 @@ export class AgentsComponent {
         {key: 'All', label: 'app.agents.chips.all'},
         {key: 'Humans', label: 'app.agents.chips.humans'},
         {key: 'Agents', label: 'app.agents.chips.agents'},
-        {key: 'Comments', label: 'app.agents.chips.comments'},
         {key: 'StatusChanges', label: 'app.agents.chips.statusChanges'},
     ];
 

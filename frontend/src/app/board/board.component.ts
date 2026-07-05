@@ -1,21 +1,14 @@
 import {CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
-import {ChangeDetectionStrategy, Component, computed, DestroyRef, inject, OnInit, signal} from '@angular/core';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {ChangeDetectionStrategy, Component, computed, inject, OnInit, signal} from '@angular/core';
+import {ActivatedRoute, RouterLink} from '@angular/router';
 import {TaskCardComponent} from '@app/board/task-card.component';
 import {TaskDetailDrawerComponent} from '@app/board/task-detail-drawer.component';
 import {Board} from '@app/models/board';
-import {ProjectField} from '@app/models/field';
-import {Priority} from '@app/models/priority';
-import {RealtimeEvent, TASK_EVENT_TYPES} from '@app/models/realtime-event';
 import {Status} from '@app/models/status';
 import {Tag} from '@app/models/tag';
-import {Task, TaskListItem} from '@app/models/task';
+import {Task} from '@app/models/task';
 import {BoardService} from '@app/services/board.service';
 import {CurrentUserService} from '@app/services/current-user.service';
-import {FieldService} from '@app/services/field.service';
-import {PriorityService} from '@app/services/priority.service';
-import {RealtimeService} from '@app/services/realtime.service';
 import {TagService} from '@app/services/tag.service';
 import {TaskService} from '@app/services/task.service';
 import {WorkspaceService} from '@app/services/workspace.service';
@@ -36,26 +29,16 @@ interface Column {
 })
 export class BoardComponent implements OnInit {
     private readonly route = inject(ActivatedRoute);
-    private readonly router = inject(Router);
     private readonly boardService = inject(BoardService);
     private readonly taskService = inject(TaskService);
-    private readonly fieldService = inject(FieldService);
     private readonly tagService = inject(TagService);
-    private readonly priorityService = inject(PriorityService);
     private readonly workspaceService = inject(WorkspaceService);
     private readonly currentUserService = inject(CurrentUserService);
-    private readonly realtimeService = inject(RealtimeService);
-    private readonly destroyRef = inject(DestroyRef);
-
-    private refreshTimer: ReturnType<typeof setTimeout> | null = null;
 
     protected readonly loading = signal(true);
     protected readonly board = signal<Board | null>(null);
     protected readonly projectId = signal<number | null>(null);
-    protected readonly projectFields = signal<ProjectField[]>([]);
     protected readonly workspaceTags = signal<Tag[]>([]);
-    protected readonly workspacePriorities = signal<Priority[]>([]);
-    protected readonly members = this.workspaceService.currentMembers;
 
     protected readonly drawerOpen = signal(false);
     protected readonly editingTask = signal<Task | null>(null);
@@ -72,7 +55,7 @@ export class BoardComponent implements OnInit {
                 status,
                 tasks: board.tasks
                     .filter((t) => t.statusId === status.id)
-                    .sort((a, b) => a.priority.position - b.priority.position || a.position - b.position),
+                    .sort((a, b) => a.position - b.position),
             }));
     });
 
@@ -81,17 +64,8 @@ export class BoardComponent implements OnInit {
         this.projectId.set(id);
         await Promise.all([
             this.loadBoard(),
-            this.loadProjectFields(),
             this.loadWorkspaceTags(),
-            this.loadWorkspacePriorities(),
-            this.workspaceService.currentMembers().length === 0
-                ? this.workspaceService.loadCurrentMembers()
-                : Promise.resolve(),
         ]);
-
-        this.realtimeService.events$
-            .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe((event) => this.onRealtimeEvent(event));
 
         const openTaskParam = this.route.snapshot.queryParamMap.get('openTask');
         if (openTaskParam !== null) {
@@ -118,16 +92,6 @@ export class BoardComponent implements OnInit {
         }
     }
 
-    private async loadProjectFields(): Promise<void> {
-        const id = this.projectId();
-        if (id === null) return;
-        try {
-            this.projectFields.set(await this.fieldService.listProjectFields(id));
-        } catch {
-            this.projectFields.set([]);
-        }
-    }
-
     private async loadWorkspaceTags(): Promise<void> {
         let workspaceId = this.workspaceService.currentWorkspaceId();
         if (workspaceId === null) {
@@ -145,19 +109,6 @@ export class BoardComponent implements OnInit {
             this.workspaceTags.set(await this.tagService.loadWorkspaceTags(workspaceId));
         } catch {
             this.workspaceTags.set([]);
-        }
-    }
-
-    private async loadWorkspacePriorities(): Promise<void> {
-        const workspaceId = this.workspaceService.currentWorkspaceId();
-        if (workspaceId === null) {
-            this.workspacePriorities.set([]);
-            return;
-        }
-        try {
-            this.workspacePriorities.set(await this.priorityService.loadWorkspacePriorities(workspaceId));
-        } catch {
-            this.workspacePriorities.set([]);
         }
     }
 
@@ -214,47 +165,5 @@ export class BoardComponent implements OnInit {
     protected onTaskDeleted(_id: number): void {
         this.closeDrawer();
         void this.loadBoard();
-    }
-
-    private onRealtimeEvent(event: RealtimeEvent): void {
-        const projectId = this.projectId();
-        if (projectId === null) {
-            return;
-        }
-        if (event.type === 'RealtimeReconnected') {
-            this.scheduleBoardRefresh();
-            return;
-        }
-        if (TASK_EVENT_TYPES.has(event.type) && event.projectId === projectId) {
-            this.scheduleBoardRefresh();
-        }
-    }
-
-    private scheduleBoardRefresh(): void {
-        if (this.refreshTimer !== null) {
-            clearTimeout(this.refreshTimer);
-        }
-        this.refreshTimer = setTimeout(() => {
-            this.refreshTimer = null;
-            void this.loadBoard();
-        }, 150);
-    }
-
-    protected async onOpenRelatedTask(item: TaskListItem): Promise<void> {
-        const currentProjectId = this.projectId();
-        if (item.projectId !== currentProjectId) {
-            this.closeDrawer();
-            await this.router.navigate(['/projects', item.projectId, 'board'], {queryParams: {openTask: item.id}});
-            return;
-        }
-        try {
-            const task = await this.taskService.getTask(item.id);
-            this.drawerOpen.set(false);
-            this.editingTask.set(task);
-            this.defaultStatusId.set(null);
-            queueMicrotask(() => this.drawerOpen.set(true));
-        } catch {
-            // error interceptor
-        }
     }
 }

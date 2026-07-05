@@ -3,27 +3,6 @@
         <h1 class="page-title">{{ 'app.tasks.title' | translate }}</h1>
         <p class="page-subtitle">{{ 'app.tasks.subtitle' | translate: {count: count()} }}</p>
     </div>
-
-    <div class="view-switch" role="group" [attr.aria-label]="'app.tasks.view.label' | translate">
-        <button
-            type="button"
-            class="view-switch-btn"
-            [class.view-switch-btn--active]="view() === 'list'"
-            (click)="setView('list')"
-        >{{ 'app.tasks.view.list' | translate }}</button>
-        <button
-            type="button"
-            class="view-switch-btn"
-            [class.view-switch-btn--active]="view() === 'calendar'"
-            (click)="setView('calendar')"
-        >{{ 'app.tasks.view.calendar' | translate }}</button>
-        <button
-            type="button"
-            class="view-switch-btn"
-            [class.view-switch-btn--active]="view() === 'timeline'"
-            (click)="setView('timeline')"
-        >{{ 'app.tasks.view.timeline' | translate }}</button>
-    </div>
 </div>
 
 <div class="filters">
@@ -95,46 +74,10 @@
         </details>
     }
 
-    @if (members().length > 0) {
-        <details class="filter-statuses" #assigneeDetails>
-            <summary class="filter-summary">
-                <span>{{ 'app.tasks.filterAssignee' | translate }}</span>
-                @if (selectedAssigneeIds().length > 0) {
-                    <span class="filter-summary-count">{{ selectedAssigneeIds().length }}</span>
-                }
-            </summary>
-            <div class="filter-popover">
-                <div class="filter-group">
-                    @for (member of sortedMembers(); track member.userId) {
-                        <label class="filter-option">
-                            <input
-                                type="checkbox"
-                                [checked]="isAssigneeSelected(member.userId)"
-                                (change)="onAssigneeToggle(member.userId, $event)"
-                            />
-                            <span class="filter-option-name">{{ member.name }}</span>
-                        </label>
-                    }
-                </div>
-            </div>
-        </details>
-    }
-
     <label class="filter-toggle">
         <input type="checkbox" [checked]="onlyActive()" (change)="onOnlyActiveToggle($event)" />
         <span>{{ 'app.tasks.onlyActive' | translate }}</span>
     </label>
-
-    <select
-        class="select filter-subtasks"
-        [value]="subtaskFilter()"
-        (change)="onSubtaskFilterChange($event)"
-        [attr.aria-label]="'app.tasks.subtaskFilter.label' | translate"
-    >
-        <option value="all">{{ 'app.tasks.subtaskFilter.all' | translate }}</option>
-        <option value="hideSubtasks">{{ 'app.tasks.subtaskFilter.hideSubtasks' | translate }}</option>
-        <option value="onlyParents">{{ 'app.tasks.subtaskFilter.onlyParents' | translate }}</option>
-    </select>
 
     <select
         class="select filter-archived"
@@ -225,14 +168,13 @@
         </div>
     </details>
 
-    @if (search() || selectedStatusIds().length > 0 || selectedTagIds().length > 0 || selectedAssigneeIds().length > 0 || onlyActive() || subtaskFilter() !== 'all' || archived() !== 'active') {
+    @if (search() || selectedStatusIds().length > 0 || selectedTagIds().length > 0 || onlyActive() || archived() !== 'active') {
         <button type="button" class="btn-link filter-clear" (click)="clearFilters()">
             {{ 'app.tasks.clearFilters' | translate }}
         </button>
     }
 </div>
 
-@if (view() === 'list') {
 @if (selectionCount() > 0) {
     <section class="bulk-toolbar" role="toolbar" [attr.aria-busy]="bulkBusy() ? 'true' : null">
         <span class="bulk-toolbar-count">
@@ -317,59 +259,6 @@
             </details>
         }
 
-        @if (members().length > 0) {
-            <details class="bulk-action" #bulkAssignDetails>
-                <summary class="bulk-action-summary" [attr.aria-disabled]="bulkBusy() ? 'true' : null">
-                    {{ 'app.tasks.bulk.assign' | translate }}
-                </summary>
-                <div class="bulk-popover">
-                    <div class="filter-group">
-                        <button
-                            type="button"
-                            class="bulk-option"
-                            [disabled]="bulkBusy()"
-                            (click)="onBulkAssign(null)"
-                        >
-                            <span class="filter-option-name">{{ 'app.tasks.bulk.unassign' | translate }}</span>
-                        </button>
-                        @for (member of sortedMembers(); track member.userId) {
-                            <button
-                                type="button"
-                                class="bulk-option"
-                                [disabled]="bulkBusy()"
-                                (click)="onBulkAssign(member.userId)"
-                            >
-                                <span class="filter-option-name">{{ member.name }}</span>
-                            </button>
-                        }
-                    </div>
-                </div>
-            </details>
-        }
-
-        @if (priorities().length > 0) {
-            <details class="bulk-action" #bulkPriorityDetails>
-                <summary class="bulk-action-summary" [attr.aria-disabled]="bulkBusy() ? 'true' : null">
-                    {{ 'app.tasks.bulk.priority' | translate }}
-                </summary>
-                <div class="bulk-popover">
-                    <div class="filter-group">
-                        @for (priority of priorities(); track priority.id) {
-                            <button
-                                type="button"
-                                class="bulk-option"
-                                [disabled]="bulkBusy()"
-                                (click)="onBulkPriority(priority.id)"
-                            >
-                                <span class="filter-option-dot" [style.background]="priority.color"></span>
-                                <span class="filter-option-name">{{ priority.name }}</span>
-                            </button>
-                        }
-                    </div>
-                </div>
-            </details>
-        }
-
         <button
             type="button"
             class="bulk-delete"
@@ -442,15 +331,14 @@
                     {{ 'app.tasks.col.status' | translate }}
                     <span class="sort-arrow">{{ sortArrow('status_id') }}</span>
                 </th>
-                <th class="th-assignee">{{ 'app.tasks.col.assignee' | translate }}</th>
                 <th class="th-tags">{{ 'app.taskTags.heading' | translate }}</th>
             </tr>
         </thead>
         <tbody>
             @if (loading() && tasks().length === 0) {
-                <tr><td colspan="6" class="text-muted">{{ 'app.actions.loading' | translate }}</td></tr>
+                <tr><td colspan="5" class="text-muted">{{ 'app.actions.loading' | translate }}</td></tr>
             } @else if (tasks().length === 0) {
-                <tr><td colspan="6" class="text-muted">{{ 'app.tasks.empty' | translate }}</td></tr>
+                <tr><td colspan="5" class="text-muted">{{ 'app.tasks.empty' | translate }}</td></tr>
             } @else {
                 @for (task of tasks(); track task.id) {
                     <tr
@@ -493,31 +381,6 @@
                                     </svg>
                                 }
                                 {{ task.name }}
-                                @if ((task.subtasksTotal ?? 0) > 0) {
-                                    <span
-                                        class="subtask-progress-chip"
-                                        [class.subtask-progress-chip--complete]="task.subtasksDone === task.subtasksTotal"
-                                        [attr.title]="'app.subtasks.progressTitle' | translate: {done: task.subtasksDone, total: task.subtasksTotal}"
-                                    >
-                                        <svg width="10" height="10" viewBox="0 0 16 16" aria-hidden="true">
-                                            <path d="M3 8.5l3.5 3.5L13 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>
-                                        {{ task.subtasksDone }}/{{ task.subtasksTotal }}
-                                    </span>
-                                }
-                                @if ((task.checklistTotal ?? 0) > 0) {
-                                    <span
-                                        class="subtask-progress-chip"
-                                        [class.subtask-progress-chip--complete]="task.checklistDone === task.checklistTotal"
-                                        [attr.title]="'app.checklist.progressTitle' | translate: {done: task.checklistDone, total: task.checklistTotal}"
-                                    >
-                                        <svg width="10" height="10" viewBox="0 0 16 16" aria-hidden="true">
-                                            <rect x="2.5" y="2.5" width="11" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="1.3" />
-                                            <path d="M5 8l2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>
-                                        {{ task.checklistDone }}/{{ task.checklistTotal }}
-                                    </span>
-                                }
                                 @if (task.archivedAt) {
                                     <span class="archived-badge">{{ 'app.tasks.archivedBadge' | translate }}</span>
                                 }
@@ -529,16 +392,6 @@
                                 <span class="status-pill-dot" [style.background]="task.status.color"></span>
                                 {{ task.status.name }}
                             </span>
-                        </td>
-                        <td class="td-assignee">
-                            @if (task.assigneeId !== null && memberName(task.assigneeId)) {
-                                <span class="assignee-cell">
-                                    <span class="assignee-cell-avatar" aria-hidden="true">{{ memberInitials(memberName(task.assigneeId)) }}</span>
-                                    <span>{{ memberName(task.assigneeId) }}</span>
-                                </span>
-                            } @else {
-                                <span class="text-muted">—</span>
-                            }
                         </td>
                         <td class="td-tags">
                             <span class="tag-chip-row">
@@ -565,37 +418,15 @@
     (pageChange)="onPageChange($event)"
     (pageSizeChange)="onPageSizeChange($event)"
 />
-}
-
-@if (view() === 'calendar') {
-    <uk-task-calendar
-        [filters]="calendarFilters()"
-        [refreshKey]="calendarRefreshKey()"
-        (openTask)="onCalendarOpenTask($event)"
-        (changed)="onCalendarChanged()"
-    />
-}
-
-@if (view() === 'timeline') {
-    <uk-task-timeline
-        [filters]="calendarFilters()"
-        [refreshKey]="calendarRefreshKey()"
-        (openTask)="onCalendarOpenTask($event)"
-        (changed)="onCalendarChanged()"
-    />
-}
 
 @if (drawer(); as ctx) {
     <uk-task-detail-drawer
         [task]="ctx.task"
         [statuses]="ctx.statuses"
         [projectId]="ctx.projectId"
-        [projectFields]="ctx.projectFields"
         [workspaceTags]="workspaceTags()"
-        [workspacePriorities]="priorities()"
         (saved)="onTaskSaved()"
         (deleted)="onTaskDeleted()"
         (cancelled)="closeDrawer()"
-        (openTask)="onOpenRelatedTask($event)"
     />
 }

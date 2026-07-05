@@ -9,7 +9,7 @@ import {NotificationService} from './notification.service';
 function makeNotification(overrides: Partial<Notification> = {}): Notification {
     return {
         id: 1,
-        type: 'TaskAssigned',
+        type: 'TaskMoved',
         taskId: 42,
         projectId: 7,
         actorId: 9,
