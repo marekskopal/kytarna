@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Kytario\Service\Task;
 
 use JsonException;
-use RuntimeException;
 use Kytario\Dto\ArrayFactoryInterface;
 use Kytario\Jobs\Message\ReceivedMessageInterface;
+use RuntimeException;
 use const JSON_THROW_ON_ERROR;
 
 final readonly class TaskService implements TaskServiceInterface

@@ -6,12 +6,12 @@ namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
 use Iterator;
-use RuntimeException;
 use Kytario\Model\Entity\SavedView;
 use Kytario\Model\Entity\User;
 use Kytario\Model\Entity\Workspace;
 use Kytario\Model\Repository\SavedViewRepository;
 use Kytario\Model\Repository\UserRepository;
+use RuntimeException;
 use const JSON_THROW_ON_ERROR;
 
 final readonly class SavedViewProvider implements SavedViewProviderInterface

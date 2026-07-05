@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace Kytario\Tests\Controller;
 
 use DateTimeImmutable;
-use Laminas\Diactoros\ServerRequest;
-use Laminas\Diactoros\Stream;
-use PHPUnit\Framework\Attributes\CoversClass;
 use Kytario\Controller\AuthenticationController;
 use Kytario\Model\Entity\User;
 use Kytario\Model\Repository\WorkspaceRepository;
@@ -15,6 +12,9 @@ use Kytario\Service\Provider\PasswordResetProviderInterface;
 use Kytario\Tests\Support\AppHarness;
 use Kytario\Tests\Support\Fixture;
 use Kytario\Tests\Support\IntegrationTestCase;
+use Laminas\Diactoros\ServerRequest;
+use Laminas\Diactoros\Stream;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(AuthenticationController::class)]
 final class AuthenticationControllerTest extends IntegrationTestCase
@@ -68,14 +68,11 @@ final class AuthenticationControllerTest extends IntegrationTestCase
 		self::assertSame(422, $response->getStatusCode());
 	}
 
-	public function testLogoutClearsMercureCookie(): void
+	public function testLogoutIsOpenAndReturnsOk(): void
 	{
 		$response = $this->request('POST', '/api/authentication/logout', []);
 
 		self::assertSame(200, $response->getStatusCode());
-		$setCookie = $response->getHeaderLine('Set-Cookie');
-		self::assertStringContainsString('mercureAuthorization=;', $setCookie);
-		self::assertStringContainsString('Max-Age=0', $setCookie);
 	}
 
 	public function testMalformedJsonBodyReturns400NotServerError(): void

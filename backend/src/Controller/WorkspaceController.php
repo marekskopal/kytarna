@@ -4,15 +4,6 @@ declare(strict_types=1);
 
 namespace Kytario\Controller;
 
-use Laminas\Diactoros\Response\JsonResponse;
-use MarekSkopal\Router\Attribute\RouteDelete;
-use MarekSkopal\Router\Attribute\RouteGet;
-use MarekSkopal\Router\Attribute\RoutePatch;
-use MarekSkopal\Router\Attribute\RoutePost;
-use MarekSkopal\Router\Attribute\RoutePut;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use RuntimeException;
 use Kytario\Dto\WorkspaceCreateDto;
 use Kytario\Dto\WorkspaceDto;
 use Kytario\Dto\WorkspaceMemberDto;
@@ -30,8 +21,16 @@ use Kytario\Route\Routes;
 use Kytario\Service\Auth\PermissionCheckerInterface;
 use Kytario\Service\Provider\WorkspaceMcpClientProviderInterface;
 use Kytario\Service\Provider\WorkspaceProviderInterface;
-use Kytario\Service\Realtime\MercureCookieIssuerInterface;
 use Kytario\Service\Request\RequestServiceInterface;
+use Laminas\Diactoros\Response\JsonResponse;
+use MarekSkopal\Router\Attribute\RouteDelete;
+use MarekSkopal\Router\Attribute\RouteGet;
+use MarekSkopal\Router\Attribute\RoutePatch;
+use MarekSkopal\Router\Attribute\RoutePost;
+use MarekSkopal\Router\Attribute\RoutePut;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use RuntimeException;
 
 final readonly class WorkspaceController
 {
@@ -40,7 +39,6 @@ final readonly class WorkspaceController
 		private WorkspaceMcpClientProviderInterface $mcpClientProvider,
 		private PermissionCheckerInterface $permissionChecker,
 		private RequestServiceInterface $requestService,
-		private MercureCookieIssuerInterface $mercureCookieIssuer,
 	) {
 	}
 
@@ -129,22 +127,7 @@ final readonly class WorkspaceController
 
 		$this->workspaceProvider->switchCurrentWorkspace($user, $workspace);
 
-		$response = new JsonResponse(WorkspaceDto::fromEntity($workspace));
-
-		return $response->withAddedHeader(
-			'Set-Cookie',
-			$this->mercureCookieIssuer->issue($user, $this->isSecureRequest($request)),
-		);
-	}
-
-	private function isSecureRequest(ServerRequestInterface $request): bool
-	{
-		$forwardedProto = $request->getHeader('X-Forwarded-Proto')[0] ?? null;
-		if ($forwardedProto !== null) {
-			return strtolower($forwardedProto) === 'https';
-		}
-
-		return strtolower($request->getUri()->getScheme()) === 'https';
+		return new JsonResponse(WorkspaceDto::fromEntity($workspace));
 	}
 
 	#[RouteGet(Routes::WorkspaceMembers->value)]

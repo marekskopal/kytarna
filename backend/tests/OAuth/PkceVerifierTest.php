@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Kytario\Tests\OAuth;
 
+use Kytario\OAuth\PkceVerifier;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Kytario\OAuth\PkceVerifier;
 
 #[CoversClass(PkceVerifier::class)]
 final class PkceVerifierTest extends TestCase

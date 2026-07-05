@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Kytario\Tests\Controller;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use Kytario\Controller\ProjectController;
 use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
 use Kytario\Model\Repository\StatusRepository;
 use Kytario\Model\Repository\UserRepository;
 use Kytario\Tests\Support\Fixture;
 use Kytario\Tests\Support\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(ProjectController::class)]
 final class ProjectControllerTest extends IntegrationTestCase

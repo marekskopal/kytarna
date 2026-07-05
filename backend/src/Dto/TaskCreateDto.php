@@ -11,32 +11,23 @@ use DateTimeImmutable;
  *     statusId: int,
  *     name: string,
  *     description?: ?string,
- *     priorityId?: ?int,
- *     priority?: ?string,
  *     dueDate?: ?string,
  *     startDate?: ?string,
  *     assigneeId?: ?int,
- *     fieldValues?: ?list<array{fieldId: int, value: ?string}>,
  *     tagIds?: ?list<int>,
  * }>
  */
 final readonly class TaskCreateDto implements ArrayFactoryInterface
 {
-	/**
-	 * @param array<int, ?string>|null $fieldValues
-	 * @param list<int>|null $tagIds
-	 */
+	/** @param list<int>|null $tagIds */
 	public function __construct(
 		public int $statusId,
 		public string $name,
 		public ?string $description,
-		public ?int $priorityId,
-		public ?string $priorityName,
 		public ?DateTimeImmutable $dueDate,
 		public ?DateTimeImmutable $startDate,
 		public ?int $assigneeId,
 		public bool $assigneeIdProvided,
-		public ?array $fieldValues,
 		public ?array $tagIds,
 	) {
 	}
@@ -49,38 +40,16 @@ final readonly class TaskCreateDto implements ArrayFactoryInterface
 		$assigneeIdProvided = array_key_exists('assigneeId', $data);
 		$assigneeId = $assigneeIdProvided ? $data['assigneeId'] : null;
 
-		$priorityId = $data['priorityId'] ?? null;
-		$priorityName = isset($data['priority']) && $data['priority'] !== '' ? $data['priority'] : null;
-
 		return new self(
 			statusId: $data['statusId'],
 			name: $data['name'],
 			description: $data['description'] ?? null,
-			priorityId: $priorityId,
-			priorityName: $priorityName,
 			dueDate: $dueDate,
 			startDate: $startDate,
 			assigneeId: $assigneeId,
 			assigneeIdProvided: $assigneeIdProvided,
-			fieldValues: self::parseFieldValues($data['fieldValues'] ?? null),
 			tagIds: self::parseTagIds($data['tagIds'] ?? null),
 		);
-	}
-
-	/**
-	 * @param list<array{fieldId: int, value: ?string}>|null $raw
-	 * @return array<int, ?string>|null
-	 */
-	private static function parseFieldValues(?array $raw): ?array
-	{
-		if ($raw === null) {
-			return null;
-		}
-		$result = [];
-		foreach ($raw as $entry) {
-			$result[$entry['fieldId']] = $entry['value'];
-		}
-		return $result;
 	}
 
 	/**

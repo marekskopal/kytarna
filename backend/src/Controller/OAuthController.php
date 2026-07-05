@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Kytario\Controller;
 
-use Laminas\Diactoros\Response\JsonResponse;
-use MarekSkopal\Router\Attribute\RouteGet;
-use MarekSkopal\Router\Attribute\RoutePost;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use RuntimeException;
 use Kytario\OAuth\AuthorizationServiceInterface;
 use Kytario\OAuth\ClientServiceInterface;
 use Kytario\OAuth\DiscoveryUrl;
 use Kytario\Response\ErrorResponse;
 use Kytario\Route\Routes;
 use Kytario\Service\Request\RequestServiceInterface;
+use Laminas\Diactoros\Response\JsonResponse;
+use MarekSkopal\Router\Attribute\RouteGet;
+use MarekSkopal\Router\Attribute\RoutePost;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use RuntimeException;
 use const JSON_THROW_ON_ERROR;
 
 final readonly class OAuthController

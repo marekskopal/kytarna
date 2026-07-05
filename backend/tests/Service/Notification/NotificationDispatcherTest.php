@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Kytario\Tests\Service\Notification;
 
 use DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversClass;
 use Kytario\Model\Entity\Enum\ActorTypeEnum;
 use Kytario\Model\Entity\Enum\EventTypeEnum;
 use Kytario\Model\Entity\Enum\NotificationTypeEnum;
@@ -25,6 +24,7 @@ use Kytario\Service\Provider\NotificationProviderInterface;
 use Kytario\Service\Provider\TaskWatcherProviderInterface;
 use Kytario\Tests\Support\Fixture;
 use Kytario\Tests\Support\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use const JSON_THROW_ON_ERROR;
 
 #[CoversClass(NotificationDispatcher::class)]
@@ -43,49 +43,6 @@ final class NotificationDispatcherTest extends IntegrationTestCase
 		self::assertTrue($this->watcherProvider()->isWatching($task, $bob));
 		// The actor (owner) is never notified about their own action.
 		self::assertCount(0, $this->notificationsFor($owner));
-	}
-
-	public function testMentionTakesPrecedenceOverCommentFanOut(): void
-	{
-		$owner = Fixture::createUser(name: 'Owner');
-		$workspace = Fixture::createWorkspace($owner);
-		$bob = $this->createMember($workspace, 'Bob');
-		$carol = $this->createMember($workspace, 'Carol');
-		$project = Fixture::createProject($owner, $workspace);
-
-		// Bob is assignee (so he watches); Carol comments and mentions Bob.
-		$task = $this->createTask($owner, $project->id, 'Discussed task', $bob->id)->id;
-
-		$this->postComment($carol, $task, 'Hey @[Bob](user:' . $bob->id . ') take a look');
-
-		// Bob gets the assignment ping + a single mention ping (not also a generic comment ping).
-		$bobTypes = $this->typesFor($bob);
-		self::assertContains(NotificationTypeEnum::TaskAssigned->value, $bobTypes);
-		self::assertContains(NotificationTypeEnum::TaskMention->value, $bobTypes);
-		self::assertNotContains(NotificationTypeEnum::TaskComment->value, $bobTypes);
-
-		// Owner is neither assignee, watcher, author nor mentioned → nothing.
-		self::assertCount(0, $this->notificationsFor($owner));
-		// Carol authored the comment → not notified.
-		self::assertCount(0, $this->notificationsFor($carol));
-	}
-
-	public function testCommentNotifiesWatchersWithoutMention(): void
-	{
-		$owner = Fixture::createUser(name: 'Owner');
-		$workspace = Fixture::createWorkspace($owner);
-		$bob = $this->createMember($workspace, 'Bob');
-		$carol = $this->createMember($workspace, 'Carol');
-		$project = Fixture::createProject($owner, $workspace);
-
-		$task = $this->createTask($owner, $project->id, 'Watched task', $bob->id)->id;
-
-		// Carol comments without mentioning anyone — Bob (assignee/watcher) gets a comment ping.
-		$this->postComment($carol, $task, 'Plain comment, no mentions');
-
-		$bobTypes = $this->typesFor($bob);
-		self::assertContains(NotificationTypeEnum::TaskComment->value, $bobTypes);
-		self::assertCount(0, $this->notificationsFor($carol));
 	}
 
 	public function testHumanMoveNotifiesWatchersButAgentMoveIsSuppressed(): void
@@ -178,15 +135,9 @@ final class NotificationDispatcherTest extends IntegrationTestCase
 		return $user;
 	}
 
-	private function postComment(User $author, int $taskId, string $body): void
-	{
-		$response = $this->request('POST', '/api/tasks/' . $taskId . '/comments', body: ['body' => $body], authenticatedAs: $author);
-		self::assertSame(201, $response->getStatusCode());
-	}
-
 	private function createTask(User $author, int $projectId, string $name, ?int $assigneeId = null): Task
 	{
-		$body = ['statusId' => $this->firstStatusId($projectId), 'name' => $name, 'description' => null, 'priority' => 'Medium'];
+		$body = ['statusId' => $this->firstStatusId($projectId), 'name' => $name, 'description' => null];
 		if ($assigneeId !== null) {
 			$body['assigneeId'] = $assigneeId;
 		}

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Kytario\Mcp\Tool;
 
-use Mcp\Capability\Attribute\McpTool;
-use RuntimeException;
 use Kytario\Mcp\Dto\McpProjectDto;
 use Kytario\Mcp\Dto\McpProjectListDto;
 use Kytario\Mcp\McpUserContextInterface;
 use Kytario\Model\Entity\Workspace;
 use Kytario\Service\Provider\ProjectProviderInterface;
 use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Mcp\Capability\Attribute\McpTool;
+use RuntimeException;
 
 final readonly class ProjectTools
 {

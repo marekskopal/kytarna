@@ -4,12 +4,6 @@ declare(strict_types=1);
 
 namespace Kytario\Controller;
 
-use Laminas\Diactoros\Response\JsonResponse;
-use MarekSkopal\Router\Attribute\RouteDelete;
-use MarekSkopal\Router\Attribute\RoutePost;
-use MarekSkopal\Router\Attribute\RoutePut;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Kytario\Dto\StatusCreateDto;
 use Kytario\Dto\StatusDto;
 use Kytario\Dto\StatusMoveDto;
@@ -26,6 +20,12 @@ use Kytario\Service\Auth\PermissionCheckerInterface;
 use Kytario\Service\Provider\StatusProviderInterface;
 use Kytario\Service\Provider\WorkflowProviderInterface;
 use Kytario\Service\Request\RequestServiceInterface;
+use Laminas\Diactoros\Response\JsonResponse;
+use MarekSkopal\Router\Attribute\RouteDelete;
+use MarekSkopal\Router\Attribute\RoutePost;
+use MarekSkopal\Router\Attribute\RoutePut;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 final readonly class StatusController
 {

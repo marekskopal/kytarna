@@ -7,14 +7,14 @@ namespace Kytario\Model\Repository;
 use DateTimeImmutable;
 use EmptyIterator;
 use Iterator;
-use MarekSkopal\ORM\Query\Expression\RawExpression;
-use MarekSkopal\ORM\Query\Select;
-use MarekSkopal\ORM\Repository\AbstractRepository;
 use Kytario\Model\Entity\Enum\StatusTypeEnum;
 use Kytario\Model\Entity\Task;
 use Kytario\Model\Repository\Enum\ArchivedFilterEnum;
 use Kytario\Model\Repository\Enum\OrderDirectionEnum;
 use Kytario\Model\Repository\Enum\TaskOrderByEnum;
+use MarekSkopal\ORM\Query\Expression\RawExpression;
+use MarekSkopal\ORM\Query\Select;
+use MarekSkopal\ORM\Repository\AbstractRepository;
 
 /** @extends AbstractRepository<Task> */
 final class TaskRepository extends AbstractRepository
@@ -28,13 +28,6 @@ final class TaskRepository extends AbstractRepository
 	private static function escapeLikePattern(string $value): string
 	{
 		return str_replace(['\\', '%', '_'], ['\\\\', '\\%', '\\_'], $value);
-	}
-
-	public function countByPriority(int $priorityId): int
-	{
-		return $this->select()
-			->where(['priority_id' => $priorityId])
-			->count();
 	}
 
 	public function findByProjectAndSequence(int $projectId, int $sequenceNumber): ?Task

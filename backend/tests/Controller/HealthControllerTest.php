@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Kytario\Tests\Controller;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use Kytario\Controller\HealthController;
 use Kytario\Tests\Support\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(HealthController::class)]
 final class HealthControllerTest extends IntegrationTestCase

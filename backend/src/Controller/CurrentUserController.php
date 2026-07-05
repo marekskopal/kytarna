@@ -5,14 +5,6 @@ declare(strict_types=1);
 namespace Kytario\Controller;
 
 use DateTimeImmutable;
-use Laminas\Diactoros\Response\JsonResponse;
-use MarekSkopal\Router\Attribute\RouteDelete;
-use MarekSkopal\Router\Attribute\RouteGet;
-use MarekSkopal\Router\Attribute\RoutePatch;
-use MarekSkopal\Router\Attribute\RoutePost;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use RuntimeException;
 use Kytario\Dto\ChangePasswordDto;
 use Kytario\Dto\CurrentUserUpdateDto;
 use Kytario\Dto\UserDto;
@@ -32,6 +24,14 @@ use Kytario\Service\Provider\SavedViewProviderInterface;
 use Kytario\Service\Provider\UserProviderInterface;
 use Kytario\Service\Request\RequestServiceInterface;
 use Kytario\Validator\PasswordValidator;
+use Laminas\Diactoros\Response\JsonResponse;
+use MarekSkopal\Router\Attribute\RouteDelete;
+use MarekSkopal\Router\Attribute\RouteGet;
+use MarekSkopal\Router\Attribute\RoutePatch;
+use MarekSkopal\Router\Attribute\RoutePost;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use RuntimeException;
 
 final readonly class CurrentUserController
 {

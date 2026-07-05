@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Kytario\Tests\Service\Actor;
 
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
 use Kytario\Model\Entity\Enum\ActorTypeEnum;
 use Kytario\Service\Actor\ActorContext;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
 
 #[CoversClass(ActorContext::class)]
 final class ActorContextTest extends TestCase

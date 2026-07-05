@@ -4,12 +4,6 @@ declare(strict_types=1);
 
 namespace Kytario\Controller;
 
-use Laminas\Diactoros\Response\JsonResponse;
-use MarekSkopal\Router\Attribute\RouteDelete;
-use MarekSkopal\Router\Attribute\RouteGet;
-use MarekSkopal\Router\Attribute\RoutePost;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Kytario\Dto\NotificationDto;
 use Kytario\Dto\NotificationListDto;
 use Kytario\Model\Entity\Notification;
@@ -18,6 +12,12 @@ use Kytario\Response\OkResponse;
 use Kytario\Route\Routes;
 use Kytario\Service\Provider\NotificationProviderInterface;
 use Kytario\Service\Request\RequestServiceInterface;
+use Laminas\Diactoros\Response\JsonResponse;
+use MarekSkopal\Router\Attribute\RouteDelete;
+use MarekSkopal\Router\Attribute\RouteGet;
+use MarekSkopal\Router\Attribute\RoutePost;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 final readonly class NotificationController
 {

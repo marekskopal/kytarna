@@ -6,8 +6,8 @@ namespace Kytario\Model\Repository;
 
 use ArrayIterator;
 use Iterator;
-use MarekSkopal\ORM\Repository\AbstractRepository;
 use Kytario\Model\Entity\OAuthAuthorization;
+use MarekSkopal\ORM\Repository\AbstractRepository;
 
 /** @extends AbstractRepository<OAuthAuthorization> */
 final class OAuthAuthorizationRepository extends AbstractRepository

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Kytario\Tests\Service\Translator;
 
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
 use Kytario\Model\Entity\Enum\LocaleEnum;
 use Kytario\Service\Translator\TranslatorService;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
 
 #[CoversClass(TranslatorService::class)]
 final class TranslatorServiceTest extends TestCase

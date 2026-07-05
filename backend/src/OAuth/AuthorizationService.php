@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Kytario\OAuth;
 
 use DateTimeImmutable;
-use MarekSkopal\ORM\Database\DatabaseInterface;
-use RuntimeException;
 use Kytario\Model\Entity\OAuthAuthorization;
 use Kytario\Model\Entity\User;
 use Kytario\Model\Repository\OAuthAuthorizationRepository;
 use Kytario\Service\Provider\UserProviderInterface;
+use MarekSkopal\ORM\Database\DatabaseInterface;
+use RuntimeException;
 
 final readonly class AuthorizationService implements AuthorizationServiceInterface
 {

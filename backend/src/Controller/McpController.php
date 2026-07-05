@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace Kytario\Controller;
 
+use Kytario\Mcp\McpUserContextInterface;
+use Kytario\Mcp\Server\KytarioServer;
+use Kytario\Mcp\Session\RedisSessionStore;
+use Kytario\OAuth\AuthorizationServiceInterface;
+use Kytario\OAuth\ClientServiceInterface;
+use Kytario\Response\ErrorResponse;
+use Kytario\Route\Routes;
+use Kytario\Service\Actor\ActorContextInterface;
 use MarekSkopal\Router\Attribute\RouteDelete;
 use MarekSkopal\Router\Attribute\RouteGet;
 use MarekSkopal\Router\Attribute\RoutePost;
@@ -15,14 +23,6 @@ use Predis\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
-use Kytario\Mcp\McpUserContextInterface;
-use Kytario\Mcp\Server\KytarioServer;
-use Kytario\Mcp\Session\RedisSessionStore;
-use Kytario\OAuth\AuthorizationServiceInterface;
-use Kytario\OAuth\ClientServiceInterface;
-use Kytario\Response\ErrorResponse;
-use Kytario\Route\Routes;
-use Kytario\Service\Actor\ActorContextInterface;
 
 final readonly class McpController
 {

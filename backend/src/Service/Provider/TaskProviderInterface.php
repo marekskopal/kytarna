@@ -6,7 +6,6 @@ namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
 use Iterator;
-use Kytario\Model\Entity\Priority;
 use Kytario\Model\Entity\Project;
 use Kytario\Model\Entity\Status;
 use Kytario\Model\Entity\Task;
@@ -14,7 +13,6 @@ use Kytario\Model\Entity\User;
 use Kytario\Model\Entity\Workspace;
 use Kytario\Model\Repository\Enum\ArchivedFilterEnum;
 use Kytario\Model\Repository\Enum\OrderDirectionEnum;
-use Kytario\Model\Repository\Enum\SubtaskFilterEnum;
 use Kytario\Model\Repository\Enum\TaskOrderByEnum;
 
 interface TaskProviderInterface
@@ -41,7 +39,6 @@ interface TaskProviderInterface
 		bool $onlyActive,
 		?array $tagIds = null,
 		?array $assigneeIds = null,
-		SubtaskFilterEnum $subtaskFilter = SubtaskFilterEnum::All,
 		ArchivedFilterEnum $archived = ArchivedFilterEnum::Active,
 		?DateTimeImmutable $dueFrom = null,
 		?DateTimeImmutable $dueTo = null,
@@ -59,46 +56,33 @@ interface TaskProviderInterface
 		bool $onlyActive,
 		?array $tagIds = null,
 		?array $assigneeIds = null,
-		SubtaskFilterEnum $subtaskFilter = SubtaskFilterEnum::All,
 		ArchivedFilterEnum $archived = ArchivedFilterEnum::Active,
 		?DateTimeImmutable $dueFrom = null,
 		?DateTimeImmutable $dueTo = null,
 	): int;
 
-	/**
-	 * @param array<int, ?string>|null $fieldValues
-	 * @param list<int>|null $tagIds
-	 */
+	/** @param list<int>|null $tagIds */
 	public function createTask(
 		User $author,
 		Project $project,
 		Status $status,
 		string $name,
 		?string $description,
-		Priority $priority,
 		?DateTimeImmutable $dueDate,
 		?User $assignee = null,
-		?array $fieldValues = null,
 		?array $tagIds = null,
 		?DateTimeImmutable $startDate = null,
 	): Task;
 
-	public function duplicateTask(User $author, Task $task, ?string $name = null): Task;
-
-	/**
-	 * @param array<int, ?string>|null $fieldValues
-	 * @param list<int>|null $tagIds
-	 */
+	/** @param list<int>|null $tagIds */
 	public function updateTask(
 		User $author,
 		Task $task,
 		string $name,
 		?string $description,
-		Priority $priority,
 		?DateTimeImmutable $dueDate,
 		Status $status,
 		?User $assignee,
-		?array $fieldValues = null,
 		?array $tagIds = null,
 		bool $recordEvent = true,
 		?DateTimeImmutable $startDate = null,

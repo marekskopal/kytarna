@@ -31,13 +31,8 @@ enum Routes: string
 	case WorkspaceMember = '/api/workspaces/{workspaceId:number}/members/{userId:number}';
 	case WorkspaceTransferOwnership = '/api/workspaces/{workspaceId:number}/transfer-ownership';
 	case WorkspaceInvitations = '/api/workspaces/{workspaceId:number}/invitations';
-	case WorkspaceFields = '/api/workspaces/{workspaceId:number}/fields';
-	case WorkspaceField = '/api/workspaces/{workspaceId:number}/fields/{fieldId:number}';
 	case WorkspaceTags = '/api/workspaces/{workspaceId:number}/tags';
 	case WorkspaceTag = '/api/workspaces/{workspaceId:number}/tags/{tagId:number}';
-	case WorkspacePriorities = '/api/workspaces/{workspaceId:number}/priorities';
-	case WorkspacePriority = '/api/workspaces/{workspaceId:number}/priorities/{priorityId:number}';
-	case PriorityMove = '/api/workspaces/{workspaceId:number}/priorities/{priorityId:number}/move';
 	case WorkspaceMcpClients = '/api/workspaces/{workspaceId:number}/mcp-clients';
 	case WorkspaceMcpClientRevoke = '/api/workspaces/{workspaceId:number}/mcp-clients/{clientId:[a-f0-9]+}/revoke';
 	case WorkspaceEvents = '/api/workspaces/{workspaceId:number}/events';
@@ -52,7 +47,6 @@ enum Routes: string
 	case ProjectEvents = '/api/projects/{projectId:number}/events';
 	case ProjectWorkflow = '/api/projects/{projectId:number}/workflow';
 	case ProjectTasks = '/api/projects/{projectId:number}/tasks';
-	case ProjectFields = '/api/projects/{projectId:number}/fields';
 
 	case Workflows = '/api/workflows';
 	case WorkflowStatuses = '/api/workflows/{workflowId:number}/statuses';
@@ -67,22 +61,11 @@ enum Routes: string
 	case TaskMove = '/api/tasks/{taskId:[A-Z0-9][A-Z0-9-]*}/move';
 	case TaskArchive = '/api/tasks/{taskId:[A-Z0-9][A-Z0-9-]*}/archive';
 	case TaskUnarchive = '/api/tasks/{taskId:[A-Z0-9][A-Z0-9-]*}/unarchive';
-	case TaskDuplicate = '/api/tasks/{taskId:[A-Z0-9][A-Z0-9-]*}/duplicate';
-	case TaskSaveAsTemplate = '/api/tasks/{taskId:[A-Z0-9][A-Z0-9-]*}/save-as-template';
 	case TaskFiles = '/api/tasks/{taskId:[A-Z0-9][A-Z0-9-]*}/files';
 	case TaskFile = '/api/tasks/{taskId:[A-Z0-9][A-Z0-9-]*}/files/{fileId:number}';
 	case TaskFileContent = '/api/tasks/{taskId:[A-Z0-9][A-Z0-9-]*}/files/{fileId:number}/content';
-	case TaskRelations = '/api/tasks/{taskId:[A-Z0-9][A-Z0-9-]*}/relations';
-	case TaskSubtasks = '/api/tasks/{taskId:[A-Z0-9][A-Z0-9-]*}/subtasks';
-	case TaskRelation = '/api/task-relations/{relationId:number}';
-	case TaskComments = '/api/tasks/{taskId:[A-Z0-9][A-Z0-9-]*}/comments';
-	case TaskComment = '/api/task-comments/{commentId:number}';
-	case TaskChecklist = '/api/tasks/{taskId:[A-Z0-9][A-Z0-9-]*}/checklist';
-	case TaskChecklistItem = '/api/checklist-items/{itemId:number}';
-	case TaskChecklistItemMove = '/api/checklist-items/{itemId:number}/move';
 	case TaskWatchers = '/api/tasks/{taskId:[A-Z0-9][A-Z0-9-]*}/watchers';
 	case TaskWatch = '/api/tasks/{taskId:[A-Z0-9][A-Z0-9-]*}/watch';
-	case TaskRecurrence = '/api/tasks/{taskId:[A-Z0-9][A-Z0-9-]*}/recurrence';
 
 	case Notifications = '/api/notifications';
 	case NotificationsReadAll = '/api/notifications/read-all';
@@ -90,20 +73,11 @@ enum Routes: string
 	case NotificationRead = '/api/notifications/{notificationId:number}/read';
 	case Notification = '/api/notifications/{notificationId:number}';
 
-	case Search = '/api/search';
 
 	case WorkspaceSavedViews = '/api/workspaces/{workspaceId:number}/saved-views';
 	case SavedView = '/api/saved-views/{savedViewId:number}';
 
-	case WorkspaceTaskTemplates = '/api/workspaces/{workspaceId:number}/task-templates';
-	case TaskTemplate = '/api/task-templates/{taskTemplateId:number}';
 
-	case WorkspaceScripts = '/api/workspaces/{workspaceId:number}/scripts';
-	case Script = '/api/scripts/{scriptId:number}';
-	case ScriptRunNow = '/api/scripts/{scriptId:number}/run';
-	case ScriptRuns = '/api/scripts/{scriptId:number}/runs';
-	case WorkspaceScriptVariables = '/api/workspaces/{workspaceId:number}/script-variables';
-	case WorkspaceScriptVariable = '/api/workspaces/{workspaceId:number}/script-variables/{variableId:number}';
 
 	case AdminUsers = '/api/admin/users';
 	case AdminUser = '/api/admin/users/{userId:number}';

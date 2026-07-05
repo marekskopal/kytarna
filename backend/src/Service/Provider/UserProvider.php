@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
-use SensitiveParameter;
 use Kytario\Model\Entity\Enum\LocaleEnum;
 use Kytario\Model\Entity\Enum\ThemeEnum;
 use Kytario\Model\Entity\User;
 use Kytario\Model\Repository\UserRepository;
+use SensitiveParameter;
 use const PASSWORD_BCRYPT;
 
 final readonly class UserProvider implements UserProviderInterface

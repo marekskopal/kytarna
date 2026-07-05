@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Kytario\Tests\Mcp;
 
-use PHPUnit\Framework\Attributes\CoversClass;
-use RuntimeException;
 use Kytario\Mcp\McpUserContextInterface;
 use Kytario\Mcp\Tool\MemberTools;
 use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
@@ -15,6 +13,8 @@ use Kytario\Service\Provider\WorkspaceProviderInterface;
 use Kytario\Tests\Support\AppHarness;
 use Kytario\Tests\Support\Fixture;
 use Kytario\Tests\Support\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use RuntimeException;
 
 #[CoversClass(MemberTools::class)]
 final class MemberToolsTest extends IntegrationTestCase

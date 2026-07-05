@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Kytario\Mcp\Tool;
 
-use Mcp\Capability\Attribute\McpTool;
-use RuntimeException;
 use Kytario\Mcp\Dto\McpEventDto;
 use Kytario\Mcp\Dto\McpEventListDto;
 use Kytario\Mcp\McpUserContextInterface;
@@ -14,6 +12,8 @@ use Kytario\Model\Entity\Workspace;
 use Kytario\Service\Provider\EventProviderInterface;
 use Kytario\Service\Provider\TaskCodeResolverInterface;
 use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Mcp\Capability\Attribute\McpTool;
+use RuntimeException;
 
 final readonly class EventTools
 {

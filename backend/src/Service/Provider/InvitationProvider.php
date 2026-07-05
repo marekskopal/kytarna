@@ -6,7 +6,6 @@ namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
 use Iterator;
-use RuntimeException;
 use Kytario\Dto\InvitationQueueDto;
 use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
 use Kytario\Model\Entity\Invitation;
@@ -15,6 +14,7 @@ use Kytario\Model\Entity\Workspace;
 use Kytario\Model\Repository\InvitationRepository;
 use Kytario\Service\Queue\Enum\QueueEnum;
 use Kytario\Service\Queue\QueuePublisher;
+use RuntimeException;
 use const FILTER_VALIDATE_EMAIL;
 
 final readonly class InvitationProvider implements InvitationProviderInterface

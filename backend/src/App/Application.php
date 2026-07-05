@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Kytario\App;
 
+use Kytario\Service\Dbal\DbContext;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Kytario\Service\Dbal\DbContext;
 
 final readonly class Application
 {

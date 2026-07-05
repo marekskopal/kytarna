@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Kytario\Tests\Controller;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use Kytario\Controller\TaskBulkController;
 use Kytario\Model\Entity\Enum\EventTypeEnum;
 use Kytario\Model\Entity\User;
@@ -14,6 +13,7 @@ use Kytario\Model\Repository\StatusRepository;
 use Kytario\Model\Repository\WorkflowRepository;
 use Kytario\Tests\Support\Fixture;
 use Kytario\Tests\Support\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(TaskBulkController::class)]
 final class TaskBulkControllerTest extends IntegrationTestCase
@@ -66,15 +66,14 @@ final class TaskBulkControllerTest extends IntegrationTestCase
 		$foreignId = $foreignIds[0];
 
 		$missingId = 999999;
-		$mediumPriority = $this->resolvePriorityId($workspace, 'Medium');
 
 		$response = $this->request(
 			'POST',
 			'/api/tasks/bulk',
 			body: [
 				'ids' => [$mineId, $foreignId, $missingId],
-				'op' => 'priority',
-				'payload' => ['priorityId' => $mediumPriority],
+				'op' => 'assign',
+				'payload' => ['assigneeId' => null],
 			],
 			authenticatedAs: $owner,
 		);
@@ -213,7 +212,7 @@ final class TaskBulkControllerTest extends IntegrationTestCase
 			$create = $this->request(
 				'POST',
 				'/api/projects/' . $projectId . '/tasks',
-				body: ['statusId' => $statusId, 'name' => $name, 'description' => null, 'priority' => 'Medium'],
+				body: ['statusId' => $statusId, 'name' => $name, 'description' => null],
 				authenticatedAs: $owner,
 			);
 			self::assertSame(200, $create->getStatusCode(), 'create task ' . $name);
@@ -232,17 +231,6 @@ final class TaskBulkControllerTest extends IntegrationTestCase
 		);
 		self::assertSame(200, $response->getStatusCode(), 'create tag ' . $name);
 		return self::intField($this->jsonBody($response)['id']);
-	}
-
-	private function resolvePriorityId(Workspace $workspace, string $name): int
-	{
-		$response = $this->request('GET', '/api/workspaces/' . $workspace->id . '/priorities', authenticatedAs: $workspace->owner);
-		foreach ($this->jsonList($response) as $priority) {
-			if (($priority['name'] ?? null) === $name) {
-				return self::intField($priority['id']);
-			}
-		}
-		self::fail(sprintf('Priority "%s" not found in workspace %d.', $name, $workspace->id));
 	}
 
 	/** @param list<int> $expectedIds */

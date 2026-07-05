@@ -10,6 +10,5 @@ enum BulkOpEnum: string
 	case Tag = 'tag';
 	case Untag = 'untag';
 	case Assign = 'assign';
-	case Priority = 'priority';
 	case Delete = 'delete';
 }

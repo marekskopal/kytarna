@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Kytario\Service\Queue;
 
 use JsonException;
+use Kytario\Service\Queue\Enum\QueueEnum;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use RuntimeException;
-use Kytario\Service\Queue\Enum\QueueEnum;
 use const JSON_THROW_ON_ERROR;
 
 final class QueuePublisher

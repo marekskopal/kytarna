@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Kytario\Mcp\Tool\Helper;
 
-use RuntimeException;
 use Kytario\Model\Entity\Enum\StatusTypeEnum;
 use Kytario\Model\Entity\Project;
 use Kytario\Model\Entity\Status;
 use Kytario\Service\Provider\StatusProviderInterface;
 use Kytario\Service\Provider\WorkflowProviderInterface;
+use RuntimeException;
 
 final readonly class StatusResolver
 {

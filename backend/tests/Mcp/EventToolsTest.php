@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Kytario\Tests\Mcp;
 
-use PHPUnit\Framework\Attributes\CoversClass;
-use RuntimeException;
 use Kytario\Mcp\McpUserContextInterface;
 use Kytario\Mcp\Tool\EventTools;
 use Kytario\Mcp\Tool\TaskTools;
@@ -14,6 +12,8 @@ use Kytario\Service\Actor\ActorContextInterface;
 use Kytario\Tests\Support\AppHarness;
 use Kytario\Tests\Support\Fixture;
 use Kytario\Tests\Support\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use RuntimeException;
 
 #[CoversClass(EventTools::class)]
 final class EventToolsTest extends IntegrationTestCase

@@ -6,9 +6,7 @@ namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
 use Iterator;
-use RuntimeException;
 use Kytario\Model\Entity\Enum\EventTypeEnum;
-use Kytario\Model\Entity\Priority;
 use Kytario\Model\Entity\Project;
 use Kytario\Model\Entity\Status;
 use Kytario\Model\Entity\Task;
@@ -16,33 +14,24 @@ use Kytario\Model\Entity\User;
 use Kytario\Model\Entity\Workspace;
 use Kytario\Model\Repository\Enum\ArchivedFilterEnum;
 use Kytario\Model\Repository\Enum\OrderDirectionEnum;
-use Kytario\Model\Repository\Enum\SubtaskFilterEnum;
 use Kytario\Model\Repository\Enum\TaskOrderByEnum;
-use Kytario\Model\Repository\TaskRecurrenceRepository;
-use Kytario\Model\Repository\TaskRelationRepository;
 use Kytario\Model\Repository\TaskRepository;
 use Kytario\Model\Repository\TaskTagRepository;
 use Kytario\Service\Actor\ActorContextInterface;
-use Kytario\Service\Search\SearchIndexer;
 use Kytario\Validator\TextFieldValidator;
+use RuntimeException;
 
 final readonly class TaskProvider implements TaskProviderInterface
 {
 	public function __construct(
 		private TaskRepository $taskRepository,
 		private EventProviderInterface $eventProvider,
-		private TaskFieldValueProviderInterface $taskFieldValueProvider,
 		private TaskFileProviderInterface $taskFileProvider,
-		private TaskRelationProviderInterface $taskRelationProvider,
-		private TaskChecklistProviderInterface $taskChecklistProvider,
 		private TaskWatcherProviderInterface $taskWatcherProvider,
-		private TaskRecurrenceRepository $taskRecurrenceRepository,
 		private TaskTagProviderInterface $taskTagProvider,
 		private TaskTagRepository $taskTagRepository,
-		private TaskRelationRepository $taskRelationRepository,
 		private ActorContextInterface $actorContext,
 		private TaskPositionManager $positionManager,
-		private SearchIndexer $searchIndexer,
 	) {
 	}
 
@@ -74,13 +63,10 @@ final readonly class TaskProvider implements TaskProviderInterface
 		bool $onlyActive,
 		?array $tagIds = null,
 		?array $assigneeIds = null,
-		SubtaskFilterEnum $subtaskFilter = SubtaskFilterEnum::All,
 		ArchivedFilterEnum $archived = ArchivedFilterEnum::Active,
 		?DateTimeImmutable $dueFrom = null,
 		?DateTimeImmutable $dueTo = null,
 	): Iterator {
-		[$includeIds, $excludeIds] = $this->resolveSubtaskFilter($workspace, $subtaskFilter, $this->resolveTaskIdsByTags($tagIds));
-
 		return $this->taskRepository->findInWorkspace(
 			$workspace->id,
 			$limit,
@@ -90,9 +76,9 @@ final readonly class TaskProvider implements TaskProviderInterface
 			$search,
 			$statusIds,
 			$onlyActive,
-			$includeIds,
+			$this->resolveTaskIdsByTags($tagIds),
 			$assigneeIds,
-			$excludeIds,
+			null,
 			$archived,
 			$dueFrom,
 			$dueTo,
@@ -111,21 +97,18 @@ final readonly class TaskProvider implements TaskProviderInterface
 		bool $onlyActive,
 		?array $tagIds = null,
 		?array $assigneeIds = null,
-		SubtaskFilterEnum $subtaskFilter = SubtaskFilterEnum::All,
 		ArchivedFilterEnum $archived = ArchivedFilterEnum::Active,
 		?DateTimeImmutable $dueFrom = null,
 		?DateTimeImmutable $dueTo = null,
 	): int {
-		[$includeIds, $excludeIds] = $this->resolveSubtaskFilter($workspace, $subtaskFilter, $this->resolveTaskIdsByTags($tagIds));
-
 		return $this->taskRepository->countInWorkspace(
 			$workspace->id,
 			$search,
 			$statusIds,
 			$onlyActive,
-			$includeIds,
+			$this->resolveTaskIdsByTags($tagIds),
 			$assigneeIds,
-			$excludeIds,
+			null,
 			$archived,
 			$dueFrom,
 			$dueTo,
@@ -152,54 +135,21 @@ final readonly class TaskProvider implements TaskProviderInterface
 		return $this->taskTagRepository->findTaskIdsByTagIds($tagIds);
 	}
 
-	/**
-	 * Combines the tag-based include list with the subtask hierarchy filter.
-	 *
-	 * @param list<int>|null $tagTaskIds
-	 * @return array{0: list<int>|null, 1: list<int>|null} [includeIds, excludeIds]
-	 */
-	private function resolveSubtaskFilter(Workspace $workspace, SubtaskFilterEnum $filter, ?array $tagTaskIds): array
-	{
-		if ($filter === SubtaskFilterEnum::All) {
-			return [$tagTaskIds, null];
-		}
-
-		$hierarchy = $this->taskRelationRepository->findParentChildIdsInWorkspace($workspace->id);
-
-		if ($filter === SubtaskFilterEnum::HideSubtasks) {
-			return [$tagTaskIds, $hierarchy['children']];
-		}
-
-		$parentIds = $hierarchy['parents'];
-		$includeIds = $tagTaskIds === null ? $parentIds : array_values(array_intersect($tagTaskIds, $parentIds));
-
-		return [$includeIds, null];
-	}
-
-	/**
-	 * @param array<int, ?string>|null $fieldValues
-	 * @param list<int>|null $tagIds
-	 */
+	/** @param list<int>|null $tagIds */
 	public function createTask(
 		User $author,
 		Project $project,
 		Status $status,
 		string $name,
 		?string $description,
-		Priority $priority,
 		?DateTimeImmutable $dueDate,
 		?User $assignee = null,
-		?array $fieldValues = null,
 		?array $tagIds = null,
 		?DateTimeImmutable $startDate = null,
 	): Task {
 		$name = TextFieldValidator::validateName($name, 'Task');
 		$description = TextFieldValidator::validateDescription($description);
 		self::assertDateOrder($startDate, $dueDate);
-
-		if ($fieldValues !== null) {
-			$this->taskFieldValueProvider->validateForProject($project, $fieldValues);
-		}
 
 		$position = $this->nextPosition($status);
 		$sequenceNumber = $this->taskRepository->nextSequenceNumber($project->id);
@@ -211,7 +161,6 @@ final readonly class TaskProvider implements TaskProviderInterface
 			assignee: $assignee,
 			name: $name,
 			description: $description,
-			priority: $priority,
 			dueDate: $dueDate,
 			position: $position,
 			sequenceNumber: $sequenceNumber,
@@ -222,10 +171,6 @@ final readonly class TaskProvider implements TaskProviderInterface
 		$task->updatedAt = $now;
 
 		$this->taskRepository->persist($task);
-
-		if ($fieldValues !== null) {
-			$this->taskFieldValueProvider->persistForTask($task, $fieldValues);
-		}
 
 		if ($tagIds !== null) {
 			$tagChanges = $this->taskTagProvider->setTagsForTask($project->workspace, $task, $tagIds);
@@ -252,42 +197,18 @@ final readonly class TaskProvider implements TaskProviderInterface
 			$this->recordAssignedEvent($author, $task, $assignee);
 		}
 
-		$this->searchIndexer->queueUpsert($task->id);
-
 		return $task;
 	}
 
-	public function duplicateTask(User $author, Task $task, ?string $name = null): Task
-	{
-		return $this->createTask(
-			author: $author,
-			project: $task->project,
-			status: $task->status,
-			name: $name ?? mb_substr($task->name, 0, TextFieldValidator::MaxNameLength - 7) . ' (copy)',
-			description: $task->description,
-			priority: $task->priority,
-			dueDate: $task->dueDate,
-			assignee: $task->assignee,
-			fieldValues: $this->taskFieldValueProvider->findByTask($task),
-			tagIds: $this->taskTagProvider->getTagIdsForTask($task),
-			startDate: $task->startDate,
-		);
-	}
-
-	/**
-	 * @param array<int, ?string>|null $fieldValues
-	 * @param list<int>|null $tagIds
-	 */
+	/** @param list<int>|null $tagIds */
 	public function updateTask(
 		User $author,
 		Task $task,
 		string $name,
 		?string $description,
-		Priority $priority,
 		?DateTimeImmutable $dueDate,
 		Status $status,
 		?User $assignee,
-		?array $fieldValues = null,
 		?array $tagIds = null,
 		bool $recordEvent = true,
 		?DateTimeImmutable $startDate = null,
@@ -296,17 +217,12 @@ final readonly class TaskProvider implements TaskProviderInterface
 		$description = TextFieldValidator::validateDescription($description);
 		self::assertDateOrder($startDate, $dueDate);
 
-		if ($fieldValues !== null) {
-			$this->taskFieldValueProvider->validateForProject($task->project, $fieldValues);
-		}
-
 		$oldName = $task->name;
 		$oldAssigneeId = $task->assignee?->id;
 		$statusChanged = $task->status->id !== $status->id;
 
 		$task->name = $name;
 		$task->description = $description;
-		$task->priority = $priority;
 		$task->dueDate = $dueDate;
 		$task->startDate = $startDate;
 		$task->assignee = $assignee;
@@ -317,23 +233,17 @@ final readonly class TaskProvider implements TaskProviderInterface
 		$task->updatedAt = new DateTimeImmutable();
 		$this->taskRepository->persist($task);
 
-		$fieldChanges = $fieldValues !== null
-			? $this->taskFieldValueProvider->persistForTask($task, $fieldValues)
-			: [];
-
 		$tagChanges = $tagIds !== null
 			? $this->taskTagProvider->setTagsForTask($task->project->workspace, $task, $tagIds)
 			: ['added' => [], 'removed' => []];
 
 		if ($recordEvent) {
-			$this->recordUpdateEvents($author, $task, $name, $oldName, $fieldChanges, $tagChanges);
+			$this->recordUpdateEvents($author, $task, $name, $oldName, $tagChanges);
 
 			if ($assignee !== null && $assignee->id !== $oldAssigneeId) {
 				$this->recordAssignedEvent($author, $task, $assignee);
 			}
 		}
-
-		$this->searchIndexer->queueUpsert($task->id);
 
 		return $task;
 	}
@@ -371,29 +281,19 @@ final readonly class TaskProvider implements TaskProviderInterface
 			$this->recordMoveEvent($author, $task, $fromStatus, $newStatus, $fromPosition, $newPosition);
 		}
 
-		$this->searchIndexer->queueUpsert($task->id);
-
 		return $task;
 	}
 
-	/**
-	 * @param list<array{fieldId: int, from: ?string, to: ?string}> $fieldChanges
-	 * @param array{added: list<int>, removed: list<int>} $tagChanges
-	 */
-	private function recordUpdateEvents(
-		User $author,
-		Task $task,
-		string $name,
-		string $oldName,
-		array $fieldChanges,
-		array $tagChanges,
-	): void
+	/** @param array{added: list<int>, removed: list<int>} $tagChanges */
+	private function recordUpdateEvents(User $author, Task $task, string $name, string $oldName, array $tagChanges): void
 	{
-		$metadata = ['name' => $name, 'oldName' => $oldName];
-		if ($fieldChanges !== []) {
-			$metadata['fieldChanges'] = $fieldChanges;
-		}
-		$this->eventProvider->recordEvent($author, $task->project, EventTypeEnum::TaskUpdated, $metadata, $task->id);
+		$this->eventProvider->recordEvent(
+			$author,
+			$task->project,
+			EventTypeEnum::TaskUpdated,
+			['name' => $name, 'oldName' => $oldName],
+			$task->id,
+		);
 
 		if ($tagChanges['added'] === [] && $tagChanges['removed'] === []) {
 			return;
@@ -451,8 +351,6 @@ final readonly class TaskProvider implements TaskProviderInterface
 			$task->id,
 		);
 
-		$this->searchIndexer->queueUpsert($task->id);
-
 		return $task;
 	}
 
@@ -474,8 +372,6 @@ final readonly class TaskProvider implements TaskProviderInterface
 			$task->id,
 		);
 
-		$this->searchIndexer->queueUpsert($task->id);
-
 		return $task;
 	}
 
@@ -486,7 +382,6 @@ final readonly class TaskProvider implements TaskProviderInterface
 			$task->assignee = null;
 			$task->updatedAt = $now;
 			$this->taskRepository->persist($task);
-			$this->searchIndexer->queueUpsert($task->id);
 		}
 	}
 
@@ -502,22 +397,10 @@ final readonly class TaskProvider implements TaskProviderInterface
 			);
 		}
 
-		$taskId = $task->id;
-		$this->taskFieldValueProvider->deleteAllForTask($task);
 		$this->taskFileProvider->deleteAllForTask($author, $task);
-		$this->taskRelationProvider->deleteAllForTask($task);
-		$this->taskChecklistProvider->deleteAllForTask($task);
 		$this->taskWatcherProvider->deleteAllForTask($task);
-		// Delete the recurrence row directly (not via its provider) to avoid a provider cycle:
-		// TaskRecurrenceProvider depends on TaskProvider for spawning occurrences.
-		$recurrence = $this->taskRecurrenceRepository->findByTask($taskId);
-		if ($recurrence !== null) {
-			$this->taskRecurrenceRepository->delete($recurrence);
-		}
 		$this->taskTagProvider->deleteAllForTask($task);
 		$this->taskRepository->delete($task);
-
-		$this->searchIndexer->queueDelete($taskId);
 	}
 
 	public function nextPosition(Status $status): int

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Kytario\Tests\Controller\Admin;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use Kytario\Controller\Admin\AdminUserController;
 use Kytario\Model\Entity\Enum\SystemRoleEnum;
 use Kytario\Model\Repository\UserRepository;
 use Kytario\Tests\Support\Fixture;
 use Kytario\Tests\Support\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(AdminUserController::class)]
 final class AdminUserControllerTest extends IntegrationTestCase

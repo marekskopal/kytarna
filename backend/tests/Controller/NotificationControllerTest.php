@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Kytario\Tests\Controller;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use Kytario\Controller\NotificationController;
 use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
 use Kytario\Model\Entity\User;
@@ -13,6 +12,7 @@ use Kytario\Model\Repository\StatusRepository;
 use Kytario\Model\Repository\WorkflowRepository;
 use Kytario\Tests\Support\Fixture;
 use Kytario\Tests\Support\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(NotificationController::class)]
 final class NotificationControllerTest extends IntegrationTestCase
@@ -123,7 +123,6 @@ final class NotificationControllerTest extends IntegrationTestCase
 				'statusId' => $this->firstStatusId($projectId),
 				'name' => $name,
 				'description' => null,
-				'priority' => 'Medium',
 				'assigneeId' => $assigneeId,
 			],
 			authenticatedAs: $author,

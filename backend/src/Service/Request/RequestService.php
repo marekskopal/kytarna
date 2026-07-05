@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Kytario\Service\Request;
 
 use ErrorException;
+use Kytario\Dto\ArrayFactoryInterface;
+use Kytario\Middleware\AuthorizationMiddleware;
+use Kytario\Model\Entity\User;
 use Nette\Utils\Json;
 use Nette\Utils\JsonException;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
 use TypeError;
-use Kytario\Dto\ArrayFactoryInterface;
-use Kytario\Middleware\AuthorizationMiddleware;
-use Kytario\Model\Entity\User;
 use ValueError;
 
 final readonly class RequestService implements RequestServiceInterface

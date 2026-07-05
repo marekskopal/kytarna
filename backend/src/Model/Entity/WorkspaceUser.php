@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Kytario\Model\Entity;
 
+use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytario\Model\Repository\WorkspaceUserRepository;
 use MarekSkopal\ORM\Attribute\ColumnEnum;
 use MarekSkopal\ORM\Attribute\Entity;
 use MarekSkopal\ORM\Attribute\ManyToOne;
-use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
-use Kytario\Model\Repository\WorkspaceUserRepository;
 
 #[Entity(repositoryClass: WorkspaceUserRepository::class)]
 class WorkspaceUser extends AEntity

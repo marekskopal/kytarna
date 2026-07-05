@@ -6,23 +6,17 @@ namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
 use Iterator;
-use RuntimeException;
 use Kytario\Model\Entity\Enum\EventTypeEnum;
 use Kytario\Model\Entity\Tag;
 use Kytario\Model\Entity\User;
 use Kytario\Model\Entity\Workspace;
 use Kytario\Model\Repository\TagRepository;
-use Kytario\Model\Repository\TaskTagRepository;
-use Kytario\Service\Search\SearchIndexer;
+use RuntimeException;
 
 final readonly class TagProvider implements TagProviderInterface
 {
-	public function __construct(
-		private TagRepository $tagRepository,
-		private EventProviderInterface $eventProvider,
-		private TaskTagRepository $taskTagRepository,
-		private SearchIndexer $searchIndexer,
-	) {
+	public function __construct(private TagRepository $tagRepository, private EventProviderInterface $eventProvider,)
+	{
 	}
 
 	/** @return Iterator<Tag> */
@@ -67,8 +61,6 @@ final readonly class TagProvider implements TagProviderInterface
 		$name = $this->validateName($tag->workspace->id, $name, $tag->id);
 		$color = $this->validateColor($color);
 
-		$nameChanged = $tag->name !== $name;
-
 		$tag->name = $name;
 		$tag->color = $color;
 		$tag->updatedAt = new DateTimeImmutable();
@@ -81,17 +73,11 @@ final readonly class TagProvider implements TagProviderInterface
 			['tagId' => $tag->id, 'name' => $tag->name, 'color' => $tag->color],
 		);
 
-		if ($nameChanged) {
-			$this->searchIndexer->queueUpsertMany($this->findTaskIdsByTag($tag->id));
-		}
-
 		return $tag;
 	}
 
 	public function deleteTag(User $author, Tag $tag): void
 	{
-		$affectedTaskIds = $this->findTaskIdsByTag($tag->id);
-
 		$this->eventProvider->recordWorkspaceEvent(
 			$author,
 			$tag->workspace,
@@ -101,14 +87,6 @@ final readonly class TagProvider implements TagProviderInterface
 
 		// task_tags rows cascade away via DB FK on delete.
 		$this->tagRepository->delete($tag);
-
-		$this->searchIndexer->queueUpsertMany($affectedTaskIds);
-	}
-
-	/** @return list<int> */
-	private function findTaskIdsByTag(int $tagId): array
-	{
-		return $this->taskTagRepository->findTaskIdsByTagIds([$tagId]);
 	}
 
 	private function validateName(int $workspaceId, string $name, ?int $excludeTagId): string

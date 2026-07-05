@@ -7,16 +7,15 @@ namespace Kytario\Middleware;
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use Kytario\Middleware\Exception\NotAuthorizedException;
+use Kytario\Route\Routes;
+use Kytario\Service\Authentication\AuthenticationServiceInterface;
+use Kytario\Service\Provider\UserProviderInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use stdClass;
-use Kytario\Middleware\Exception\NotAuthorizedException;
-use Kytario\Route\Routes;
-use Kytario\Service\Authentication\AuthenticationServiceInterface;
-use Kytario\Service\Provider\UserProviderInterface;
-use Kytario\Service\Realtime\RealtimeOriginContextInterface;
 
 final readonly class AuthorizationMiddleware implements MiddlewareInterface
 {
@@ -25,8 +24,6 @@ final readonly class AuthorizationMiddleware implements MiddlewareInterface
 	private const string AttributeToken = 'token';
 	private const string AuthHeader = 'Authorization';
 	private const string AuthHeaderType = 'Bearer ';
-	private const string OriginClientIdHeader = 'X-Origin-Client-Id';
-
 	private const array OpenRoutes = [
 		Routes::Health->value,
 		Routes::AuthenticationLogin->value,
@@ -46,14 +43,12 @@ final readonly class AuthorizationMiddleware implements MiddlewareInterface
 		Routes::OAuthClientInfo->value,
 	];
 
-	public function __construct(private UserProviderInterface $userProvider, private RealtimeOriginContextInterface $realtimeOriginContext,)
+	public function __construct(private UserProviderInterface $userProvider)
 	{
 	}
 
 	public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
 	{
-		$this->captureOriginClientId($request);
-
 		if (in_array($request->getUri()->getPath(), self::OpenRoutes, strict: true)) {
 			return $handler->handle($request);
 		}
@@ -94,12 +89,6 @@ final readonly class AuthorizationMiddleware implements MiddlewareInterface
 		if (isset($token->type) && $token->type !== AuthenticationServiceInterface::TokenTypeAccess) {
 			throw new NotAuthorizedException('AccessToken is invalid.', $request);
 		}
-	}
-
-	private function captureOriginClientId(ServerRequestInterface $request): void
-	{
-		$header = $request->getHeader(self::OriginClientIdHeader)[0] ?? null;
-		$this->realtimeOriginContext->set($header);
 	}
 
 	private function extractToken(ServerRequestInterface $request): string

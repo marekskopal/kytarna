@@ -4,14 +4,6 @@ declare(strict_types=1);
 
 namespace Kytario\Controller;
 
-use Laminas\Diactoros\Response\JsonResponse;
-use MarekSkopal\Router\Attribute\RouteDelete;
-use MarekSkopal\Router\Attribute\RouteGet;
-use MarekSkopal\Router\Attribute\RoutePost;
-use MarekSkopal\Router\Attribute\RoutePut;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use RuntimeException;
 use Kytario\Dto\TagCreateDto;
 use Kytario\Dto\TagDto;
 use Kytario\Dto\TagUpdateDto;
@@ -25,6 +17,14 @@ use Kytario\Service\Auth\PermissionCheckerInterface;
 use Kytario\Service\Provider\TagProviderInterface;
 use Kytario\Service\Provider\WorkspaceProviderInterface;
 use Kytario\Service\Request\RequestServiceInterface;
+use Laminas\Diactoros\Response\JsonResponse;
+use MarekSkopal\Router\Attribute\RouteDelete;
+use MarekSkopal\Router\Attribute\RouteGet;
+use MarekSkopal\Router\Attribute\RoutePost;
+use MarekSkopal\Router\Attribute\RoutePut;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use RuntimeException;
 
 final readonly class TagController
 {

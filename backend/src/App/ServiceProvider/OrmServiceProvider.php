@@ -4,37 +4,20 @@ declare(strict_types=1);
 
 namespace Kytario\App\ServiceProvider;
 
-use League\Container\Container;
-use League\Container\ServiceProvider\AbstractServiceProvider;
-use MarekSkopal\ORM\Database\DatabaseInterface;
-use MarekSkopal\ORM\ORM;
-use MarekSkopal\ORM\Repository\RepositoryInterface;
 use Kytario\Model\Entity\EmailVerificationToken;
 use Kytario\Model\Entity\Event;
-use Kytario\Model\Entity\Field;
 use Kytario\Model\Entity\Invitation;
 use Kytario\Model\Entity\Notification;
 use Kytario\Model\Entity\OAuthAuthorization;
 use Kytario\Model\Entity\OAuthClient;
 use Kytario\Model\Entity\PasswordResetToken;
-use Kytario\Model\Entity\Priority;
 use Kytario\Model\Entity\Project;
-use Kytario\Model\Entity\ProjectField;
 use Kytario\Model\Entity\SavedView;
-use Kytario\Model\Entity\Script;
-use Kytario\Model\Entity\ScriptRun;
-use Kytario\Model\Entity\ScriptVariable;
 use Kytario\Model\Entity\Status;
 use Kytario\Model\Entity\Tag;
 use Kytario\Model\Entity\Task;
-use Kytario\Model\Entity\TaskChecklistItem;
-use Kytario\Model\Entity\TaskComment;
-use Kytario\Model\Entity\TaskFieldValue;
 use Kytario\Model\Entity\TaskFile;
-use Kytario\Model\Entity\TaskRecurrence;
-use Kytario\Model\Entity\TaskRelation;
 use Kytario\Model\Entity\TaskTag;
-use Kytario\Model\Entity\TaskTemplate;
 use Kytario\Model\Entity\TaskWatcher;
 use Kytario\Model\Entity\User;
 use Kytario\Model\Entity\Workflow;
@@ -42,36 +25,29 @@ use Kytario\Model\Entity\Workspace;
 use Kytario\Model\Entity\WorkspaceUser;
 use Kytario\Model\Repository\EmailVerificationTokenRepository;
 use Kytario\Model\Repository\EventRepository;
-use Kytario\Model\Repository\FieldRepository;
 use Kytario\Model\Repository\InvitationRepository;
 use Kytario\Model\Repository\NotificationRepository;
 use Kytario\Model\Repository\OAuthAuthorizationRepository;
 use Kytario\Model\Repository\OAuthClientRepository;
 use Kytario\Model\Repository\PasswordResetTokenRepository;
-use Kytario\Model\Repository\PriorityRepository;
-use Kytario\Model\Repository\ProjectFieldRepository;
 use Kytario\Model\Repository\ProjectRepository;
 use Kytario\Model\Repository\SavedViewRepository;
-use Kytario\Model\Repository\ScriptRepository;
-use Kytario\Model\Repository\ScriptRunRepository;
-use Kytario\Model\Repository\ScriptVariableRepository;
 use Kytario\Model\Repository\StatusRepository;
 use Kytario\Model\Repository\TagRepository;
-use Kytario\Model\Repository\TaskChecklistItemRepository;
-use Kytario\Model\Repository\TaskCommentRepository;
-use Kytario\Model\Repository\TaskFieldValueRepository;
 use Kytario\Model\Repository\TaskFileRepository;
-use Kytario\Model\Repository\TaskRecurrenceRepository;
-use Kytario\Model\Repository\TaskRelationRepository;
 use Kytario\Model\Repository\TaskRepository;
 use Kytario\Model\Repository\TaskTagRepository;
-use Kytario\Model\Repository\TaskTemplateRepository;
 use Kytario\Model\Repository\TaskWatcherRepository;
 use Kytario\Model\Repository\UserRepository;
 use Kytario\Model\Repository\WorkflowRepository;
 use Kytario\Model\Repository\WorkspaceRepository;
 use Kytario\Model\Repository\WorkspaceUserRepository;
 use Kytario\Service\Dbal\DbContext;
+use League\Container\Container;
+use League\Container\ServiceProvider\AbstractServiceProvider;
+use MarekSkopal\ORM\Database\DatabaseInterface;
+use MarekSkopal\ORM\ORM;
+use MarekSkopal\ORM\Repository\RepositoryInterface;
 
 final class OrmServiceProvider extends AbstractServiceProvider
 {
@@ -94,25 +70,13 @@ final class OrmServiceProvider extends AbstractServiceProvider
 			WorkflowRepository::class,
 			StatusRepository::class,
 			TaskRepository::class,
-			TaskChecklistItemRepository::class,
-			TaskRecurrenceRepository::class,
-			TaskCommentRepository::class,
-			TaskFieldValueRepository::class,
 			TaskFileRepository::class,
-			TaskRelationRepository::class,
-			FieldRepository::class,
-			ProjectFieldRepository::class,
 			TagRepository::class,
 			TaskTagRepository::class,
-			TaskTemplateRepository::class,
 			SavedViewRepository::class,
-			PriorityRepository::class,
 			EventRepository::class,
 			OAuthClientRepository::class,
 			OAuthAuthorizationRepository::class,
-			ScriptRepository::class,
-			ScriptVariableRepository::class,
-			ScriptRunRepository::class,
 			NotificationRepository::class,
 			TaskWatcherRepository::class,
 		], true);
@@ -138,25 +102,13 @@ final class OrmServiceProvider extends AbstractServiceProvider
 		$this->addRepository($container, $orm, WorkflowRepository::class, Workflow::class);
 		$this->addRepository($container, $orm, StatusRepository::class, Status::class);
 		$this->addRepository($container, $orm, TaskRepository::class, Task::class);
-		$this->addRepository($container, $orm, TaskChecklistItemRepository::class, TaskChecklistItem::class);
-		$this->addRepository($container, $orm, TaskRecurrenceRepository::class, TaskRecurrence::class);
-		$this->addRepository($container, $orm, TaskCommentRepository::class, TaskComment::class);
-		$this->addRepository($container, $orm, TaskFieldValueRepository::class, TaskFieldValue::class);
 		$this->addRepository($container, $orm, TaskFileRepository::class, TaskFile::class);
-		$this->addRepository($container, $orm, TaskRelationRepository::class, TaskRelation::class);
-		$this->addRepository($container, $orm, FieldRepository::class, Field::class);
-		$this->addRepository($container, $orm, ProjectFieldRepository::class, ProjectField::class);
 		$this->addRepository($container, $orm, TagRepository::class, Tag::class);
 		$this->addRepository($container, $orm, TaskTagRepository::class, TaskTag::class);
-		$this->addRepository($container, $orm, TaskTemplateRepository::class, TaskTemplate::class);
 		$this->addRepository($container, $orm, SavedViewRepository::class, SavedView::class);
-		$this->addRepository($container, $orm, PriorityRepository::class, Priority::class);
 		$this->addRepository($container, $orm, EventRepository::class, Event::class);
 		$this->addRepository($container, $orm, OAuthClientRepository::class, OAuthClient::class);
 		$this->addRepository($container, $orm, OAuthAuthorizationRepository::class, OAuthAuthorization::class);
-		$this->addRepository($container, $orm, ScriptRepository::class, Script::class);
-		$this->addRepository($container, $orm, ScriptVariableRepository::class, ScriptVariable::class);
-		$this->addRepository($container, $orm, ScriptRunRepository::class, ScriptRun::class);
 		$this->addRepository($container, $orm, NotificationRepository::class, Notification::class);
 		$this->addRepository($container, $orm, TaskWatcherRepository::class, TaskWatcher::class);
 	}

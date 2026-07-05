@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace Kytario\Dto;
 
 use DateTimeImmutable;
-use RuntimeException;
 use Kytario\Model\Repository\Enum\ArchivedFilterEnum;
 use Kytario\Model\Repository\Enum\OrderDirectionEnum;
-use Kytario\Model\Repository\Enum\SubtaskFilterEnum;
 use Kytario\Model\Repository\Enum\TaskOrderByEnum;
+use RuntimeException;
 use const PHP_INT_MAX;
 
 /** Parsed and validated query parameters of the workspace-wide task list (GET /api/tasks). */
@@ -23,7 +22,6 @@ final readonly class TaskListQueryDto
 	public function __construct(
 		public TaskOrderByEnum $orderBy,
 		public OrderDirectionEnum $direction,
-		public SubtaskFilterEnum $subtaskFilter,
 		public ArchivedFilterEnum $archived,
 		public int $limit,
 		public int $offset,
@@ -47,7 +45,6 @@ final readonly class TaskListQueryDto
 		return new self(
 			orderBy: self::parseOrderBy($query),
 			direction: self::parseDirection($query),
-			subtaskFilter: self::parseSubtaskFilter($query),
 			archived: self::parseArchivedFilter($query),
 			limit: self::intParam($query, 'limit', 50, 1, 200),
 			offset: self::intParam($query, 'offset', 0, 0, PHP_INT_MAX),
@@ -97,15 +94,6 @@ final readonly class TaskListQueryDto
 		}
 		return OrderDirectionEnum::tryFrom(strtoupper($query['orderDirection']))
 			?? throw new RuntimeException('Invalid orderDirection value.');
-	}
-
-	/** @param array<array-key, mixed> $query */
-	private static function parseSubtaskFilter(array $query): SubtaskFilterEnum
-	{
-		if (!isset($query['subtaskFilter']) || !is_string($query['subtaskFilter'])) {
-			return SubtaskFilterEnum::All;
-		}
-		return SubtaskFilterEnum::tryFrom($query['subtaskFilter']) ?? throw new RuntimeException('Invalid subtaskFilter value.');
 	}
 
 	/** @param array<array-key, mixed> $query */

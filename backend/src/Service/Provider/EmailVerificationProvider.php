@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
-use RuntimeException;
 use Kytario\Dto\EmailVerificationQueueDto;
 use Kytario\Model\Entity\EmailVerificationToken;
 use Kytario\Model\Entity\User;
 use Kytario\Model\Repository\EmailVerificationTokenRepository;
 use Kytario\Service\Queue\Enum\QueueEnum;
 use Kytario\Service\Queue\QueuePublisher;
+use RuntimeException;
 
 final readonly class EmailVerificationProvider implements EmailVerificationProviderInterface
 {

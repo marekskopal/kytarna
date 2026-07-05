@@ -3,19 +3,10 @@
 	servers {
 		trusted_proxies static private_ranges
 	}
-	order mercure after encode
 }
 
 :80 {
 	encode zstd gzip
-
-	mercure {
-		publisher_jwt {$MERCURE_PUBLISHER_JWT_KEY} HS256
-		subscriber_jwt {$MERCURE_SUBSCRIBER_JWT_KEY} HS256
-		# No wildcard fallback: a missing value fails closed instead of
-		# leaving the realtime hub open to any origin.
-		cors_origins {$BACKEND_CORS_ALLOWED_ORIGIN}
-	}
 
 	php {
 		root /app/src

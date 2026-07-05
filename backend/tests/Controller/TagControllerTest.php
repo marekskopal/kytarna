@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Kytario\Tests\Controller;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use Kytario\Controller\TagController;
 use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
 use Kytario\Tests\Support\Fixture;
 use Kytario\Tests\Support\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(TagController::class)]
 final class TagControllerTest extends IntegrationTestCase

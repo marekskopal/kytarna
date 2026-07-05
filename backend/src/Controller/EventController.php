@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Kytario\Controller;
 
-use Laminas\Diactoros\Response\JsonResponse;
-use MarekSkopal\Router\Attribute\RouteGet;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Kytario\Dto\EventDto;
 use Kytario\Dto\WorkspaceAgentStatsDto;
 use Kytario\Model\Entity\Enum\ActorTypeEnum;
@@ -22,6 +18,10 @@ use Kytario\Service\Provider\EventProviderInterface;
 use Kytario\Service\Provider\ProjectProviderInterface;
 use Kytario\Service\Provider\WorkspaceProviderInterface;
 use Kytario\Service\Request\RequestServiceInterface;
+use Laminas\Diactoros\Response\JsonResponse;
+use MarekSkopal\Router\Attribute\RouteGet;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 final readonly class EventController
 {

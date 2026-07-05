@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Kytario\Model\Entity;
 
 use DateTimeImmutable;
+use Kytario\Model\Repository\TaskRepository;
 use MarekSkopal\ORM\Attribute\Column;
 use MarekSkopal\ORM\Attribute\Entity;
 use MarekSkopal\ORM\Attribute\ManyToOne;
 use MarekSkopal\ORM\Enum\Type;
-use Kytario\Model\Repository\TaskRepository;
 
 #[Entity(repositoryClass: TaskRepository::class)]
 class Task extends AEntity
@@ -25,8 +25,6 @@ class Task extends AEntity
 		public string $name,
 		#[Column(type: Type::Text, nullable: true)]
 		public ?string $description,
-		#[ManyToOne(entityClass: Priority::class)]
-		public Priority $priority,
 		#[Column(type: Type::Date, nullable: true)]
 		public ?DateTimeImmutable $dueDate,
 		#[Column(type: Type::Int)]

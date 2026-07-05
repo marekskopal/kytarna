@@ -4,13 +4,6 @@ declare(strict_types=1);
 
 namespace Kytario\Controller\Admin;
 
-use Laminas\Diactoros\Response\JsonResponse;
-use MarekSkopal\Router\Attribute\RouteDelete;
-use MarekSkopal\Router\Attribute\RouteGet;
-use MarekSkopal\Router\Attribute\RoutePatch;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use RuntimeException;
 use Kytario\Dto\AdminUserDto;
 use Kytario\Dto\AdminUserUpdateDto;
 use Kytario\Model\Entity\Enum\SystemRoleEnum;
@@ -23,6 +16,13 @@ use Kytario\Service\Auth\AdminServiceInterface;
 use Kytario\Service\Auth\PermissionCheckerInterface;
 use Kytario\Service\Provider\UserProviderInterface;
 use Kytario\Service\Request\RequestServiceInterface;
+use Laminas\Diactoros\Response\JsonResponse;
+use MarekSkopal\Router\Attribute\RouteDelete;
+use MarekSkopal\Router\Attribute\RouteGet;
+use MarekSkopal\Router\Attribute\RoutePatch;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use RuntimeException;
 
 final readonly class AdminUserController
 {

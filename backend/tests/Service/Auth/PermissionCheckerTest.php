@@ -7,8 +7,6 @@ namespace Kytario\Tests\Service\Auth;
 use ArrayIterator;
 use DateTimeImmutable;
 use Iterator;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
 use Kytario\Model\Entity\Enum\LocaleEnum;
 use Kytario\Model\Entity\Enum\SystemRoleEnum;
 use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
@@ -17,6 +15,8 @@ use Kytario\Model\Entity\Workspace;
 use Kytario\Model\Entity\WorkspaceUser;
 use Kytario\Service\Auth\PermissionChecker;
 use Kytario\Service\Provider\WorkspaceProviderInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
 
 #[CoversClass(PermissionChecker::class)]
 final class PermissionCheckerTest extends TestCase
@@ -127,28 +127,6 @@ final class PermissionCheckerTest extends TestCase
 		self::assertFalse($checker->canChangeRole($member, $ws, $adminM, WorkspaceRoleEnum::Member));
 		self::assertFalse($checker->canChangeRole($owner, $ws, $memberM, WorkspaceRoleEnum::Owner));
 		self::assertFalse($checker->canChangeRole($admin, $ws, $ownerM, WorkspaceRoleEnum::Admin));
-	}
-
-	public function testCanManageFieldsRequiresOwnerOrAdmin(): void
-	{
-		$owner = $this->makeUser(1);
-		$admin = $this->makeUser(2);
-		$member = $this->makeUser(3);
-		$outsider = $this->makeUser(4);
-		$ws = $this->makeWorkspace($owner);
-
-		$ownerM = $this->makeMembership($ws, $owner, WorkspaceRoleEnum::Owner);
-		$adminM = $this->makeMembership($ws, $admin, WorkspaceRoleEnum::Admin);
-		$memberM = $this->makeMembership($ws, $member, WorkspaceRoleEnum::Member);
-
-		$checker = new PermissionChecker($this->fakeProvider([
-			$ws->id => [1 => $ownerM, 2 => $adminM, 3 => $memberM],
-		]));
-
-		self::assertTrue($checker->canManageFields($owner, $ws));
-		self::assertTrue($checker->canManageFields($admin, $ws));
-		self::assertFalse($checker->canManageFields($member, $ws));
-		self::assertFalse($checker->canManageFields($outsider, $ws));
 	}
 
 	public function testInvitableRoleConstraints(): void

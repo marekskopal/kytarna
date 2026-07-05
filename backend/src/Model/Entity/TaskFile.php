@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Kytario\Model\Entity;
 
+use Kytario\Model\Repository\TaskFileRepository;
 use MarekSkopal\ORM\Attribute\Column;
 use MarekSkopal\ORM\Attribute\Entity;
 use MarekSkopal\ORM\Attribute\ManyToOne;
 use MarekSkopal\ORM\Enum\Type;
-use Kytario\Model\Repository\TaskFileRepository;
 
 #[Entity(repositoryClass: TaskFileRepository::class)]
 class TaskFile extends AEntity

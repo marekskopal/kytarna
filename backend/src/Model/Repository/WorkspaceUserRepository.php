@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Kytario\Model\Repository;
 
 use Iterator;
-use MarekSkopal\ORM\Repository\AbstractRepository;
 use Kytario\Model\Entity\WorkspaceUser;
+use MarekSkopal\ORM\Repository\AbstractRepository;
 
 /** @extends AbstractRepository<WorkspaceUser> */
 final class WorkspaceUserRepository extends AbstractRepository

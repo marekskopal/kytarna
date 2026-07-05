@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Kytario\Model\Repository;
 
 use Iterator;
-use MarekSkopal\ORM\Repository\AbstractRepository;
 use Kytario\Model\Entity\Tag;
+use MarekSkopal\ORM\Repository\AbstractRepository;
 
 /** @extends AbstractRepository<Tag> */
 final class TagRepository extends AbstractRepository

@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Kytario\Tests\Command;
 
 use DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversClass;
-use Symfony\Component\Console\Tester\CommandTester;
 use Kytario\Command\NotificationDueTickCommand;
 use Kytario\Model\Entity\Enum\NotificationTypeEnum;
 use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
@@ -18,6 +16,8 @@ use Kytario\Model\Repository\WorkflowRepository;
 use Kytario\Service\Provider\NotificationProviderInterface;
 use Kytario\Tests\Support\Fixture;
 use Kytario\Tests\Support\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use Symfony\Component\Console\Tester\CommandTester;
 
 #[CoversClass(NotificationDueTickCommand::class)]
 final class NotificationDueTickCommandTest extends IntegrationTestCase
@@ -97,7 +97,6 @@ final class NotificationDueTickCommandTest extends IntegrationTestCase
 				'statusId' => $this->firstStatusId($projectId),
 				'name' => $name,
 				'description' => null,
-				'priority' => 'Medium',
 				'assigneeId' => $assigneeId,
 				'dueDate' => $dueDate,
 			],

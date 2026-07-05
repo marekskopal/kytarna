@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Kytario\Tests\Controller;
 
 use DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversClass;
 use Kytario\Controller\InvitationController;
 use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
 use Kytario\Model\Entity\Invitation;
@@ -14,6 +13,7 @@ use Kytario\Model\Entity\Workspace;
 use Kytario\Model\Repository\InvitationRepository;
 use Kytario\Tests\Support\Fixture;
 use Kytario\Tests\Support\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(InvitationController::class)]
 final class InvitationControllerTest extends IntegrationTestCase

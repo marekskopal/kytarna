@@ -6,8 +6,8 @@ namespace Kytario\Model\Repository;
 
 use DateTimeImmutable;
 use Iterator;
-use MarekSkopal\ORM\Repository\AbstractRepository;
 use Kytario\Model\Entity\Invitation;
+use MarekSkopal\ORM\Repository\AbstractRepository;
 
 /** @extends AbstractRepository<Invitation> */
 final class InvitationRepository extends AbstractRepository

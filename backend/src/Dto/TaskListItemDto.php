@@ -20,7 +20,6 @@ final readonly class TaskListItemDto
 		public ?int $assigneeId,
 		public string $name,
 		public ?string $description,
-		public PriorityDto $priority,
 		public ?string $dueDate,
 		public ?string $startDate,
 		public int $position,
@@ -30,22 +29,11 @@ final readonly class TaskListItemDto
 		public string $createdAt,
 		public string $updatedAt,
 		public array $tagIds,
-		public int $subtasksTotal,
-		public int $subtasksDone,
-		public int $checklistTotal,
-		public int $checklistDone,
 	) {
 	}
 
 	/** @param list<int> $tagIds */
-	public static function fromEntity(
-		Task $task,
-		array $tagIds = [],
-		int $subtasksTotal = 0,
-		int $subtasksDone = 0,
-		int $checklistTotal = 0,
-		int $checklistDone = 0,
-	): self
+	public static function fromEntity(Task $task, array $tagIds = []): self
 	{
 		return new self(
 			id: $task->id,
@@ -57,7 +45,6 @@ final readonly class TaskListItemDto
 			assigneeId: $task->assignee?->id,
 			name: $task->name,
 			description: $task->description,
-			priority: PriorityDto::fromEntity($task->priority),
 			dueDate: $task->dueDate?->format('Y-m-d'),
 			startDate: $task->startDate?->format('Y-m-d'),
 			position: $task->position,
@@ -67,10 +54,6 @@ final readonly class TaskListItemDto
 			createdAt: $task->createdAt->format(DATE_ATOM),
 			updatedAt: $task->updatedAt->format(DATE_ATOM),
 			tagIds: $tagIds,
-			subtasksTotal: $subtasksTotal,
-			subtasksDone: $subtasksDone,
-			checklistTotal: $checklistTotal,
-			checklistDone: $checklistDone,
 		);
 	}
 }

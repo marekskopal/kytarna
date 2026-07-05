@@ -7,13 +7,6 @@ namespace Kytario\Controller;
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use Laminas\Diactoros\Response\JsonResponse;
-use MarekSkopal\Router\Attribute\RouteGet;
-use MarekSkopal\Router\Attribute\RoutePost;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Log\LoggerInterface;
-use RuntimeException;
 use Kytario\Dto\ConfirmPasswordResetDto;
 use Kytario\Dto\CredentialsDto;
 use Kytario\Dto\GoogleClientIdDto;
@@ -23,7 +16,6 @@ use Kytario\Dto\RequestPasswordResetDto;
 use Kytario\Dto\SignUpDto;
 use Kytario\Dto\VerifyEmailDto;
 use Kytario\Model\Entity\Enum\LocaleEnum;
-use Kytario\Model\Entity\User;
 use Kytario\Response\ErrorResponse;
 use Kytario\Response\NotAuthorizedResponse;
 use Kytario\Response\OkResponse;
@@ -37,10 +29,16 @@ use Kytario\Service\Provider\EmailVerificationProviderInterface;
 use Kytario\Service\Provider\PasswordResetProviderInterface;
 use Kytario\Service\Provider\UserProviderInterface;
 use Kytario\Service\Provider\WorkspaceProviderInterface;
-use Kytario\Service\Realtime\MercureCookieIssuerInterface;
 use Kytario\Service\Request\RequestServiceInterface;
 use Kytario\Validator\PasswordValidator;
 use Kytario\Validator\TextFieldValidator;
+use Laminas\Diactoros\Response\JsonResponse;
+use MarekSkopal\Router\Attribute\RouteGet;
+use MarekSkopal\Router\Attribute\RoutePost;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
+use RuntimeException;
 use const FILTER_VALIDATE_EMAIL;
 
 final readonly class AuthenticationController
@@ -53,7 +51,6 @@ final readonly class AuthenticationController
 		private EmailVerificationProviderInterface $emailVerificationProvider,
 		private GoogleAuthServiceInterface $googleAuthService,
 		private RequestServiceInterface $requestService,
-		private MercureCookieIssuerInterface $mercureCookieIssuer,
 		private LoggerInterface $logger,
 	) {
 	}
@@ -75,22 +72,15 @@ final readonly class AuthenticationController
 			return new NotAuthorizedResponse('Email or password is invalid.');
 		}
 
-		$user = $this->userProvider->getUser($auth->userId);
-
-		return $this->withMercureCookie(new JsonResponse($auth), $request, $user);
+		return new JsonResponse($auth);
 	}
 
 	#[RoutePost(Routes::AuthenticationLogout->value)]
-	public function actionPostLogout(ServerRequestInterface $request): ResponseInterface
+	public function actionPostLogout(): ResponseInterface
 	{
-		// Web JWTs are stateless (revocation is tracked separately), but the HttpOnly Mercure
-		// subscriber cookie lives up to 1 h — expire it so the next user on a shared browser
-		// cannot resume the previous user's realtime stream. Open route: an expired access
-		// token must still be able to log out.
-		return (new OkResponse())->withAddedHeader(
-			'Set-Cookie',
-			$this->mercureCookieIssuer->clear($this->isSecureRequest($request)),
-		);
+		// Web JWTs are stateless (revocation is tracked separately); logout is an open route so
+		// an expired access token can still log out. Nothing server-side to clear.
+		return new OkResponse();
 	}
 
 	#[RoutePost(Routes::AuthenticationSignUp->value)]
@@ -155,11 +145,7 @@ final readonly class AuthenticationController
 			return new NotAuthorizedResponse('Invalid RefreshToken.');
 		}
 
-		return $this->withMercureCookie(
-			new JsonResponse($this->authenticationService->createAuthentication($user)),
-			$request,
-			$user,
-		);
+		return new JsonResponse($this->authenticationService->createAuthentication($user));
 	}
 
 	#[RoutePost(Routes::AuthenticationRequestPasswordReset->value)]
@@ -192,11 +178,7 @@ final readonly class AuthenticationController
 			return new ErrorResponse($e->getMessage(), 422);
 		}
 
-		return $this->withMercureCookie(
-			new JsonResponse($this->authenticationService->createAuthentication($user)),
-			$request,
-			$user,
-		);
+		return new JsonResponse($this->authenticationService->createAuthentication($user));
 	}
 
 	#[RouteGet(Routes::AuthenticationGoogleClientId->value)]
@@ -236,11 +218,7 @@ final readonly class AuthenticationController
 			}
 		}
 
-		return $this->withMercureCookie(
-			new JsonResponse($this->authenticationService->createAuthentication($user)),
-			$request,
-			$user,
-		);
+		return new JsonResponse($this->authenticationService->createAuthentication($user));
 	}
 
 	#[RoutePost(Routes::AuthenticationVerifyEmail->value)]
@@ -260,27 +238,5 @@ final readonly class AuthenticationController
 		}
 
 		return new OkResponse();
-	}
-
-	private function withMercureCookie(ResponseInterface $response, ServerRequestInterface $request, ?User $user,): ResponseInterface
-	{
-		if ($user === null) {
-			return $response;
-		}
-
-		return $response->withAddedHeader(
-			'Set-Cookie',
-			$this->mercureCookieIssuer->issue($user, $this->isSecureRequest($request)),
-		);
-	}
-
-	private function isSecureRequest(ServerRequestInterface $request): bool
-	{
-		$forwardedProto = $request->getHeader('X-Forwarded-Proto')[0] ?? null;
-		if ($forwardedProto !== null) {
-			return strtolower($forwardedProto) === 'https';
-		}
-
-		return strtolower($request->getUri()->getScheme()) === 'https';
 	}
 }

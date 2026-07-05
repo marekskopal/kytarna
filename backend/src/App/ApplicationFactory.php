@@ -4,21 +4,20 @@ declare(strict_types=1);
 
 namespace Kytario\App;
 
-use League\Container\Container;
-use League\Container\ReflectionContainer;
-use MarekSkopal\Router\Builder\RouterBuilder;
-use Psr\Container\ContainerInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 use Kytario\App\Bootstrap\EnvironmentValidator;
 use Kytario\App\ServiceProvider\AuthenticationServiceProvider;
 use Kytario\App\ServiceProvider\DomainServiceProvider;
 use Kytario\App\ServiceProvider\InfrastructureServiceProvider;
 use Kytario\App\ServiceProvider\OrmServiceProvider;
-use Kytario\App\ServiceProvider\RealtimeServiceProvider;
 use Kytario\Middleware\AuthorizationMiddleware;
 use Kytario\Middleware\CorsMiddleware;
 use Kytario\Route\Strategy\JsonStrategy;
 use Kytario\Service\Dbal\DbContext;
+use League\Container\Container;
+use League\Container\ReflectionContainer;
+use MarekSkopal\Router\Builder\RouterBuilder;
+use Psr\Container\ContainerInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 final readonly class ApplicationFactory
 {
@@ -42,7 +41,6 @@ final readonly class ApplicationFactory
 		$container->addServiceProvider(new InfrastructureServiceProvider());
 		$container->addServiceProvider(new OrmServiceProvider($dbContext));
 		$container->addServiceProvider(new AuthenticationServiceProvider());
-		$container->addServiceProvider(new RealtimeServiceProvider());
 		$container->addServiceProvider(new DomainServiceProvider());
 
 		return $container;

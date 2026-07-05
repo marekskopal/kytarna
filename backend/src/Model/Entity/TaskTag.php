@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Kytario\Model\Entity;
 
+use Kytario\Model\Repository\TaskTagRepository;
 use MarekSkopal\ORM\Attribute\Entity;
 use MarekSkopal\ORM\Attribute\ManyToOne;
-use Kytario\Model\Repository\TaskTagRepository;
 
 #[Entity(repositoryClass: TaskTagRepository::class)]
 class TaskTag extends AEntity

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Kytario\Tests\Dto;
 
+use Kytario\Dto\DateInput;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
-use Kytario\Dto\DateInput;
 
 #[CoversClass(DateInput::class)]
 final class DateInputTest extends TestCase

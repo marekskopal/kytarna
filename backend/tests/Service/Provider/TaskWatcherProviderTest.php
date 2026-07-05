@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Kytario\Tests\Service\Provider;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
 use Kytario\Model\Entity\Task;
 use Kytario\Model\Entity\User;
@@ -15,6 +14,7 @@ use Kytario\Service\Provider\TaskWatcherProvider;
 use Kytario\Service\Provider\TaskWatcherProviderInterface;
 use Kytario\Tests\Support\Fixture;
 use Kytario\Tests\Support\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(TaskWatcherProvider::class)]
 final class TaskWatcherProviderTest extends IntegrationTestCase
@@ -74,7 +74,7 @@ final class TaskWatcherProviderTest extends IntegrationTestCase
 		$response = $this->request(
 			'POST',
 			'/api/projects/' . $projectId . '/tasks',
-			body: ['statusId' => $this->firstStatusId($projectId), 'name' => $name, 'description' => null, 'priority' => 'Medium'],
+			body: ['statusId' => $this->firstStatusId($projectId), 'name' => $name, 'description' => null],
 			authenticatedAs: $author,
 		);
 		$taskId = self::intField($this->jsonBody($response)['id']);

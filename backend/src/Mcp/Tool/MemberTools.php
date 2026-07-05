@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Kytario\Mcp\Tool;
 
 use DateTimeImmutable;
-use Mcp\Capability\Attribute\McpTool;
-use RuntimeException;
 use Kytario\Mcp\Dto\McpInvitationDto;
 use Kytario\Mcp\Dto\McpMemberDto;
 use Kytario\Mcp\Dto\McpMemberListDto;
@@ -18,6 +16,8 @@ use Kytario\Service\Auth\PermissionCheckerInterface;
 use Kytario\Service\Authentication\RateLimitConfig;
 use Kytario\Service\Provider\InvitationProviderInterface;
 use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Mcp\Capability\Attribute\McpTool;
+use RuntimeException;
 
 final readonly class MemberTools
 {

@@ -4,12 +4,6 @@ declare(strict_types=1);
 
 namespace Kytario\Controller;
 
-use Laminas\Diactoros\Response\JsonResponse;
-use MarekSkopal\Router\Attribute\RouteDelete;
-use MarekSkopal\Router\Attribute\RouteGet;
-use MarekSkopal\Router\Attribute\RoutePost;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Kytario\Dto\TaskWatcherDto;
 use Kytario\Dto\TaskWatchersDto;
 use Kytario\Model\Entity\Task;
@@ -20,6 +14,12 @@ use Kytario\Route\Routes;
 use Kytario\Service\Provider\TaskCodeResolverInterface;
 use Kytario\Service\Provider\TaskWatcherProviderInterface;
 use Kytario\Service\Request\RequestServiceInterface;
+use Laminas\Diactoros\Response\JsonResponse;
+use MarekSkopal\Router\Attribute\RouteDelete;
+use MarekSkopal\Router\Attribute\RouteGet;
+use MarekSkopal\Router\Attribute\RoutePost;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 final readonly class TaskWatcherController
 {

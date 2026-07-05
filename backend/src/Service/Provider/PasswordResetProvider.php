@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
-use RuntimeException;
-use SensitiveParameter;
 use Kytario\Dto\PasswordResetQueueDto;
 use Kytario\Model\Entity\PasswordResetToken;
 use Kytario\Model\Entity\User;
@@ -14,6 +12,8 @@ use Kytario\Model\Repository\PasswordResetTokenRepository;
 use Kytario\Service\Authentication\RateLimitConfig;
 use Kytario\Service\Queue\Enum\QueueEnum;
 use Kytario\Service\Queue\QueuePublisher;
+use RuntimeException;
+use SensitiveParameter;
 use const FILTER_VALIDATE_EMAIL;
 
 final readonly class PasswordResetProvider implements PasswordResetProviderInterface

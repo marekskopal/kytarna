@@ -5,21 +5,17 @@ declare(strict_types=1);
 namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
-use RuntimeException;
 use Kytario\Model\Entity\Task;
 use Kytario\Model\Entity\TaskTag;
 use Kytario\Model\Entity\Workspace;
 use Kytario\Model\Repository\TagRepository;
 use Kytario\Model\Repository\TaskTagRepository;
-use Kytario\Service\Search\SearchIndexer;
+use RuntimeException;
 
 final readonly class TaskTagProvider implements TaskTagProviderInterface
 {
-	public function __construct(
-		private TaskTagRepository $taskTagRepository,
-		private TagRepository $tagRepository,
-		private SearchIndexer $searchIndexer,
-	) {
+	public function __construct(private TaskTagRepository $taskTagRepository, private TagRepository $tagRepository,)
+	{
 	}
 
 	/** @return list<int> */
@@ -97,10 +93,6 @@ final readonly class TaskTagProvider implements TaskTagProviderInterface
 			}
 			$this->taskTagRepository->delete($row);
 			$removed[] = $tagId;
-		}
-
-		if ($added !== [] || $removed !== []) {
-			$this->searchIndexer->queueUpsert($task->id);
 		}
 
 		return ['added' => $added, 'removed' => $removed];

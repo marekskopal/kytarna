@@ -6,12 +6,12 @@ namespace Kytario\Tests\Middleware;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use PHPUnit\Framework\Attributes\CoversClass;
 use Kytario\Middleware\AuthorizationMiddleware;
 use Kytario\Service\Authentication\AuthenticationServiceInterface;
 use Kytario\Service\Provider\UserProviderInterface;
 use Kytario\Tests\Support\Fixture;
 use Kytario\Tests\Support\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(AuthorizationMiddleware::class)]
 final class TokenRevocationTest extends IntegrationTestCase

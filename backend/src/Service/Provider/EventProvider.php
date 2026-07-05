@@ -15,9 +15,6 @@ use Kytario\Model\Entity\Workspace;
 use Kytario\Model\Repository\EventRepository;
 use Kytario\Service\Actor\ActorContextInterface;
 use Kytario\Service\Notification\NotificationDispatcherInterface;
-use Kytario\Service\Realtime\RealtimePublisherInterface;
-use Kytario\Service\Recurrence\RecurrenceTriggerInterface;
-use Kytario\Service\Script\Trigger\ScriptEventTriggerInterface;
 use const JSON_THROW_ON_ERROR;
 
 final readonly class EventProvider implements EventProviderInterface
@@ -25,10 +22,7 @@ final readonly class EventProvider implements EventProviderInterface
 	public function __construct(
 		private EventRepository $eventRepository,
 		private ActorContextInterface $actorContext,
-		private RealtimePublisherInterface $realtimePublisher,
-		private ScriptEventTriggerInterface $scriptEventTrigger,
 		private NotificationDispatcherInterface $notificationDispatcher,
-		private RecurrenceTriggerInterface $recurrenceTrigger,
 	) {
 	}
 
@@ -52,19 +46,7 @@ final readonly class EventProvider implements EventProviderInterface
 
 		$this->eventRepository->persist($event);
 
-		$this->realtimePublisher->publish(
-			type: $type,
-			workspaceId: $project->workspace->id,
-			projectId: $project->id,
-			taskId: $taskId,
-			commentId: $this->intFromMetadata($metadata, 'commentId'),
-			fileId: $this->intFromMetadata($metadata, 'fileId'),
-			relationId: $this->intFromMetadata($metadata, 'relationId'),
-		);
-
-		$this->scriptEventTrigger->onEvent($event);
 		$this->notificationDispatcher->onEvent($event);
-		$this->recurrenceTrigger->onEvent($event);
 
 		return $event;
 	}
@@ -88,18 +70,7 @@ final readonly class EventProvider implements EventProviderInterface
 
 		$this->eventRepository->persist($event);
 
-		if ($workspace !== null) {
-			$this->realtimePublisher->publish(type: $type, workspaceId: $workspace->id);
-		}
-
 		return $event;
-	}
-
-	/** @param array<string,mixed> $metadata */
-	private function intFromMetadata(array $metadata, string $key): ?int
-	{
-		$value = $metadata[$key] ?? null;
-		return is_int($value) ? $value : null;
 	}
 
 	/** @return Iterator<Event> */

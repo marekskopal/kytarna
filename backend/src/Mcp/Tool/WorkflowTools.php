@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Kytario\Mcp\Tool;
 
-use Mcp\Capability\Attribute\McpTool;
-use RuntimeException;
 use Kytario\Mcp\Dto\McpStatusDto;
 use Kytario\Mcp\Dto\McpStatusListDto;
 use Kytario\Mcp\McpUserContextInterface;
@@ -17,6 +15,8 @@ use Kytario\Service\Provider\ProjectProviderInterface;
 use Kytario\Service\Provider\StatusProviderInterface;
 use Kytario\Service\Provider\WorkflowProviderInterface;
 use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Mcp\Capability\Attribute\McpTool;
+use RuntimeException;
 
 final readonly class WorkflowTools
 {

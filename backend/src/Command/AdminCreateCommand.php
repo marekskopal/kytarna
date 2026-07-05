@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace Kytario\Command;
 
 use DateTimeImmutable;
+use Kytario\App\ApplicationFactory;
+use Kytario\Model\Entity\Enum\LocaleEnum;
+use Kytario\Model\Entity\Enum\SystemRoleEnum;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Repository\UserRepository;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Kytario\App\ApplicationFactory;
-use Kytario\Model\Entity\Enum\LocaleEnum;
-use Kytario\Model\Entity\Enum\SystemRoleEnum;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Repository\UserRepository;
 use const FILTER_VALIDATE_EMAIL;
 use const PASSWORD_BCRYPT;
 

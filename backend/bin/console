@@ -10,18 +10,12 @@ use Kytario\Command\AdminCreateCommand;
 use Kytario\Command\MigrationGenerateCommand;
 use Kytario\Command\MigrationRunCommand;
 use Kytario\Command\NotificationDueTickCommand;
-use Kytario\Command\RecurringTaskTickCommand;
-use Kytario\Command\ScriptScheduleTickCommand;
-use Kytario\Command\SearchReindexCommand;
 
 $application = new Application();
 
 $application->addCommand(new AdminCreateCommand());
 $application->addCommand(new MigrationGenerateCommand());
 $application->addCommand(new MigrationRunCommand());
-$application->addCommand(new SearchReindexCommand());
-$application->addCommand(new ScriptScheduleTickCommand());
 $application->addCommand(new NotificationDueTickCommand());
-$application->addCommand(new RecurringTaskTickCommand());
 
 $application->run();

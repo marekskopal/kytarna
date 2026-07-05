@@ -45,9 +45,6 @@ $testEnv = [
 	'MCP_SESSION_TTL' => '60',
 	'BACKEND_CORS_ALLOWED_ORIGIN' => '*',
 	'BACKEND_LOG_LEVEL' => 'production',
-	'MERCURE_PUBLISHER_JWT_KEY' => 'test-mercure-publisher-key-0000000000000000',
-	'MERCURE_SUBSCRIBER_JWT_KEY' => 'test-mercure-subscriber-key-0000000000000000',
-	'MERCURE_PUBLISH_URL' => '',
 ];
 foreach ($testEnv as $name => $value) {
 	putenv($name . '=' . $value);

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Kytario\Tests\Middleware;
 
+use Kytario\Middleware\CorsMiddleware;
+use Kytario\Service\Cors\CorsPolicy;
 use Laminas\Diactoros\Response;
 use Laminas\Diactoros\Response\TextResponse;
 use Laminas\Diactoros\ServerRequest;
@@ -12,8 +14,6 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Kytario\Middleware\CorsMiddleware;
-use Kytario\Service\Cors\CorsPolicy;
 
 #[CoversClass(CorsMiddleware::class)]
 final class CorsMiddlewareTest extends TestCase

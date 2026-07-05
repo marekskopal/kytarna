@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Kytario\App\Bootstrap;
 
-use RuntimeException;
 use Kytario\Service\Cors\CorsPolicy;
+use RuntimeException;
 
 final readonly class EnvironmentValidator
 {
@@ -37,9 +37,6 @@ final readonly class EnvironmentValidator
 		'S3_SECRET_KEY' => 'minioadmin',
 		'REDIS_PASSWORD' => 'kytario',
 		'RABBITMQ_PASSWORD' => 'kytario',
-		'MEILI_MASTER_KEY' => self::PlaceholderToken,
-		'MERCURE_PUBLISHER_JWT_KEY' => self::PlaceholderToken,
-		'MERCURE_SUBSCRIBER_JWT_KEY' => self::PlaceholderToken,
 	];
 
 	/** @param array<string, string> $env */

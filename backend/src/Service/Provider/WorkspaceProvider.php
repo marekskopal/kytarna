@@ -6,7 +6,6 @@ namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
 use Iterator;
-use RuntimeException;
 use Kytario\Model\Entity\Enum\EventTypeEnum;
 use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
 use Kytario\Model\Entity\User;
@@ -16,6 +15,7 @@ use Kytario\Model\Repository\UserRepository;
 use Kytario\Model\Repository\WorkspaceRepository;
 use Kytario\Model\Repository\WorkspaceUserRepository;
 use Kytario\Validator\TextFieldValidator;
+use RuntimeException;
 
 final readonly class WorkspaceProvider implements WorkspaceProviderInterface
 {
@@ -25,7 +25,6 @@ final readonly class WorkspaceProvider implements WorkspaceProviderInterface
 		private UserRepository $userRepository,
 		private EventProviderInterface $eventProvider,
 		private TaskProviderInterface $taskProvider,
-		private PriorityProviderInterface $priorityProvider,
 	) {
 	}
 
@@ -67,11 +66,6 @@ final readonly class WorkspaceProvider implements WorkspaceProviderInterface
 		$this->workspaceRepository->persist($workspace);
 
 		$this->addMember($workspace, $owner, WorkspaceRoleEnum::Owner);
-
-		// Seed the default priority catalog so new tasks always have a default to fall back to.
-		$this->priorityProvider->createPriority($workspace, 'High', '#fdecea', false);
-		$this->priorityProvider->createPriority($workspace, 'Medium', '#fbf2dd', true);
-		$this->priorityProvider->createPriority($workspace, 'Low', '#f1f1f3', false);
 
 		if ($owner->currentWorkspaceId === null) {
 			$this->switchCurrentWorkspace($owner, $workspace);

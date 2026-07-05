@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Kytario\Tests\Support;
 
-use MarekSkopal\ORM\ORM;
-use PDO;
-use Psr\Container\ContainerInterface;
 use Kytario\App\Application;
 use Kytario\App\ApplicationFactory;
 use Kytario\Service\Actor\ActorContextInterface;
+use MarekSkopal\ORM\ORM;
+use PDO;
+use Psr\Container\ContainerInterface;
 
 /**
  * Shared per-suite singleton: builds the Application once, exposes the

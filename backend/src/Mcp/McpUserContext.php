@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Kytario\Mcp;
 
-use RuntimeException;
 use Kytario\Model\Entity\User;
+use RuntimeException;
 
 final class McpUserContext implements McpUserContextInterface
 {

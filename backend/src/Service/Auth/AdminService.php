@@ -6,7 +6,6 @@ namespace Kytario\Service\Auth;
 
 use DateTimeImmutable;
 use Iterator;
-use RuntimeException;
 use Kytario\Model\Entity\Enum\EventTypeEnum;
 use Kytario\Model\Entity\Enum\SystemRoleEnum;
 use Kytario\Model\Entity\User;
@@ -16,6 +15,7 @@ use Kytario\Model\Repository\WorkspaceRepository;
 use Kytario\Model\Repository\WorkspaceUserRepository;
 use Kytario\Service\Provider\EventProviderInterface;
 use Kytario\Service\Provider\WorkspaceProviderInterface;
+use RuntimeException;
 use const FILTER_VALIDATE_EMAIL;
 
 final readonly class AdminService implements AdminServiceInterface

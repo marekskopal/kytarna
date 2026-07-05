@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Kytario\OAuth;
 
-use Psr\Http\Message\ServerRequestInterface;
 use Kytario\Route\Routes;
+use Psr\Http\Message\ServerRequestInterface;
 use const PHP_URL_HOST;
 
 /**

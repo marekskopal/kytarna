@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Kytario\Tests\Mcp;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use Kytario\Mcp\McpUserContextInterface;
 use Kytario\Mcp\Tool\ProjectTools;
 use Kytario\Model\Entity\User;
@@ -12,6 +11,7 @@ use Kytario\Service\Actor\ActorContextInterface;
 use Kytario\Tests\Support\AppHarness;
 use Kytario\Tests\Support\Fixture;
 use Kytario\Tests\Support\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(ProjectTools::class)]
 final class ProjectToolsTest extends IntegrationTestCase

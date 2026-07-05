@@ -1,4 +1,2 @@
 SHELL=/bin/sh
-* * * * *  php /app/bin/console scripts:tick
 0 * * * *  php /app/bin/console notifications:due-tick
-0 * * * *  php /app/bin/console recurring-tasks:tick

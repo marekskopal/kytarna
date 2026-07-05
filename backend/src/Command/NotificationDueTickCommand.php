@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace Kytario\Command;
 
 use DateTimeImmutable;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use Kytario\App\ApplicationFactory;
 use Kytario\Model\Entity\Enum\NotificationTypeEnum;
 use Kytario\Model\Entity\Task;
@@ -16,6 +13,9 @@ use Kytario\Model\Repository\TaskRepository;
 use Kytario\Service\Notification\NotificationDispatcherInterface;
 use Kytario\Service\Provider\NotificationProviderInterface;
 use Kytario\Service\Provider\TaskWatcherProviderInterface;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use const DATE_ATOM;
 
 /**

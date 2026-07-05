@@ -9,9 +9,7 @@ use Kytario\Model\Entity\User;
 use Kytario\Model\Repository\EventRepository;
 use Kytario\Model\Repository\InvitationRepository;
 use Kytario\Model\Repository\OAuthClientRepository;
-use Kytario\Model\Repository\TaskCommentRepository;
 use Kytario\Model\Repository\TaskFileRepository;
-use Kytario\Model\Repository\TaskRelationRepository;
 use Kytario\Model\Repository\WorkspaceUserRepository;
 use const DATE_ATOM;
 use const JSON_THROW_ON_ERROR;
@@ -22,9 +20,7 @@ final readonly class UserDataExportService implements UserDataExportServiceInter
 		private WorkspaceUserRepository $workspaceUserRepository,
 		private InvitationRepository $invitationRepository,
 		private EventRepository $eventRepository,
-		private TaskCommentRepository $taskCommentRepository,
 		private TaskFileRepository $taskFileRepository,
-		private TaskRelationRepository $taskRelationRepository,
 		private OAuthClientRepository $oAuthClientRepository,
 	) {
 	}
@@ -49,9 +45,7 @@ final readonly class UserDataExportService implements UserDataExportServiceInter
 			'workspaceMemberships' => $this->collectMemberships($user->id),
 			'invitationsSent' => $this->collectInvitations($user->id),
 			'events' => $this->collectEvents($user->id),
-			'taskComments' => $this->collectComments($user->id),
 			'taskFiles' => $this->collectFiles($user->id),
-			'taskRelationsCreated' => $this->collectRelations($user->id),
 			'oauthClients' => $this->collectOAuthClients($user->id),
 		];
 	}
@@ -113,23 +107,6 @@ final readonly class UserDataExportService implements UserDataExportServiceInter
 	}
 
 	/** @return list<array<string, mixed>> */
-	private function collectComments(int $userId): array
-	{
-		$out = [];
-		foreach ($this->taskCommentRepository->findByAuthor($userId) as $comment) {
-			$out[] = [
-				'id' => $comment->id,
-				'taskId' => $comment->task->id,
-				'body' => $comment->body,
-				'actorType' => $comment->actorType->value,
-				'createdAt' => $comment->createdAt->format(DATE_ATOM),
-				'updatedAt' => $comment->updatedAt->format(DATE_ATOM),
-			];
-		}
-		return $out;
-	}
-
-	/** @return list<array<string, mixed>> */
 	private function collectFiles(int $userId): array
 	{
 		$out = [];
@@ -141,22 +118,6 @@ final readonly class UserDataExportService implements UserDataExportServiceInter
 				'mimeType' => $file->mimeType,
 				'size' => $file->size,
 				'createdAt' => $file->createdAt->format(DATE_ATOM),
-			];
-		}
-		return $out;
-	}
-
-	/** @return list<array<string, mixed>> */
-	private function collectRelations(int $userId): array
-	{
-		$out = [];
-		foreach ($this->taskRelationRepository->findByCreatedBy($userId) as $relation) {
-			$out[] = [
-				'id' => $relation->id,
-				'sourceTaskId' => $relation->sourceTask->id,
-				'targetTaskId' => $relation->targetTask->id,
-				'type' => $relation->type->value,
-				'createdAt' => $relation->createdAt->format(DATE_ATOM),
 			];
 		}
 		return $out;

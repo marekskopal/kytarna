@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Kytario\Tests\Controller;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use Kytario\Controller\WorkspaceController;
 use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
 use Kytario\Model\Repository\StatusRepository;
@@ -13,6 +12,7 @@ use Kytario\OAuth\AuthorizationServiceInterface;
 use Kytario\OAuth\ClientServiceInterface;
 use Kytario\Tests\Support\Fixture;
 use Kytario\Tests\Support\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(WorkspaceController::class)]
 final class WorkspaceControllerTest extends IntegrationTestCase
@@ -152,7 +152,6 @@ final class WorkspaceControllerTest extends IntegrationTestCase
 				'statusId' => $this->firstStatusId($project->id),
 				'name' => 'Member task',
 				'description' => null,
-				'priority' => 'Medium',
 				'assigneeId' => $member->id,
 			],
 			authenticatedAs: $owner,

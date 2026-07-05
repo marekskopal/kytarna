@@ -6,26 +6,19 @@ namespace Kytario\App\ServiceProvider;
 
 use AsyncAws\S3\S3Client;
 use Http\Discovery\Psr17FactoryDiscovery;
-use League\Container\ServiceProvider\AbstractServiceProvider;
-use Predis\Client;
-use Predis\ClientInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
-use Psr\Log\LoggerInterface;
-use Kytario\Model\Repository\TaskCommentRepository;
-use Kytario\Model\Repository\TaskFieldValueRepository;
-use Kytario\Model\Repository\TaskRepository;
-use Kytario\Model\Repository\TaskTagRepository;
 use Kytario\Service\Cache\CacheFactory;
 use Kytario\Service\Cache\CacheFactoryInterface;
 use Kytario\Service\Cors\CorsPolicy;
 use Kytario\Service\Logger\Logger;
 use Kytario\Service\Queue\QueuePublisher;
-use Kytario\Service\Search\MeiliClient;
-use Kytario\Service\Search\SearchIndexer;
-use Kytario\Service\Search\TaskDocumentBuilder;
 use Kytario\Service\Storage\FileStorageInterface;
 use Kytario\Service\Storage\S3Config;
 use Kytario\Service\Storage\S3FileStorage;
+use League\Container\ServiceProvider\AbstractServiceProvider;
+use Predis\Client;
+use Predis\ClientInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Log\LoggerInterface;
 
 final class InfrastructureServiceProvider extends AbstractServiceProvider
 {
@@ -41,9 +34,6 @@ final class InfrastructureServiceProvider extends AbstractServiceProvider
 			CacheFactoryInterface::class,
 			CorsPolicy::class,
 			QueuePublisher::class,
-			TaskDocumentBuilder::class,
-			MeiliClient::class,
-			SearchIndexer::class,
 		], true);
 	}
 
@@ -106,33 +96,5 @@ final class InfrastructureServiceProvider extends AbstractServiceProvider
 		);
 
 		$container->add(QueuePublisher::class, static fn (): QueuePublisher => new QueuePublisher());
-
-		$container->add(TaskDocumentBuilder::class, static function () use ($container): TaskDocumentBuilder {
-			$comments = $container->get(TaskCommentRepository::class);
-			assert($comments instanceof TaskCommentRepository);
-			$fieldValues = $container->get(TaskFieldValueRepository::class);
-			assert($fieldValues instanceof TaskFieldValueRepository);
-			$taskTags = $container->get(TaskTagRepository::class);
-			assert($taskTags instanceof TaskTagRepository);
-			return new TaskDocumentBuilder($comments, $fieldValues, $taskTags);
-		});
-
-		$container->add(MeiliClient::class, static function () use ($container): MeiliClient {
-			$builder = $container->get(TaskDocumentBuilder::class);
-			assert($builder instanceof TaskDocumentBuilder);
-			$tasks = $container->get(TaskRepository::class);
-			assert($tasks instanceof TaskRepository);
-			$logger = $container->get(LoggerInterface::class);
-			assert($logger instanceof LoggerInterface);
-			return new MeiliClient($builder, $tasks, $logger);
-		});
-
-		$container->add(SearchIndexer::class, static function () use ($container): SearchIndexer {
-			$publisher = $container->get(QueuePublisher::class);
-			assert($publisher instanceof QueuePublisher);
-			$logger = $container->get(LoggerInterface::class);
-			assert($logger instanceof LoggerInterface);
-			return new SearchIndexer($publisher, $logger);
-		});
 	}
 }

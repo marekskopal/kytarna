@@ -5,14 +5,10 @@ declare(strict_types=1);
 namespace Kytario\Mcp\Tool;
 
 use DateTimeImmutable;
-use Mcp\Capability\Attribute\McpTool;
-use RuntimeException;
 use Kytario\Dto\DateInput;
-use Kytario\Dto\TaskRecurrenceWriteDto;
 use Kytario\Mcp\Dto\McpTaskDto;
 use Kytario\Mcp\Dto\McpTaskListDto;
 use Kytario\Mcp\McpUserContextInterface;
-use Kytario\Mcp\Tool\Helper\PriorityResolver;
 use Kytario\Mcp\Tool\Helper\StatusResolver;
 use Kytario\Model\Entity\Enum\StatusTypeEnum;
 use Kytario\Model\Entity\Project;
@@ -25,11 +21,11 @@ use Kytario\Service\Provider\Enum\BulkOpEnum;
 use Kytario\Service\Provider\ProjectProviderInterface;
 use Kytario\Service\Provider\StatusProviderInterface;
 use Kytario\Service\Provider\TaskCodeResolverInterface;
-use Kytario\Service\Provider\TaskFieldValueProviderInterface;
 use Kytario\Service\Provider\TaskProviderInterface;
-use Kytario\Service\Provider\TaskRecurrenceProviderInterface;
 use Kytario\Service\Provider\TaskTagProviderInterface;
 use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Mcp\Capability\Attribute\McpTool;
+use RuntimeException;
 
 final readonly class TaskTools
 {
@@ -40,13 +36,10 @@ final readonly class TaskTools
 		private TaskProviderInterface $taskProvider,
 		private TaskCodeResolverInterface $taskCodeResolver,
 		private WorkspaceProviderInterface $workspaceProvider,
-		private TaskFieldValueProviderInterface $taskFieldValueProvider,
 		private TaskTagProviderInterface $taskTagProvider,
-		private PriorityResolver $priorityResolver,
 		private StatusResolver $statusResolver,
 		private UserRepository $userRepository,
 		private BulkTaskProviderInterface $bulkTaskProvider,
-		private TaskRecurrenceProviderInterface $recurrenceProvider,
 	) {
 	}
 
@@ -68,11 +61,7 @@ final readonly class TaskTools
 			if ($statusId !== null && $task->status->id !== $statusId) {
 				continue;
 			}
-			$tasks[] = McpTaskDto::fromEntity(
-				$task,
-				$this->taskFieldValueProvider->findByTask($task),
-				$this->taskTagProvider->getTagIdsForTask($task),
-			);
+			$tasks[] = McpTaskDto::fromEntity($task, $this->taskTagProvider->getTagIdsForTask($task));
 		}
 
 		return new McpTaskListDto($tasks);
@@ -110,11 +99,7 @@ final readonly class TaskTools
 		$found = $exact ?? $partial;
 
 		return $found !== null
-			? McpTaskDto::fromEntity(
-				$found,
-				$this->taskFieldValueProvider->findByTask($found),
-				$this->taskTagProvider->getTagIdsForTask($found),
-			)
+			? McpTaskDto::fromEntity($found, $this->taskTagProvider->getTagIdsForTask($found))
 			: null;
 	}
 
@@ -127,11 +112,7 @@ final readonly class TaskTools
 	public function getTask(int|string $taskId): McpTaskDto
 	{
 		$task = $this->requireTask($taskId);
-		return McpTaskDto::fromEntity(
-			$task,
-			$this->taskFieldValueProvider->findByTask($task),
-			$this->taskTagProvider->getTagIdsForTask($task),
-		);
+		return McpTaskDto::fromEntity($task, $this->taskTagProvider->getTagIdsForTask($task));
 	}
 
 	/**
@@ -141,50 +122,32 @@ final readonly class TaskTools
 	 * @param int $projectId Project ID
 	 * @param string $name Task name
 	 * @param string|null $description Optional markdown description
-	 * @param int|null $priorityId Priority ID from the workspace's catalog (preferred). When omitted, the workspace's default priority is used.
-	 * @param string|null $priorityName Priority name lookup (case-insensitive). Accepts the legacy "Low"/"Medium"/"High" against seeded defaults.
 	 * @param int|null $statusId Optional explicit status ID
 	 * @param string|null $statusName Optional status name (case-insensitive); ignored if statusId is given
 	 * @param string|null $dueDate Optional due date (YYYY-MM-DD)
 	 * @param string|null $startDate Optional start date (YYYY-MM-DD). Must not be after dueDate. Used by the Timeline view.
 	 * @param int|null $assigneeId Optional user ID to assign. Defaults to the current MCP user. Must be a member of the project's workspace.
-	 * @param array<array{fieldId: int, value: ?string}>|null $fieldValues Optional custom-field values keyed by fieldId
 	 * @param list<int>|null $tagIds Optional list of workspace tag IDs to apply to the new task
-	 * @param array{cadence: string, interval?: int, weekday?: ?int, dayOfMonth?: ?int, cronExpression?: ?string, endType?: string, endDate?: ?string, maxOccurrences?: ?int, anchorDate?: ?string}|null $recurrence Optional recurrence rule. See set_task_recurrence for the field semantics.
 	 */
-	#[McpTool(
-		name: 'create_task',
-		description: 'Create a task in a project. Lands in Start status by default. Pass recurrence to make it repeat.',
-	)]
+	#[McpTool(name: 'create_task', description: 'Create a task in a project. Lands in Start status by default.')]
 	public function createTask(
 		int $projectId,
 		string $name,
 		?string $description = null,
-		?int $priorityId = null,
-		?string $priorityName = null,
 		?int $statusId = null,
 		?string $statusName = null,
 		?string $dueDate = null,
 		?string $startDate = null,
 		?int $assigneeId = null,
-		?array $fieldValues = null,
 		?array $tagIds = null,
-		?array $recurrence = null,
 	): McpTaskDto {
 		$user = $this->userContext->getUser();
 		$project = $this->requireProject($projectId);
-		$priority = $this->priorityResolver->resolve($project, $priorityId, $priorityName);
-		if ($priority === null) {
-			throw new RuntimeException('Workspace has no priorities configured.');
-		}
 		$status = $this->statusResolver->resolve($project, $statusId, $statusName)
 			?? $this->statusResolver->findByType($project, StatusTypeEnum::Start)
 			?? throw new RuntimeException(sprintf('No Start status found for project %d.', $projectId));
 
 		$assignee = $assigneeId !== null ? $this->resolveAssignee($project, $assigneeId) : $user;
-
-		// Validate the recurrence payload up front so a bad rule fails before a task is created.
-		$recurrenceConfig = $recurrence !== null ? TaskRecurrenceWriteDto::fromArray($recurrence)->toConfig() : null;
 
 		$task = $this->taskProvider->createTask(
 			author: $user,
@@ -192,23 +155,13 @@ final readonly class TaskTools
 			status: $status,
 			name: $name,
 			description: $description,
-			priority: $priority,
 			dueDate: DateInput::parse($dueDate, 'dueDate'),
 			assignee: $assignee,
-			fieldValues: $this->normalizeFieldValues($fieldValues),
 			tagIds: $tagIds,
 			startDate: DateInput::parse($startDate, 'startDate'),
 		);
 
-		if ($recurrenceConfig !== null) {
-			$this->recurrenceProvider->set($user, $task, $recurrenceConfig);
-		}
-
-		return McpTaskDto::fromEntity(
-			$task,
-			$this->taskFieldValueProvider->findByTask($task),
-			$this->taskTagProvider->getTagIdsForTask($task),
-		);
+		return McpTaskDto::fromEntity($task, $this->taskTagProvider->getTagIdsForTask($task));
 	}
 
 	/**
@@ -217,13 +170,10 @@ final readonly class TaskTools
 	 * @param int|string $taskId Task ID or code (e.g. "MP-3")
 	 * @param string|null $name New name
 	 * @param string|null $description New description
-	 * @param int|null $priorityId New priority ID from the workspace's catalog (preferred over priorityName).
-	 * @param string|null $priorityName New priority name (case-insensitive). Accepts the legacy "Low"/"Medium"/"High" against seeded defaults.
 	 * @param string|null $dueDate New due date (YYYY-MM-DD), or empty string to clear
 	 * @param string|null $startDate New start date (YYYY-MM-DD), or empty string to clear. Must not be after dueDate.
 	 * @param int|null $assigneeId New assignee user ID. Pass null to clear (unassign). Omit the parameter to leave unchanged. Must be a member of the project's workspace.
 	 * @param bool $clearAssignee Pass true together with omitting assigneeId to explicitly unassign the task.
-	 * @param array<array{fieldId: int, value: ?string}>|null $fieldValues Optional custom-field values to replace
 	 * @param list<int>|null $tagIds Optional list of workspace tag IDs to apply (replaces the full set)
 	 */
 	#[McpTool(
@@ -234,13 +184,10 @@ final readonly class TaskTools
 		int|string $taskId,
 		?string $name = null,
 		?string $description = null,
-		?int $priorityId = null,
-		?string $priorityName = null,
 		?string $dueDate = null,
 		?string $startDate = null,
 		?int $assigneeId = null,
 		bool $clearAssignee = false,
-		?array $fieldValues = null,
 		?array $tagIds = null,
 	): McpTaskDto {
 		$user = $this->userContext->getUser();
@@ -249,29 +196,20 @@ final readonly class TaskTools
 		$newDueDate = $this->resolveNewDate($task->dueDate, $dueDate);
 		$newStartDate = $this->resolveNewDate($task->startDate, $startDate);
 		$assignee = $this->resolveAssigneeForUpdate($task, $assigneeId, $clearAssignee);
-		$priority = $priorityId !== null || $priorityName !== null
-			? ($this->priorityResolver->resolve($task->project, $priorityId, $priorityName) ?? $task->priority)
-			: $task->priority;
 
 		$updated = $this->taskProvider->updateTask(
 			author: $user,
 			task: $task,
 			name: $name ?? $task->name,
 			description: $description ?? $task->description,
-			priority: $priority,
 			dueDate: $newDueDate,
 			status: $task->status,
 			assignee: $assignee,
-			fieldValues: $this->normalizeFieldValues($fieldValues),
 			tagIds: $tagIds,
 			startDate: $newStartDate,
 		);
 
-		return McpTaskDto::fromEntity(
-			$updated,
-			$this->taskFieldValueProvider->findByTask($updated),
-			$this->taskTagProvider->getTagIdsForTask($updated),
-		);
+		return McpTaskDto::fromEntity($updated, $this->taskTagProvider->getTagIdsForTask($updated));
 	}
 
 	/**
@@ -295,11 +233,7 @@ final readonly class TaskTools
 		$position = $this->nextPositionInStatus($status->id);
 		$moved = $this->taskProvider->moveTask($user, $task, $status, $position);
 
-		return McpTaskDto::fromEntity(
-			$moved,
-			$this->taskFieldValueProvider->findByTask($moved),
-			$this->taskTagProvider->getTagIdsForTask($moved),
-		);
+		return McpTaskDto::fromEntity($moved, $this->taskTagProvider->getTagIdsForTask($moved));
 	}
 
 	/**
@@ -316,11 +250,7 @@ final readonly class TaskTools
 
 		$archived = $this->taskProvider->archiveTask($user, $task);
 
-		return McpTaskDto::fromEntity(
-			$archived,
-			$this->taskFieldValueProvider->findByTask($archived),
-			$this->taskTagProvider->getTagIdsForTask($archived),
-		);
+		return McpTaskDto::fromEntity($archived, $this->taskTagProvider->getTagIdsForTask($archived));
 	}
 
 	/**
@@ -337,36 +267,7 @@ final readonly class TaskTools
 
 		$unarchived = $this->taskProvider->unarchiveTask($user, $task);
 
-		return McpTaskDto::fromEntity(
-			$unarchived,
-			$this->taskFieldValueProvider->findByTask($unarchived),
-			$this->taskTagProvider->getTagIdsForTask($unarchived),
-		);
-	}
-
-	/**
-	 * Duplicate a task within its project and status. Clones the description, priority, due date,
-	 * assignee, custom-field values, and tags. Comments, files, events, and relations are not cloned.
-	 *
-	 * @param int|string $taskId Task ID or code (e.g. "MP-3")
-	 * @param string|null $name Optional name for the copy. Defaults to the source name with a " (copy)" suffix.
-	 */
-	#[McpTool(
-		name: 'duplicate_task',
-		description: 'Duplicate a task (clones content, fields, and tags — not comments, files, or relations).',
-	)]
-	public function duplicateTask(int|string $taskId, ?string $name = null): McpTaskDto
-	{
-		$user = $this->userContext->getUser();
-		$task = $this->requireTask($taskId);
-
-		$duplicate = $this->taskProvider->duplicateTask($user, $task, $name);
-
-		return McpTaskDto::fromEntity(
-			$duplicate,
-			$this->taskFieldValueProvider->findByTask($duplicate),
-			$this->taskTagProvider->getTagIdsForTask($duplicate),
-		);
+		return McpTaskDto::fromEntity($unarchived, $this->taskTagProvider->getTagIdsForTask($unarchived));
 	}
 
 	/**
@@ -395,17 +296,16 @@ final readonly class TaskTools
 	 * - "tag": `{tagIds: int[]}` — adds these tag ids to each task's existing tags
 	 * - "untag": `{tagIds: int[]}` — removes these tag ids from each task's existing tags
 	 * - "assign": `{assigneeId: int|null}` — sets assignee; null unassigns
-	 * - "priority": `{priorityId: int}` — sets each task's priority
 	 * - "delete": no payload — deletes each task
 	 *
 	 * @param list<int> $ids Task IDs (1-200). Order is preserved (matters for "move").
-	 * @param string $op Operation name: move | tag | untag | assign | priority | delete
+	 * @param string $op Operation name: move | tag | untag | assign | delete
 	 * @param array<string, mixed>|null $payload Per-op payload (see above).
 	 * @return array{succeeded: list<int>, skipped: list<array{id: int, reason: string}>}
 	 */
 	#[McpTool(
 		name: 'bulk_update_tasks',
-		description: 'Apply one operation to many tasks (move|tag|untag|assign|priority|delete). Returns {succeeded, skipped}.',
+		description: 'Apply one operation to many tasks (move|tag|untag|assign|delete). Returns {succeeded, skipped}.',
 	)]
 	public function bulkUpdateTasks(array $ids, string $op, ?array $payload = null): array
 	{
@@ -414,7 +314,7 @@ final readonly class TaskTools
 
 		$opEnum = BulkOpEnum::tryFrom($op);
 		if ($opEnum === null) {
-			throw new RuntimeException(sprintf('Unknown op "%s". Expected one of: move, tag, untag, assign, priority, delete.', $op));
+			throw new RuntimeException(sprintf('Unknown op "%s". Expected one of: move, tag, untag, assign, delete.', $op));
 		}
 
 		return $this->bulkTaskProvider->execute($user, $workspace, $opEnum, $ids, $payload ?? []);
@@ -498,14 +398,5 @@ final readonly class TaskTools
 		}
 
 		return $max + 1;
-	}
-
-	/**
-	 * @param array<array{fieldId: int, value: ?string}>|null $raw
-	 * @return array<int, ?string>|null
-	 */
-	private function normalizeFieldValues(?array $raw): ?array
-	{
-		return $raw === null ? null : array_column($raw, 'value', 'fieldId');
 	}
 }

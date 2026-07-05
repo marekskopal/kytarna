@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Kytario\Tests\App\Bootstrap;
 
+use Kytario\App\Bootstrap\EnvironmentValidator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
-use Kytario\App\Bootstrap\EnvironmentValidator;
 
 #[CoversClass(EnvironmentValidator::class)]
 final class EnvironmentValidatorTest extends TestCase
@@ -32,9 +32,6 @@ final class EnvironmentValidatorTest extends TestCase
 			'REDIS_PORT' => '6379',
 			'REDIS_PASSWORD' => self::StrongPassword,
 			'RABBITMQ_PASSWORD' => self::StrongPassword,
-			'MEILI_MASTER_KEY' => self::StrongPassword,
-			'MERCURE_PUBLISHER_JWT_KEY' => self::StrongPassword,
-			'MERCURE_SUBSCRIBER_JWT_KEY' => self::StrongPassword,
 			'MEMCACHED_HOST' => 'memcached',
 			'MEMCACHED_PORT' => '11211',
 			'APP_ENV' => 'development',
@@ -152,38 +149,6 @@ final class EnvironmentValidatorTest extends TestCase
 		$this->expectExceptionMessageIsOrContains('RABBITMQ_PASSWORD');
 
 		$validator->validate();
-	}
-
-	public function testProductionRejectsPlaceholderMeiliMasterKey(): void
-	{
-		$env = self::baseEnv();
-		$env['APP_ENV'] = 'production';
-		$env['MEILI_MASTER_KEY'] = EnvironmentValidator::PlaceholderToken;
-
-		$validator = new EnvironmentValidator($env);
-
-		$this->expectException(RuntimeException::class);
-		$this->expectExceptionMessageIsOrContains('MEILI_MASTER_KEY');
-
-		$validator->validate();
-	}
-
-	public function testProductionRejectsPlaceholderMercureKeys(): void
-	{
-		$env = self::baseEnv();
-		$env['APP_ENV'] = 'production';
-		$env['MERCURE_PUBLISHER_JWT_KEY'] = EnvironmentValidator::PlaceholderToken;
-		$env['MERCURE_SUBSCRIBER_JWT_KEY'] = EnvironmentValidator::PlaceholderToken;
-
-		$validator = new EnvironmentValidator($env);
-
-		try {
-			$validator->validate();
-			self::fail('Expected RuntimeException');
-		} catch (RuntimeException $e) {
-			self::assertStringContainsString('MERCURE_PUBLISHER_JWT_KEY', $e->getMessage());
-			self::assertStringContainsString('MERCURE_SUBSCRIBER_JWT_KEY', $e->getMessage());
-		}
 	}
 
 	public function testProductionRejectsShortSecret(): void

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Kytario\Jobs\Handler;
 
-use Psr\Log\LoggerInterface;
-use Throwable;
 use Kytario\Dto\EmailVerificationQueueDto;
 use Kytario\Jobs\Message\ReceivedMessageInterface;
 use Kytario\Service\Email\EmailFactory;
 use Kytario\Service\Email\MailerFactory;
 use Kytario\Service\Task\TaskServiceInterface;
+use Psr\Log\LoggerInterface;
+use Throwable;
 
 final readonly class EmailVerificationHandler implements JobHandler
 {

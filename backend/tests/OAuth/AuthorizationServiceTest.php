@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Kytario\Tests\OAuth;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use Kytario\OAuth\AuthorizationService;
 use Kytario\OAuth\AuthorizationServiceInterface;
 use Kytario\OAuth\ClientServiceInterface;
 use Kytario\Tests\Support\AppHarness;
 use Kytario\Tests\Support\Fixture;
 use Kytario\Tests\Support\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(AuthorizationService::class)]
 final class AuthorizationServiceTest extends IntegrationTestCase

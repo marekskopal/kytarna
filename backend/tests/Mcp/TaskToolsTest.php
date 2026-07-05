@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Kytario\Tests\Mcp;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use Kytario\Mcp\McpUserContextInterface;
 use Kytario\Mcp\Tool\TaskTools;
 use Kytario\Mcp\Tool\WorkflowTools;
@@ -14,6 +13,7 @@ use Kytario\Service\Actor\ActorContextInterface;
 use Kytario\Tests\Support\AppHarness;
 use Kytario\Tests\Support\Fixture;
 use Kytario\Tests\Support\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(TaskTools::class)]
 #[CoversClass(WorkflowTools::class)]
@@ -194,55 +194,6 @@ final class TaskToolsTest extends IntegrationTestCase
 		// start > due is rejected.
 		$this->expectException(\RuntimeException::class);
 		$taskTools->createTask(projectId: $project->id, name: 'Backwards', dueDate: '2026-05-20', startDate: '2026-05-25');
-	}
-
-	public function testCreateTaskDefaultsToWorkspaceDefaultPriority(): void
-	{
-		$user = Fixture::createUser();
-		$workspace = Fixture::createWorkspace($user);
-		$project = Fixture::createProject($user, $workspace);
-
-		[$taskTools] = $this->bootAs($user);
-
-		$task = $taskTools->createTask(projectId: $project->id, name: 'No priority specified');
-
-		// Seeded default is "Medium".
-		self::assertSame('Medium', $task->priorityName);
-	}
-
-	public function testCreateTaskAcceptsLegacyPriorityString(): void
-	{
-		$user = Fixture::createUser();
-		$workspace = Fixture::createWorkspace($user);
-		$project = Fixture::createProject($user, $workspace);
-
-		[$taskTools] = $this->bootAs($user);
-
-		$task = $taskTools->createTask(projectId: $project->id, name: 'Crit', priorityName: 'high');
-		self::assertSame('High', $task->priorityName);
-	}
-
-	public function testCreateTaskAcceptsPriorityIdAndNameInterchangeably(): void
-	{
-		$user = Fixture::createUser();
-		$workspace = Fixture::createWorkspace($user);
-		$project = Fixture::createProject($user, $workspace);
-
-		[$taskTools] = $this->bootAs($user);
-
-		// Fetch the workspace's priorities through the HTTP endpoint to learn ids.
-		$list = $this->jsonList($this->request(
-			'GET',
-			'/api/workspaces/' . $workspace->id . '/priorities',
-			authenticatedAs: $user,
-		));
-		$highId = self::intField($list[0]['id']);
-
-		$byId = $taskTools->createTask(projectId: $project->id, name: 'By id', priorityId: $highId);
-		$byName = $taskTools->createTask(projectId: $project->id, name: 'By name', priorityName: 'High');
-
-		self::assertSame($highId, $byId->priorityId);
-		self::assertSame($highId, $byName->priorityId);
 	}
 
 	public function testArchiveHidesTaskFromListByDefault(): void

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Kytario\OAuth;
 
 use DateTimeImmutable;
-use MarekSkopal\ORM\Database\DatabaseInterface;
-use RuntimeException;
 use Kytario\Model\Entity\OAuthClient;
 use Kytario\Model\Repository\OAuthClientRepository;
+use MarekSkopal\ORM\Database\DatabaseInterface;
+use RuntimeException;
 use const JSON_THROW_ON_ERROR;
 
 final readonly class ClientService implements ClientServiceInterface

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Kytario\Service\Email;
 
-use Symfony\Component\Mime\Email;
 use Kytario\Dto\NotificationEmailQueueDto;
 use Kytario\Email\EmailVerificationEmail;
 use Kytario\Email\InvitationEmail;
@@ -12,6 +11,7 @@ use Kytario\Email\NotificationEmail;
 use Kytario\Email\PasswordResetEmail;
 use Kytario\Model\Entity\Enum\LocaleEnum;
 use Kytario\Service\Translator\TranslatorServiceInterface;
+use Symfony\Component\Mime\Email;
 
 final readonly class EmailFactory
 {

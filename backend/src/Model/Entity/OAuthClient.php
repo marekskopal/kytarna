@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Kytario\Model\Entity;
 
+use Kytario\Model\Repository\OAuthClientRepository;
 use MarekSkopal\ORM\Attribute\Column;
 use MarekSkopal\ORM\Attribute\Entity;
 use MarekSkopal\ORM\Attribute\ManyToOne;
 use MarekSkopal\ORM\Enum\Type;
-use Kytario\Model\Repository\OAuthClientRepository;
 
 #[Entity(repositoryClass: OAuthClientRepository::class, table: 'oauth_clients')]
 class OAuthClient extends AEntity

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Kytario\Tests\Service\Email;
 
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
 use Kytario\Dto\NotificationEmailQueueDto;
 use Kytario\Model\Entity\Enum\LocaleEnum;
 use Kytario\Model\Entity\Enum\NotificationTypeEnum;
 use Kytario\Service\Email\EmailFactory;
 use Kytario\Service\Translator\TranslatorService;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
 
 #[CoversClass(EmailFactory::class)]
 final class EmailFactoryTest extends TestCase
@@ -101,7 +101,7 @@ final class EmailFactoryTest extends TestCase
 			recipientEmail: 'watcher@example.com',
 			recipientName: 'Watcher',
 			locale: LocaleEnum::En,
-			type: NotificationTypeEnum::TaskMention,
+			type: NotificationTypeEnum::TaskAssigned,
 			actorName: 'Carol',
 			taskCode: 'UK-1',
 			taskName: 'Ship it',

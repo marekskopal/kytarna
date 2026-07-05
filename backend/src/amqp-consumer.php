@@ -6,20 +6,18 @@ namespace Kytario;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use PhpAmqpLib\Connection\AMQPStreamConnection;
-use PhpAmqpLib\Message\AMQPMessage;
-use Psr\Log\LoggerInterface;
-use Throwable;
 use Kytario\App\ApplicationFactory;
 use Kytario\Jobs\Handler\EmailVerificationHandler;
 use Kytario\Jobs\Handler\InvitationHandler;
 use Kytario\Jobs\Handler\JobHandler;
 use Kytario\Jobs\Handler\NotificationHandler;
 use Kytario\Jobs\Handler\PasswordResetHandler;
-use Kytario\Jobs\Handler\RecurringTaskSpawnHandler;
-use Kytario\Jobs\Handler\SearchReindexHandler;
 use Kytario\Jobs\Message\AmqpReceivedMessage;
 use Kytario\Service\Queue\Enum\QueueEnum;
+use PhpAmqpLib\Connection\AMQPStreamConnection;
+use PhpAmqpLib\Message\AMQPMessage;
+use Psr\Log\LoggerInterface;
+use Throwable;
 
 $application = ApplicationFactory::create();
 
@@ -39,9 +37,7 @@ $handlerMap = [
 	QueueEnum::Invitation->value => InvitationHandler::class,
 	QueueEnum::EmailVerification->value => EmailVerificationHandler::class,
 	QueueEnum::PasswordReset->value => PasswordResetHandler::class,
-	QueueEnum::SearchReindex->value => SearchReindexHandler::class,
 	QueueEnum::Notification->value => NotificationHandler::class,
-	QueueEnum::RecurringTaskSpawn->value => RecurringTaskSpawnHandler::class,
 ];
 
 $prefetch = (int) getenv('BACKEND_AMQP_CONSUMER_PREFETCH');
@@ -49,9 +45,7 @@ if ($prefetch <= 0) {
 	$prefetch = 10;
 }
 
-// The script-run queue is consumed by the dedicated script-worker (script-worker.php), which
-// loads ext-v8js; this process runs without it and must not pick up those messages.
-$queues = array_filter(QueueEnum::cases(), static fn (QueueEnum $queue): bool => $queue !== QueueEnum::ScriptRun);
+$queues = QueueEnum::cases();
 
 foreach ($queues as $queue) {
 	$channel->queue_declare($queue->value, false, true, false, false);

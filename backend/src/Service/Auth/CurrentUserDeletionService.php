@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Kytario\Service\Auth;
 
-use Psr\Log\LoggerInterface;
-use RuntimeException;
 use Kytario\Model\Entity\Enum\EventTypeEnum;
 use Kytario\Model\Entity\Enum\SystemRoleEnum;
 use Kytario\Model\Entity\User;
 use Kytario\Model\Repository\UserRepository;
 use Kytario\Model\Repository\WorkspaceUserRepository;
 use Kytario\Service\Provider\EventProviderInterface;
+use Psr\Log\LoggerInterface;
+use RuntimeException;
 
 final readonly class CurrentUserDeletionService implements CurrentUserDeletionServiceInterface
 {

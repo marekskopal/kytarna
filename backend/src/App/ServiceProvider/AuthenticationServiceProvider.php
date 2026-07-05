@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Kytario\App\ServiceProvider;
 
-use League\Container\ServiceProvider\AbstractServiceProvider;
 use Kytario\Service\Authentication\AuthenticationService;
 use Kytario\Service\Authentication\AuthenticationServiceInterface;
 use Kytario\Service\Authentication\GoogleAuthService;
 use Kytario\Service\Authentication\GoogleAuthServiceInterface;
 use Kytario\Service\Authentication\RateLimitConfig;
+use League\Container\ServiceProvider\AbstractServiceProvider;
 
 final class AuthenticationServiceProvider extends AbstractServiceProvider
 {

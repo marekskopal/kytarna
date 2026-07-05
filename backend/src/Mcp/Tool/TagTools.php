@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Kytario\Mcp\Tool;
 
-use Mcp\Capability\Attribute\McpTool;
-use RuntimeException;
 use Kytario\Mcp\Dto\McpTagDto;
 use Kytario\Mcp\Dto\McpTagListDto;
 use Kytario\Mcp\Dto\McpTaskDto;
@@ -17,10 +15,11 @@ use Kytario\Model\Entity\Workspace;
 use Kytario\Service\Auth\PermissionCheckerInterface;
 use Kytario\Service\Provider\EventProviderInterface;
 use Kytario\Service\Provider\TagProviderInterface;
-use Kytario\Service\Provider\TaskFieldValueProviderInterface;
 use Kytario\Service\Provider\TaskProviderInterface;
 use Kytario\Service\Provider\TaskTagProviderInterface;
 use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Mcp\Capability\Attribute\McpTool;
+use RuntimeException;
 
 final readonly class TagTools
 {
@@ -29,7 +28,6 @@ final readonly class TagTools
 		private TagProviderInterface $tagProvider,
 		private TaskTagProviderInterface $taskTagProvider,
 		private TaskProviderInterface $taskProvider,
-		private TaskFieldValueProviderInterface $taskFieldValueProvider,
 		private WorkspaceProviderInterface $workspaceProvider,
 		private PermissionCheckerInterface $permissionChecker,
 		private EventProviderInterface $eventProvider,
@@ -153,11 +151,7 @@ final readonly class TagTools
 			);
 		}
 
-		return McpTaskDto::fromEntity(
-			$task,
-			$this->taskFieldValueProvider->findByTask($task),
-			$this->taskTagProvider->getTagIdsForTask($task),
-		);
+		return McpTaskDto::fromEntity($task, $this->taskTagProvider->getTagIdsForTask($task));
 	}
 
 	private function requireWorkspace(): Workspace

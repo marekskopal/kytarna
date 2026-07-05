@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Kytario\Tests\Validator;
 
+use Kytario\Validator\TextFieldValidator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
-use Kytario\Validator\TextFieldValidator;
 
 #[CoversClass(TextFieldValidator::class)]
 final class TextFieldValidatorTest extends TestCase

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Kytario\Mcp\Tool;
 
-use Mcp\Capability\Attribute\McpTool;
-use RuntimeException;
 use Kytario\Mcp\Dto\McpTaskFileContentDto;
 use Kytario\Mcp\Dto\McpTaskFileDto;
 use Kytario\Mcp\Dto\McpTaskFileListDto;
@@ -15,6 +13,8 @@ use Kytario\Model\Entity\TaskFile;
 use Kytario\Service\Provider\TaskFileProviderInterface;
 use Kytario\Service\Provider\TaskProviderInterface;
 use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Mcp\Capability\Attribute\McpTool;
+use RuntimeException;
 
 final readonly class TaskFileTools
 {

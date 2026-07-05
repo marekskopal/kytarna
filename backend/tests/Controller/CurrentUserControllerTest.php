@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Kytario\Tests\Controller;
 
-use PDO;
-use PHPUnit\Framework\Attributes\CoversClass;
 use Kytario\Controller\CurrentUserController;
 use Kytario\Model\Entity\Enum\EventTypeEnum;
 use Kytario\Model\Entity\Enum\SystemRoleEnum;
@@ -15,6 +13,8 @@ use Kytario\Model\Repository\UserRepository;
 use Kytario\Tests\Support\AppHarness;
 use Kytario\Tests\Support\Fixture;
 use Kytario\Tests\Support\IntegrationTestCase;
+use PDO;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(CurrentUserController::class)]
 final class CurrentUserControllerTest extends IntegrationTestCase

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Kytario\Model\Entity;
 
+use Kytario\Model\Repository\TaskWatcherRepository;
 use MarekSkopal\ORM\Attribute\Entity;
 use MarekSkopal\ORM\Attribute\ManyToOne;
-use Kytario\Model\Repository\TaskWatcherRepository;
 
 /**
  * A user subscribed to a task's activity (U-83, Trello-style). Watchers are added automatically when

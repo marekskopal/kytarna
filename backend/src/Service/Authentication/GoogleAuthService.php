@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Kytario\Service\Authentication;
 
 use JsonException;
+use Kytario\Service\Authentication\Dto\TokenInfoDto;
+use Kytario\Service\Authentication\Exception\GoogleAuthException;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\Exception\ExceptionInterface as HttpClientExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Kytario\Service\Authentication\Dto\TokenInfoDto;
-use Kytario\Service\Authentication\Exception\GoogleAuthException;
 use const JSON_THROW_ON_ERROR;
 
 final readonly class GoogleAuthService implements GoogleAuthServiceInterface

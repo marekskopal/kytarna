@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Kytario\Tests\Support;
 
+use Kytario\App\Application;
+use Kytario\Model\Entity\User;
 use Laminas\Diactoros\ServerRequest;
 use Laminas\Diactoros\Stream;
 use Nette\Utils\Json;
@@ -12,8 +14,6 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Kytario\App\Application;
-use Kytario\Model\Entity\User;
 
 abstract class IntegrationTestCase extends TestCase
 {

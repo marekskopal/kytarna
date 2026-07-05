@@ -6,14 +6,13 @@ namespace Kytario;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Laminas\Diactoros\ServerRequestFactory;
-use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
-use Psr\Log\LoggerInterface;
 use Kytario\App\ApplicationFactory;
 use Kytario\Mcp\McpUserContextInterface;
 use Kytario\Response\ErrorResponse;
 use Kytario\Service\Actor\ActorContextInterface;
-use Kytario\Service\Realtime\RealtimeOriginContextInterface;
+use Laminas\Diactoros\ServerRequestFactory;
+use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
+use Psr\Log\LoggerInterface;
 
 $application = ApplicationFactory::create();
 
@@ -26,16 +25,12 @@ assert($mcpUserContext instanceof McpUserContextInterface);
 $actorContext = $application->container->get(ActorContextInterface::class);
 assert($actorContext instanceof ActorContextInterface);
 
-$realtimeOriginContext = $application->container->get(RealtimeOriginContextInterface::class);
-assert($realtimeOriginContext instanceof RealtimeOriginContextInterface);
-
 $emitter = new SapiEmitter();
 
-$handler = static function () use ($application, $logger, $emitter, $mcpUserContext, $actorContext, $realtimeOriginContext): void {
+$handler = static function () use ($application, $logger, $emitter, $mcpUserContext, $actorContext): void {
 	// Per-request reset of mutable, container-shared contexts.
 	$mcpUserContext->clear();
 	$actorContext->setHuman();
-	$realtimeOriginContext->clear();
 
 	try {
 		$request = ServerRequestFactory::fromGlobals();

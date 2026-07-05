@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Kytario\Dto;
 
-use RuntimeException;
 use Kytario\Service\Provider\Enum\BulkOpEnum;
+use RuntimeException;
 
 /** @implements ArrayFactoryInterface<array<string, mixed>> */
 final readonly class TaskBulkRequestDto implements ArrayFactoryInterface

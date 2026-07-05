@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Kytario\Tests\Service\Semver;
 
+use Kytario\Service\Semver\SemverComparator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Kytario\Service\Semver\SemverComparator;
 
 #[CoversClass(SemverComparator::class)]
 final class SemverComparatorTest extends TestCase

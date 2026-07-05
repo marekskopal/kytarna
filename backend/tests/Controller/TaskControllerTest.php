@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Kytario\Tests\Controller;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use Kytario\Controller\TaskController;
 use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
 use Kytario\Model\Entity\Project;
@@ -13,6 +12,7 @@ use Kytario\Model\Repository\StatusRepository;
 use Kytario\Model\Repository\WorkflowRepository;
 use Kytario\Tests\Support\Fixture;
 use Kytario\Tests\Support\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(TaskController::class)]
 final class TaskControllerTest extends IntegrationTestCase
@@ -32,7 +32,6 @@ final class TaskControllerTest extends IntegrationTestCase
 				'statusId' => $startStatus,
 				'name' => 'Write tests',
 				'description' => 'Cover the codebase',
-				'priority' => 'High',
 				'dueDate' => '2026-06-01',
 			],
 			authenticatedAs: $owner,
@@ -40,9 +39,6 @@ final class TaskControllerTest extends IntegrationTestCase
 		self::assertSame(200, $create->getStatusCode());
 		$task = $this->jsonBody($create);
 		self::assertSame('Write tests', $task['name']);
-		$priority = $task['priority'];
-		assert(is_array($priority));
-		self::assertSame('High', $priority['name']);
 		self::assertNotEmpty($task['code']);
 		$taskId = self::intField($task['id']);
 		$taskCode = self::stringField($task['code']);
@@ -80,7 +76,7 @@ final class TaskControllerTest extends IntegrationTestCase
 		$create = $this->request(
 			'POST',
 			'/api/projects/' . $project->id . '/tasks',
-			body: ['statusId' => $todoId, 'name' => 'Move me', 'description' => null, 'priority' => 'Medium'],
+			body: ['statusId' => $todoId, 'name' => 'Move me', 'description' => null],
 			authenticatedAs: $owner,
 		);
 		$code = self::stringField($this->jsonBody($create)['code']);
@@ -106,7 +102,7 @@ final class TaskControllerTest extends IntegrationTestCase
 			$this->request(
 				'POST',
 				'/api/projects/' . $project->id . '/tasks',
-				body: ['statusId' => $i % 2 === 0 ? $todoId : $inProgressId, 'name' => 'T' . $i, 'description' => null, 'priority' => 'Medium'],
+				body: ['statusId' => $i % 2 === 0 ? $todoId : $inProgressId, 'name' => 'T' . $i, 'description' => null],
 				authenticatedAs: $owner,
 			);
 		}
@@ -134,7 +130,7 @@ final class TaskControllerTest extends IntegrationTestCase
 			$this->request(
 				'POST',
 				'/api/projects/' . $project->id . '/tasks',
-				body: ['statusId' => $todoId, 'name' => $name, 'description' => null, 'priority' => 'Medium', 'dueDate' => $dueDate],
+				body: ['statusId' => $todoId, 'name' => $name, 'description' => null, 'dueDate' => $dueDate],
 				authenticatedAs: $owner,
 			);
 		};
@@ -173,7 +169,6 @@ final class TaskControllerTest extends IntegrationTestCase
 			'statusId' => $todoId,
 			'name' => 'Spanning task',
 			'description' => null,
-			'priority' => 'Medium',
 			'startDate' => '2026-05-10',
 			'dueDate' => '2026-05-20',
 		], authenticatedAs: $owner);
@@ -188,7 +183,6 @@ final class TaskControllerTest extends IntegrationTestCase
 			'statusId' => $todoId,
 			'name' => 'Spanning task',
 			'description' => null,
-			'priority' => 'Medium',
 			'startDate' => '2026-05-12',
 			'dueDate' => '2026-05-20',
 		], authenticatedAs: $owner);
@@ -200,7 +194,6 @@ final class TaskControllerTest extends IntegrationTestCase
 			'statusId' => $todoId,
 			'name' => 'Backwards',
 			'description' => null,
-			'priority' => 'Medium',
 			'startDate' => '2026-05-25',
 			'dueDate' => '2026-05-20',
 		], authenticatedAs: $owner);
@@ -219,7 +212,6 @@ final class TaskControllerTest extends IntegrationTestCase
 			'statusId' => $todoId,
 			'name' => 'Bad date',
 			'description' => null,
-			'priority' => 'Medium',
 			'dueDate' => 'not-a-date',
 		], authenticatedAs: $owner);
 		self::assertSame(422, $response->getStatusCode());
@@ -235,7 +227,7 @@ final class TaskControllerTest extends IntegrationTestCase
 		$create = $this->request(
 			'POST',
 			'/api/projects/' . $project->id . '/tasks',
-			body: ['statusId' => $todoId, 'name' => 'Doomed', 'description' => null, 'priority' => 'Low'],
+			body: ['statusId' => $todoId, 'name' => 'Doomed', 'description' => null],
 			authenticatedAs: $owner,
 		);
 		$code = self::stringField($this->jsonBody($create)['code']);
@@ -266,7 +258,7 @@ final class TaskControllerTest extends IntegrationTestCase
 		$response = $this->request(
 			'POST',
 			'/api/projects/' . $projectInA->id . '/tasks',
-			body: ['statusId' => $todoIdInA, 'name' => 'Hijack', 'description' => null, 'priority' => 'High'],
+			body: ['statusId' => $todoIdInA, 'name' => 'Hijack', 'description' => null],
 			authenticatedAs: $intruder,
 		);
 		self::assertSame(404, $response->getStatusCode());
@@ -279,7 +271,7 @@ final class TaskControllerTest extends IntegrationTestCase
 		$response = $this->request(
 			'PUT',
 			'/api/tasks/' . $taskCode,
-			body: ['name' => 'Renamed by intruder', 'description' => null, 'priority' => 'Low'],
+			body: ['name' => 'Renamed by intruder', 'description' => null],
 			authenticatedAs: $intruder,
 		);
 		self::assertSame(404, $response->getStatusCode());
@@ -324,7 +316,7 @@ final class TaskControllerTest extends IntegrationTestCase
 		$create = $this->request(
 			'POST',
 			'/api/projects/' . $projectInA->id . '/tasks',
-			body: ['statusId' => $todoIdInA, 'name' => 'Owner task', 'description' => null, 'priority' => 'Medium'],
+			body: ['statusId' => $todoIdInA, 'name' => 'Owner task', 'description' => null],
 			authenticatedAs: $owner,
 		);
 		assert($create->getStatusCode() === 200);
@@ -334,74 +326,6 @@ final class TaskControllerTest extends IntegrationTestCase
 		Fixture::createWorkspace($intruder, 'B');
 
 		return [$projectInA, $intruder, $todoIdInA, $taskCode];
-	}
-
-	public function testDuplicateTaskClonesContentTagsAndStatus(): void
-	{
-		$owner = Fixture::createUser();
-		$workspace = Fixture::createWorkspace($owner);
-		$project = Fixture::createProject($owner, $workspace);
-		[, $inProgressId] = $this->statusIds($project->id);
-
-		$tag = $this->jsonBody($this->request(
-			'POST',
-			'/api/workspaces/' . $workspace->id . '/tags',
-			body: ['name' => 'bug', 'color' => '#ff0000'],
-			authenticatedAs: $owner,
-		));
-		$tagId = self::intField($tag['id']);
-
-		$create = $this->request(
-			'POST',
-			'/api/projects/' . $project->id . '/tasks',
-			body: [
-				'statusId' => $inProgressId,
-				'name' => 'Original',
-				'description' => 'Body text',
-				'priority' => 'High',
-				'dueDate' => '2026-07-01',
-				'tagIds' => [$tagId],
-			],
-			authenticatedAs: $owner,
-		);
-		$original = $this->jsonBody($create);
-		$originalId = self::intField($original['id']);
-
-		$duplicate = $this->request('POST', '/api/tasks/' . $originalId . '/duplicate', authenticatedAs: $owner);
-		self::assertSame(200, $duplicate->getStatusCode());
-		$copy = $this->jsonBody($duplicate);
-
-		self::assertNotSame($originalId, self::intField($copy['id']));
-		self::assertSame('Original (copy)', $copy['name']);
-		self::assertSame('Body text', $copy['description']);
-		self::assertSame($inProgressId, $copy['statusId']);
-		self::assertSame('2026-07-01', $copy['dueDate']);
-		self::assertSame([$tagId], $copy['tagIds']);
-		$priority = $copy['priority'];
-		assert(is_array($priority));
-		self::assertSame('High', $priority['name']);
-	}
-
-	public function testDuplicateTaskOutsideWorkspaceIsNotFound(): void
-	{
-		$owner = Fixture::createUser();
-		$workspace = Fixture::createWorkspace($owner);
-		$project = Fixture::createProject($owner, $workspace);
-		$todoId = $this->firstStatusId($project->id);
-
-		$create = $this->request(
-			'POST',
-			'/api/projects/' . $project->id . '/tasks',
-			body: ['statusId' => $todoId, 'name' => 'Private', 'description' => null, 'priority' => 'Medium'],
-			authenticatedAs: $owner,
-		);
-		$taskId = self::intField($this->jsonBody($create)['id']);
-
-		$outsider = Fixture::createUser();
-		Fixture::createWorkspace($outsider);
-
-		$response = $this->request('POST', '/api/tasks/' . $taskId . '/duplicate', authenticatedAs: $outsider);
-		self::assertSame(404, $response->getStatusCode());
 	}
 
 	/** @return array{0:int,1:int} */
@@ -436,7 +360,7 @@ final class TaskControllerTest extends IntegrationTestCase
 		$response = $this->request(
 			'POST',
 			'/api/projects/' . $project->id . '/tasks',
-			body: ['statusId' => $todoId, 'name' => 'My task', 'description' => null, 'priority' => 'Medium'],
+			body: ['statusId' => $todoId, 'name' => 'My task', 'description' => null],
 			authenticatedAs: $owner,
 		);
 
@@ -456,7 +380,7 @@ final class TaskControllerTest extends IntegrationTestCase
 		$response = $this->request(
 			'POST',
 			'/api/projects/' . $project->id . '/tasks',
-			body: ['statusId' => $todoId, 'name' => 'Pair task', 'description' => null, 'priority' => 'Medium', 'assigneeId' => $member->id],
+			body: ['statusId' => $todoId, 'name' => 'Pair task', 'description' => null, 'assigneeId' => $member->id],
 			authenticatedAs: $owner,
 		);
 
@@ -475,7 +399,7 @@ final class TaskControllerTest extends IntegrationTestCase
 		$response = $this->request(
 			'POST',
 			'/api/projects/' . $project->id . '/tasks',
-			body: ['statusId' => $todoId, 'name' => 'Bad', 'description' => null, 'priority' => 'Medium', 'assigneeId' => $outsider->id],
+			body: ['statusId' => $todoId, 'name' => 'Bad', 'description' => null, 'assigneeId' => $outsider->id],
 			authenticatedAs: $owner,
 		);
 
@@ -492,7 +416,7 @@ final class TaskControllerTest extends IntegrationTestCase
 		$response = $this->request(
 			'POST',
 			'/api/projects/' . $project->id . '/tasks',
-			body: ['statusId' => $todoId, 'name' => 'Unassigned', 'description' => null, 'priority' => 'Medium', 'assigneeId' => null],
+			body: ['statusId' => $todoId, 'name' => 'Unassigned', 'description' => null, 'assigneeId' => null],
 			authenticatedAs: $owner,
 		);
 
@@ -512,7 +436,7 @@ final class TaskControllerTest extends IntegrationTestCase
 		$create = $this->request(
 			'POST',
 			'/api/projects/' . $project->id . '/tasks',
-			body: ['statusId' => $todoId, 'name' => 'T', 'description' => null, 'priority' => 'Medium'],
+			body: ['statusId' => $todoId, 'name' => 'T', 'description' => null],
 			authenticatedAs: $owner,
 		);
 		$code = self::stringField($this->jsonBody($create)['code']);
@@ -521,7 +445,7 @@ final class TaskControllerTest extends IntegrationTestCase
 		$noChange = $this->request(
 			'PUT',
 			'/api/tasks/' . $code,
-			body: ['statusId' => $todoId, 'name' => 'T2', 'description' => null, 'priority' => 'Medium'],
+			body: ['statusId' => $todoId, 'name' => 'T2', 'description' => null],
 			authenticatedAs: $owner,
 		);
 		self::assertSame(200, $noChange->getStatusCode());
@@ -531,7 +455,7 @@ final class TaskControllerTest extends IntegrationTestCase
 		$reassign = $this->request(
 			'PUT',
 			'/api/tasks/' . $code,
-			body: ['statusId' => $todoId, 'name' => 'T2', 'description' => null, 'priority' => 'Medium', 'assigneeId' => $member->id],
+			body: ['statusId' => $todoId, 'name' => 'T2', 'description' => null, 'assigneeId' => $member->id],
 			authenticatedAs: $owner,
 		);
 		self::assertSame($member->id, $this->jsonBody($reassign)['assigneeId']);
@@ -540,7 +464,7 @@ final class TaskControllerTest extends IntegrationTestCase
 		$clear = $this->request(
 			'PUT',
 			'/api/tasks/' . $code,
-			body: ['statusId' => $todoId, 'name' => 'T2', 'description' => null, 'priority' => 'Medium', 'assigneeId' => null],
+			body: ['statusId' => $todoId, 'name' => 'T2', 'description' => null, 'assigneeId' => null],
 			authenticatedAs: $owner,
 		);
 		self::assertNull($this->jsonBody($clear)['assigneeId']);
@@ -558,13 +482,13 @@ final class TaskControllerTest extends IntegrationTestCase
 		$this->request(
 			'POST',
 			'/api/projects/' . $project->id . '/tasks',
-			body: ['statusId' => $todoId, 'name' => 'A', 'description' => null, 'priority' => 'Medium'],
+			body: ['statusId' => $todoId, 'name' => 'A', 'description' => null],
 			authenticatedAs: $owner,
 		);
 		$this->request(
 			'POST',
 			'/api/projects/' . $project->id . '/tasks',
-			body: ['statusId' => $todoId, 'name' => 'B', 'description' => null, 'priority' => 'Medium', 'assigneeId' => $member->id],
+			body: ['statusId' => $todoId, 'name' => 'B', 'description' => null, 'assigneeId' => $member->id],
 			authenticatedAs: $owner,
 		);
 
@@ -583,7 +507,7 @@ final class TaskControllerTest extends IntegrationTestCase
 		$created = $this->request(
 			'POST',
 			'/api/projects/' . $project->id . '/tasks',
-			body: ['statusId' => $todoId, 'name' => 'Archive me', 'description' => null, 'priority' => 'Medium'],
+			body: ['statusId' => $todoId, 'name' => 'Archive me', 'description' => null],
 			authenticatedAs: $owner,
 		);
 		$taskId = self::intField($this->jsonBody($created)['id']);

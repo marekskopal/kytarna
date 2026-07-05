@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Kytario\Model\Repository;
 
 use Iterator;
-use MarekSkopal\ORM\Repository\AbstractRepository;
 use Kytario\Model\Entity\TaskFile;
+use MarekSkopal\ORM\Repository\AbstractRepository;
 
 /** @extends AbstractRepository<TaskFile> */
 final class TaskFileRepository extends AbstractRepository

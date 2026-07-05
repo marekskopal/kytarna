@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Kytario\Tests\Controller;
 
 use DateTimeImmutable;
-use Laminas\Diactoros\ServerRequest;
-use PHPUnit\Framework\Attributes\CoversClass;
-use Psr\Http\Message\ResponseInterface;
 use Kytario\Controller\OAuthController;
 use Kytario\Model\Repository\OAuthClientRepository;
 use Kytario\OAuth\ClientServiceInterface;
 use Kytario\Tests\Support\AppHarness;
 use Kytario\Tests\Support\Fixture;
 use Kytario\Tests\Support\IntegrationTestCase;
+use Laminas\Diactoros\ServerRequest;
+use PHPUnit\Framework\Attributes\CoversClass;
+use Psr\Http\Message\ResponseInterface;
 
 #[CoversClass(OAuthController::class)]
 final class OAuthControllerTest extends IntegrationTestCase

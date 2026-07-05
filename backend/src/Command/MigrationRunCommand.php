@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Kytario\Command;
 
+use Kytario\App\ApplicationFactory;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Kytario\App\ApplicationFactory;
 
 final class MigrationRunCommand extends AbstractCommand
 {

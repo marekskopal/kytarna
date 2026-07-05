@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Kytario\Tests\Controller;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use Kytario\Controller\TaskWatcherController;
 use Kytario\Model\Entity\User;
 use Kytario\Model\Repository\StatusRepository;
 use Kytario\Model\Repository\WorkflowRepository;
 use Kytario\Tests\Support\Fixture;
 use Kytario\Tests\Support\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(TaskWatcherController::class)]
 final class TaskWatcherControllerTest extends IntegrationTestCase
@@ -76,7 +76,7 @@ final class TaskWatcherControllerTest extends IntegrationTestCase
 		$response = $this->request(
 			'POST',
 			'/api/projects/' . $projectId . '/tasks',
-			body: ['statusId' => $this->firstStatusId($projectId), 'name' => $name, 'description' => null, 'priority' => 'Medium'],
+			body: ['statusId' => $this->firstStatusId($projectId), 'name' => $name, 'description' => null],
 			authenticatedAs: $author,
 		);
 		return self::intField($this->jsonBody($response)['id']);

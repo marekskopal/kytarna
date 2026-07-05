@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
-use RuntimeException;
 use Kytario\Model\Entity\Enum\EventTypeEnum;
 use Kytario\Model\Entity\Task;
 use Kytario\Model\Entity\TaskFile;
@@ -14,6 +13,7 @@ use Kytario\Model\Repository\TaskFileRepository;
 use Kytario\Service\Actor\ActorContextInterface;
 use Kytario\Service\Storage\FileStorageInterface;
 use Kytario\Service\Storage\S3Config;
+use RuntimeException;
 
 final readonly class TaskFileProvider implements TaskFileProviderInterface
 {

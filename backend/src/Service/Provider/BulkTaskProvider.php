@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Kytario\Service\Provider;
 
-use RuntimeException;
 use Kytario\Model\Entity\Enum\EventTypeEnum;
-use Kytario\Model\Entity\Priority;
 use Kytario\Model\Entity\Status;
 use Kytario\Model\Entity\Task;
 use Kytario\Model\Entity\User;
@@ -14,6 +12,7 @@ use Kytario\Model\Entity\Workspace;
 use Kytario\Model\Repository\TaskRepository;
 use Kytario\Model\Repository\UserRepository;
 use Kytario\Service\Provider\Enum\BulkOpEnum;
+use RuntimeException;
 
 final readonly class BulkTaskProvider implements BulkTaskProviderInterface
 {
@@ -23,7 +22,6 @@ final readonly class BulkTaskProvider implements BulkTaskProviderInterface
 		private TaskRepository $taskRepository,
 		private TaskProviderInterface $taskProvider,
 		private TaskTagProviderInterface $taskTagProvider,
-		private PriorityProviderInterface $priorityProvider,
 		private StatusProviderInterface $statusProvider,
 		private WorkspaceProviderInterface $workspaceProvider,
 		private UserRepository $userRepository,
@@ -99,7 +97,7 @@ final readonly class BulkTaskProvider implements BulkTaskProviderInterface
 	}
 
 	/**
-	 * @param array{status?: Status, tagIds?: list<int>, assignee?: ?User, priority?: Priority} $context
+	 * @param array{status?: Status, tagIds?: list<int>, assignee?: ?User} $context
 	 * @return non-empty-string|null null on success, reason string on skip
 	 */
 	private function processOne(User $actor, Workspace $workspace, BulkOpEnum $op, array $context, ?Task $task, int $id,): ?string
@@ -122,7 +120,7 @@ final readonly class BulkTaskProvider implements BulkTaskProviderInterface
 
 	/**
 	 * @param array<string, mixed> $payload
-	 * @return array{status?: Status, tagIds?: list<int>, assignee?: ?User, priority?: Priority}
+	 * @return array{status?: Status, tagIds?: list<int>, assignee?: ?User}
 	 */
 	private function resolvePayloadContext(Workspace $workspace, BulkOpEnum $op, array $payload): array
 	{
@@ -130,12 +128,11 @@ final readonly class BulkTaskProvider implements BulkTaskProviderInterface
 			BulkOpEnum::Move => ['status' => $this->requireStatus($workspace, $payload)],
 			BulkOpEnum::Tag, BulkOpEnum::Untag => ['tagIds' => $this->requireTagIds($payload)],
 			BulkOpEnum::Assign => ['assignee' => $this->resolveAssignee($workspace, $payload)],
-			BulkOpEnum::Priority => ['priority' => $this->requirePriority($workspace, $payload)],
 			BulkOpEnum::Delete => [],
 		};
 	}
 
-	/** @param array{status?: Status, tagIds?: list<int>, assignee?: ?User, priority?: Priority} $context */
+	/** @param array{status?: Status, tagIds?: list<int>, assignee?: ?User} $context */
 	private function applyOp(User $actor, Task $task, BulkOpEnum $op, array $context): void
 	{
 		match ($op) {
@@ -143,7 +140,6 @@ final readonly class BulkTaskProvider implements BulkTaskProviderInterface
 			BulkOpEnum::Tag => $this->doTagAdd($task, $context['tagIds'] ?? []),
 			BulkOpEnum::Untag => $this->doTagRemove($task, $context['tagIds'] ?? []),
 			BulkOpEnum::Assign => $this->doAssign($actor, $task, $context['assignee'] ?? null),
-			BulkOpEnum::Priority => $this->doPriority($actor, $task, $context['priority'] ?? null),
 			BulkOpEnum::Delete => $this->taskProvider->deleteTask($actor, $task, recordEvent: false),
 		};
 	}
@@ -182,28 +178,9 @@ final readonly class BulkTaskProvider implements BulkTaskProviderInterface
 			task: $task,
 			name: $task->name,
 			description: $task->description,
-			priority: $task->priority,
 			dueDate: $task->dueDate,
 			status: $task->status,
 			assignee: $assignee,
-			recordEvent: false,
-		);
-	}
-
-	private function doPriority(User $actor, Task $task, ?Priority $priority): void
-	{
-		if ($priority === null) {
-			throw new RuntimeException('Internal: priority not resolved.');
-		}
-		$this->taskProvider->updateTask(
-			author: $actor,
-			task: $task,
-			name: $task->name,
-			description: $task->description,
-			priority: $priority,
-			dueDate: $task->dueDate,
-			status: $task->status,
-			assignee: $task->assignee,
 			recordEvent: false,
 		);
 	}
@@ -247,19 +224,5 @@ final readonly class BulkTaskProvider implements BulkTaskProviderInterface
 			throw new RuntimeException('Assignee must be a member of the workspace.');
 		}
 		return $assignee;
-	}
-
-	/** @param array<string, mixed> $payload */
-	private function requirePriority(Workspace $workspace, array $payload): Priority
-	{
-		$priorityId = $this->payloadParser->intOrNull($payload, 'priorityId');
-		if ($priorityId === null) {
-			throw new RuntimeException('Payload missing priorityId.');
-		}
-		$priority = $this->priorityProvider->getPriority($workspace, $priorityId);
-		if ($priority === null) {
-			throw new RuntimeException('Priority not found in this workspace.');
-		}
-		return $priority;
 	}
 }

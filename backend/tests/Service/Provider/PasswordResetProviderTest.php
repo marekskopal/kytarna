@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Kytario\Tests\Service\Provider;
 
 use DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversClass;
 use Kytario\Model\Repository\PasswordResetTokenRepository;
 use Kytario\Service\Authentication\RateLimitConfig;
 use Kytario\Service\Provider\PasswordResetProvider;
 use Kytario\Service\Provider\PasswordResetProviderInterface;
 use Kytario\Tests\Support\Fixture;
 use Kytario\Tests\Support\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(PasswordResetProvider::class)]
 final class PasswordResetProviderTest extends IntegrationTestCase

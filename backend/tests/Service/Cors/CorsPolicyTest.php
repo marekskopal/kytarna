@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Kytario\Tests\Service\Cors;
 
+use Kytario\Service\Cors\CorsPolicy;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Kytario\Service\Cors\CorsPolicy;
 
 #[CoversClass(CorsPolicy::class)]
 final class CorsPolicyTest extends TestCase

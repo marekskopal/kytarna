@@ -5,13 +5,6 @@ declare(strict_types=1);
 namespace Kytario\Controller;
 
 use DateTimeImmutable;
-use Laminas\Diactoros\Response\JsonResponse;
-use MarekSkopal\Router\Attribute\RouteDelete;
-use MarekSkopal\Router\Attribute\RouteGet;
-use MarekSkopal\Router\Attribute\RoutePost;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use RuntimeException;
 use Kytario\Dto\InvitationCreateDto;
 use Kytario\Dto\InvitationDto;
 use Kytario\Dto\InvitationTokenDto;
@@ -27,6 +20,13 @@ use Kytario\Service\Authentication\RateLimitConfig;
 use Kytario\Service\Provider\InvitationProviderInterface;
 use Kytario\Service\Provider\WorkspaceProviderInterface;
 use Kytario\Service\Request\RequestServiceInterface;
+use Laminas\Diactoros\Response\JsonResponse;
+use MarekSkopal\Router\Attribute\RouteDelete;
+use MarekSkopal\Router\Attribute\RouteGet;
+use MarekSkopal\Router\Attribute\RoutePost;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use RuntimeException;
 
 final readonly class InvitationController
 {

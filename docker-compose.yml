@@ -106,26 +106,17 @@ services:
             MEMCACHED_HOST: ${MEMCACHED_HOST}
             MEMCACHED_PORT: ${MEMCACHED_PORT}
             MCP_SESSION_TTL: ${MCP_SESSION_TTL}
-            MERCURE_PUBLISHER_JWT_KEY: ${MERCURE_PUBLISHER_JWT_KEY}
-            MERCURE_SUBSCRIBER_JWT_KEY: ${MERCURE_SUBSCRIBER_JWT_KEY}
-            MERCURE_PUBLISH_URL: ${MERCURE_PUBLISH_URL}
             RABBITMQ_HOST: ${RABBITMQ_HOST}
             RABBITMQ_PORT: ${RABBITMQ_PORT}
             RABBITMQ_USER: ${RABBITMQ_USER}
             RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD}
             BACKEND_AMQP_CONSUMER_PREFETCH: ${BACKEND_AMQP_CONSUMER_PREFETCH}
-            MEILI_HOST: ${MEILI_HOST}
-            MEILI_PORT: ${MEILI_PORT}
-            MEILI_MASTER_KEY: ${MEILI_MASTER_KEY}
-            MEILI_INDEX_PREFIX: ${MEILI_INDEX_PREFIX}
         depends_on:
             redis:
                 condition: service_healthy
             memcached:
                 condition: service_started
             rabbitmq:
-                condition: service_healthy
-            meilisearch:
                 condition: service_healthy
         restart: unless-stopped
         healthcheck:
@@ -236,24 +227,6 @@ services:
         volumes:
             - kytario_rabbitmq:/var/lib/rabbitmq
 
-    meilisearch:
-        image: getmeili/meilisearch:v1.47
-        restart: unless-stopped
-        environment:
-            MEILI_MASTER_KEY: ${MEILI_MASTER_KEY}
-            MEILI_ENV: production
-            MEILI_NO_ANALYTICS: "true"
-        healthcheck:
-            test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:7700/health | grep -q available"]
-            interval: 10s
-            timeout: 5s
-            retries: 10
-            start_period: 10s
-        networks:
-            - backend
-        volumes:
-            - kytario_meilisearch:/meili_data
-
     mariadb-backup-aws:
         image: marekskopal/mariadb-backup-aws:0.2.0
         environment:
@@ -285,8 +258,6 @@ volumes:
         name: kytario_redis
     kytario_rabbitmq:
         name: kytario_rabbitmq
-    kytario_meilisearch:
-        name: kytario_meilisearch
     kytario_web_public:
         name: kytario_web_public
     kytario_web_var:

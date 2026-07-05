@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Kytario\Controller;
 
-use Laminas\Diactoros\Response\JsonResponse;
-use MarekSkopal\Router\Attribute\RouteGet;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Kytario\Dto\BoardDto;
 use Kytario\Dto\ProjectDto;
 use Kytario\Dto\StatusDto;
@@ -19,13 +15,15 @@ use Kytario\Response\NotFoundResponse;
 use Kytario\Route\Routes;
 use Kytario\Service\Provider\ProjectProviderInterface;
 use Kytario\Service\Provider\StatusProviderInterface;
-use Kytario\Service\Provider\SubtaskProviderInterface;
-use Kytario\Service\Provider\TaskChecklistProviderInterface;
 use Kytario\Service\Provider\TaskProviderInterface;
 use Kytario\Service\Provider\TaskTagProviderInterface;
 use Kytario\Service\Provider\WorkflowProviderInterface;
 use Kytario\Service\Provider\WorkspaceProviderInterface;
 use Kytario\Service\Request\RequestServiceInterface;
+use Laminas\Diactoros\Response\JsonResponse;
+use MarekSkopal\Router\Attribute\RouteGet;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 final readonly class BoardController
 {
@@ -35,8 +33,6 @@ final readonly class BoardController
 		private StatusProviderInterface $statusProvider,
 		private TaskProviderInterface $taskProvider,
 		private TaskTagProviderInterface $taskTagProvider,
-		private SubtaskProviderInterface $subtaskProvider,
-		private TaskChecklistProviderInterface $checklistProvider,
 		private WorkspaceProviderInterface $workspaceProvider,
 		private RequestServiceInterface $requestService,
 	) {
@@ -68,18 +64,8 @@ final readonly class BoardController
 		$projectTasks = iterator_to_array($this->taskProvider->getTasksByProject($project, includeArchived: false), false);
 		$taskIds = array_map(static fn (Task $t): int => $t->id, $projectTasks);
 		$tagsByTaskId = $this->taskTagProvider->getTagIdsByTaskIds($taskIds);
-		$subtaskCounts = $this->subtaskProvider->getSubtaskCounts($taskIds);
-		$checklistCounts = $this->checklistProvider->getCounts($taskIds);
 		$tasks = array_map(
-			fn (Task $t): TaskDto => TaskDto::fromEntity(
-				$t,
-				[],
-				$tagsByTaskId[$t->id] ?? [],
-				$subtaskCounts[$t->id]['total'] ?? 0,
-				$subtaskCounts[$t->id]['done'] ?? 0,
-				$checklistCounts[$t->id]['total'] ?? 0,
-				$checklistCounts[$t->id]['done'] ?? 0,
-			),
+			static fn (Task $t): TaskDto => TaskDto::fromEntity($t, $tagsByTaskId[$t->id] ?? []),
 			$projectTasks,
 		);
 
