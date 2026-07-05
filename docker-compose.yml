@@ -1,4 +1,4 @@
-name: ukolio
+name: kytario
 
 services:
     proxy:
@@ -51,9 +51,9 @@ services:
             - frontend
             - backend
         volumes:
-            - ukolio_web_public:/var/www/html/public
-            - ukolio_web_var:/var/www/html/var
-            - ukolio_web_config:/var/www/html/config
+            - kytario_web_public:/var/www/html/public
+            - kytario_web_var:/var/www/html/var
+            - kytario_web_config:/var/www/html/config
             - ./log:/var/www/html/var/log
 
     frontend:
@@ -156,7 +156,7 @@ services:
         networks:
             - backend
         volumes:
-            - ukolio_data:/var/lib/mysql
+            - kytario_data:/var/lib/mysql
         profiles:
             - dev
 
@@ -192,7 +192,7 @@ services:
             # Admin console — loopback only; reach it on a server via an SSH tunnel.
             - "127.0.0.1:9001:9001"
         volumes:
-            - ukolio_minio:/data
+            - kytario_minio:/data
         profiles:
             - dev
 
@@ -217,7 +217,7 @@ services:
         networks:
             - backend
         volumes:
-            - ukolio_redis:/data
+            - kytario_redis:/data
 
     rabbitmq:
         image: rabbitmq:4.3.2-alpine
@@ -234,7 +234,7 @@ services:
         networks:
             - backend
         volumes:
-            - ukolio_rabbitmq:/var/lib/rabbitmq
+            - kytario_rabbitmq:/var/lib/rabbitmq
 
     meilisearch:
         image: getmeili/meilisearch:v1.47
@@ -252,7 +252,7 @@ services:
         networks:
             - backend
         volumes:
-            - ukolio_meilisearch:/meili_data
+            - kytario_meilisearch:/meili_data
 
     mariadb-backup-aws:
         image: marekskopal/mariadb-backup-aws:0.2.0
@@ -272,24 +272,24 @@ services:
 
 networks:
     frontend:
-        name: ukolio_frontend
+        name: kytario_frontend
     backend:
-        name: ukolio_backend
+        name: kytario_backend
 
 volumes:
-    ukolio_data:
-        name: ukolio_data
-    ukolio_minio:
-        name: ukolio_minio
-    ukolio_redis:
-        name: ukolio_redis
-    ukolio_rabbitmq:
-        name: ukolio_rabbitmq
-    ukolio_meilisearch:
-        name: ukolio_meilisearch
-    ukolio_web_public:
-        name: ukolio_web_public
-    ukolio_web_var:
-        name: ukolio_web_var
-    ukolio_web_config:
-        name: ukolio_web_config
+    kytario_data:
+        name: kytario_data
+    kytario_minio:
+        name: kytario_minio
+    kytario_redis:
+        name: kytario_redis
+    kytario_rabbitmq:
+        name: kytario_rabbitmq
+    kytario_meilisearch:
+        name: kytario_meilisearch
+    kytario_web_public:
+        name: kytario_web_public
+    kytario_web_var:
+        name: kytario_web_var
+    kytario_web_config:
+        name: kytario_web_config

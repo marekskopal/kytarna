@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
-use Ukolio\Model\Entity\PasswordResetToken;
-use Ukolio\Model\Entity\User;
+use Kytario\Model\Entity\PasswordResetToken;
+use Kytario\Model\Entity\User;
 
 interface PasswordResetProviderInterface
 {

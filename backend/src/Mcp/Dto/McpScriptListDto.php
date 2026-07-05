@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Mcp\Dto;
+namespace Kytario\Mcp\Dto;
 
-use Ukolio\Dto\ScriptDto;
+use Kytario\Dto\ScriptDto;
 
 final readonly class McpScriptListDto
 {

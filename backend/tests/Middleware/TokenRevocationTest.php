@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Middleware;
+namespace Kytario\Tests\Middleware;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use PHPUnit\Framework\Attributes\CoversClass;
-use Ukolio\Middleware\AuthorizationMiddleware;
-use Ukolio\Service\Authentication\AuthenticationServiceInterface;
-use Ukolio\Service\Provider\UserProviderInterface;
-use Ukolio\Tests\Support\Fixture;
-use Ukolio\Tests\Support\IntegrationTestCase;
+use Kytario\Middleware\AuthorizationMiddleware;
+use Kytario\Service\Authentication\AuthenticationServiceInterface;
+use Kytario\Service\Provider\UserProviderInterface;
+use Kytario\Tests\Support\Fixture;
+use Kytario\Tests\Support\IntegrationTestCase;
 
 #[CoversClass(AuthorizationMiddleware::class)]
 final class TokenRevocationTest extends IntegrationTestCase

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Mcp\Dto;
+namespace Kytario\Mcp\Dto;
 
 final readonly class McpFieldListDto
 {

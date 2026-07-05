@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Controller\Admin;
+namespace Kytario\Controller\Admin;
 
 use Laminas\Diactoros\Response\JsonResponse;
 use MarekSkopal\Router\Attribute\RouteDelete;
@@ -12,26 +12,26 @@ use MarekSkopal\Router\Attribute\RoutePost;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
-use Ukolio\Dto\AdminAddMemberDto;
-use Ukolio\Dto\AdminWorkspaceDto;
-use Ukolio\Dto\WorkspaceDto;
-use Ukolio\Dto\WorkspaceMemberDto;
-use Ukolio\Dto\WorkspaceTransferOwnershipDto;
-use Ukolio\Dto\WorkspaceUpdateDto;
-use Ukolio\Model\Entity\Enum\WorkspaceRoleEnum;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Model\Entity\WorkspaceUser;
-use Ukolio\Response\ConflictResponse;
-use Ukolio\Response\ErrorResponse;
-use Ukolio\Response\NotAuthorizedResponse;
-use Ukolio\Response\NotFoundResponse;
-use Ukolio\Response\OkResponse;
-use Ukolio\Route\Routes;
-use Ukolio\Service\Auth\AdminServiceInterface;
-use Ukolio\Service\Auth\PermissionCheckerInterface;
-use Ukolio\Service\Provider\UserProviderInterface;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
-use Ukolio\Service\Request\RequestServiceInterface;
+use Kytario\Dto\AdminAddMemberDto;
+use Kytario\Dto\AdminWorkspaceDto;
+use Kytario\Dto\WorkspaceDto;
+use Kytario\Dto\WorkspaceMemberDto;
+use Kytario\Dto\WorkspaceTransferOwnershipDto;
+use Kytario\Dto\WorkspaceUpdateDto;
+use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Model\Entity\WorkspaceUser;
+use Kytario\Response\ConflictResponse;
+use Kytario\Response\ErrorResponse;
+use Kytario\Response\NotAuthorizedResponse;
+use Kytario\Response\NotFoundResponse;
+use Kytario\Response\OkResponse;
+use Kytario\Route\Routes;
+use Kytario\Service\Auth\AdminServiceInterface;
+use Kytario\Service\Auth\PermissionCheckerInterface;
+use Kytario\Service\Provider\UserProviderInterface;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Service\Request\RequestServiceInterface;
 
 final readonly class AdminWorkspaceController
 {

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Authentication;
+namespace Kytario\Service\Authentication;
 
-use Ukolio\Dto\AuthenticationDto;
-use Ukolio\Dto\CredentialsDto;
-use Ukolio\Model\Entity\User;
+use Kytario\Dto\AuthenticationDto;
+use Kytario\Dto\CredentialsDto;
+use Kytario\Model\Entity\User;
 
 interface AuthenticationServiceInterface
 {

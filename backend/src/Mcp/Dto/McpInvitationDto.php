@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Mcp\Dto;
+namespace Kytario\Mcp\Dto;
 
-use Ukolio\Model\Entity\Invitation;
+use Kytario\Model\Entity\Invitation;
 use const DATE_ATOM;
 
 final readonly class McpInvitationDto

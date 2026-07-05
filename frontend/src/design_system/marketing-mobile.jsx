@@ -1,5 +1,5 @@
 // ============================================================
-// Ukolio — Mobile marketing site
+// Kytario — Mobile marketing site
 // Landing · Pricing · Contact · Text/Legal — adapted for ~402px
 // Rendered inside IOSDevice frames. Reuses tokens & language
 // from landing.jsx / marketing-pages.jsx
@@ -22,7 +22,7 @@ function MobileTopBar({ menuOpen = false, onToggle = () => {} }) {
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
         <Mark size={22} />
-        <span style={{ fontWeight: 600, letterSpacing: '-0.02em', fontSize: 15 }}>ukolio</span>
+        <span style={{ fontWeight: 600, letterSpacing: '-0.02em', fontSize: 15 }}>kytario</span>
       </div>
       <button
         aria-label="Menu"
@@ -80,7 +80,7 @@ function MobileFooter() {
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
         <Mark size={20} />
-        <span style={{ fontWeight: 600, color: 'var(--uk-fg)', letterSpacing: '-0.015em', fontSize: 14 }}>ukolio</span>
+        <span style={{ fontWeight: 600, color: 'var(--uk-fg)', letterSpacing: '-0.015em', fontSize: 14 }}>kytario</span>
       </div>
       <div style={{
         display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px 16px',
@@ -92,7 +92,7 @@ function MobileFooter() {
         ))}
       </div>
       <div style={{ fontSize: 11.5, color: 'var(--uk-fg-subtle)' }}>
-        © 2026 Ukolio s.r.o.
+        © 2026 Kytario s.r.o.
       </div>
     </footer>
   );
@@ -351,7 +351,7 @@ function MLPillars() {
   ];
   return (
     <section style={{ padding: '32px 20px', borderTop: '1px solid var(--uk-border)' }}>
-      <MSectionHead eyebrow="Why Ukolio" title="Made for humans and agents to share." />
+      <MSectionHead eyebrow="Why Kytario" title="Made for humans and agents to share." />
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         {items.map(it => (
           <div key={it.title} className="uk-card" style={{ padding: 16 }}>
@@ -622,7 +622,7 @@ function MobilePricingScreen() {
           </p>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 16 }}>
-            <a href="https://github.com/ukolio/ukolio"
+            <a href="https://github.com/kytario/kytario"
                style={{
                  display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8,
                  background: 'var(--uk-bg)', color: 'var(--uk-fg)',
@@ -839,13 +839,13 @@ function MobileContactScreen() {
             marginBottom: 6,
           }}>Email us</div>
 
-          <a href="mailto:info@ukolio.com" style={{
+          <a href="mailto:info@kytario.com" style={{
             fontSize: 19, fontWeight: 600, letterSpacing: '-0.015em',
             color: 'var(--uk-fg)', textDecoration: 'none',
             fontFamily: 'var(--uk-font-mono)',
-          }}>info@ukolio.com</a>
+          }}>info@kytario.com</a>
 
-          <a href="mailto:info@ukolio.com"
+          <a href="mailto:info@kytario.com"
              className="uk-btn uk-btn--primary"
              style={{ marginTop: 18, width: '100%' }}>
             Compose email
@@ -863,7 +863,7 @@ function MobileContactScreen() {
         </div>
 
         <p style={{ marginTop: 24, fontSize: 12, color: 'var(--uk-fg-subtle)' }}>
-          Security disclosures: <a href="mailto:security@ukolio.com" style={{ color: 'var(--uk-accent)' }}>security@ukolio.com</a>
+          Security disclosures: <a href="mailto:security@kytario.com" style={{ color: 'var(--uk-accent)' }}>security@kytario.com</a>
         </p>
       </section>
     </MobilePage>
@@ -980,8 +980,8 @@ function MobileTextPageScreen() {
 
       <article style={{ padding: '8px 20px 24px' }}>
         <p style={para}>
-          These Terms govern your use of Ukolio, a task-management product operated by
-          Ukolio s.r.o. ("we", "us"). By creating an account or connecting an MCP
+          These Terms govern your use of Kytario, a task-management product operated by
+          Kytario s.r.o. ("we", "us"). By creating an account or connecting an MCP
           client to your workspace, you agree to be bound by them.
         </p>
 
@@ -1000,7 +1000,7 @@ function MobileTextPageScreen() {
 
         <h2 id="accounts" style={h2}>1 · Accounts &amp; access</h2>
         <p style={para}>
-          You need an account to use Ukolio. You're responsible for keeping your
+          You need an account to use Kytario. You're responsible for keeping your
           credentials secure and for everything that happens under your account —
           including actions taken by agents you've authorised.
         </p>
@@ -1020,7 +1020,7 @@ function MobileTextPageScreen() {
 
         <h2 id="data" style={h2}>3 · Your data</h2>
         <p style={para}>
-          You retain ownership of everything you put into Ukolio. We process this data
+          You retain ownership of everything you put into Kytario. We process this data
           only to provide the service. We do <strong>not</strong> train machine-learning
           models on your content.
         </p>
@@ -1033,15 +1033,15 @@ function MobileTextPageScreen() {
 
         <h2 id="liability" style={h2}>5 · Liability</h2>
         <p style={para}>
-          Ukolio is provided "as is". To the maximum extent permitted by law, our total
+          Kytario is provided "as is". To the maximum extent permitted by law, our total
           liability is limited to the fees you paid us in the 12 months preceding the
           event giving rise to the claim.
         </p>
 
         <h2 id="contact" style={h2}>6 · Contact</h2>
         <p style={para}>
-          Questions? Email <a href="mailto:info@ukolio.com" style={link}>info@ukolio.com</a>.
-          For data-protection, use <a href="mailto:dpo@ukolio.com" style={link}>dpo@ukolio.com</a>.
+          Questions? Email <a href="mailto:info@kytario.com" style={link}>info@kytario.com</a>.
+          For data-protection, use <a href="mailto:dpo@kytario.com" style={link}>dpo@kytario.com</a>.
         </p>
 
         <div style={{
@@ -1050,7 +1050,7 @@ function MobileTextPageScreen() {
           fontSize: 12, color: 'var(--uk-fg-subtle)',
           lineHeight: 1.6,
         }}>
-          Ukolio s.r.o.<br/>
+          Kytario s.r.o.<br/>
           Karlovo náměstí 10, 120 00 Praha 2, Czech Republic<br/>
           IČO 12345678
         </div>

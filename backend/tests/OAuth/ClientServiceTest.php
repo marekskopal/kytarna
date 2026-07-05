@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\OAuth;
+namespace Kytario\Tests\OAuth;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use RuntimeException;
-use Ukolio\OAuth\ClientService;
-use Ukolio\OAuth\ClientServiceInterface;
-use Ukolio\Tests\Support\IntegrationTestCase;
+use Kytario\OAuth\ClientService;
+use Kytario\OAuth\ClientServiceInterface;
+use Kytario\Tests\Support\IntegrationTestCase;
 
 #[CoversClass(ClientService::class)]
 final class ClientServiceTest extends IntegrationTestCase

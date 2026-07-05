@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Controller;
+namespace Kytario\Controller;
 
 use Laminas\Diactoros\Response\JsonResponse;
 use MarekSkopal\ORM\Database\DatabaseInterface;
@@ -10,7 +10,7 @@ use MarekSkopal\Router\Attribute\RouteGet;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Throwable;
-use Ukolio\Route\Routes;
+use Kytario\Route\Routes;
 
 final readonly class HealthController
 {

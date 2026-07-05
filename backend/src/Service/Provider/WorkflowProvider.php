@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
 use Iterator;
-use Ukolio\Model\Entity\Enum\StatusTypeEnum;
-use Ukolio\Model\Entity\Project;
-use Ukolio\Model\Entity\Workflow;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Model\Repository\WorkflowRepository;
+use Kytario\Model\Entity\Enum\StatusTypeEnum;
+use Kytario\Model\Entity\Project;
+use Kytario\Model\Entity\Workflow;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Model\Repository\WorkflowRepository;
 
 final readonly class WorkflowProvider implements WorkflowProviderInterface
 {

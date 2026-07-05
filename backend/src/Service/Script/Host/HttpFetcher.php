@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Script\Host;
+namespace Kytario\Service\Script\Host;
 
 use CurlHandle;
 use RuntimeException;
@@ -28,7 +28,7 @@ use const PHP_URL_PORT;
 use const PHP_URL_SCHEME;
 
 /**
- * Outbound HTTP for `ukolio.fetch`. Stateless; per-run caps are enforced by the caller via
+ * Outbound HTTP for `kytario.fetch`. Stateless; per-run caps are enforced by the caller via
  * ScriptRunContext before each call. Only http/https are permitted and the timeout is bounded.
  *
  * SSRF defenses (always on, independent of the optional per-workspace allowlist): the target host
@@ -50,7 +50,7 @@ final readonly class HttpFetcher
 	public function fetch(string $url, array $options, array $allowedHosts = []): HttpResponse
 	{
 		if (preg_match('#^https?://#i', $url) !== 1) {
-			throw new RuntimeException('ukolio.fetch only supports http(s) URLs.');
+			throw new RuntimeException('kytario.fetch only supports http(s) URLs.');
 		}
 
 		$this->assertHostAllowed($url, $allowedHosts);
@@ -61,7 +61,7 @@ final readonly class HttpFetcher
 
 		$handle = curl_init();
 		if ($handle === false) {
-			throw new RuntimeException('ukolio.fetch could not initialise an HTTP client.');
+			throw new RuntimeException('kytario.fetch could not initialise an HTTP client.');
 		}
 
 		$responseHeaders = [];
@@ -92,14 +92,14 @@ final readonly class HttpFetcher
 
 		$result = curl_exec($handle);
 		if ($result === false) {
-			throw new RuntimeException('ukolio.fetch failed: ' . curl_error($handle));
+			throw new RuntimeException('kytario.fetch failed: ' . curl_error($handle));
 		}
 
 		$status = curl_getinfo($handle, CURLINFO_RESPONSE_CODE);
 
 		$text = is_string($result) ? $result : '';
 		if (strlen($text) > self::MaxBodyBytes) {
-			throw new RuntimeException('ukolio.fetch response exceeded the maximum allowed size.');
+			throw new RuntimeException('kytario.fetch response exceeded the maximum allowed size.');
 		}
 
 		return new HttpResponse($status, $responseHeaders, $text);
@@ -119,7 +119,7 @@ final readonly class HttpFetcher
 
 		$host = strtolower((string) parse_url($url, PHP_URL_HOST));
 		if ($host === '') {
-			throw new RuntimeException('ukolio.fetch could not determine the request host.');
+			throw new RuntimeException('kytario.fetch could not determine the request host.');
 		}
 
 		foreach ($allowedHosts as $pattern) {
@@ -128,7 +128,7 @@ final readonly class HttpFetcher
 			}
 		}
 
-		throw new RuntimeException(sprintf('ukolio.fetch host "%s" is not in this workspace\'s allowlist.', $host));
+		throw new RuntimeException(sprintf('kytario.fetch host "%s" is not in this workspace\'s allowlist.', $host));
 	}
 
 	/**
@@ -141,7 +141,7 @@ final readonly class HttpFetcher
 	{
 		$host = strtolower((string) parse_url($url, PHP_URL_HOST));
 		if ($host === '') {
-			throw new RuntimeException('ukolio.fetch could not determine the request host.');
+			throw new RuntimeException('kytario.fetch could not determine the request host.');
 		}
 
 		$scheme = strtolower((string) parse_url($url, PHP_URL_SCHEME));
@@ -151,7 +151,7 @@ final readonly class HttpFetcher
 		$ips = $this->resolveIps($host);
 		foreach ($ips as $ip) {
 			if (!self::isPublicIp($ip)) {
-				throw new RuntimeException('ukolio.fetch refuses to connect to a non-public address.');
+				throw new RuntimeException('kytario.fetch refuses to connect to a non-public address.');
 			}
 		}
 
@@ -183,7 +183,7 @@ final readonly class HttpFetcher
 
 		$ips = array_values(array_unique(array_filter($ips, 'is_string')));
 		if ($ips === []) {
-			throw new RuntimeException('ukolio.fetch could not resolve the request host.');
+			throw new RuntimeException('kytario.fetch could not resolve the request host.');
 		}
 
 		return $ips;

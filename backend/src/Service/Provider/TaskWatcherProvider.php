@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\TaskWatcher;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Repository\TaskWatcherRepository;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\TaskWatcher;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Repository\TaskWatcherRepository;
 
 final readonly class TaskWatcherProvider implements TaskWatcherProviderInterface
 {

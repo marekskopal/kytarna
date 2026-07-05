@@ -29,16 +29,16 @@ migrate:
 test: test-backend test-frontend test-e2e
 
 ## Backend unit tests (PHPUnit). Runs inside the backend container so the test
-## suite can reach MariaDB. The harness auto-creates the `ukolio_test` database
+## suite can reach MariaDB. The harness auto-creates the `kytario_test` database
 ## using the backend's MYSQL_USER credentials (must have CREATE privilege).
 test-backend:
-	docker compose exec -T -e TEST_MYSQL_DATABASE=ukolio_test backend vendor/bin/phpunit
+	docker compose exec -T -e TEST_MYSQL_DATABASE=kytario_test backend vendor/bin/phpunit
 
 ## Backend unit tests with coverage report at backend/.phpunit.cache/coverage-html
 ## Uses pcov (compiled into the backend image). Coverage focuses on src/Controller,
 ## src/Mcp, and src/Service per the UPB-49 acceptance criteria.
 test-backend-coverage:
-	docker compose exec -T -e TEST_MYSQL_DATABASE=ukolio_test backend vendor/bin/phpunit --coverage-text --coverage-html .phpunit.cache/coverage-html
+	docker compose exec -T -e TEST_MYSQL_DATABASE=kytario_test backend vendor/bin/phpunit --coverage-text --coverage-html .phpunit.cache/coverage-html
 
 ## Frontend unit tests (Vitest)
 test-frontend:

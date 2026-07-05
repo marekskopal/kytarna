@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Mcp\Tool;
+namespace Kytario\Mcp\Tool;
 
 use Mcp\Capability\Attribute\McpTool;
 use RuntimeException;
-use Ukolio\Mcp\Dto\McpTaskFileContentDto;
-use Ukolio\Mcp\Dto\McpTaskFileDto;
-use Ukolio\Mcp\Dto\McpTaskFileListDto;
-use Ukolio\Mcp\McpUserContextInterface;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\TaskFile;
-use Ukolio\Service\Provider\TaskFileProviderInterface;
-use Ukolio\Service\Provider\TaskProviderInterface;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Mcp\Dto\McpTaskFileContentDto;
+use Kytario\Mcp\Dto\McpTaskFileDto;
+use Kytario\Mcp\Dto\McpTaskFileListDto;
+use Kytario\Mcp\McpUserContextInterface;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\TaskFile;
+use Kytario\Service\Provider\TaskFileProviderInterface;
+use Kytario\Service\Provider\TaskProviderInterface;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
 
 final readonly class TaskFileTools
 {

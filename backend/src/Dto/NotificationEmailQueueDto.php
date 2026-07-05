@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Dto;
+namespace Kytario\Dto;
 
-use Ukolio\Model\Entity\Enum\LocaleEnum;
-use Ukolio\Model\Entity\Enum\NotificationTypeEnum;
+use Kytario\Model\Entity\Enum\LocaleEnum;
+use Kytario\Model\Entity\Enum\NotificationTypeEnum;
 
 /**
  * Payload for the notification-email queue (U-83). Carries everything the email worker needs to

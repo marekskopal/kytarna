@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Controller;
+namespace Kytario\Controller;
 
 use Laminas\Diactoros\Response\JsonResponse;
 use MarekSkopal\Router\Attribute\RouteGet;
@@ -10,12 +10,12 @@ use MarekSkopal\Router\Attribute\RoutePost;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
-use Ukolio\OAuth\AuthorizationServiceInterface;
-use Ukolio\OAuth\ClientServiceInterface;
-use Ukolio\OAuth\DiscoveryUrl;
-use Ukolio\Response\ErrorResponse;
-use Ukolio\Route\Routes;
-use Ukolio\Service\Request\RequestServiceInterface;
+use Kytario\OAuth\AuthorizationServiceInterface;
+use Kytario\OAuth\ClientServiceInterface;
+use Kytario\OAuth\DiscoveryUrl;
+use Kytario\Response\ErrorResponse;
+use Kytario\Route\Routes;
+use Kytario\Service\Request\RequestServiceInterface;
 use const JSON_THROW_ON_ERROR;
 
 final readonly class OAuthController

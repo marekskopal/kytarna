@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Model\Repository;
+namespace Kytario\Model\Repository;
 
 use Iterator;
 use MarekSkopal\ORM\Repository\AbstractRepository;
-use Ukolio\Model\Entity\Enum\SystemRoleEnum;
-use Ukolio\Model\Entity\User;
+use Kytario\Model\Entity\Enum\SystemRoleEnum;
+use Kytario\Model\Entity\User;
 
 /** @extends AbstractRepository<User> */
 final class UserRepository extends AbstractRepository

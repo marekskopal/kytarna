@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\App;
+namespace Kytario\App;
 
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 use MarekSkopal\Router\Builder\RouterBuilder;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Ukolio\App\Bootstrap\EnvironmentValidator;
-use Ukolio\App\ServiceProvider\AuthenticationServiceProvider;
-use Ukolio\App\ServiceProvider\DomainServiceProvider;
-use Ukolio\App\ServiceProvider\InfrastructureServiceProvider;
-use Ukolio\App\ServiceProvider\OrmServiceProvider;
-use Ukolio\App\ServiceProvider\RealtimeServiceProvider;
-use Ukolio\Middleware\AuthorizationMiddleware;
-use Ukolio\Middleware\CorsMiddleware;
-use Ukolio\Route\Strategy\JsonStrategy;
-use Ukolio\Service\Dbal\DbContext;
+use Kytario\App\Bootstrap\EnvironmentValidator;
+use Kytario\App\ServiceProvider\AuthenticationServiceProvider;
+use Kytario\App\ServiceProvider\DomainServiceProvider;
+use Kytario\App\ServiceProvider\InfrastructureServiceProvider;
+use Kytario\App\ServiceProvider\OrmServiceProvider;
+use Kytario\App\ServiceProvider\RealtimeServiceProvider;
+use Kytario\Middleware\AuthorizationMiddleware;
+use Kytario\Middleware\CorsMiddleware;
+use Kytario\Route\Strategy\JsonStrategy;
+use Kytario\Service\Dbal\DbContext;
 
 final readonly class ApplicationFactory
 {

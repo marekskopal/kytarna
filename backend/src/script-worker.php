@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio;
+namespace Kytario;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -10,10 +10,10 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use Psr\Log\LoggerInterface;
 use Throwable;
-use Ukolio\App\ApplicationFactory;
-use Ukolio\Jobs\Handler\ScriptRunHandler;
-use Ukolio\Jobs\Message\AmqpReceivedMessage;
-use Ukolio\Service\Queue\Enum\QueueEnum;
+use Kytario\App\ApplicationFactory;
+use Kytario\Jobs\Handler\ScriptRunHandler;
+use Kytario\Jobs\Message\AmqpReceivedMessage;
+use Kytario\Service\Queue\Enum\QueueEnum;
 
 /**
  * Dedicated consumer for the script-run queue. Runs as its own supervisord program in the backend

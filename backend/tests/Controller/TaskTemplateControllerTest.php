@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Controller;
+namespace Kytario\Tests\Controller;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use Ukolio\Controller\TaskTemplateController;
-use Ukolio\Model\Repository\StatusRepository;
-use Ukolio\Model\Repository\WorkflowRepository;
-use Ukolio\Tests\Support\Fixture;
-use Ukolio\Tests\Support\IntegrationTestCase;
+use Kytario\Controller\TaskTemplateController;
+use Kytario\Model\Repository\StatusRepository;
+use Kytario\Model\Repository\WorkflowRepository;
+use Kytario\Tests\Support\Fixture;
+use Kytario\Tests\Support\IntegrationTestCase;
 
 #[CoversClass(TaskTemplateController::class)]
 final class TaskTemplateControllerTest extends IntegrationTestCase

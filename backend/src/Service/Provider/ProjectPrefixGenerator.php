@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Model\Repository\ProjectRepository;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Model\Repository\ProjectRepository;
 
 final readonly class ProjectPrefixGenerator implements ProjectPrefixGeneratorInterface
 {

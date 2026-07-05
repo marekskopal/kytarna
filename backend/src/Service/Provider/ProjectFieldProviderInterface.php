@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
-use Ukolio\Model\Entity\Project;
-use Ukolio\Model\Entity\ProjectField;
-use Ukolio\Model\Entity\User;
+use Kytario\Model\Entity\Project;
+use Kytario\Model\Entity\ProjectField;
+use Kytario\Model\Entity\User;
 
 interface ProjectFieldProviderInterface
 {

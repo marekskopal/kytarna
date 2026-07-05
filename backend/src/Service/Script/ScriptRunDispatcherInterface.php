@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Script;
+namespace Kytario\Service\Script;
 
-use Ukolio\Model\Entity\Enum\ScriptTriggerEnum;
-use Ukolio\Model\Entity\Script;
+use Kytario\Model\Entity\Enum\ScriptTriggerEnum;
+use Kytario\Model\Entity\Script;
 
 interface ScriptRunDispatcherInterface
 {

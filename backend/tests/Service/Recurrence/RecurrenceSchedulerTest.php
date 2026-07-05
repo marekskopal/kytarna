@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Service\Recurrence;
+namespace Kytario\Tests\Service\Recurrence;
 
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
-use Ukolio\Model\Entity\Enum\RecurrenceCadenceEnum;
-use Ukolio\Model\Entity\Enum\RecurrenceEndTypeEnum;
-use Ukolio\Model\Entity\TaskRecurrence;
-use Ukolio\Service\Recurrence\RecurrenceScheduler;
-use Ukolio\Service\Script\Trigger\CronEvaluator;
+use Kytario\Model\Entity\Enum\RecurrenceCadenceEnum;
+use Kytario\Model\Entity\Enum\RecurrenceEndTypeEnum;
+use Kytario\Model\Entity\TaskRecurrence;
+use Kytario\Service\Recurrence\RecurrenceScheduler;
+use Kytario\Service\Script\Trigger\CronEvaluator;
 
 #[CoversClass(RecurrenceScheduler::class)]
 final class RecurrenceSchedulerTest extends TestCase

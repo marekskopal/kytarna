@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Controller\Admin;
+namespace Kytario\Controller\Admin;
 
 use Laminas\Diactoros\Response\JsonResponse;
 use MarekSkopal\Router\Attribute\RouteDelete;
@@ -11,18 +11,18 @@ use MarekSkopal\Router\Attribute\RoutePatch;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
-use Ukolio\Dto\AdminUserDto;
-use Ukolio\Dto\AdminUserUpdateDto;
-use Ukolio\Model\Entity\Enum\SystemRoleEnum;
-use Ukolio\Response\ConflictResponse;
-use Ukolio\Response\NotAuthorizedResponse;
-use Ukolio\Response\NotFoundResponse;
-use Ukolio\Response\OkResponse;
-use Ukolio\Route\Routes;
-use Ukolio\Service\Auth\AdminServiceInterface;
-use Ukolio\Service\Auth\PermissionCheckerInterface;
-use Ukolio\Service\Provider\UserProviderInterface;
-use Ukolio\Service\Request\RequestServiceInterface;
+use Kytario\Dto\AdminUserDto;
+use Kytario\Dto\AdminUserUpdateDto;
+use Kytario\Model\Entity\Enum\SystemRoleEnum;
+use Kytario\Response\ConflictResponse;
+use Kytario\Response\NotAuthorizedResponse;
+use Kytario\Response\NotFoundResponse;
+use Kytario\Response\OkResponse;
+use Kytario\Route\Routes;
+use Kytario\Service\Auth\AdminServiceInterface;
+use Kytario\Service\Auth\PermissionCheckerInterface;
+use Kytario\Service\Provider\UserProviderInterface;
+use Kytario\Service\Request\RequestServiceInterface;
 
 final readonly class AdminUserController
 {

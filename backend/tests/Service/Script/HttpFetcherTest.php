@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Service\Script;
+namespace Kytario\Tests\Service\Script;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
 use RuntimeException;
-use Ukolio\Service\Script\Host\HttpFetcher;
+use Kytario\Service\Script\Host\HttpFetcher;
 
 #[CoversClass(HttpFetcher::class)]
 final class HttpFetcherTest extends TestCase

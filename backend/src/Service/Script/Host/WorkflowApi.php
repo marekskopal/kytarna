@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Script\Host;
+namespace Kytario\Service\Script\Host;
 
 /**
- * Returned by `ukolio.workflow(projectId)`; exposes the project's ordered statuses.
+ * Returned by `kytario.workflow(projectId)`; exposes the project's ordered statuses.
  */
 final readonly class WorkflowApi
 {

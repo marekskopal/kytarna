@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Jobs\Handler;
+namespace Kytario\Jobs\Handler;
 
-use Ukolio\Jobs\Message\ReceivedMessageInterface;
+use Kytario\Jobs\Message\ReceivedMessageInterface;
 
 interface JobHandler
 {

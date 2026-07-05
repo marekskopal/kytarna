@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Response;
+namespace Kytario\Response;
 
 final class ConflictResponse extends ErrorResponse
 {

@@ -23,7 +23,7 @@ test.describe('Login', () => {
     test('invalid credentials keep the user on /login (401 is not redirected away)', async ({page}) => {
         const login = new LoginPage(page);
         await login.goto();
-        await login.login('definitely-not-a-user@ukolio.test', 'WrongPass1!');
+        await login.login('definitely-not-a-user@kytario.test', 'WrongPass1!');
 
         // The error interceptor deliberately suppresses toasts for 401 (login/refresh
         // failure flows handle UX themselves). The user-visible signal is that we

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
 use RuntimeException;
-use Ukolio\Model\Entity\Enum\EventTypeEnum;
-use Ukolio\Model\Entity\Enum\TaskRelationTypeEnum;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\TaskRelation;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Repository\TaskRelationRepository;
+use Kytario\Model\Entity\Enum\EventTypeEnum;
+use Kytario\Model\Entity\Enum\TaskRelationTypeEnum;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\TaskRelation;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Repository\TaskRelationRepository;
 
 final readonly class TaskRelationProvider implements TaskRelationProviderInterface
 {

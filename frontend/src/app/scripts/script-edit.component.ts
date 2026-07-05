@@ -9,11 +9,11 @@ import {CodeEditorComponent} from '@app/shared/components/code-editor/code-edito
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
 import {StatusPillComponent} from './status-pill.component';
-import {ApiEntry, UKOLIO_API_GROUPS} from './ukolio-api';
+import {ApiEntry, KYTARIO_API_GROUPS} from './kytario-api';
 
-const DEFAULT_SOURCE = '// Automate with the `ukolio` API. Example:\n'
-    + '// const tasks = ukolio.tasks.list({ onlyActive: true });\n'
-    + '// ukolio.log(`open tasks: ${tasks.length}`);\n';
+const DEFAULT_SOURCE = '// Automate with the `kytario` API. Example:\n'
+    + '// const tasks = kytario.tasks.list({ onlyActive: true });\n'
+    + '// kytario.log(`open tasks: ${tasks.length}`);\n';
 
 const CPU_LIMIT_MS = 5000;
 const HTTP_LIMIT = 20;
@@ -95,7 +95,7 @@ export class ScriptEditComponent implements OnInit {
     protected readonly httpLimit = HTTP_LIMIT;
     protected readonly apiLimit = API_LIMIT;
 
-    protected readonly apiGroups = UKOLIO_API_GROUPS;
+    protected readonly apiGroups = KYTARIO_API_GROUPS;
 
     protected readonly triggers: ScriptTrigger[] = ['Manual', 'Scheduled', 'Event'];
     protected readonly cronPresets: CronPreset[] = [

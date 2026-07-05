@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Search;
+namespace Kytario\Service\Search;
 
 use Meilisearch\Client;
 use Meilisearch\Endpoints\Indexes;
 use Psr\Log\LoggerInterface;
 use Throwable;
-use Ukolio\Model\Repository\TaskRepository;
-use Ukolio\Service\Search\Dto\SearchFiltersDto;
-use Ukolio\Service\Search\Dto\SearchHitDto;
-use Ukolio\Service\Search\Dto\SearchResultDto;
+use Kytario\Model\Repository\TaskRepository;
+use Kytario\Service\Search\Dto\SearchFiltersDto;
+use Kytario\Service\Search\Dto\SearchHitDto;
+use Kytario\Service\Search\Dto\SearchResultDto;
 
 final class MeiliClient
 {
@@ -42,7 +42,7 @@ final class MeiliClient
 	{
 		$prefix = (string) getenv('MEILI_INDEX_PREFIX');
 		if ($prefix === '') {
-			$prefix = 'ukolio';
+			$prefix = 'kytario';
 		}
 		return $prefix . self::IndexSuffix;
 	}

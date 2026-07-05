@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Controller;
+namespace Kytario\Controller;
 
 use Laminas\Diactoros\Response\JsonResponse;
 use MarekSkopal\Router\Attribute\RouteDelete;
@@ -12,19 +12,19 @@ use MarekSkopal\Router\Attribute\RoutePut;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
-use Ukolio\Dto\TagCreateDto;
-use Ukolio\Dto\TagDto;
-use Ukolio\Dto\TagUpdateDto;
-use Ukolio\Model\Entity\Tag;
-use Ukolio\Response\ErrorResponse;
-use Ukolio\Response\NotAuthorizedResponse;
-use Ukolio\Response\NotFoundResponse;
-use Ukolio\Response\OkResponse;
-use Ukolio\Route\Routes;
-use Ukolio\Service\Auth\PermissionCheckerInterface;
-use Ukolio\Service\Provider\TagProviderInterface;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
-use Ukolio\Service\Request\RequestServiceInterface;
+use Kytario\Dto\TagCreateDto;
+use Kytario\Dto\TagDto;
+use Kytario\Dto\TagUpdateDto;
+use Kytario\Model\Entity\Tag;
+use Kytario\Response\ErrorResponse;
+use Kytario\Response\NotAuthorizedResponse;
+use Kytario\Response\NotFoundResponse;
+use Kytario\Response\OkResponse;
+use Kytario\Route\Routes;
+use Kytario\Service\Auth\PermissionCheckerInterface;
+use Kytario\Service\Provider\TagProviderInterface;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Service\Request\RequestServiceInterface;
 
 final readonly class TagController
 {

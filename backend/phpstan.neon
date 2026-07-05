@@ -40,6 +40,6 @@ parameters:
 
 services:
 	-
-		class: Ukolio\PhpStan\OrmReadWritePropertiesExtension
+		class: Kytario\PhpStan\OrmReadWritePropertiesExtension
 		tags:
 			- phpstan.properties.readWriteExtension

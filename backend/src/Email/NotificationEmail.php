@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Email;
+namespace Kytario\Email;
 
 use const ENT_QUOTES;
 

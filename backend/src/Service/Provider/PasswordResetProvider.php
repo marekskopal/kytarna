@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
 use RuntimeException;
 use SensitiveParameter;
-use Ukolio\Dto\PasswordResetQueueDto;
-use Ukolio\Model\Entity\PasswordResetToken;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Repository\PasswordResetTokenRepository;
-use Ukolio\Service\Authentication\RateLimitConfig;
-use Ukolio\Service\Queue\Enum\QueueEnum;
-use Ukolio\Service\Queue\QueuePublisher;
+use Kytario\Dto\PasswordResetQueueDto;
+use Kytario\Model\Entity\PasswordResetToken;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Repository\PasswordResetTokenRepository;
+use Kytario\Service\Authentication\RateLimitConfig;
+use Kytario\Service\Queue\Enum\QueueEnum;
+use Kytario\Service\Queue\QueuePublisher;
 use const FILTER_VALIDATE_EMAIL;
 
 final readonly class PasswordResetProvider implements PasswordResetProviderInterface

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Controller;
+namespace Kytario\Controller;
 
 use DateTimeImmutable;
 use Laminas\Diactoros\Response\JsonResponse;
@@ -13,25 +13,25 @@ use MarekSkopal\Router\Attribute\RoutePost;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
-use Ukolio\Dto\ChangePasswordDto;
-use Ukolio\Dto\CurrentUserUpdateDto;
-use Ukolio\Dto\UserDto;
-use Ukolio\Model\Entity\Enum\LocaleEnum;
-use Ukolio\Model\Entity\Enum\ThemeEnum;
-use Ukolio\Model\Repository\UserRepository;
-use Ukolio\Response\ConflictResponse;
-use Ukolio\Response\ErrorResponse;
-use Ukolio\Response\NotAuthorizedResponse;
-use Ukolio\Response\OkResponse;
-use Ukolio\Route\Routes;
-use Ukolio\Service\Auth\CurrentUserDeletionServiceInterface;
-use Ukolio\Service\Auth\SoleOwnerException;
-use Ukolio\Service\Auth\UserDataExportServiceInterface;
-use Ukolio\Service\Provider\EmailVerificationProviderInterface;
-use Ukolio\Service\Provider\SavedViewProviderInterface;
-use Ukolio\Service\Provider\UserProviderInterface;
-use Ukolio\Service\Request\RequestServiceInterface;
-use Ukolio\Validator\PasswordValidator;
+use Kytario\Dto\ChangePasswordDto;
+use Kytario\Dto\CurrentUserUpdateDto;
+use Kytario\Dto\UserDto;
+use Kytario\Model\Entity\Enum\LocaleEnum;
+use Kytario\Model\Entity\Enum\ThemeEnum;
+use Kytario\Model\Repository\UserRepository;
+use Kytario\Response\ConflictResponse;
+use Kytario\Response\ErrorResponse;
+use Kytario\Response\NotAuthorizedResponse;
+use Kytario\Response\OkResponse;
+use Kytario\Route\Routes;
+use Kytario\Service\Auth\CurrentUserDeletionServiceInterface;
+use Kytario\Service\Auth\SoleOwnerException;
+use Kytario\Service\Auth\UserDataExportServiceInterface;
+use Kytario\Service\Provider\EmailVerificationProviderInterface;
+use Kytario\Service\Provider\SavedViewProviderInterface;
+use Kytario\Service\Provider\UserProviderInterface;
+use Kytario\Service\Request\RequestServiceInterface;
+use Kytario\Validator\PasswordValidator;
 
 final readonly class CurrentUserController
 {
@@ -175,7 +175,7 @@ final readonly class CurrentUserController
 
 		return (new JsonResponse($payload))->withHeader(
 			'Content-Disposition',
-			sprintf('attachment; filename="ukolio-export-%d.json"', $user->id),
+			sprintf('attachment; filename="kytario-export-%d.json"', $user->id),
 		);
 	}
 }

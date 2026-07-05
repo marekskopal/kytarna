@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Dto;
+namespace Kytario\Dto;
 
-use Ukolio\Model\Entity\Field;
+use Kytario\Model\Entity\Field;
 use const DATE_ATOM;
 use const JSON_THROW_ON_ERROR;
 

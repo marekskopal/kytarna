@@ -2,28 +2,28 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Script\Host;
+namespace Kytario\Service\Script\Host;
 
 use DateTimeImmutable;
 use RuntimeException;
-use Ukolio\Mcp\Tool\Helper\PriorityResolver;
-use Ukolio\Mcp\Tool\Helper\StatusResolver;
-use Ukolio\Model\Entity\Enum\EventTypeEnum;
-use Ukolio\Model\Entity\Enum\StatusTypeEnum;
-use Ukolio\Model\Entity\Project;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Repository\Enum\ArchivedFilterEnum;
-use Ukolio\Model\Repository\Enum\OrderDirectionEnum;
-use Ukolio\Model\Repository\Enum\TaskOrderByEnum;
-use Ukolio\Service\Provider\EventProviderInterface;
-use Ukolio\Service\Provider\ProjectProviderInterface;
-use Ukolio\Service\Provider\TaskCodeResolverInterface;
-use Ukolio\Service\Provider\TaskCommentProviderInterface;
-use Ukolio\Service\Provider\TaskProviderInterface;
-use Ukolio\Service\Provider\TaskTagProviderInterface;
+use Kytario\Mcp\Tool\Helper\PriorityResolver;
+use Kytario\Mcp\Tool\Helper\StatusResolver;
+use Kytario\Model\Entity\Enum\EventTypeEnum;
+use Kytario\Model\Entity\Enum\StatusTypeEnum;
+use Kytario\Model\Entity\Project;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Repository\Enum\ArchivedFilterEnum;
+use Kytario\Model\Repository\Enum\OrderDirectionEnum;
+use Kytario\Model\Repository\Enum\TaskOrderByEnum;
+use Kytario\Service\Provider\EventProviderInterface;
+use Kytario\Service\Provider\ProjectProviderInterface;
+use Kytario\Service\Provider\TaskCodeResolverInterface;
+use Kytario\Service\Provider\TaskCommentProviderInterface;
+use Kytario\Service\Provider\TaskProviderInterface;
+use Kytario\Service\Provider\TaskTagProviderInterface;
 
 /**
- * Exposed to JS as `ukolio.tasks`. Every call is authorised as the script's owner and scoped to
+ * Exposed to JS as `kytario.tasks`. Every call is authorised as the script's owner and scoped to
  * the run's workspace via the same providers/resolvers the MCP tools use. Counts against the
  * per-run task-API cap.
  */

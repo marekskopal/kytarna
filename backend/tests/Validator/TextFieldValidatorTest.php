@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Validator;
+namespace Kytario\Tests\Validator;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
-use Ukolio\Validator\TextFieldValidator;
+use Kytario\Validator\TextFieldValidator;
 
 #[CoversClass(TextFieldValidator::class)]
 final class TextFieldValidatorTest extends TestCase

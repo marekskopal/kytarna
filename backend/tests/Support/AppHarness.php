@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Support;
+namespace Kytario\Tests\Support;
 
 use MarekSkopal\ORM\ORM;
 use PDO;
 use Psr\Container\ContainerInterface;
-use Ukolio\App\Application;
-use Ukolio\App\ApplicationFactory;
-use Ukolio\Service\Actor\ActorContextInterface;
+use Kytario\App\Application;
+use Kytario\App\ApplicationFactory;
+use Kytario\Service\Actor\ActorContextInterface;
 
 /**
  * Shared per-suite singleton: builds the Application once, exposes the

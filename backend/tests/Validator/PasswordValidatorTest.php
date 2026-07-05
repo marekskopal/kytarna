@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Validator;
+namespace Kytario\Tests\Validator;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
-use Ukolio\Validator\PasswordValidator;
+use Kytario\Validator\PasswordValidator;
 
 #[CoversClass(PasswordValidator::class)]
 final class PasswordValidatorTest extends TestCase

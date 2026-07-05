@@ -2,27 +2,27 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Mcp\Tool;
+namespace Kytario\Mcp\Tool;
 
 use Mcp\Capability\Attribute\McpTool;
 use RuntimeException;
-use Ukolio\Mcp\Dto\McpTaskDto;
-use Ukolio\Mcp\Dto\McpTaskTemplateDto;
-use Ukolio\Mcp\Dto\McpTaskTemplateListDto;
-use Ukolio\Mcp\McpUserContextInterface;
-use Ukolio\Mcp\Tool\Helper\StatusResolver;
-use Ukolio\Model\Entity\Enum\StatusTypeEnum;
-use Ukolio\Model\Entity\Project;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\TaskTemplate;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Service\Auth\PermissionCheckerInterface;
-use Ukolio\Service\Provider\ProjectProviderInterface;
-use Ukolio\Service\Provider\TaskCodeResolverInterface;
-use Ukolio\Service\Provider\TaskFieldValueProviderInterface;
-use Ukolio\Service\Provider\TaskTagProviderInterface;
-use Ukolio\Service\Provider\TaskTemplateProviderInterface;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Mcp\Dto\McpTaskDto;
+use Kytario\Mcp\Dto\McpTaskTemplateDto;
+use Kytario\Mcp\Dto\McpTaskTemplateListDto;
+use Kytario\Mcp\McpUserContextInterface;
+use Kytario\Mcp\Tool\Helper\StatusResolver;
+use Kytario\Model\Entity\Enum\StatusTypeEnum;
+use Kytario\Model\Entity\Project;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\TaskTemplate;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Service\Auth\PermissionCheckerInterface;
+use Kytario\Service\Provider\ProjectProviderInterface;
+use Kytario\Service\Provider\TaskCodeResolverInterface;
+use Kytario\Service\Provider\TaskFieldValueProviderInterface;
+use Kytario\Service\Provider\TaskTagProviderInterface;
+use Kytario\Service\Provider\TaskTemplateProviderInterface;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
 
 final readonly class TaskTemplateTools
 {

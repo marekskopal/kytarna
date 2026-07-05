@@ -68,7 +68,7 @@ jobs:
 
             - name: Run PHPUnit
               if: always()
-              run: docker compose exec -T -e TEST_MYSQL_DATABASE=ukolio_test backend vendor/bin/phpunit
+              run: docker compose exec -T -e TEST_MYSQL_DATABASE=kytario_test backend vendor/bin/phpunit
 
             - name: Dump docker logs on failure
               if: failure()

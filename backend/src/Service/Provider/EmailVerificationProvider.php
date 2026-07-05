@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
 use RuntimeException;
-use Ukolio\Dto\EmailVerificationQueueDto;
-use Ukolio\Model\Entity\EmailVerificationToken;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Repository\EmailVerificationTokenRepository;
-use Ukolio\Service\Queue\Enum\QueueEnum;
-use Ukolio\Service\Queue\QueuePublisher;
+use Kytario\Dto\EmailVerificationQueueDto;
+use Kytario\Model\Entity\EmailVerificationToken;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Repository\EmailVerificationTokenRepository;
+use Kytario\Service\Queue\Enum\QueueEnum;
+use Kytario\Service\Queue\QueuePublisher;
 
 final readonly class EmailVerificationProvider implements EmailVerificationProviderInterface
 {

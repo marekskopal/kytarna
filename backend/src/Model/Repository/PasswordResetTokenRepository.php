@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Model\Repository;
+namespace Kytario\Model\Repository;
 
 use DateTimeImmutable;
 use MarekSkopal\ORM\Repository\AbstractRepository;
-use Ukolio\Model\Entity\PasswordResetToken;
+use Kytario\Model\Entity\PasswordResetToken;
 
 /** @extends AbstractRepository<PasswordResetToken> */
 final class PasswordResetTokenRepository extends AbstractRepository

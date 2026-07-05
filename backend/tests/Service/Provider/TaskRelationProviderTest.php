@@ -2,28 +2,28 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Service\Provider;
+namespace Kytario\Tests\Service\Provider;
 
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
-use Ukolio\Model\Entity\Enum\EventTypeEnum;
-use Ukolio\Model\Entity\Enum\LocaleEnum;
-use Ukolio\Model\Entity\Enum\StatusTypeEnum;
-use Ukolio\Model\Entity\Enum\SystemRoleEnum;
-use Ukolio\Model\Entity\Enum\TaskRelationTypeEnum;
-use Ukolio\Model\Entity\Priority;
-use Ukolio\Model\Entity\Project;
-use Ukolio\Model\Entity\Status;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\TaskRelation;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Entity\Workflow;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Service\Provider\TaskRelationProvider;
-use Ukolio\Tests\Service\Provider\Fake\FakeEventProvider;
-use Ukolio\Tests\Service\Provider\Fake\FakeTaskRelationRepository;
+use Kytario\Model\Entity\Enum\EventTypeEnum;
+use Kytario\Model\Entity\Enum\LocaleEnum;
+use Kytario\Model\Entity\Enum\StatusTypeEnum;
+use Kytario\Model\Entity\Enum\SystemRoleEnum;
+use Kytario\Model\Entity\Enum\TaskRelationTypeEnum;
+use Kytario\Model\Entity\Priority;
+use Kytario\Model\Entity\Project;
+use Kytario\Model\Entity\Status;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\TaskRelation;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Entity\Workflow;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Service\Provider\TaskRelationProvider;
+use Kytario\Tests\Service\Provider\Fake\FakeEventProvider;
+use Kytario\Tests\Service\Provider\Fake\FakeTaskRelationRepository;
 
 #[CoversClass(TaskRelationProvider::class)]
 final class TaskRelationProviderTest extends TestCase

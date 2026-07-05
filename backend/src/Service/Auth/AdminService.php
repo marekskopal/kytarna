@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Auth;
+namespace Kytario\Service\Auth;
 
 use DateTimeImmutable;
 use Iterator;
 use RuntimeException;
-use Ukolio\Model\Entity\Enum\EventTypeEnum;
-use Ukolio\Model\Entity\Enum\SystemRoleEnum;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Model\Repository\UserRepository;
-use Ukolio\Model\Repository\WorkspaceRepository;
-use Ukolio\Model\Repository\WorkspaceUserRepository;
-use Ukolio\Service\Provider\EventProviderInterface;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Model\Entity\Enum\EventTypeEnum;
+use Kytario\Model\Entity\Enum\SystemRoleEnum;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Model\Repository\UserRepository;
+use Kytario\Model\Repository\WorkspaceRepository;
+use Kytario\Model\Repository\WorkspaceUserRepository;
+use Kytario\Service\Provider\EventProviderInterface;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
 use const FILTER_VALIDATE_EMAIL;
 
 final readonly class AdminService implements AdminServiceInterface

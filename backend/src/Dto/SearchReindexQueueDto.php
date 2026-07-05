@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Dto;
+namespace Kytario\Dto;
 
 /** @implements ArrayFactoryInterface<array{taskId: int, op: string}> */
 final readonly class SearchReindexQueueDto implements ArrayFactoryInterface

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Dto;
+namespace Kytario\Dto;
 
-use Ukolio\Model\Entity\Task;
+use Kytario\Model\Entity\Task;
 use const DATE_ATOM;
 
 final readonly class TaskListItemDto

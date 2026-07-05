@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Script\Host;
+namespace Kytario\Service\Script\Host;
 
 use RuntimeException;
-use Ukolio\Model\Entity\Enum\ScriptTriggerEnum;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Entity\Workspace;
+use Kytario\Model\Entity\Enum\ScriptTriggerEnum;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Entity\Workspace;
 
 /**
  * Mutable per-run state shared by every host-API object: the acting user/workspace, the captured

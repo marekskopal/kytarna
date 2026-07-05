@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Auth;
+namespace Kytario\Service\Auth;
 
 use RuntimeException;
-use Ukolio\Model\Entity\Workspace;
+use Kytario\Model\Entity\Workspace;
 
 final class SoleOwnerException extends RuntimeException
 {

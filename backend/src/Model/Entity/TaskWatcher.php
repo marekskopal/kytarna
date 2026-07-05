@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Model\Entity;
+namespace Kytario\Model\Entity;
 
 use MarekSkopal\ORM\Attribute\Entity;
 use MarekSkopal\ORM\Attribute\ManyToOne;
-use Ukolio\Model\Repository\TaskWatcherRepository;
+use Kytario\Model\Repository\TaskWatcherRepository;
 
 /**
  * A user subscribed to a task's activity (U-83, Trello-style). Watchers are added automatically when

@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Mcp\Tool;
+namespace Kytario\Mcp\Tool;
 
 use Mcp\Capability\Attribute\McpTool;
 use RuntimeException;
-use Ukolio\Mcp\Dto\McpPriorityDto;
-use Ukolio\Mcp\Dto\McpPriorityListDto;
-use Ukolio\Mcp\McpUserContextInterface;
-use Ukolio\Model\Entity\Priority;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Service\Auth\PermissionCheckerInterface;
-use Ukolio\Service\Provider\PriorityProviderInterface;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Mcp\Dto\McpPriorityDto;
+use Kytario\Mcp\Dto\McpPriorityListDto;
+use Kytario\Mcp\McpUserContextInterface;
+use Kytario\Model\Entity\Priority;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Service\Auth\PermissionCheckerInterface;
+use Kytario\Service\Provider\PriorityProviderInterface;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
 
 final readonly class PriorityTools
 {

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
-use Ukolio\Model\Entity\Enum\NotificationTypeEnum;
-use Ukolio\Model\Entity\Notification;
-use Ukolio\Model\Entity\User;
+use Kytario\Model\Entity\Enum\NotificationTypeEnum;
+use Kytario\Model\Entity\Notification;
+use Kytario\Model\Entity\User;
 
 interface NotificationProviderInterface
 {

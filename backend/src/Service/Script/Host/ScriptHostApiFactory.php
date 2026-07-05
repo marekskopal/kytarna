@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Script\Host;
+namespace Kytario\Service\Script\Host;
 
-use Ukolio\Mcp\Tool\Helper\PriorityResolver;
-use Ukolio\Mcp\Tool\Helper\StatusResolver;
-use Ukolio\Service\Provider\EventProviderInterface;
-use Ukolio\Service\Provider\ProjectProviderInterface;
-use Ukolio\Service\Provider\StatusProviderInterface;
-use Ukolio\Service\Provider\TaskCodeResolverInterface;
-use Ukolio\Service\Provider\TaskCommentProviderInterface;
-use Ukolio\Service\Provider\TaskProviderInterface;
-use Ukolio\Service\Provider\TaskTagProviderInterface;
-use Ukolio\Service\Provider\WorkflowProviderInterface;
-use Ukolio\Service\Script\ScriptVariableProviderInterface;
+use Kytario\Mcp\Tool\Helper\PriorityResolver;
+use Kytario\Mcp\Tool\Helper\StatusResolver;
+use Kytario\Service\Provider\EventProviderInterface;
+use Kytario\Service\Provider\ProjectProviderInterface;
+use Kytario\Service\Provider\StatusProviderInterface;
+use Kytario\Service\Provider\TaskCodeResolverInterface;
+use Kytario\Service\Provider\TaskCommentProviderInterface;
+use Kytario\Service\Provider\TaskProviderInterface;
+use Kytario\Service\Provider\TaskTagProviderInterface;
+use Kytario\Service\Provider\WorkflowProviderInterface;
+use Kytario\Service\Script\ScriptVariableProviderInterface;
 
 /**
- * Assembles the per-run `ukolio` host object graph, wiring the sandbox to the real domain
+ * Assembles the per-run `kytario` host object graph, wiring the sandbox to the real domain
  * providers. One ScriptHostApi is built per ScriptRunContext (i.e. per execution).
  */
 final readonly class ScriptHostApiFactory

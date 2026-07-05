@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Mcp\Session;
+namespace Kytario\Mcp\Session;
 
 use Mcp\Server\Session\SessionStoreInterface;
 use Predis\ClientInterface;

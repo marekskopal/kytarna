@@ -78,7 +78,7 @@ server {
     }
 
     if ($host != "${PROXY_HOST}") {
-        return  301 $scheme://www.ukolio.com$request_uri;
+        return  301 $scheme://www.kytario.com$request_uri;
     }
 
     location /typo3-web/mcp {
@@ -250,7 +250,7 @@ server {
     # RFC 8414 §3.1 / RFC 9728 §3 path-insert discovery URLs for the TYPO3 MCP
     # extension (issuer = https://host/typo3-web/mcp). `^~` precedence keeps
     # these out of the catch-all `^/\.well-known/oauth-` regex below, which
-    # routes to the Ukolio backend.
+    # routes to the Kytario backend.
     location ^~ /.well-known/oauth-authorization-server/typo3-web/mcp {
         proxy_pass http://http_web;
         proxy_http_version 1.1;

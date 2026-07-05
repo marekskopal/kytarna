@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Dto;
+namespace Kytario\Dto;
 
-use Ukolio\Model\Entity\Event;
+use Kytario\Model\Entity\Event;
 use const DATE_ATOM;
 
 final readonly class EventDto

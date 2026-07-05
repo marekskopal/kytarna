@@ -20,7 +20,7 @@ RUN install-php-extensions \
     memcached
 
 # curl/tzdata/supervisor for the runtime; supercronic runs the in-container cron
-# (see docker/cron.d/ukolio); nodejs-libs provides the libnode that v8js.so links
+# (see docker/cron.d/kytario); nodejs-libs provides the libnode that v8js.so links
 # against (V8 is embedded in Node, no separate libv8 in Alpine).
 RUN apk add --no-cache curl tzdata supervisor supercronic nodejs-libs
 
@@ -29,7 +29,7 @@ RUN apk add --no-cache curl tzdata supervisor supercronic nodejs-libs
 # root in the same container that holds the DB creds and AUTHORIZATION_TOKEN_KEY.
 # It only needs read access to /app (which is root-owned but world-readable) plus
 # outbound network to RabbitMQ/DB — no write access to the codebase.
-RUN adduser -S -D -H -u 10001 -s /sbin/nologin ukolio-script
+RUN adduser -S -D -H -u 10001 -s /sbin/nologin kytario-script
 
 # Copy the prebuilt ZTS v8js extension. It is loaded only by the script-worker
 # process (via `php -d extension=v8js.so` in supervisord.conf), not by FrankenPHP

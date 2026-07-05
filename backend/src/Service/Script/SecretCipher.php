@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Script;
+namespace Kytario\Service\Script;
 
 use RuntimeException;
 use SensitiveParameter;
@@ -32,7 +32,7 @@ final readonly class SecretCipher implements SecretCipherInterface
 		}
 
 		// Hash the token key to a fixed 32-byte AES-256 key regardless of its length.
-		$this->key = hash('sha256', 'ukolio-script-secret:' . $tokenKey, true);
+		$this->key = hash('sha256', 'kytario-script-secret:' . $tokenKey, true);
 	}
 
 	public function encrypt(#[SensitiveParameter] string $plaintext): string

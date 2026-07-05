@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Mcp\Server;
+namespace Kytario\Mcp\Server;
 
 use Mcp\Server;
 use Mcp\Server\Session\SessionStoreInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
-final readonly class UkolioServer
+final readonly class KytarioServer
 {
 	public function __construct(private ContainerInterface $container, private LoggerInterface $logger)
 	{
@@ -24,7 +24,7 @@ final readonly class UkolioServer
 				basePath: dirname(__DIR__, 2),
 				scanDirs: ['Mcp/Tool'],
 			)
-			->setServerInfo(name: 'ukolio', version: '1.0.0', description: 'Ukolio MCP server — Kanban projects and tasks')
+			->setServerInfo(name: 'kytario', version: '1.0.0', description: 'Kytario MCP server — Kanban projects and tasks')
 			->setInstructions(
 				'This server manages Kanban projects and tasks for the authenticated user. '
 				. 'Typical flow when creating tasks from an external source: '

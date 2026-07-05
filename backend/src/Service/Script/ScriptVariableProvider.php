@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Script;
+namespace Kytario\Service\Script;
 
 use DateTimeImmutable;
 use Iterator;
 use RuntimeException;
-use Ukolio\Model\Entity\ScriptVariable;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Model\Repository\ScriptVariableRepository;
+use Kytario\Model\Entity\ScriptVariable;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Model\Repository\ScriptVariableRepository;
 
 final readonly class ScriptVariableProvider implements ScriptVariableProviderInterface
 {

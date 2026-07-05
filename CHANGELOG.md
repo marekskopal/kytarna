@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.0] - 2026-07-03
 
-First public release. Ukolio is a minimalistic, multi-tenant project & task
+First public release. Kytario is a minimalistic, multi-tenant project & task
 manager where AI agents (over MCP) and humans (over the web UI) are equal
 first-class actors.
 
@@ -71,5 +71,5 @@ first-class actors.
   return `400 Bad Request` instead of `500`, and are logged at warning rather
   than error level.
 
-[1.0.1]: https://github.com/marekskopal/ukolio/releases/tag/v1.0.1
-[1.0.0]: https://github.com/marekskopal/ukolio/releases/tag/v1.0.0
+[1.0.1]: https://github.com/marekskopal/kytario/releases/tag/v1.0.1
+[1.0.0]: https://github.com/marekskopal/kytario/releases/tag/v1.0.0

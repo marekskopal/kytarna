@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Mcp\Tool;
+namespace Kytario\Mcp\Tool;
 
 use Mcp\Capability\Attribute\McpTool;
 use RuntimeException;
-use Ukolio\Mcp\Dto\McpSearchHitDto;
-use Ukolio\Mcp\Dto\McpSearchResultDto;
-use Ukolio\Mcp\McpUserContextInterface;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
-use Ukolio\Service\Search\Dto\SearchFiltersDto;
-use Ukolio\Service\Search\Dto\SearchHitDto;
-use Ukolio\Service\Search\MeiliClient;
+use Kytario\Mcp\Dto\McpSearchHitDto;
+use Kytario\Mcp\Dto\McpSearchResultDto;
+use Kytario\Mcp\McpUserContextInterface;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Service\Search\Dto\SearchFiltersDto;
+use Kytario\Service\Search\Dto\SearchHitDto;
+use Kytario\Service\Search\MeiliClient;
 
 final readonly class SearchTools
 {

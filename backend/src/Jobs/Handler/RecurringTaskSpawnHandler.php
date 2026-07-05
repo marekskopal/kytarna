@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Jobs\Handler;
+namespace Kytario\Jobs\Handler;
 
 use Psr\Log\LoggerInterface;
-use Ukolio\Dto\RecurringTaskSpawnQueueDto;
-use Ukolio\Jobs\Message\ReceivedMessageInterface;
-use Ukolio\Service\Provider\TaskRecurrenceProviderInterface;
-use Ukolio\Service\Task\TaskServiceInterface;
+use Kytario\Dto\RecurringTaskSpawnQueueDto;
+use Kytario\Jobs\Message\ReceivedMessageInterface;
+use Kytario\Service\Provider\TaskRecurrenceProviderInterface;
+use Kytario\Service\Task\TaskServiceInterface;
 
 final readonly class RecurringTaskSpawnHandler implements JobHandler
 {

@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
 use RuntimeException;
-use Ukolio\Model\Entity\Enum\FieldTypeEnum;
-use Ukolio\Model\Entity\Field;
-use Ukolio\Model\Entity\Project;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\TaskFieldValue;
-use Ukolio\Model\Repository\TaskFieldValueRepository;
-use Ukolio\Service\Semver\SemverComparator;
+use Kytario\Model\Entity\Enum\FieldTypeEnum;
+use Kytario\Model\Entity\Field;
+use Kytario\Model\Entity\Project;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\TaskFieldValue;
+use Kytario\Model\Repository\TaskFieldValueRepository;
+use Kytario\Service\Semver\SemverComparator;
 use const JSON_THROW_ON_ERROR;
 
 final readonly class TaskFieldValueProvider implements TaskFieldValueProviderInterface

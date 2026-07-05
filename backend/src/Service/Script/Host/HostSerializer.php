@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Script\Host;
+namespace Kytario\Service\Script\Host;
 
-use Ukolio\Mcp\Dto\McpEventDto;
-use Ukolio\Mcp\Dto\McpProjectDto;
-use Ukolio\Mcp\Dto\McpStatusDto;
-use Ukolio\Mcp\Dto\McpTaskDto;
-use Ukolio\Model\Entity\Event;
-use Ukolio\Model\Entity\Project;
-use Ukolio\Model\Entity\Status;
-use Ukolio\Model\Entity\Task;
+use Kytario\Mcp\Dto\McpEventDto;
+use Kytario\Mcp\Dto\McpProjectDto;
+use Kytario\Mcp\Dto\McpStatusDto;
+use Kytario\Mcp\Dto\McpTaskDto;
+use Kytario\Model\Entity\Event;
+use Kytario\Model\Entity\Project;
+use Kytario\Model\Entity\Status;
+use Kytario\Model\Entity\Task;
 use const JSON_THROW_ON_ERROR;
 
 /**

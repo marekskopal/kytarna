@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Dto;
+namespace Kytario\Dto;
 
-use Ukolio\Model\Entity\Enum\LocaleEnum;
-use Ukolio\Model\Entity\Invitation;
+use Kytario\Model\Entity\Enum\LocaleEnum;
+use Kytario\Model\Entity\Invitation;
 
 /**
  * @implements ArrayFactoryInterface<array{

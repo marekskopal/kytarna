@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Mcp;
+namespace Kytario\Tests\Mcp;
 
 use PDO;
 use PHPUnit\Framework\Attributes\CoversClass;
 use RuntimeException;
-use Ukolio\Mcp\Dto\McpPriorityDto;
-use Ukolio\Mcp\McpUserContextInterface;
-use Ukolio\Mcp\Tool\PriorityTools;
-use Ukolio\Model\Entity\Enum\WorkspaceRoleEnum;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Repository\StatusRepository;
-use Ukolio\Model\Repository\WorkflowRepository;
-use Ukolio\Service\Actor\ActorContextInterface;
-use Ukolio\Service\Provider\PriorityProviderInterface;
-use Ukolio\Service\Provider\TaskProviderInterface;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
-use Ukolio\Tests\Support\AppHarness;
-use Ukolio\Tests\Support\Fixture;
-use Ukolio\Tests\Support\IntegrationTestCase;
+use Kytario\Mcp\Dto\McpPriorityDto;
+use Kytario\Mcp\McpUserContextInterface;
+use Kytario\Mcp\Tool\PriorityTools;
+use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Repository\StatusRepository;
+use Kytario\Model\Repository\WorkflowRepository;
+use Kytario\Service\Actor\ActorContextInterface;
+use Kytario\Service\Provider\PriorityProviderInterface;
+use Kytario\Service\Provider\TaskProviderInterface;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Tests\Support\AppHarness;
+use Kytario\Tests\Support\Fixture;
+use Kytario\Tests\Support\IntegrationTestCase;
 
 #[CoversClass(PriorityTools::class)]
 final class PriorityToolsTest extends IntegrationTestCase

@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Mcp\Tool;
+namespace Kytario\Mcp\Tool;
 
 use Mcp\Capability\Attribute\McpTool;
 use RuntimeException;
-use Ukolio\Mcp\Dto\McpStatusDto;
-use Ukolio\Mcp\Dto\McpStatusListDto;
-use Ukolio\Mcp\McpUserContextInterface;
-use Ukolio\Model\Entity\Enum\StatusTypeEnum;
-use Ukolio\Model\Entity\Status;
-use Ukolio\Model\Entity\Workflow;
-use Ukolio\Service\Auth\PermissionCheckerInterface;
-use Ukolio\Service\Provider\ProjectProviderInterface;
-use Ukolio\Service\Provider\StatusProviderInterface;
-use Ukolio\Service\Provider\WorkflowProviderInterface;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Mcp\Dto\McpStatusDto;
+use Kytario\Mcp\Dto\McpStatusListDto;
+use Kytario\Mcp\McpUserContextInterface;
+use Kytario\Model\Entity\Enum\StatusTypeEnum;
+use Kytario\Model\Entity\Status;
+use Kytario\Model\Entity\Workflow;
+use Kytario\Service\Auth\PermissionCheckerInterface;
+use Kytario\Service\Provider\ProjectProviderInterface;
+use Kytario\Service\Provider\StatusProviderInterface;
+use Kytario\Service\Provider\WorkflowProviderInterface;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
 
 final readonly class WorkflowTools
 {

@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
 use RuntimeException;
-use Ukolio\Model\Entity\Enum\EventTypeEnum;
-use Ukolio\Model\Entity\Enum\RecurrenceCadenceEnum;
-use Ukolio\Model\Entity\Enum\RecurrenceEndTypeEnum;
-use Ukolio\Model\Entity\Enum\StatusTypeEnum;
-use Ukolio\Model\Entity\Project;
-use Ukolio\Model\Entity\Status;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\TaskRecurrence;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Repository\TaskRecurrenceRepository;
-use Ukolio\Service\Recurrence\RecurrenceConfig;
-use Ukolio\Service\Recurrence\RecurrenceScheduler;
-use Ukolio\Service\Script\Trigger\CronEvaluatorInterface;
+use Kytario\Model\Entity\Enum\EventTypeEnum;
+use Kytario\Model\Entity\Enum\RecurrenceCadenceEnum;
+use Kytario\Model\Entity\Enum\RecurrenceEndTypeEnum;
+use Kytario\Model\Entity\Enum\StatusTypeEnum;
+use Kytario\Model\Entity\Project;
+use Kytario\Model\Entity\Status;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\TaskRecurrence;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Repository\TaskRecurrenceRepository;
+use Kytario\Service\Recurrence\RecurrenceConfig;
+use Kytario\Service\Recurrence\RecurrenceScheduler;
+use Kytario\Service\Script\Trigger\CronEvaluatorInterface;
 
 final readonly class TaskRecurrenceProvider implements TaskRecurrenceProviderInterface
 {

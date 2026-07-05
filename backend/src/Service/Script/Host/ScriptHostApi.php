@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Script\Host;
+namespace Kytario\Service\Script\Host;
 
 use RuntimeException;
-use Ukolio\Service\Provider\ProjectProviderInterface;
-use Ukolio\Service\Provider\StatusProviderInterface;
-use Ukolio\Service\Provider\WorkflowProviderInterface;
+use Kytario\Service\Provider\ProjectProviderInterface;
+use Kytario\Service\Provider\StatusProviderInterface;
+use Kytario\Service\Provider\WorkflowProviderInterface;
 use const JSON_THROW_ON_ERROR;
 
 /**
- * The object graph bound to the JS global `ukolio`. Public properties (tasks/projects/events/vars/context)
+ * The object graph bound to the JS global `kytario`. Public properties (tasks/projects/events/vars/context)
  * and public methods (log/fetch/workflow) are what V8Js surfaces to the script; private dependencies
  * stay hidden from the sandbox.
  */

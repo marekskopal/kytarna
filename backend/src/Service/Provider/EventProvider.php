@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
 use Iterator;
-use Ukolio\Model\Entity\Enum\ActorTypeEnum;
-use Ukolio\Model\Entity\Enum\EventTypeEnum;
-use Ukolio\Model\Entity\Event;
-use Ukolio\Model\Entity\Project;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Model\Repository\EventRepository;
-use Ukolio\Service\Actor\ActorContextInterface;
-use Ukolio\Service\Notification\NotificationDispatcherInterface;
-use Ukolio\Service\Realtime\RealtimePublisherInterface;
-use Ukolio\Service\Recurrence\RecurrenceTriggerInterface;
-use Ukolio\Service\Script\Trigger\ScriptEventTriggerInterface;
+use Kytario\Model\Entity\Enum\ActorTypeEnum;
+use Kytario\Model\Entity\Enum\EventTypeEnum;
+use Kytario\Model\Entity\Event;
+use Kytario\Model\Entity\Project;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Model\Repository\EventRepository;
+use Kytario\Service\Actor\ActorContextInterface;
+use Kytario\Service\Notification\NotificationDispatcherInterface;
+use Kytario\Service\Realtime\RealtimePublisherInterface;
+use Kytario\Service\Recurrence\RecurrenceTriggerInterface;
+use Kytario\Service\Script\Trigger\ScriptEventTriggerInterface;
 use const JSON_THROW_ON_ERROR;
 
 final readonly class EventProvider implements EventProviderInterface

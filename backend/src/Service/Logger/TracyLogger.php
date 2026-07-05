@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Logger;
+namespace Kytario\Service\Logger;
 
 use ErrorException;
 use Tracy\Helpers;

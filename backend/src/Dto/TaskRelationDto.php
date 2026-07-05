@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Dto;
+namespace Kytario\Dto;
 
-use Ukolio\Model\Entity\Enum\TaskRelationTypeEnum;
-use Ukolio\Model\Entity\TaskRelation;
+use Kytario\Model\Entity\Enum\TaskRelationTypeEnum;
+use Kytario\Model\Entity\TaskRelation;
 use const DATE_ATOM;
 
 final readonly class TaskRelationDto

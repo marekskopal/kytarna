@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Dto;
+namespace Kytario\Dto;
 
 /** @implements ArrayFactoryInterface<array{name: string, filterConfig: string}> */
 final readonly class SavedViewUpdateDto implements ArrayFactoryInterface

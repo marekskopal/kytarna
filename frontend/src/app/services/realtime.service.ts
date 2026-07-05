@@ -6,8 +6,8 @@ import {WorkspaceService} from '@app/services/workspace.service';
 import {environment} from '@environments/environment';
 import {Subject} from 'rxjs';
 
-const TOPIC_PREFIX = 'ukolio/workspaces/';
-const USER_TOPIC_PREFIX = 'ukolio/users/';
+const TOPIC_PREFIX = 'kytario/workspaces/';
+const USER_TOPIC_PREFIX = 'kytario/users/';
 const RECONNECT_INITIAL_DELAY_MS = 500;
 const RECONNECT_MAX_DELAY_MS = 30000;
 

@@ -6,13 +6,13 @@ declare(strict_types=1);
 require __DIR__ . '/../vendor/autoload.php';
 
 use Symfony\Component\Console\Application;
-use Ukolio\Command\AdminCreateCommand;
-use Ukolio\Command\MigrationGenerateCommand;
-use Ukolio\Command\MigrationRunCommand;
-use Ukolio\Command\NotificationDueTickCommand;
-use Ukolio\Command\RecurringTaskTickCommand;
-use Ukolio\Command\ScriptScheduleTickCommand;
-use Ukolio\Command\SearchReindexCommand;
+use Kytario\Command\AdminCreateCommand;
+use Kytario\Command\MigrationGenerateCommand;
+use Kytario\Command\MigrationRunCommand;
+use Kytario\Command\NotificationDueTickCommand;
+use Kytario\Command\RecurringTaskTickCommand;
+use Kytario\Command\ScriptScheduleTickCommand;
+use Kytario\Command\SearchReindexCommand;
 
 $application = new Application();
 

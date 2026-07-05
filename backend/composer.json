@@ -1,7 +1,7 @@
 {
-    "name": "marekskopal/ukolio",
+    "name": "marekskopal/kytario",
     "type": "project",
-    "description": "Ukolio",
+    "description": "Kytario",
     "license": "MIT",
     "require": {
         "php": ">=8.5",
@@ -55,12 +55,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Ukolio\\": "src/"
+            "Kytario\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Ukolio\\Tests\\": "tests/"
+            "Kytario\\Tests\\": "tests/"
         }
     },
     "config": {

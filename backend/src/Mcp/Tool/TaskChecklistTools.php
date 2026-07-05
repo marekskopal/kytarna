@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Mcp\Tool;
+namespace Kytario\Mcp\Tool;
 
 use DateTimeImmutable;
 use Mcp\Capability\Attribute\McpTool;
 use RuntimeException;
-use Ukolio\Mcp\Dto\McpChecklistItemDto;
-use Ukolio\Mcp\Dto\McpChecklistListDto;
-use Ukolio\Mcp\McpUserContextInterface;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\TaskChecklistItem;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Repository\UserRepository;
-use Ukolio\Service\Provider\TaskChecklistProviderInterface;
-use Ukolio\Service\Provider\TaskProviderInterface;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Mcp\Dto\McpChecklistItemDto;
+use Kytario\Mcp\Dto\McpChecklistListDto;
+use Kytario\Mcp\McpUserContextInterface;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\TaskChecklistItem;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Repository\UserRepository;
+use Kytario\Service\Provider\TaskChecklistProviderInterface;
+use Kytario\Service\Provider\TaskProviderInterface;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
 
 final readonly class TaskChecklistTools
 {

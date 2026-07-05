@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Controller;
+namespace Kytario\Tests\Controller;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use Ukolio\Controller\PriorityController;
-use Ukolio\Model\Entity\Enum\WorkspaceRoleEnum;
-use Ukolio\Model\Repository\StatusRepository;
-use Ukolio\Model\Repository\WorkflowRepository;
-use Ukolio\Tests\Support\AppHarness;
-use Ukolio\Tests\Support\Fixture;
-use Ukolio\Tests\Support\IntegrationTestCase;
+use Kytario\Controller\PriorityController;
+use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytario\Model\Repository\StatusRepository;
+use Kytario\Model\Repository\WorkflowRepository;
+use Kytario\Tests\Support\AppHarness;
+use Kytario\Tests\Support\Fixture;
+use Kytario\Tests\Support\IntegrationTestCase;
 
 #[CoversClass(PriorityController::class)]
 final class PriorityControllerTest extends IntegrationTestCase

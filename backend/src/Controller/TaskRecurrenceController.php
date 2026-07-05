@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Controller;
+namespace Kytario\Controller;
 
 use Laminas\Diactoros\Response\JsonResponse;
 use MarekSkopal\Router\Attribute\RouteDelete;
@@ -11,19 +11,19 @@ use MarekSkopal\Router\Attribute\RoutePut;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
-use Ukolio\Dto\TaskRecurrenceDto;
-use Ukolio\Dto\TaskRecurrenceWriteDto;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\User;
-use Ukolio\Response\ErrorResponse;
-use Ukolio\Response\NotAuthorizedResponse;
-use Ukolio\Response\NotFoundResponse;
-use Ukolio\Response\OkResponse;
-use Ukolio\Route\Routes;
-use Ukolio\Service\Auth\PermissionCheckerInterface;
-use Ukolio\Service\Provider\TaskCodeResolverInterface;
-use Ukolio\Service\Provider\TaskRecurrenceProviderInterface;
-use Ukolio\Service\Request\RequestServiceInterface;
+use Kytario\Dto\TaskRecurrenceDto;
+use Kytario\Dto\TaskRecurrenceWriteDto;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\User;
+use Kytario\Response\ErrorResponse;
+use Kytario\Response\NotAuthorizedResponse;
+use Kytario\Response\NotFoundResponse;
+use Kytario\Response\OkResponse;
+use Kytario\Route\Routes;
+use Kytario\Service\Auth\PermissionCheckerInterface;
+use Kytario\Service\Provider\TaskCodeResolverInterface;
+use Kytario\Service\Provider\TaskRecurrenceProviderInterface;
+use Kytario\Service\Request\RequestServiceInterface;
 
 final readonly class TaskRecurrenceController
 {

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Service\Script;
+namespace Kytario\Tests\Service\Script;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use stdClass;
-use Ukolio\Service\Script\Host\JsValue;
+use Kytario\Service\Script\Host\JsValue;
 
 #[CoversClass(JsValue::class)]
 final class JsValueTest extends TestCase

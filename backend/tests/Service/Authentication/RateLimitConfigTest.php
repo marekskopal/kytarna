@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Service\Authentication;
+namespace Kytario\Tests\Service\Authentication;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Ukolio\Service\Authentication\RateLimitConfig;
+use Kytario\Service\Authentication\RateLimitConfig;
 
 #[CoversClass(RateLimitConfig::class)]
 final class RateLimitConfigTest extends TestCase

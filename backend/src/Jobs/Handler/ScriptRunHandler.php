@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Jobs\Handler;
+namespace Kytario\Jobs\Handler;
 
 use Psr\Log\LoggerInterface;
-use Ukolio\Dto\ScriptRunQueueDto;
-use Ukolio\Jobs\Message\ReceivedMessageInterface;
-use Ukolio\Model\Entity\Enum\ScriptTriggerEnum;
-use Ukolio\Model\Repository\ScriptRepository;
-use Ukolio\Service\Script\ScriptRunner;
-use Ukolio\Service\Task\TaskServiceInterface;
+use Kytario\Dto\ScriptRunQueueDto;
+use Kytario\Jobs\Message\ReceivedMessageInterface;
+use Kytario\Model\Entity\Enum\ScriptTriggerEnum;
+use Kytario\Model\Repository\ScriptRepository;
+use Kytario\Service\Script\ScriptRunner;
+use Kytario\Service\Task\TaskServiceInterface;
 
 final readonly class ScriptRunHandler implements JobHandler
 {

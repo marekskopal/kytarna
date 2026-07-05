@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Command;
+namespace Kytario\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Ukolio\App\ApplicationFactory;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Model\Repository\ProjectRepository;
-use Ukolio\Model\Repository\TaskRepository;
-use Ukolio\Model\Repository\WorkspaceRepository;
-use Ukolio\Service\Search\MeiliClient;
+use Kytario\App\ApplicationFactory;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Model\Repository\ProjectRepository;
+use Kytario\Model\Repository\TaskRepository;
+use Kytario\Model\Repository\WorkspaceRepository;
+use Kytario\Service\Search\MeiliClient;
 
 final class SearchReindexCommand extends AbstractCommand
 {

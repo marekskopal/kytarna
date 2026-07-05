@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Service\Script;
+namespace Kytario\Tests\Service\Script;
 
-use Ukolio\Model\Entity\Enum\ScriptRunStatusEnum;
-use Ukolio\Model\Entity\Enum\ScriptTriggerEnum;
-use Ukolio\Model\Entity\Enum\WorkspaceRoleEnum;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
-use Ukolio\Service\Script\ScriptProviderInterface;
-use Ukolio\Service\Script\ScriptRunner;
-use Ukolio\Tests\Support\AppHarness;
-use Ukolio\Tests\Support\Fixture;
-use Ukolio\Tests\Support\IntegrationTestCase;
+use Kytario\Model\Entity\Enum\ScriptRunStatusEnum;
+use Kytario\Model\Entity\Enum\ScriptTriggerEnum;
+use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Service\Script\ScriptProviderInterface;
+use Kytario\Service\Script\ScriptRunner;
+use Kytario\Tests\Support\AppHarness;
+use Kytario\Tests\Support\Fixture;
+use Kytario\Tests\Support\IntegrationTestCase;
 
 final class ScriptRunnerOwnerTest extends IntegrationTestCase
 {
@@ -27,7 +27,7 @@ final class ScriptRunnerOwnerTest extends IntegrationTestCase
 
 		$scriptProvider = AppHarness::container()->get(ScriptProviderInterface::class);
 		assert($scriptProvider instanceof ScriptProviderInterface);
-		$script = $scriptProvider->create($admin, $workspace, 'Digest', 'ukolio.log("hi");', ScriptTriggerEnum::Manual, null, true);
+		$script = $scriptProvider->create($admin, $workspace, 'Digest', 'kytario.log("hi");', ScriptTriggerEnum::Manual, null, true);
 
 		$workspaceProvider = AppHarness::container()->get(WorkspaceProviderInterface::class);
 		assert($workspaceProvider instanceof WorkspaceProviderInterface);

@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
 use RuntimeException;
-use Ukolio\Model\Entity\Enum\EventTypeEnum;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\TaskComment;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Repository\TaskCommentRepository;
-use Ukolio\Service\Actor\ActorContextInterface;
-use Ukolio\Service\Search\SearchIndexer;
+use Kytario\Model\Entity\Enum\EventTypeEnum;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\TaskComment;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Repository\TaskCommentRepository;
+use Kytario\Service\Actor\ActorContextInterface;
+use Kytario\Service\Search\SearchIndexer;
 
 final readonly class TaskCommentProvider implements TaskCommentProviderInterface
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Cors;
+namespace Kytario\Service\Cors;
 
 final readonly class CorsPolicy
 {

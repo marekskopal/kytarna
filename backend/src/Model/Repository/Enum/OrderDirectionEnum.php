@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Model\Repository\Enum;
+namespace Kytario\Model\Repository\Enum;
 
 enum OrderDirectionEnum: string
 {

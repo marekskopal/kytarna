@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Service\Realtime;
+namespace Kytario\Tests\Service\Realtime;
 
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Jwt\TokenFactoryInterface;

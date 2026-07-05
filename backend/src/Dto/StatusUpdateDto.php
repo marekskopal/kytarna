@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Dto;
+namespace Kytario\Dto;
 
-use Ukolio\Model\Entity\Enum\StatusTypeEnum;
+use Kytario\Model\Entity\Enum\StatusTypeEnum;
 
 /** @implements ArrayFactoryInterface<array{name: string, color: string, type: string}> */
 final readonly class StatusUpdateDto implements ArrayFactoryInterface

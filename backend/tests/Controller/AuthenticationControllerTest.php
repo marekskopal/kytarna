@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Controller;
+namespace Kytario\Tests\Controller;
 
 use DateTimeImmutable;
 use Laminas\Diactoros\ServerRequest;
 use Laminas\Diactoros\Stream;
 use PHPUnit\Framework\Attributes\CoversClass;
-use Ukolio\Controller\AuthenticationController;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Repository\WorkspaceRepository;
-use Ukolio\Service\Provider\PasswordResetProviderInterface;
-use Ukolio\Tests\Support\AppHarness;
-use Ukolio\Tests\Support\Fixture;
-use Ukolio\Tests\Support\IntegrationTestCase;
+use Kytario\Controller\AuthenticationController;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Repository\WorkspaceRepository;
+use Kytario\Service\Provider\PasswordResetProviderInterface;
+use Kytario\Tests\Support\AppHarness;
+use Kytario\Tests\Support\Fixture;
+use Kytario\Tests\Support\IntegrationTestCase;
 
 #[CoversClass(AuthenticationController::class)]
 final class AuthenticationControllerTest extends IntegrationTestCase

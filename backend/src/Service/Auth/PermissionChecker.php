@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Auth;
+namespace Kytario\Service\Auth;
 
-use Ukolio\Model\Entity\Enum\SystemRoleEnum;
-use Ukolio\Model\Entity\Enum\WorkspaceRoleEnum;
-use Ukolio\Model\Entity\TaskComment;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Model\Entity\WorkspaceUser;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Model\Entity\Enum\SystemRoleEnum;
+use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytario\Model\Entity\TaskComment;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Model\Entity\WorkspaceUser;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
 
 final readonly class PermissionChecker implements PermissionCheckerInterface
 {

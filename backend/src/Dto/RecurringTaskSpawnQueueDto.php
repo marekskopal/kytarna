@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Dto;
+namespace Kytario\Dto;
 
 /**
  * Asks the worker to spawn the next occurrence of a recurrence. `expectedCarrierTaskId` is the task

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\App\ServiceProvider;
+namespace Kytario\App\ServiceProvider;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
-use Ukolio\Service\Authentication\AuthenticationService;
-use Ukolio\Service\Authentication\AuthenticationServiceInterface;
-use Ukolio\Service\Authentication\GoogleAuthService;
-use Ukolio\Service\Authentication\GoogleAuthServiceInterface;
-use Ukolio\Service\Authentication\RateLimitConfig;
+use Kytario\Service\Authentication\AuthenticationService;
+use Kytario\Service\Authentication\AuthenticationServiceInterface;
+use Kytario\Service\Authentication\GoogleAuthService;
+use Kytario\Service\Authentication\GoogleAuthServiceInterface;
+use Kytario\Service\Authentication\RateLimitConfig;
 
 final class AuthenticationServiceProvider extends AbstractServiceProvider
 {

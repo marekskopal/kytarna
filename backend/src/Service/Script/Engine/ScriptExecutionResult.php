@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Script\Engine;
+namespace Kytario\Service\Script\Engine;
 
-use Ukolio\Model\Entity\Enum\ScriptRunStatusEnum;
+use Kytario\Model\Entity\Enum\ScriptRunStatusEnum;
 
 final readonly class ScriptExecutionResult
 {

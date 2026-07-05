@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\OAuth;
+namespace Kytario\OAuth;
 
 use DateTimeImmutable;
 use MarekSkopal\ORM\Database\DatabaseInterface;
 use RuntimeException;
-use Ukolio\Model\Entity\OAuthAuthorization;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Repository\OAuthAuthorizationRepository;
-use Ukolio\Service\Provider\UserProviderInterface;
+use Kytario\Model\Entity\OAuthAuthorization;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Repository\OAuthAuthorizationRepository;
+use Kytario\Service\Provider\UserProviderInterface;
 
 final readonly class AuthorizationService implements AuthorizationServiceInterface
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Model\Entity;
+namespace Kytario\Model\Entity;
 
 use DateTimeImmutable;
 use MarekSkopal\ORM\Attribute\Column;
@@ -10,8 +10,8 @@ use MarekSkopal\ORM\Attribute\ColumnEnum;
 use MarekSkopal\ORM\Attribute\Entity;
 use MarekSkopal\ORM\Attribute\ManyToOne;
 use MarekSkopal\ORM\Enum\Type;
-use Ukolio\Model\Entity\Enum\NotificationTypeEnum;
-use Ukolio\Model\Repository\NotificationRepository;
+use Kytario\Model\Entity\Enum\NotificationTypeEnum;
+use Kytario\Model\Repository\NotificationRepository;
 
 /**
  * A per-user, in-app notification (U-83). The recipient is the only ORM relation; task/project/actor

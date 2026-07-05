@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Auth;
+namespace Kytario\Service\Auth;
 
 use DateTimeImmutable;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Repository\EventRepository;
-use Ukolio\Model\Repository\InvitationRepository;
-use Ukolio\Model\Repository\OAuthClientRepository;
-use Ukolio\Model\Repository\TaskCommentRepository;
-use Ukolio\Model\Repository\TaskFileRepository;
-use Ukolio\Model\Repository\TaskRelationRepository;
-use Ukolio\Model\Repository\WorkspaceUserRepository;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Repository\EventRepository;
+use Kytario\Model\Repository\InvitationRepository;
+use Kytario\Model\Repository\OAuthClientRepository;
+use Kytario\Model\Repository\TaskCommentRepository;
+use Kytario\Model\Repository\TaskFileRepository;
+use Kytario\Model\Repository\TaskRelationRepository;
+use Kytario\Model\Repository\WorkspaceUserRepository;
 use const DATE_ATOM;
 use const JSON_THROW_ON_ERROR;
 

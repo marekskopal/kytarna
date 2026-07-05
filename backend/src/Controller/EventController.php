@@ -2,26 +2,26 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Controller;
+namespace Kytario\Controller;
 
 use Laminas\Diactoros\Response\JsonResponse;
 use MarekSkopal\Router\Attribute\RouteGet;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Ukolio\Dto\EventDto;
-use Ukolio\Dto\WorkspaceAgentStatsDto;
-use Ukolio\Model\Entity\Enum\ActorTypeEnum;
-use Ukolio\Model\Entity\Enum\EventTypeEnum;
-use Ukolio\Model\Entity\Event;
-use Ukolio\Model\Repository\TaskRepository;
-use Ukolio\Response\NotAuthorizedResponse;
-use Ukolio\Response\NotFoundResponse;
-use Ukolio\Route\Routes;
-use Ukolio\Service\Auth\PermissionCheckerInterface;
-use Ukolio\Service\Provider\EventProviderInterface;
-use Ukolio\Service\Provider\ProjectProviderInterface;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
-use Ukolio\Service\Request\RequestServiceInterface;
+use Kytario\Dto\EventDto;
+use Kytario\Dto\WorkspaceAgentStatsDto;
+use Kytario\Model\Entity\Enum\ActorTypeEnum;
+use Kytario\Model\Entity\Enum\EventTypeEnum;
+use Kytario\Model\Entity\Event;
+use Kytario\Model\Repository\TaskRepository;
+use Kytario\Response\NotAuthorizedResponse;
+use Kytario\Response\NotFoundResponse;
+use Kytario\Route\Routes;
+use Kytario\Service\Auth\PermissionCheckerInterface;
+use Kytario\Service\Provider\EventProviderInterface;
+use Kytario\Service\Provider\ProjectProviderInterface;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Service\Request\RequestServiceInterface;
 
 final readonly class EventController
 {

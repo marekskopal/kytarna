@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Dto;
+namespace Kytario\Dto;
 
-use Ukolio\Model\Entity\TaskWatcher;
+use Kytario\Model\Entity\TaskWatcher;
 
 final readonly class TaskWatcherDto
 {

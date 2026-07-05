@@ -1,5 +1,5 @@
 // ============================================================
-// Ukolio — Date-based task views: Calendar + Timeline (Gantt)
+// Kytario — Date-based task views: Calendar + Timeline (Gantt)
 // Closes the Trello gap: visualize Task.dueDate (+ startDate)
 // so humans can see what's coming. Frontend-only build.
 // ============================================================

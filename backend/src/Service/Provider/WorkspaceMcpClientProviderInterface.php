@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
-use Ukolio\Dto\WorkspaceMcpClientDto;
-use Ukolio\Model\Entity\Workspace;
+use Kytario\Dto\WorkspaceMcpClientDto;
+use Kytario\Model\Entity\Workspace;
 
 interface WorkspaceMcpClientProviderInterface
 {

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Dto;
+namespace Kytario\Dto;
 
-use Ukolio\Model\Entity\TaskRecurrence;
+use Kytario\Model\Entity\TaskRecurrence;
 
 final readonly class TaskRecurrenceDto
 {

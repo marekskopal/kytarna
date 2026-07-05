@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Authentication;
+namespace Kytario\Service\Authentication;
 
-use Ukolio\Service\Authentication\Dto\TokenInfoDto;
+use Kytario\Service\Authentication\Dto\TokenInfoDto;
 
 interface GoogleAuthServiceInterface
 {

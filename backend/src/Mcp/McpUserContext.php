@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Mcp;
+namespace Kytario\Mcp;
 
 use RuntimeException;
-use Ukolio\Model\Entity\User;
+use Kytario\Model\Entity\User;
 
 final class McpUserContext implements McpUserContextInterface
 {

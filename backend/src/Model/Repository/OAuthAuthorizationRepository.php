@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Model\Repository;
+namespace Kytario\Model\Repository;
 
 use ArrayIterator;
 use Iterator;
 use MarekSkopal\ORM\Repository\AbstractRepository;
-use Ukolio\Model\Entity\OAuthAuthorization;
+use Kytario\Model\Entity\OAuthAuthorization;
 
 /** @extends AbstractRepository<OAuthAuthorization> */
 final class OAuthAuthorizationRepository extends AbstractRepository

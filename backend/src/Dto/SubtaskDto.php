@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Dto;
+namespace Kytario\Dto;
 
-use Ukolio\Model\Entity\TaskRelation;
+use Kytario\Model\Entity\TaskRelation;
 
 /**
  * A child task as seen from its parent. `startStatusId`/`finishStatusId` belong to the child's

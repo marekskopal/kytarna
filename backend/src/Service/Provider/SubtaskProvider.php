@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
 use RuntimeException;
-use Ukolio\Model\Entity\Enum\StatusTypeEnum;
-use Ukolio\Model\Entity\Enum\TaskRelationTypeEnum;
-use Ukolio\Model\Entity\Priority;
-use Ukolio\Model\Entity\Project;
-use Ukolio\Model\Entity\Status;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\TaskRelation;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Repository\TaskRelationRepository;
+use Kytario\Model\Entity\Enum\StatusTypeEnum;
+use Kytario\Model\Entity\Enum\TaskRelationTypeEnum;
+use Kytario\Model\Entity\Priority;
+use Kytario\Model\Entity\Project;
+use Kytario\Model\Entity\Status;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\TaskRelation;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Repository\TaskRelationRepository;
 
 final readonly class SubtaskProvider implements SubtaskProviderInterface
 {

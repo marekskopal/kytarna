@@ -1,6 +1,6 @@
 {
     "app": {
-        "brand": "Ukolio",
+        "brand": "Kytario",
         "actions": {
             "save": "Save",
             "cancel": "Cancel",
@@ -129,7 +129,7 @@
             },
             "variables": {
                 "title": "Script variables",
-                "subtitle": "Workspace key/value store available to scripts via ukolio.vars. Secrets are encrypted and never shown again.",
+                "subtitle": "Workspace key/value store available to scripts via kytario.vars. Secrets are encrypted and never shown again.",
                 "manage": "Variables",
                 "key": "Key",
                 "value": "Value",
@@ -155,7 +155,7 @@
             "noProblems": "No problems — last run completed cleanly.",
             "insertSnippet": "Insert snippet",
             "sandboxLimits": "Per run: 5s CPU · 64 MB · 20 fetch · 200 task-API calls. No filesystem.",
-            "eventPayloadNote": "The event payload is available as ukolio.context.event.",
+            "eventPayloadNote": "The event payload is available as kytario.context.event.",
             "validationRequired": "Name and source are required.",
             "panel": {
                 "show": "Show panel",
@@ -346,7 +346,7 @@
         "auth": {
             "asideOverline": "MCP-native",
             "asideHeadline": "Your kanban, run by agents.",
-            "asideBody": "Ukolio is a multi-tenant task manager built for AI agents as the primary actor. Connect any MCP client and let it plan, create, and close tasks alongside the team.",
+            "asideBody": "Kytario is a multi-tenant task manager built for AI agents as the primary actor. Connect any MCP client and let it plan, create, and close tasks alongside the team.",
             "asideSnippetLabel": "MCP endpoint",
             "login": {
                 "title": "Sign in",

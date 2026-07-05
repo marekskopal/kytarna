@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Model\Repository;
+namespace Kytario\Model\Repository;
 
 use Iterator;
 use MarekSkopal\ORM\Repository\AbstractRepository;
-use Ukolio\Model\Entity\TaskComment;
+use Kytario\Model\Entity\TaskComment;
 
 /** @extends AbstractRepository<TaskComment> */
 final class TaskCommentRepository extends AbstractRepository

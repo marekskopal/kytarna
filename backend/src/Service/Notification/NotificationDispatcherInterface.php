@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Notification;
+namespace Kytario\Service\Notification;
 
-use Ukolio\Model\Entity\Enum\NotificationTypeEnum;
-use Ukolio\Model\Entity\Event;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\User;
+use Kytario\Model\Entity\Enum\NotificationTypeEnum;
+use Kytario\Model\Entity\Event;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\User;
 
 interface NotificationDispatcherInterface
 {

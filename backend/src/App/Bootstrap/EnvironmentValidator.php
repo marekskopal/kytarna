@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\App\Bootstrap;
+namespace Kytario\App\Bootstrap;
 
 use RuntimeException;
-use Ukolio\Service\Cors\CorsPolicy;
+use Kytario\Service\Cors\CorsPolicy;
 
 final readonly class EnvironmentValidator
 {
@@ -31,12 +31,12 @@ final readonly class EnvironmentValidator
 	];
 
 	private const array ProductionDefaultSecrets = [
-		'MYSQL_PASSWORD' => 'ukolio',
-		'MYSQL_ROOT_PASSWORD' => 'ukolio',
+		'MYSQL_PASSWORD' => 'kytario',
+		'MYSQL_ROOT_PASSWORD' => 'kytario',
 		'S3_ACCESS_KEY' => 'minioadmin',
 		'S3_SECRET_KEY' => 'minioadmin',
-		'REDIS_PASSWORD' => 'ukolio',
-		'RABBITMQ_PASSWORD' => 'ukolio',
+		'REDIS_PASSWORD' => 'kytario',
+		'RABBITMQ_PASSWORD' => 'kytario',
 		'MEILI_MASTER_KEY' => self::PlaceholderToken,
 		'MERCURE_PUBLISHER_JWT_KEY' => self::PlaceholderToken,
 		'MERCURE_SUBSCRIBER_JWT_KEY' => self::PlaceholderToken,

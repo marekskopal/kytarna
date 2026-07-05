@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Controller;
+namespace Kytario\Controller;
 
 use Laminas\Diactoros\Response\JsonResponse;
 use MarekSkopal\Router\Attribute\RouteGet;
@@ -10,15 +10,15 @@ use MarekSkopal\Router\Attribute\RoutePost;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
-use Ukolio\Dto\SubtaskCreateDto;
-use Ukolio\Dto\SubtaskDto;
-use Ukolio\Model\Entity\TaskRelation;
-use Ukolio\Response\ErrorResponse;
-use Ukolio\Response\NotFoundResponse;
-use Ukolio\Route\Routes;
-use Ukolio\Service\Provider\SubtaskProviderInterface;
-use Ukolio\Service\Provider\TaskCodeResolverInterface;
-use Ukolio\Service\Request\RequestServiceInterface;
+use Kytario\Dto\SubtaskCreateDto;
+use Kytario\Dto\SubtaskDto;
+use Kytario\Model\Entity\TaskRelation;
+use Kytario\Response\ErrorResponse;
+use Kytario\Response\NotFoundResponse;
+use Kytario\Route\Routes;
+use Kytario\Service\Provider\SubtaskProviderInterface;
+use Kytario\Service\Provider\TaskCodeResolverInterface;
+use Kytario\Service\Request\RequestServiceInterface;
 
 final readonly class SubtaskController
 {

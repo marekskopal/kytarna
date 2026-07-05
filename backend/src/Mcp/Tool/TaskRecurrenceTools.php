@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Mcp\Tool;
+namespace Kytario\Mcp\Tool;
 
 use Mcp\Capability\Attribute\McpTool;
 use RuntimeException;
-use Ukolio\Dto\TaskRecurrenceDto;
-use Ukolio\Dto\TaskRecurrenceWriteDto;
-use Ukolio\Mcp\McpUserContextInterface;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Service\Provider\TaskCodeResolverInterface;
-use Ukolio\Service\Provider\TaskRecurrenceProviderInterface;
+use Kytario\Dto\TaskRecurrenceDto;
+use Kytario\Dto\TaskRecurrenceWriteDto;
+use Kytario\Mcp\McpUserContextInterface;
+use Kytario\Model\Entity\Task;
+use Kytario\Service\Provider\TaskCodeResolverInterface;
+use Kytario\Service\Provider\TaskRecurrenceProviderInterface;
 
 final readonly class TaskRecurrenceTools
 {

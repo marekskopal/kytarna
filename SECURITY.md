@@ -2,7 +2,7 @@
 
 ## Supported versions
 
-Ukolio follows semantic versioning. Security fixes are applied to the latest
+Kytario follows semantic versioning. Security fixes are applied to the latest
 released minor version. Please make sure you are running the most recent
 release before reporting an issue.
 
@@ -16,7 +16,7 @@ release before reporting an issue.
 **Please do not open a public GitHub issue for security problems.**
 
 Instead, open a
-[private security advisory](https://github.com/marekskopal/ukolio/security/advisories/new)
+[private security advisory](https://github.com/marekskopal/kytario/security/advisories/new)
 on GitHub. Include:
 
 - a description of the vulnerability and its impact,
@@ -33,4 +33,4 @@ credit reporters who wish to be named.
 This policy covers the open-source components in this repository: the backend
 API and MCP server (`backend/`), the frontend (`frontend/`), and the reverse
 proxy (`proxy/`). Issues in third-party dependencies should be reported upstream,
-though we appreciate a heads-up if they affect Ukolio directly.
+though we appreciate a heads-up if they affect Kytario directly.

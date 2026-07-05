@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Service\Provider;
+namespace Kytario\Tests\Service\Provider;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use Ukolio\Model\Entity\Enum\WorkspaceRoleEnum;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Repository\StatusRepository;
-use Ukolio\Model\Repository\TaskRepository;
-use Ukolio\Model\Repository\WorkflowRepository;
-use Ukolio\Service\Provider\TaskWatcherProvider;
-use Ukolio\Service\Provider\TaskWatcherProviderInterface;
-use Ukolio\Tests\Support\Fixture;
-use Ukolio\Tests\Support\IntegrationTestCase;
+use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Repository\StatusRepository;
+use Kytario\Model\Repository\TaskRepository;
+use Kytario\Model\Repository\WorkflowRepository;
+use Kytario\Service\Provider\TaskWatcherProvider;
+use Kytario\Service\Provider\TaskWatcherProviderInterface;
+use Kytario\Tests\Support\Fixture;
+use Kytario\Tests\Support\IntegrationTestCase;
 
 #[CoversClass(TaskWatcherProvider::class)]
 final class TaskWatcherProviderTest extends IntegrationTestCase

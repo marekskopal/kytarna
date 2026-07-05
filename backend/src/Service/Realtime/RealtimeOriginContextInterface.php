@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Realtime;
+namespace Kytario\Service\Realtime;
 
 interface RealtimeOriginContextInterface
 {

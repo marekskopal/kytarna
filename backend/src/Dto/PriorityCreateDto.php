@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Dto;
+namespace Kytario\Dto;
 
 /** @implements ArrayFactoryInterface<array{name: string, color: string, isDefault?: bool}> */
 final readonly class PriorityCreateDto implements ArrayFactoryInterface

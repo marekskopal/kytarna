@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Script\Host;
+namespace Kytario\Service\Script\Host;
 
 use RuntimeException;
-use Ukolio\Model\Entity\Enum\EventTypeEnum;
-use Ukolio\Service\Provider\EventProviderInterface;
+use Kytario\Model\Entity\Enum\EventTypeEnum;
+use Kytario\Service\Provider\EventProviderInterface;
 
 /**
- * Exposed to JS as `ukolio.events`. Reads the append-only audit log, scoped to the run's workspace
+ * Exposed to JS as `kytario.events`. Reads the append-only audit log, scoped to the run's workspace
  * and authorised as the script's owner. Counts against the per-run task-API cap. Lets scripts answer
  * "when did this task enter status X" by inspecting TaskMoved events.
  */

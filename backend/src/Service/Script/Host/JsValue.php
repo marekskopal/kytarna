@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Script\Host;
+namespace Kytario\Service\Script\Host;
 
 /**
  * Normalises values that cross the JS→PHP boundary. Depending on the ext-v8js build, V8Js hands

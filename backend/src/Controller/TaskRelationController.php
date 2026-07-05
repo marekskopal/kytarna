@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Controller;
+namespace Kytario\Controller;
 
 use Laminas\Diactoros\Response\JsonResponse;
 use MarekSkopal\Router\Attribute\RouteDelete;
@@ -11,20 +11,20 @@ use MarekSkopal\Router\Attribute\RoutePost;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
-use Ukolio\Dto\TaskRelationCreateDto;
-use Ukolio\Dto\TaskRelationDto;
-use Ukolio\Dto\TaskRelationListDto;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\TaskRelation;
-use Ukolio\Model\Entity\User;
-use Ukolio\Response\ErrorResponse;
-use Ukolio\Response\NotFoundResponse;
-use Ukolio\Response\OkResponse;
-use Ukolio\Route\Routes;
-use Ukolio\Service\Provider\TaskCodeResolverInterface;
-use Ukolio\Service\Provider\TaskRelationProviderInterface;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
-use Ukolio\Service\Request\RequestServiceInterface;
+use Kytario\Dto\TaskRelationCreateDto;
+use Kytario\Dto\TaskRelationDto;
+use Kytario\Dto\TaskRelationListDto;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\TaskRelation;
+use Kytario\Model\Entity\User;
+use Kytario\Response\ErrorResponse;
+use Kytario\Response\NotFoundResponse;
+use Kytario\Response\OkResponse;
+use Kytario\Route\Routes;
+use Kytario\Service\Provider\TaskCodeResolverInterface;
+use Kytario\Service\Provider\TaskRelationProviderInterface;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Service\Request\RequestServiceInterface;
 
 final readonly class TaskRelationController
 {

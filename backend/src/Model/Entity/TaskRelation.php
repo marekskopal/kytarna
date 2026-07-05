@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Model\Entity;
+namespace Kytario\Model\Entity;
 
 use MarekSkopal\ORM\Attribute\ColumnEnum;
 use MarekSkopal\ORM\Attribute\Entity;
 use MarekSkopal\ORM\Attribute\ManyToOne;
-use Ukolio\Model\Entity\Enum\TaskRelationTypeEnum;
-use Ukolio\Model\Repository\TaskRelationRepository;
+use Kytario\Model\Entity\Enum\TaskRelationTypeEnum;
+use Kytario\Model\Repository\TaskRelationRepository;
 
 #[Entity(repositoryClass: TaskRelationRepository::class)]
 class TaskRelation extends AEntity

@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Controller;
+namespace Kytario\Tests\Controller;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use Ukolio\Controller\TaskCommentController;
-use Ukolio\Model\Entity\Enum\EventTypeEnum;
-use Ukolio\Model\Entity\Enum\WorkspaceRoleEnum;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Repository\EventRepository;
-use Ukolio\Model\Repository\StatusRepository;
-use Ukolio\Model\Repository\WorkflowRepository;
-use Ukolio\Tests\Support\Fixture;
-use Ukolio\Tests\Support\IntegrationTestCase;
+use Kytario\Controller\TaskCommentController;
+use Kytario\Model\Entity\Enum\EventTypeEnum;
+use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Repository\EventRepository;
+use Kytario\Model\Repository\StatusRepository;
+use Kytario\Model\Repository\WorkflowRepository;
+use Kytario\Tests\Support\Fixture;
+use Kytario\Tests\Support\IntegrationTestCase;
 
 #[CoversClass(TaskCommentController::class)]
 final class TaskCommentControllerTest extends IntegrationTestCase

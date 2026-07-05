@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Service\Script;
+namespace Kytario\Tests\Service\Script;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use Ukolio\Model\Entity\Enum\ScriptTriggerEnum;
-use Ukolio\Service\Script\Host\ScriptRunContext;
-use Ukolio\Tests\Support\Fixture;
-use Ukolio\Tests\Support\IntegrationTestCase;
+use Kytario\Model\Entity\Enum\ScriptTriggerEnum;
+use Kytario\Service\Script\Host\ScriptRunContext;
+use Kytario\Tests\Support\Fixture;
+use Kytario\Tests\Support\IntegrationTestCase;
 
 #[CoversClass(ScriptRunContext::class)]
 final class ScriptRunContextTest extends IntegrationTestCase

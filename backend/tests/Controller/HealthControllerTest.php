@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Controller;
+namespace Kytario\Tests\Controller;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use Ukolio\Controller\HealthController;
-use Ukolio\Tests\Support\IntegrationTestCase;
+use Kytario\Controller\HealthController;
+use Kytario\Tests\Support\IntegrationTestCase;
 
 #[CoversClass(HealthController::class)]
 final class HealthControllerTest extends IntegrationTestCase

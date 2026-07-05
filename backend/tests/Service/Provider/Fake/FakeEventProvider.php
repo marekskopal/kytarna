@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Service\Provider\Fake;
+namespace Kytario\Tests\Service\Provider\Fake;
 
 use ArrayIterator;
 use DateTimeImmutable;
 use Iterator;
-use Ukolio\Model\Entity\Enum\ActorTypeEnum;
-use Ukolio\Model\Entity\Enum\EventTypeEnum;
-use Ukolio\Model\Entity\Event;
-use Ukolio\Model\Entity\Project;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Service\Provider\EventProviderInterface;
+use Kytario\Model\Entity\Enum\ActorTypeEnum;
+use Kytario\Model\Entity\Enum\EventTypeEnum;
+use Kytario\Model\Entity\Event;
+use Kytario\Model\Entity\Project;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Service\Provider\EventProviderInterface;
 
 final class FakeEventProvider implements EventProviderInterface
 {

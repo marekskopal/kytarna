@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Controller;
+namespace Kytario\Tests\Controller;
 
 use PDO;
 use PHPUnit\Framework\Attributes\CoversClass;
-use Ukolio\Controller\CurrentUserController;
-use Ukolio\Model\Entity\Enum\EventTypeEnum;
-use Ukolio\Model\Entity\Enum\SystemRoleEnum;
-use Ukolio\Model\Entity\Enum\WorkspaceRoleEnum;
-use Ukolio\Model\Repository\EventRepository;
-use Ukolio\Model\Repository\UserRepository;
-use Ukolio\Tests\Support\AppHarness;
-use Ukolio\Tests\Support\Fixture;
-use Ukolio\Tests\Support\IntegrationTestCase;
+use Kytario\Controller\CurrentUserController;
+use Kytario\Model\Entity\Enum\EventTypeEnum;
+use Kytario\Model\Entity\Enum\SystemRoleEnum;
+use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytario\Model\Repository\EventRepository;
+use Kytario\Model\Repository\UserRepository;
+use Kytario\Tests\Support\AppHarness;
+use Kytario\Tests\Support\Fixture;
+use Kytario\Tests\Support\IntegrationTestCase;
 
 #[CoversClass(CurrentUserController::class)]
 final class CurrentUserControllerTest extends IntegrationTestCase
@@ -258,7 +258,7 @@ final class CurrentUserControllerTest extends IntegrationTestCase
 
 		$disposition = $response->getHeaderLine('Content-Disposition');
 		self::assertStringContainsString('attachment', $disposition);
-		self::assertStringContainsString(sprintf('ukolio-export-%d.json', $me->id), $disposition);
+		self::assertStringContainsString(sprintf('kytario-export-%d.json', $me->id), $disposition);
 
 		$body = $this->jsonBody($response);
 		$userBlock = $body['user'];

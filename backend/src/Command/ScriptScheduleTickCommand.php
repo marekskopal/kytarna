@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Command;
+namespace Kytario\Command;
 
 use DateTimeImmutable;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Ukolio\App\ApplicationFactory;
-use Ukolio\Model\Entity\Enum\ScriptTriggerEnum;
-use Ukolio\Model\Repository\ScriptRepository;
-use Ukolio\Service\Cache\CacheFactory;
-use Ukolio\Service\Script\ScriptRunDispatcherInterface;
-use Ukolio\Service\Script\Trigger\CronEvaluatorInterface;
+use Kytario\App\ApplicationFactory;
+use Kytario\Model\Entity\Enum\ScriptTriggerEnum;
+use Kytario\Model\Repository\ScriptRepository;
+use Kytario\Service\Cache\CacheFactory;
+use Kytario\Service\Script\ScriptRunDispatcherInterface;
+use Kytario\Service\Script\Trigger\CronEvaluatorInterface;
 use const DATE_ATOM;
 
 /**

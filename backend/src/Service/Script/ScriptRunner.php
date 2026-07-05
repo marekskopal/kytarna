@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Script;
+namespace Kytario\Service\Script;
 
 use DateTimeImmutable;
 use Psr\Log\LoggerInterface;
 use Throwable;
-use Ukolio\Model\Entity\Enum\EventTypeEnum;
-use Ukolio\Model\Entity\Enum\ScriptRunStatusEnum;
-use Ukolio\Model\Entity\Enum\ScriptTriggerEnum;
-use Ukolio\Model\Entity\Script;
-use Ukolio\Model\Entity\ScriptRun;
-use Ukolio\Model\Repository\ScriptRepository;
-use Ukolio\Model\Repository\ScriptRunRepository;
-use Ukolio\Service\Provider\EventProviderInterface;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
-use Ukolio\Service\Script\Engine\ScriptEngineInterface;
-use Ukolio\Service\Script\Host\ScriptHostApiFactory;
-use Ukolio\Service\Script\Host\ScriptRunContext;
+use Kytario\Model\Entity\Enum\EventTypeEnum;
+use Kytario\Model\Entity\Enum\ScriptRunStatusEnum;
+use Kytario\Model\Entity\Enum\ScriptTriggerEnum;
+use Kytario\Model\Entity\Script;
+use Kytario\Model\Entity\ScriptRun;
+use Kytario\Model\Repository\ScriptRepository;
+use Kytario\Model\Repository\ScriptRunRepository;
+use Kytario\Service\Provider\EventProviderInterface;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Service\Script\Engine\ScriptEngineInterface;
+use Kytario\Service\Script\Host\ScriptHostApiFactory;
+use Kytario\Service\Script\Host\ScriptRunContext;
 
 /**
  * Executes a Script in the sandbox and records a ScriptRun. Always runs in a worker (never in an
@@ -32,7 +32,7 @@ final readonly class ScriptRunner
 	private const int MaxTaskApiCalls = 200;
 
 	/** Reserved workspace variable holding an optional comma/whitespace-separated outbound-fetch host allowlist. */
-	private const string FetchAllowlistKey = 'UKOLIO_FETCH_ALLOWLIST';
+	private const string FetchAllowlistKey = 'KYTARIO_FETCH_ALLOWLIST';
 
 	public function __construct(
 		private ScriptEngineInterface $engine,

@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Controller;
+namespace Kytario\Tests\Controller;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use Ukolio\Controller\WorkspaceController;
-use Ukolio\Model\Entity\Enum\WorkspaceRoleEnum;
-use Ukolio\Model\Repository\StatusRepository;
-use Ukolio\Model\Repository\WorkflowRepository;
-use Ukolio\OAuth\AuthorizationServiceInterface;
-use Ukolio\OAuth\ClientServiceInterface;
-use Ukolio\Tests\Support\Fixture;
-use Ukolio\Tests\Support\IntegrationTestCase;
+use Kytario\Controller\WorkspaceController;
+use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytario\Model\Repository\StatusRepository;
+use Kytario\Model\Repository\WorkflowRepository;
+use Kytario\OAuth\AuthorizationServiceInterface;
+use Kytario\OAuth\ClientServiceInterface;
+use Kytario\Tests\Support\Fixture;
+use Kytario\Tests\Support\IntegrationTestCase;
 
 #[CoversClass(WorkspaceController::class)]
 final class WorkspaceControllerTest extends IntegrationTestCase

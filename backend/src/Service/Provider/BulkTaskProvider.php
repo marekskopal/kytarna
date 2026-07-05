@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
 use RuntimeException;
-use Ukolio\Model\Entity\Enum\EventTypeEnum;
-use Ukolio\Model\Entity\Priority;
-use Ukolio\Model\Entity\Status;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Model\Repository\TaskRepository;
-use Ukolio\Model\Repository\UserRepository;
-use Ukolio\Service\Provider\Enum\BulkOpEnum;
+use Kytario\Model\Entity\Enum\EventTypeEnum;
+use Kytario\Model\Entity\Priority;
+use Kytario\Model\Entity\Status;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Model\Repository\TaskRepository;
+use Kytario\Model\Repository\UserRepository;
+use Kytario\Service\Provider\Enum\BulkOpEnum;
 
 final readonly class BulkTaskProvider implements BulkTaskProviderInterface
 {

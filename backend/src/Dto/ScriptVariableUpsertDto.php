@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Dto;
+namespace Kytario\Dto;
 
 /** @implements ArrayFactoryInterface<array{key: string, value: string, isSecret?: bool}> */
 final readonly class ScriptVariableUpsertDto implements ArrayFactoryInterface

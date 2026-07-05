@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Command;
+namespace Kytario\Tests\Command;
 
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Console\Tester\CommandTester;
-use Ukolio\Command\NotificationDueTickCommand;
-use Ukolio\Model\Entity\Enum\NotificationTypeEnum;
-use Ukolio\Model\Entity\Enum\WorkspaceRoleEnum;
-use Ukolio\Model\Entity\Notification;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Model\Repository\StatusRepository;
-use Ukolio\Model\Repository\WorkflowRepository;
-use Ukolio\Service\Provider\NotificationProviderInterface;
-use Ukolio\Tests\Support\Fixture;
-use Ukolio\Tests\Support\IntegrationTestCase;
+use Kytario\Command\NotificationDueTickCommand;
+use Kytario\Model\Entity\Enum\NotificationTypeEnum;
+use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytario\Model\Entity\Notification;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Model\Repository\StatusRepository;
+use Kytario\Model\Repository\WorkflowRepository;
+use Kytario\Service\Provider\NotificationProviderInterface;
+use Kytario\Tests\Support\Fixture;
+use Kytario\Tests\Support\IntegrationTestCase;
 
 #[CoversClass(NotificationDueTickCommand::class)]
 final class NotificationDueTickCommandTest extends IntegrationTestCase

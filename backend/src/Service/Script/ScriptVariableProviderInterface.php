@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Script;
+namespace Kytario\Service\Script;
 
 use Iterator;
-use Ukolio\Model\Entity\ScriptVariable;
-use Ukolio\Model\Entity\Workspace;
+use Kytario\Model\Entity\ScriptVariable;
+use Kytario\Model\Entity\Workspace;
 
 interface ScriptVariableProviderInterface
 {

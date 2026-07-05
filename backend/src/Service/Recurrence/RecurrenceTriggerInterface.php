@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Recurrence;
+namespace Kytario\Service\Recurrence;
 
-use Ukolio\Model\Entity\Event;
+use Kytario\Model\Entity\Event;
 
 interface RecurrenceTriggerInterface
 {

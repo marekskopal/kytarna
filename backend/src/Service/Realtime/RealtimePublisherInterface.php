@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Realtime;
+namespace Kytario\Service\Realtime;
 
-use Ukolio\Model\Entity\Enum\EventTypeEnum;
+use Kytario\Model\Entity\Enum\EventTypeEnum;
 
 interface RealtimePublisherInterface
 {

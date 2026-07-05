@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Script;
+namespace Kytario\Service\Script;
 
 /**
  * Process-global flag marking that the current worker is inside a script run. The event-driven

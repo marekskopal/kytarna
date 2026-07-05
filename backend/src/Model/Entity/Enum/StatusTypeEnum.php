@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Model\Entity\Enum;
+namespace Kytario\Model\Entity\Enum;
 
 enum StatusTypeEnum: string
 {

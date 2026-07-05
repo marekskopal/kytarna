@@ -14,7 +14,7 @@ final class InvalidateDefaultAdminPasswordMigration extends Migration
 		$pdo = $this->databaseProvider->getDatabase()->getPdo();
 
 		$stmt = $pdo->prepare('SELECT id, password FROM users WHERE email = :email LIMIT 1');
-		$stmt->execute(['email' => 'admin@ukolio.com']);
+		$stmt->execute(['email' => 'admin@kytario.com']);
 		$row = $stmt->fetch(PDO::FETCH_ASSOC);
 
 		if (!is_array($row) || !is_string($row['password'] ?? null)) {

@@ -1,12 +1,12 @@
-# Handoff: Ukolio Design System
+# Handoff: Kytario Design System
 
 ## Overview
 
-A new, ground-up visual system for **Ukolio** — a multi-tenant, MCP-native Kanban task manager. The system is dense, minimal, light-mode only, Inter-based, indigo-accented, and treats AI agent activity as a first-class surface throughout the UI.
+A new, ground-up visual system for **Kytario** — a multi-tenant, MCP-native Kanban task manager. The system is dense, minimal, light-mode only, Inter-based, indigo-accented, and treats AI agent activity as a first-class surface throughout the UI.
 
 This package contains:
 
-- A **single HTML design canvas** (`Ukolio Design System.html`) showing tokens, components, and 7 application screens side-by-side.
+- A **single HTML design canvas** (`Kytario Design System.html`) showing tokens, components, and 7 application screens side-by-side.
 - A **production-ready token sheet** (`tokens.css`) — every color, spacing, radius, shadow, and font value as CSS variables.
 - React/JSX prototype files (`foundations.jsx`, `components.jsx`, `screens.jsx`) you can read as ground truth for layout, density, copy, and interaction.
 
@@ -14,17 +14,17 @@ This package contains:
 
 The files in this bundle are **design references** — they were built as HTML prototypes to specify the intended look, density, and behavior. **They are not production code to copy verbatim.**
 
-Your job is to recreate these designs inside the existing **Ukolio Angular 21 codebase** using its established patterns: standalone components + signals, SCSS partials in `frontend/src/styles/`, `ngx-translate` for all copy, attribute-routed reactive forms. The current codebase already has a thin design-token layer in `frontend/src/styles/_variables.scss` — your work is to **replace and expand** those tokens to match this new system, then update every component template/SCSS to the new patterns.
+Your job is to recreate these designs inside the existing **Kytario Angular 21 codebase** using its established patterns: standalone components + signals, SCSS partials in `frontend/src/styles/`, `ngx-translate` for all copy, attribute-routed reactive forms. The current codebase already has a thin design-token layer in `frontend/src/styles/_variables.scss` — your work is to **replace and expand** those tokens to match this new system, then update every component template/SCSS to the new patterns.
 
 ## Fidelity
 
-**High fidelity.** Exact hex values, font sizes, line-heights, border colors, control heights, and spacing are all specified. The prototype is the source of truth — when in doubt, open the relevant artboard in `Ukolio Design System.html` and match it pixel-for-pixel.
+**High fidelity.** Exact hex values, font sizes, line-heights, border colors, control heights, and spacing are all specified. The prototype is the source of truth — when in doubt, open the relevant artboard in `Kytario Design System.html` and match it pixel-for-pixel.
 
 ## Target codebase
 
 ```
 Stack:    Angular 21 (standalone components + signals), SCSS, ngx-translate
-Repo:     github.com/marekskopal/ukolio · frontend/
+Repo:     github.com/marekskopal/kytario · frontend/
 Style:    frontend/src/styles/_variables.scss   ← replace contents
           frontend/src/styles/_mixins.scss      ← keep / extend
           frontend/src/styles.scss              ← rewrite globals to new system
@@ -268,7 +268,7 @@ Priority uses **filled chips**: low (gray), medium (amber), high (red), urgent (
 
 ## Application screens
 
-Each screen is implemented as a full prototype artboard in `Ukolio Design System.html`. Open the file and zoom into the matching artboard to read exact spacing/copy.
+Each screen is implemented as a full prototype artboard in `Kytario Design System.html`. Open the file and zoom into the matching artboard to read exact spacing/copy.
 
 ### 1. Login
 
@@ -280,7 +280,7 @@ Split layout, 56% form / 44% dark aside.
 ### 2. Topbar shell (every authenticated page)
 
 48 px tall, white, 1 px bottom border. Left → right:
-- Brand mark (22 px) + "ukolio" wordmark
+- Brand mark (22 px) + "kytario" wordmark
 - 1 px divider
 - Workspace switcher — small `--ghost` button: 14 px colored square w/ workspace initial + "mskopal" + chevron
 - Nav links: Projects · Tasks · **Agents** · Workspaces (Agents is new — this is where the activity log lives)
@@ -385,7 +385,7 @@ Names of people in mocks (Marek Skopal, Jakub Kostka, Eva Pokorna) are placehold
 
 | File | What it is |
 |---|---|
-| `Ukolio Design System.html` | **The canvas.** Open this in a browser to see every artboard. |
+| `Kytario Design System.html` | **The canvas.** Open this in a browser to see every artboard. |
 | `tokens.css` | All CSS variables (`--uk-*`). Use as the source of truth for hex values. Port to `_variables.scss`. |
 | `foundations.jsx` | React components rendering the Brand, Color, Typography, Spacing/Radius/Shadow artboards. |
 | `components.jsx` | React components rendering Buttons, Forms, Badges/Alerts, Lists/Tables, Task cards. |

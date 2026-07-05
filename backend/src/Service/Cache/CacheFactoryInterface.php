@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Cache;
+namespace Kytario\Service\Cache;
 
 interface CacheFactoryInterface
 {

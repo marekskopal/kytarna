@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Service\Email;
+namespace Kytario\Tests\Service\Email;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Ukolio\Dto\NotificationEmailQueueDto;
-use Ukolio\Model\Entity\Enum\LocaleEnum;
-use Ukolio\Model\Entity\Enum\NotificationTypeEnum;
-use Ukolio\Service\Email\EmailFactory;
-use Ukolio\Service\Translator\TranslatorService;
+use Kytario\Dto\NotificationEmailQueueDto;
+use Kytario\Model\Entity\Enum\LocaleEnum;
+use Kytario\Model\Entity\Enum\NotificationTypeEnum;
+use Kytario\Service\Email\EmailFactory;
+use Kytario\Service\Translator\TranslatorService;
 
 #[CoversClass(EmailFactory::class)]
 final class EmailFactoryTest extends TestCase
 {
 	public function testInvitationEmailContainsTokenAcceptUrlAndIsLocalised(): void
 	{
-		putenv('PROXY_HOST=app.ukolio.example');
+		putenv('PROXY_HOST=app.kytario.example');
 		putenv('PROXY_PORT_SSL=443');
-		putenv('EMAIL_FROM=no-reply@ukolio.example');
+		putenv('EMAIL_FROM=no-reply@kytario.example');
 
 		$translator = new TranslatorService(__DIR__ . '/../../../translations');
 		$factory = new EmailFactory($translator);
@@ -32,7 +32,7 @@ final class EmailFactoryTest extends TestCase
 			locale: LocaleEnum::Cs,
 		);
 
-		self::assertSame('no-reply@ukolio.example', $email->getFrom()[0]->getAddress());
+		self::assertSame('no-reply@kytario.example', $email->getFrom()[0]->getAddress());
 		self::assertSame('invitee@example.com', $email->getTo()[0]->getAddress());
 		$subject = $email->getSubject();
 		self::assertIsString($subject);
@@ -41,14 +41,14 @@ final class EmailFactoryTest extends TestCase
 		$html = $email->getHtmlBody();
 		self::assertIsString($html);
 		self::assertStringContainsString('raw-token-123', $html);
-		self::assertStringContainsString('https://app.ukolio.example/app/invitations/accept?token=raw-token-123', $html);
+		self::assertStringContainsString('https://app.kytario.example/app/invitations/accept?token=raw-token-123', $html);
 	}
 
 	public function testPasswordResetEmailIncludesUrlAndToken(): void
 	{
-		putenv('PROXY_HOST=app.ukolio.example');
+		putenv('PROXY_HOST=app.kytario.example');
 		putenv('PROXY_PORT_SSL=443');
-		putenv('EMAIL_FROM=no-reply@ukolio.example');
+		putenv('EMAIL_FROM=no-reply@kytario.example');
 
 		$translator = new TranslatorService(__DIR__ . '/../../../translations');
 		$factory = new EmailFactory($translator);
@@ -68,9 +68,9 @@ final class EmailFactoryTest extends TestCase
 
 	public function testEmailVerificationEmailIncludesUrlAndToken(): void
 	{
-		putenv('PROXY_HOST=app.ukolio.example');
+		putenv('PROXY_HOST=app.kytario.example');
 		putenv('PROXY_PORT_SSL=443');
-		putenv('EMAIL_FROM=no-reply@ukolio.example');
+		putenv('EMAIL_FROM=no-reply@kytario.example');
 
 		$translator = new TranslatorService(__DIR__ . '/../../../translations');
 		$factory = new EmailFactory($translator);
@@ -90,9 +90,9 @@ final class EmailFactoryTest extends TestCase
 
 	public function testNotificationEmailLinksToTheTaskWithRootRelativePath(): void
 	{
-		putenv('PROXY_HOST=app.ukolio.example');
+		putenv('PROXY_HOST=app.kytario.example');
 		putenv('PROXY_PORT_SSL=443');
-		putenv('EMAIL_FROM=no-reply@ukolio.example');
+		putenv('EMAIL_FROM=no-reply@kytario.example');
 
 		$translator = new TranslatorService(__DIR__ . '/../../../translations');
 		$factory = new EmailFactory($translator);
@@ -113,6 +113,6 @@ final class EmailFactoryTest extends TestCase
 		$html = $email->getHtmlBody();
 		self::assertIsString($html);
 		// SaaS layout serves the app under /app, so in-app deep links carry the prefix.
-		self::assertStringContainsString('https://app.ukolio.example/app/projects/7/board?task=UK-1', $html);
+		self::assertStringContainsString('https://app.kytario.example/app/projects/7/board?task=UK-1', $html);
 	}
 }

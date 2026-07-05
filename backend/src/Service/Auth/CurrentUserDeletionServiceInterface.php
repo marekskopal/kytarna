@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Auth;
+namespace Kytario\Service\Auth;
 
-use Ukolio\Model\Entity\User;
+use Kytario\Model\Entity\User;
 
 interface CurrentUserDeletionServiceInterface
 {

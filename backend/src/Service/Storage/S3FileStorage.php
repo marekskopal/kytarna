@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Storage;
+namespace Kytario\Service\Storage;
 
 use AsyncAws\S3\S3Client;
 use Psr\Log\LoggerInterface;

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Script\Host;
+namespace Kytario\Service\Script\Host;
 
 use JsonException;
 use RuntimeException;
 use const JSON_THROW_ON_ERROR;
 
 /**
- * Result of ukolio.fetch(), exposed to JS as { status, headers, json(), text() }.
+ * Result of kytario.fetch(), exposed to JS as { status, headers, json(), text() }.
  */
 final readonly class HttpResponse
 {

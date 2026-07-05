@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
 use Iterator;
-use Ukolio\Model\Entity\Enum\FieldTypeEnum;
-use Ukolio\Model\Entity\Field;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Entity\Workspace;
+use Kytario\Model\Entity\Enum\FieldTypeEnum;
+use Kytario\Model\Entity\Field;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Entity\Workspace;
 
 interface FieldProviderInterface
 {

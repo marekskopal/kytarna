@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\OAuth;
+namespace Kytario\Tests\OAuth;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Ukolio\OAuth\PkceVerifier;
+use Kytario\OAuth\PkceVerifier;
 
 #[CoversClass(PkceVerifier::class)]
 final class PkceVerifierTest extends TestCase

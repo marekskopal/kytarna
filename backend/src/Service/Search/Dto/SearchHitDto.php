@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Search\Dto;
+namespace Kytario\Service\Search\Dto;
 
 final readonly class SearchHitDto
 {

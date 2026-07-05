@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Model\Repository\ProjectRepository;
-use Ukolio\Model\Repository\TaskRepository;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Model\Repository\ProjectRepository;
+use Kytario\Model\Repository\TaskRepository;
 
 final readonly class TaskCodeResolver implements TaskCodeResolverInterface
 {

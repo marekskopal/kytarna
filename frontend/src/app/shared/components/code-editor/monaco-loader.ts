@@ -1,4 +1,4 @@
-import {UKOLIO_DTS} from '@app/scripts/ukolio-api';
+import {KYTARIO_DTS} from '@app/scripts/kytario-api';
 import type * as Monaco from 'monaco-editor';
 
 // Monaco is loaded as its prebuilt AMD bundle from /assets/monaco (copied by the
@@ -79,9 +79,9 @@ function configure(monaco: typeof Monaco): void {
     }
     configured = true;
 
-    monaco.languages.typescript.javascriptDefaults.addExtraLib(UKOLIO_DTS, 'ts:ukolio.d.ts');
+    monaco.languages.typescript.javascriptDefaults.addExtraLib(KYTARIO_DTS, 'ts:kytario.d.ts');
 
-    monaco.editor.defineTheme('ukolio-light', {
+    monaco.editor.defineTheme('kytario-light', {
         base: 'vs',
         inherit: true,
         rules: [
@@ -99,7 +99,7 @@ function configure(monaco: typeof Monaco): void {
         },
     });
 
-    monaco.editor.defineTheme('ukolio-dark', {
+    monaco.editor.defineTheme('kytario-dark', {
         base: 'vs-dark',
         inherit: true,
         rules: [

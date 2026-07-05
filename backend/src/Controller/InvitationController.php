@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Controller;
+namespace Kytario\Controller;
 
 use DateTimeImmutable;
 use Laminas\Diactoros\Response\JsonResponse;
@@ -12,21 +12,21 @@ use MarekSkopal\Router\Attribute\RoutePost;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
-use Ukolio\Dto\InvitationCreateDto;
-use Ukolio\Dto\InvitationDto;
-use Ukolio\Dto\InvitationTokenDto;
-use Ukolio\Model\Entity\Enum\WorkspaceRoleEnum;
-use Ukolio\Model\Repository\InvitationRepository;
-use Ukolio\Response\ErrorResponse;
-use Ukolio\Response\NotAuthorizedResponse;
-use Ukolio\Response\NotFoundResponse;
-use Ukolio\Response\OkResponse;
-use Ukolio\Route\Routes;
-use Ukolio\Service\Auth\PermissionCheckerInterface;
-use Ukolio\Service\Authentication\RateLimitConfig;
-use Ukolio\Service\Provider\InvitationProviderInterface;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
-use Ukolio\Service\Request\RequestServiceInterface;
+use Kytario\Dto\InvitationCreateDto;
+use Kytario\Dto\InvitationDto;
+use Kytario\Dto\InvitationTokenDto;
+use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytario\Model\Repository\InvitationRepository;
+use Kytario\Response\ErrorResponse;
+use Kytario\Response\NotAuthorizedResponse;
+use Kytario\Response\NotFoundResponse;
+use Kytario\Response\OkResponse;
+use Kytario\Route\Routes;
+use Kytario\Service\Auth\PermissionCheckerInterface;
+use Kytario\Service\Authentication\RateLimitConfig;
+use Kytario\Service\Provider\InvitationProviderInterface;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Service\Request\RequestServiceInterface;
 
 final readonly class InvitationController
 {

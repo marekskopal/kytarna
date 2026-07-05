@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Mcp\Tool;
+namespace Kytario\Mcp\Tool;
 
 use Mcp\Capability\Attribute\McpTool;
 use RuntimeException;
-use Ukolio\Mcp\Dto\McpEventDto;
-use Ukolio\Mcp\Dto\McpEventListDto;
-use Ukolio\Mcp\McpUserContextInterface;
-use Ukolio\Model\Entity\Enum\EventTypeEnum;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Service\Provider\EventProviderInterface;
-use Ukolio\Service\Provider\TaskCodeResolverInterface;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Mcp\Dto\McpEventDto;
+use Kytario\Mcp\Dto\McpEventListDto;
+use Kytario\Mcp\McpUserContextInterface;
+use Kytario\Model\Entity\Enum\EventTypeEnum;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Service\Provider\EventProviderInterface;
+use Kytario\Service\Provider\TaskCodeResolverInterface;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
 
 final readonly class EventTools
 {
@@ -123,7 +123,7 @@ final readonly class EventTools
 	{
 		$workspace = $this->workspaceProvider->getCurrentWorkspace($this->userContext->getUser());
 		if ($workspace === null) {
-			throw new RuntimeException('No active workspace. Create one in the Ukolio app first.');
+			throw new RuntimeException('No active workspace. Create one in the Kytario app first.');
 		}
 
 		return $workspace;

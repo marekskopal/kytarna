@@ -1,5 +1,5 @@
 // ============================================================
-// Ukolio — Onboarding flow
+// Kytario — Onboarding flow
 //   Step 1 · Create first project (name + workflow columns)
 //   Step 2 · Invite teammates
 //   Step 3 · You're set (with MCP hand-off)
@@ -21,14 +21,14 @@ function OnboardingShell({ step = 1, children }) {
         display: 'flex', alignItems: 'center', gap: 12
       }}>
         <Mark size={22} />
-        <span style={{ fontWeight: 600, letterSpacing: '-0.018em', fontSize: 14 }}>ukolio</span>
+        <span style={{ fontWeight: 600, letterSpacing: '-0.018em', fontSize: 14 }}>kytario</span>
         <span style={{ width: 1, height: 16, background: '#e7e7ea', margin: '0 4px' }} />
         <span className="uk-caption" style={{ fontSize: 12 }}>
           Set up workspace <span className="uk-mono" style={{ color: '#18181b' }}>mskopal</span>
         </span>
         <div style={{ flex: 1 }} />
         <span className="uk-caption" style={{ fontSize: 12 }}>
-          Signed in as <span style={{ color: '#18181b', fontWeight: 500 }}>marek@ukolio.com</span>
+          Signed in as <span style={{ color: '#18181b', fontWeight: 500 }}>marek@kytario.com</span>
         </span>
         <button className="uk-btn uk-btn--ghost uk-btn--sm">Sign out</button>
       </header>
@@ -381,9 +381,9 @@ function LivePreviewProject() {
 // ============================================================
 function OnboardingStep2() {
   const invitees = [
-    ['jakub@ukolio.com', 'Admin',  '#dbeaff', '#1e58b6', 'JK'],
-    ['eva@ukolio.com',   'Member', '#dcefe2', '#16794a', 'EP'],
-    ['tomas@ukolio.com', 'Member', '#fbe5d6', '#a35c00', 'TN'],
+    ['jakub@kytario.com', 'Admin',  '#dbeaff', '#1e58b6', 'JK'],
+    ['eva@kytario.com',   'Member', '#dcefe2', '#16794a', 'EP'],
+    ['tomas@kytario.com', 'Member', '#fbe5d6', '#a35c00', 'TN'],
     ['','',              '','',     ''],
   ];
 
@@ -447,7 +447,7 @@ function OnboardingStep2() {
             <FIcon.Link style={{ color: '#8a8a92' }}/>
             <input
               className="uk-input"
-              defaultValue="https://app.ukolio.com/join/mskopal?token=k9_4f2b…"
+              defaultValue="https://app.kytario.com/join/mskopal?token=k9_4f2b…"
               readOnly
               style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 12 }}
             />
@@ -467,7 +467,7 @@ function OnboardingStep2() {
           <label style={{ display: 'flex', alignItems: 'flex-start', gap: 10, cursor: 'pointer' }}>
             <span className="uk-toggle uk-toggle--on" style={{ marginTop: 2 }}/>
             <div style={{ lineHeight: 1.4 }}>
-              <div style={{ fontSize: 13, color: '#18181b' }}>Anyone with <span className="uk-mono" style={{ background: '#f4f4f5', padding: '0 4px', borderRadius: 3 }}>@ukolio.com</span> can join</div>
+              <div style={{ fontSize: 13, color: '#18181b' }}>Anyone with <span className="uk-mono" style={{ background: '#f4f4f5', padding: '0 4px', borderRadius: 3 }}>@kytario.com</span> can join</div>
               <div className="uk-caption" style={{ fontSize: 11 }}>They'll be added as Member automatically when they sign up with that domain.</div>
             </div>
           </label>
@@ -572,7 +572,7 @@ function OnboardingStep3() {
           {[
             ['Workspace', 'mskopal', '4 seats'],
             ['First project', 'Backend rewrite', '4-column kanban'],
-            ['Invites sent',  '3 pending', '@ukolio.com auto-join'],
+            ['Invites sent',  '3 pending', '@kytario.com auto-join'],
           ].map(([label, val, sub]) => (
             <div key={label} className="uk-card" style={{ padding: 12 }}>
               <div className="uk-overline" style={{ fontSize: 10, marginBottom: 4 }}>{label}</div>
@@ -605,8 +605,8 @@ function OnboardingStep3() {
             </button>
           </div>
           <div style={{ color: '#71717a', marginBottom: 4 }}># ~/.config/claude/claude.json</div>
-          <div><span style={{ color: '#71717a' }}>"ukolio"</span>: {'{'}</div>
-          <div>  <span style={{ color: '#71717a' }}>"url"</span>: <span style={{ color: '#a3b5e8' }}>"https://app.ukolio.com/api/mcp"</span>,</div>
+          <div><span style={{ color: '#71717a' }}>"kytario"</span>: {'{'}</div>
+          <div>  <span style={{ color: '#71717a' }}>"url"</span>: <span style={{ color: '#a3b5e8' }}>"https://app.kytario.com/api/mcp"</span>,</div>
           <div>  <span style={{ color: '#71717a' }}>"transport"</span>: <span style={{ color: '#a3b5e8' }}>"http"</span>,</div>
           <div>  <span style={{ color: '#71717a' }}>"workspace"</span>: <span style={{ color: '#a3b5e8' }}>"mskopal"</span></div>
           <div>{'}'}</div>
@@ -672,10 +672,10 @@ function LivePreviewDone() {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
           <Icon.Sparkle style={{ color: '#5e6ad2' }}/>
-          <span style={{ fontSize: 12, fontWeight: 600 }}>Welcome to Ukolio</span>
+          <span style={{ fontSize: 12, fontWeight: 600 }}>Welcome to Kytario</span>
         </div>
         <p className="uk-caption" style={{ fontSize: 11, lineHeight: 1.55 }}>
-          A 14-day free trial is active. No card required. We'll send a recap to <span className="uk-mono">marek@ukolio.com</span>.
+          A 14-day free trial is active. No card required. We'll send a recap to <span className="uk-mono">marek@kytario.com</span>.
         </p>
       </div>
     </div>

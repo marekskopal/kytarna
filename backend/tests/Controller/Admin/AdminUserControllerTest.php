@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Controller\Admin;
+namespace Kytario\Tests\Controller\Admin;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use Ukolio\Controller\Admin\AdminUserController;
-use Ukolio\Model\Entity\Enum\SystemRoleEnum;
-use Ukolio\Model\Repository\UserRepository;
-use Ukolio\Tests\Support\Fixture;
-use Ukolio\Tests\Support\IntegrationTestCase;
+use Kytario\Controller\Admin\AdminUserController;
+use Kytario\Model\Entity\Enum\SystemRoleEnum;
+use Kytario\Model\Repository\UserRepository;
+use Kytario\Tests\Support\Fixture;
+use Kytario\Tests\Support\IntegrationTestCase;
 
 #[CoversClass(AdminUserController::class)]
 final class AdminUserControllerTest extends IntegrationTestCase

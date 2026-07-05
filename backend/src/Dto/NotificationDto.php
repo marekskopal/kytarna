@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Dto;
+namespace Kytario\Dto;
 
-use Ukolio\Model\Entity\Notification;
+use Kytario\Model\Entity\Notification;
 use const DATE_ATOM;
 
 final readonly class NotificationDto

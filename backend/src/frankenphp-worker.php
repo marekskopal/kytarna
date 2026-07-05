@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Ukolio;
+namespace Kytario;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
 use Psr\Log\LoggerInterface;
-use Ukolio\App\ApplicationFactory;
-use Ukolio\Mcp\McpUserContextInterface;
-use Ukolio\Response\ErrorResponse;
-use Ukolio\Service\Actor\ActorContextInterface;
-use Ukolio\Service\Realtime\RealtimeOriginContextInterface;
+use Kytario\App\ApplicationFactory;
+use Kytario\Mcp\McpUserContextInterface;
+use Kytario\Response\ErrorResponse;
+use Kytario\Service\Actor\ActorContextInterface;
+use Kytario\Service\Realtime\RealtimeOriginContextInterface;
 
 $application = ApplicationFactory::create();
 

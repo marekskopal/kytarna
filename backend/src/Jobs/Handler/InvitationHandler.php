@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Jobs\Handler;
+namespace Kytario\Jobs\Handler;
 
 use Psr\Log\LoggerInterface;
 use Throwable;
-use Ukolio\Dto\InvitationQueueDto;
-use Ukolio\Jobs\Message\ReceivedMessageInterface;
-use Ukolio\Service\Email\EmailFactory;
-use Ukolio\Service\Email\MailerFactory;
-use Ukolio\Service\Task\TaskServiceInterface;
+use Kytario\Dto\InvitationQueueDto;
+use Kytario\Jobs\Message\ReceivedMessageInterface;
+use Kytario\Service\Email\EmailFactory;
+use Kytario\Service\Email\MailerFactory;
+use Kytario\Service\Task\TaskServiceInterface;
 
 final readonly class InvitationHandler implements JobHandler
 {

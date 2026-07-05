@@ -18,7 +18,7 @@ setup('sign up the shared fixture user', async ({page}) => {
     }
 
     const runId = Date.now();
-    const email = process.env['E2E_USER_EMAIL'] ?? `e2e-${runId}@ukolio.test`;
+    const email = process.env['E2E_USER_EMAIL'] ?? `e2e-${runId}@kytario.test`;
     const name = process.env['E2E_USER_NAME'] ?? `E2E User ${runId}`;
 
     const signUp = new SignUpPage(page);

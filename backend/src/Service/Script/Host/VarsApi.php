@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Script\Host;
+namespace Kytario\Service\Script\Host;
 
-use Ukolio\Service\Script\ScriptVariableProviderInterface;
+use Kytario\Service\Script\ScriptVariableProviderInterface;
 
 /**
- * Exposed to JS as `ukolio.vars`: a workspace-scoped key/value store. Secret values are decrypted
+ * Exposed to JS as `kytario.vars`: a workspace-scoped key/value store. Secret values are decrypted
  * on read and registered for log redaction; writes with { secret: true } are encrypted at rest.
  */
 final readonly class VarsApi

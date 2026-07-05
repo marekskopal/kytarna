@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Actor;
+namespace Kytario\Service\Actor;
 
-use Ukolio\Model\Entity\Enum\ActorTypeEnum;
+use Kytario\Model\Entity\Enum\ActorTypeEnum;
 
 final class ActorContext implements ActorContextInterface
 {

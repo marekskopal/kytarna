@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
-use Ukolio\Model\Entity\Project;
-use Ukolio\Model\Entity\Task;
+use Kytario\Model\Entity\Project;
+use Kytario\Model\Entity\Task;
 
 interface TaskFieldValueProviderInterface
 {

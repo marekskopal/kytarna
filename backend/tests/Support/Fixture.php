@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Support;
+namespace Kytario\Tests\Support;
 
 use Firebase\JWT\JWT;
-use Ukolio\Model\Entity\Enum\LocaleEnum;
-use Ukolio\Model\Entity\Enum\SystemRoleEnum;
-use Ukolio\Model\Entity\Enum\WorkspaceRoleEnum;
-use Ukolio\Model\Entity\Project;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Model\Repository\UserRepository;
-use Ukolio\Service\Authentication\AuthenticationServiceInterface;
-use Ukolio\Service\Provider\ProjectProviderInterface;
-use Ukolio\Service\Provider\UserProviderInterface;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Model\Entity\Enum\LocaleEnum;
+use Kytario\Model\Entity\Enum\SystemRoleEnum;
+use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytario\Model\Entity\Project;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Model\Repository\UserRepository;
+use Kytario\Service\Authentication\AuthenticationServiceInterface;
+use Kytario\Service\Provider\ProjectProviderInterface;
+use Kytario\Service\Provider\UserProviderInterface;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
 
 final class Fixture
 {

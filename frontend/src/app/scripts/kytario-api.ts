@@ -1,4 +1,4 @@
-// Single source of truth for the `ukolio` script host API: the TypeScript
+// Single source of truth for the `kytario` script host API: the TypeScript
 // declaration fed to Monaco for autocomplete, and the structured reference data
 // rendered in the editor's API panel. Mirrors backend/src/Service/Script/Host/*.
 
@@ -18,57 +18,57 @@ export interface ApiGroup {
     entries: ApiEntry[];
 }
 
-export const UKOLIO_API_GROUPS: readonly ApiGroup[] = [
+export const KYTARIO_API_GROUPS: readonly ApiGroup[] = [
     {
         name: 'tasks',
         entries: [
             {
-                signature: 'ukolio.tasks.list(filters?)',
+                signature: 'kytario.tasks.list(filters?)',
                 description: 'List tasks in the workspace. Filters: limit, offset, statusIds, onlyActive, search, includeArchived.',
                 returns: 'Task[]',
-                snippet: 'const tasks = ukolio.tasks.list({ onlyActive: true, limit: 50 });',
+                snippet: 'const tasks = kytario.tasks.list({ onlyActive: true, limit: 50 });',
             },
             {
-                signature: 'ukolio.tasks.get(idOrCode)',
+                signature: 'kytario.tasks.get(idOrCode)',
                 description: 'Fetch a single task by numeric id or its code (e.g. "PRJ-12").',
                 returns: 'Task | null',
-                snippet: 'const task = ukolio.tasks.get("PRJ-12");',
+                snippet: 'const task = kytario.tasks.get("PRJ-12");',
             },
             {
-                signature: 'ukolio.tasks.create(input)',
+                signature: 'kytario.tasks.create(input)',
                 description: 'Create a task. Requires projectId and name; optional statusName, priorityId, description.',
                 returns: 'Task',
-                snippet: 'const task = ukolio.tasks.create({ projectId: 1, name: "New task" });',
+                snippet: 'const task = kytario.tasks.create({ projectId: 1, name: "New task" });',
             },
             {
-                signature: 'ukolio.tasks.move(id, statusName)',
+                signature: 'kytario.tasks.move(id, statusName)',
                 description: 'Move a task to another status by status name within its project workflow.',
                 returns: 'Task',
-                snippet: 'ukolio.tasks.move(task.id, "In Progress");',
+                snippet: 'kytario.tasks.move(task.id, "In Progress");',
             },
             {
-                signature: 'ukolio.tasks.update(id, input)',
+                signature: 'kytario.tasks.update(id, input)',
                 description: 'Update a task; omitted fields keep their value. Accepts name, description, priorityId/Name, statusId/Name, dueDate.',
                 returns: 'Task',
-                snippet: 'ukolio.tasks.update(task.id, { description: "Updated by script" });',
+                snippet: 'kytario.tasks.update(task.id, { description: "Updated by script" });',
             },
             {
-                signature: 'ukolio.tasks.delete(id)',
+                signature: 'kytario.tasks.delete(id)',
                 description: 'Delete a task. Subtasks are orphaned (kept as top-level), not deleted.',
                 returns: '{ id, deleted }',
-                snippet: 'ukolio.tasks.delete(task.id);',
+                snippet: 'kytario.tasks.delete(task.id);',
             },
             {
-                signature: 'ukolio.tasks.setTags(id, tagIds)',
+                signature: 'kytario.tasks.setTags(id, tagIds)',
                 description: 'Replace the full tag set on a task with the given workspace tag ids.',
                 returns: 'Task',
-                snippet: 'ukolio.tasks.setTags(task.id, [1, 2]);',
+                snippet: 'kytario.tasks.setTags(task.id, [1, 2]);',
             },
             {
-                signature: 'ukolio.tasks.addComment(id, body)',
+                signature: 'kytario.tasks.addComment(id, body)',
                 description: 'Append a markdown comment to a task.',
                 returns: '{ id, body }',
-                snippet: 'ukolio.tasks.addComment(task.id, "Automated note");',
+                snippet: 'kytario.tasks.addComment(task.id, "Automated note");',
             },
         ],
     },
@@ -76,16 +76,16 @@ export const UKOLIO_API_GROUPS: readonly ApiGroup[] = [
         name: 'projects',
         entries: [
             {
-                signature: 'ukolio.projects.list()',
+                signature: 'kytario.projects.list()',
                 description: 'List every project in the workspace.',
                 returns: 'Project[]',
-                snippet: 'const projects = ukolio.projects.list();',
+                snippet: 'const projects = kytario.projects.list();',
             },
             {
-                signature: 'ukolio.workflow(projectId)',
+                signature: 'kytario.workflow(projectId)',
                 description: 'Get a project workflow with its ordered statuses.',
                 returns: '{ statuses }',
-                snippet: 'const { statuses } = ukolio.workflow(1);',
+                snippet: 'const { statuses } = kytario.workflow(1);',
             },
         ],
     },
@@ -93,16 +93,16 @@ export const UKOLIO_API_GROUPS: readonly ApiGroup[] = [
         name: 'vars',
         entries: [
             {
-                signature: 'ukolio.vars.get(key)',
+                signature: 'kytario.vars.get(key)',
                 description: 'Read a workspace variable. Secrets are decrypted transparently and redacted from logs.',
                 returns: 'string | null',
-                snippet: 'const webhook = ukolio.vars.get("SLACK_WEBHOOK_URL");',
+                snippet: 'const webhook = kytario.vars.get("SLACK_WEBHOOK_URL");',
             },
             {
-                signature: 'ukolio.vars.set(key, value, opts?)',
+                signature: 'kytario.vars.set(key, value, opts?)',
                 description: 'Create or update a workspace variable. Pass { secret: true } to encrypt at rest.',
                 returns: 'void',
-                snippet: 'ukolio.vars.set("LAST_RUN", new Date().toISOString());',
+                snippet: 'kytario.vars.set("LAST_RUN", new Date().toISOString());',
             },
         ],
     },
@@ -110,30 +110,30 @@ export const UKOLIO_API_GROUPS: readonly ApiGroup[] = [
         name: 'runtime',
         entries: [
             {
-                signature: 'ukolio.log(...args)',
+                signature: 'kytario.log(...args)',
                 description: 'Write a line to the run log. Multiple arguments are joined by a space.',
                 returns: 'void',
-                snippet: 'ukolio.log("Processed", tasks.length, "tasks");',
+                snippet: 'kytario.log("Processed", tasks.length, "tasks");',
             },
             {
-                signature: 'ukolio.fetch(url, opts?)',
+                signature: 'kytario.fetch(url, opts?)',
                 description: 'HTTP request from the sandbox (max 20 per run). Returns status, headers and text.',
                 returns: '{ status, headers, text }',
-                snippet: 'const res = ukolio.fetch("https://example.com", { method: "GET" });',
+                snippet: 'const res = kytario.fetch("https://example.com", { method: "GET" });',
             },
             {
-                signature: 'ukolio.context',
+                signature: 'kytario.context',
                 description: 'Run context: triggerType, the event payload (Event triggers) and scheduledAt (Scheduled).',
                 returns: '{ triggerType, event, scheduledAt }',
-                snippet: 'const trigger = ukolio.context.triggerType;',
+                snippet: 'const trigger = kytario.context.triggerType;',
             },
         ],
     },
 ];
 
-/** TypeScript declaration loaded into Monaco so `ukolio.*` gets autocomplete + hovers. */
-export const UKOLIO_DTS = `
-interface UkolioTask {
+/** TypeScript declaration loaded into Monaco so `kytario.*` gets autocomplete + hovers. */
+export const KYTARIO_DTS = `
+interface KytarioTask {
   id: number;
   code: string;
   name: string;
@@ -145,15 +145,15 @@ interface UkolioTask {
   updatedAt: string;
 }
 
-interface UkolioProject {
+interface KytarioProject {
   id: number;
   name: string;
   description: string | null;
 }
 
-interface UkolioStatus { id: number; name: string; type: string; position: number; }
+interface KytarioStatus { id: number; name: string; type: string; position: number; }
 
-interface UkolioTaskCreateInput {
+interface KytarioTaskCreateInput {
   projectId: number;
   name: string;
   statusName?: string;
@@ -161,7 +161,7 @@ interface UkolioTaskCreateInput {
   description?: string;
 }
 
-interface UkolioTaskFilters {
+interface KytarioTaskFilters {
   limit?: number;
   offset?: number;
   statusIds?: number[];
@@ -170,15 +170,15 @@ interface UkolioTaskFilters {
   includeArchived?: boolean;
 }
 
-interface UkolioHttpResponse { status: number; headers: Record<string, string>; text: string; }
+interface KytarioHttpResponse { status: number; headers: Record<string, string>; text: string; }
 
-interface UkolioFetchOptions {
+interface KytarioFetchOptions {
   method?: string;
   headers?: Record<string, string>;
   body?: string;
 }
 
-interface UkolioTaskUpdateInput {
+interface KytarioTaskUpdateInput {
   name?: string;
   description?: string;
   statusName?: string;
@@ -188,39 +188,39 @@ interface UkolioTaskUpdateInput {
   dueDate?: string;
 }
 
-interface UkolioTasksApi {
-  list(filters?: UkolioTaskFilters): UkolioTask[];
-  get(idOrCode: number | string): UkolioTask | null;
-  create(input: UkolioTaskCreateInput): UkolioTask;
-  move(id: number, statusName: string): UkolioTask;
-  update(id: number | string, input: UkolioTaskUpdateInput): UkolioTask;
+interface KytarioTasksApi {
+  list(filters?: KytarioTaskFilters): KytarioTask[];
+  get(idOrCode: number | string): KytarioTask | null;
+  create(input: KytarioTaskCreateInput): KytarioTask;
+  move(id: number, statusName: string): KytarioTask;
+  update(id: number | string, input: KytarioTaskUpdateInput): KytarioTask;
   delete(id: number | string): { id: number; deleted: true };
-  setTags(id: number | string, tagIds: number[]): UkolioTask;
+  setTags(id: number | string, tagIds: number[]): KytarioTask;
   addComment(id: number, body: string): { id: number; body: string };
 }
 
-interface UkolioProjectsApi { list(): UkolioProject[]; }
+interface KytarioProjectsApi { list(): KytarioProject[]; }
 
-interface UkolioVarsApi {
+interface KytarioVarsApi {
   get(key: string): string | null;
   set(key: string, value: string, opts?: { secret?: boolean }): void;
 }
 
-interface UkolioContext {
+interface KytarioContext {
   triggerType: 'Manual' | 'Scheduled' | 'Event';
   event: Record<string, unknown> | null;
   scheduledAt: string | null;
 }
 
-interface Ukolio {
-  tasks: UkolioTasksApi;
-  projects: UkolioProjectsApi;
-  vars: UkolioVarsApi;
-  workflow(projectId: number): { statuses: UkolioStatus[] };
+interface Kytario {
+  tasks: KytarioTasksApi;
+  projects: KytarioProjectsApi;
+  vars: KytarioVarsApi;
+  workflow(projectId: number): { statuses: KytarioStatus[] };
   log(...args: unknown[]): void;
-  fetch(url: string, opts?: UkolioFetchOptions): UkolioHttpResponse;
-  context: UkolioContext;
+  fetch(url: string, opts?: KytarioFetchOptions): KytarioHttpResponse;
+  context: KytarioContext;
 }
 
-declare const ukolio: Ukolio;
+declare const kytario: Kytario;
 `;

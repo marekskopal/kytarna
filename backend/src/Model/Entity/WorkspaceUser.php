@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Model\Entity;
+namespace Kytario\Model\Entity;
 
 use MarekSkopal\ORM\Attribute\ColumnEnum;
 use MarekSkopal\ORM\Attribute\Entity;
 use MarekSkopal\ORM\Attribute\ManyToOne;
-use Ukolio\Model\Entity\Enum\WorkspaceRoleEnum;
-use Ukolio\Model\Repository\WorkspaceUserRepository;
+use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytario\Model\Repository\WorkspaceUserRepository;
 
 #[Entity(repositoryClass: WorkspaceUserRepository::class)]
 class WorkspaceUser extends AEntity

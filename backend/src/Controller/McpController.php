@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Controller;
+namespace Kytario\Controller;
 
 use MarekSkopal\Router\Attribute\RouteDelete;
 use MarekSkopal\Router\Attribute\RouteGet;
@@ -15,14 +15,14 @@ use Predis\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
-use Ukolio\Mcp\McpUserContextInterface;
-use Ukolio\Mcp\Server\UkolioServer;
-use Ukolio\Mcp\Session\RedisSessionStore;
-use Ukolio\OAuth\AuthorizationServiceInterface;
-use Ukolio\OAuth\ClientServiceInterface;
-use Ukolio\Response\ErrorResponse;
-use Ukolio\Route\Routes;
-use Ukolio\Service\Actor\ActorContextInterface;
+use Kytario\Mcp\McpUserContextInterface;
+use Kytario\Mcp\Server\KytarioServer;
+use Kytario\Mcp\Session\RedisSessionStore;
+use Kytario\OAuth\AuthorizationServiceInterface;
+use Kytario\OAuth\ClientServiceInterface;
+use Kytario\Response\ErrorResponse;
+use Kytario\Route\Routes;
+use Kytario\Service\Actor\ActorContextInterface;
 
 final readonly class McpController
 {
@@ -31,7 +31,7 @@ final readonly class McpController
 		private ClientServiceInterface $clientService,
 		private McpUserContextInterface $userContext,
 		private ActorContextInterface $actorContext,
-		private UkolioServer $server,
+		private KytarioServer $server,
 		private ClientInterface $redis,
 	) {
 	}

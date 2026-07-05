@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Model\Repository;
+namespace Kytario\Model\Repository;
 
 use Iterator;
 use MarekSkopal\ORM\Repository\AbstractRepository;
-use Ukolio\Model\Entity\Workflow;
+use Kytario\Model\Entity\Workflow;
 
 /** @extends AbstractRepository<Workflow> */
 final class WorkflowRepository extends AbstractRepository

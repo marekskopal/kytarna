@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Service\Script;
+namespace Kytario\Tests\Service\Script;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
-use Ukolio\Service\Script\SecretCipher;
+use Kytario\Service\Script\SecretCipher;
 
 #[CoversClass(SecretCipher::class)]
 final class SecretCipherTest extends TestCase

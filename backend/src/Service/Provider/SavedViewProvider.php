@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
 use Iterator;
 use RuntimeException;
-use Ukolio\Model\Entity\SavedView;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Model\Repository\SavedViewRepository;
-use Ukolio\Model\Repository\UserRepository;
+use Kytario\Model\Entity\SavedView;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Model\Repository\SavedViewRepository;
+use Kytario\Model\Repository\UserRepository;
 use const JSON_THROW_ON_ERROR;
 
 final readonly class SavedViewProvider implements SavedViewProviderInterface

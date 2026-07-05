@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Authentication;
+namespace Kytario\Service\Authentication;
 
 final readonly class RateLimitConfig
 {

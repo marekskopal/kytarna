@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Mcp\Tool\Helper;
+namespace Kytario\Mcp\Tool\Helper;
 
 use RuntimeException;
-use Ukolio\Model\Entity\Enum\StatusTypeEnum;
-use Ukolio\Model\Entity\Project;
-use Ukolio\Model\Entity\Status;
-use Ukolio\Service\Provider\StatusProviderInterface;
-use Ukolio\Service\Provider\WorkflowProviderInterface;
+use Kytario\Model\Entity\Enum\StatusTypeEnum;
+use Kytario\Model\Entity\Project;
+use Kytario\Model\Entity\Status;
+use Kytario\Service\Provider\StatusProviderInterface;
+use Kytario\Service\Provider\WorkflowProviderInterface;
 
 final readonly class StatusResolver
 {

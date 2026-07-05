@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Mcp\Dto;
+namespace Kytario\Mcp\Dto;
 
-use Ukolio\Model\Entity\Enum\ActorTypeEnum;
-use Ukolio\Model\Entity\TaskComment;
+use Kytario\Model\Entity\Enum\ActorTypeEnum;
+use Kytario\Model\Entity\TaskComment;
 use const DATE_ATOM;
 
 final readonly class McpTaskCommentDto

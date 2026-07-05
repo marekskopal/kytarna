@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Model\Entity;
+namespace Kytario\Model\Entity;
 
 use MarekSkopal\ORM\Attribute\Column;
 use MarekSkopal\ORM\Attribute\ColumnEnum;
 use MarekSkopal\ORM\Attribute\Entity;
 use MarekSkopal\ORM\Attribute\ManyToOne;
 use MarekSkopal\ORM\Enum\Type;
-use Ukolio\Model\Entity\Enum\StatusTypeEnum;
-use Ukolio\Model\Repository\StatusRepository;
+use Kytario\Model\Entity\Enum\StatusTypeEnum;
+use Kytario\Model\Repository\StatusRepository;
 
 #[Entity(repositoryClass: StatusRepository::class)]
 class Status extends AEntity

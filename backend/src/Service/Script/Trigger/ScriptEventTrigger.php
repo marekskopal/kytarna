@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Script\Trigger;
+namespace Kytario\Service\Script\Trigger;
 
 use Psr\Log\LoggerInterface;
 use Throwable;
-use Ukolio\Model\Entity\Enum\ScriptTriggerEnum;
-use Ukolio\Model\Entity\Event;
-use Ukolio\Model\Entity\Script;
-use Ukolio\Model\Repository\ScriptRepository;
-use Ukolio\Service\Script\ScriptExecutionGuard;
-use Ukolio\Service\Script\ScriptRunDispatcherInterface;
+use Kytario\Model\Entity\Enum\ScriptTriggerEnum;
+use Kytario\Model\Entity\Event;
+use Kytario\Model\Entity\Script;
+use Kytario\Model\Repository\ScriptRepository;
+use Kytario\Service\Script\ScriptExecutionGuard;
+use Kytario\Service\Script\ScriptRunDispatcherInterface;
 
 final readonly class ScriptEventTrigger implements ScriptEventTriggerInterface
 {

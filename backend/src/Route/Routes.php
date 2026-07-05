@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Route;
+namespace Kytario\Route;
 
 enum Routes: string
 {

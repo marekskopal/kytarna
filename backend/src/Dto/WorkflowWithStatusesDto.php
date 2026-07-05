@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Dto;
+namespace Kytario\Dto;
 
-use Ukolio\Model\Entity\Status;
-use Ukolio\Model\Entity\Workflow;
+use Kytario\Model\Entity\Status;
+use Kytario\Model\Entity\Workflow;
 
 final readonly class WorkflowWithStatusesDto
 {

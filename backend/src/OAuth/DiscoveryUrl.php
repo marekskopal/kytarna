@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\OAuth;
+namespace Kytario\OAuth;
 
 use Psr\Http\Message\ServerRequestInterface;
-use Ukolio\Route\Routes;
+use Kytario\Route\Routes;
 use const PHP_URL_HOST;
 
 /**

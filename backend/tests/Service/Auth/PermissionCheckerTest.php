@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Service\Auth;
+namespace Kytario\Tests\Service\Auth;
 
 use ArrayIterator;
 use DateTimeImmutable;
 use Iterator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Ukolio\Model\Entity\Enum\LocaleEnum;
-use Ukolio\Model\Entity\Enum\SystemRoleEnum;
-use Ukolio\Model\Entity\Enum\WorkspaceRoleEnum;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Model\Entity\WorkspaceUser;
-use Ukolio\Service\Auth\PermissionChecker;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Model\Entity\Enum\LocaleEnum;
+use Kytario\Model\Entity\Enum\SystemRoleEnum;
+use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Model\Entity\WorkspaceUser;
+use Kytario\Service\Auth\PermissionChecker;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
 
 #[CoversClass(PermissionChecker::class)]
 final class PermissionCheckerTest extends TestCase

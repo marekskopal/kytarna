@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Service\Provider;
+namespace Kytario\Tests\Service\Provider;
 
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\CoversClass;
-use Ukolio\Model\Repository\PasswordResetTokenRepository;
-use Ukolio\Service\Authentication\RateLimitConfig;
-use Ukolio\Service\Provider\PasswordResetProvider;
-use Ukolio\Service\Provider\PasswordResetProviderInterface;
-use Ukolio\Tests\Support\Fixture;
-use Ukolio\Tests\Support\IntegrationTestCase;
+use Kytario\Model\Repository\PasswordResetTokenRepository;
+use Kytario\Service\Authentication\RateLimitConfig;
+use Kytario\Service\Provider\PasswordResetProvider;
+use Kytario\Service\Provider\PasswordResetProviderInterface;
+use Kytario\Tests\Support\Fixture;
+use Kytario\Tests\Support\IntegrationTestCase;
 
 #[CoversClass(PasswordResetProvider::class)]
 final class PasswordResetProviderTest extends IntegrationTestCase

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\OAuth;
+namespace Kytario\OAuth;
 
-use Ukolio\Model\Entity\OAuthClient;
+use Kytario\Model\Entity\OAuthClient;
 
 interface ClientServiceInterface
 {

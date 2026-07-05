@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Service\Actor;
+namespace Kytario\Tests\Service\Actor;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Ukolio\Model\Entity\Enum\ActorTypeEnum;
-use Ukolio\Service\Actor\ActorContext;
+use Kytario\Model\Entity\Enum\ActorTypeEnum;
+use Kytario\Service\Actor\ActorContext;
 
 #[CoversClass(ActorContext::class)]
 final class ActorContextTest extends TestCase

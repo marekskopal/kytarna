@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
 use Iterator;
 use RuntimeException;
-use Ukolio\Model\Entity\Enum\EventTypeEnum;
-use Ukolio\Model\Entity\Tag;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Model\Repository\TagRepository;
-use Ukolio\Model\Repository\TaskTagRepository;
-use Ukolio\Service\Search\SearchIndexer;
+use Kytario\Model\Entity\Enum\EventTypeEnum;
+use Kytario\Model\Entity\Tag;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Model\Repository\TagRepository;
+use Kytario\Model\Repository\TaskTagRepository;
+use Kytario\Service\Search\SearchIndexer;
 
 final readonly class TagProvider implements TagProviderInterface
 {

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
-use Ukolio\Model\Entity\Priority;
-use Ukolio\Model\Entity\Project;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\TaskRelation;
-use Ukolio\Model\Entity\User;
+use Kytario\Model\Entity\Priority;
+use Kytario\Model\Entity\Project;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\TaskRelation;
+use Kytario\Model\Entity\User;
 
 interface SubtaskProviderInterface
 {

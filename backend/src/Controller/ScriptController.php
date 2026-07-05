@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Controller;
+namespace Kytario\Controller;
 
 use Laminas\Diactoros\Response\JsonResponse;
 use MarekSkopal\Router\Attribute\RouteDelete;
@@ -12,23 +12,23 @@ use MarekSkopal\Router\Attribute\RoutePut;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
-use Ukolio\Dto\ScriptCreateDto;
-use Ukolio\Dto\ScriptDto;
-use Ukolio\Dto\ScriptRunDto;
-use Ukolio\Dto\ScriptUpdateDto;
-use Ukolio\Model\Entity\Enum\ScriptTriggerEnum;
-use Ukolio\Model\Entity\Script;
-use Ukolio\Model\Entity\ScriptRun;
-use Ukolio\Response\ErrorResponse;
-use Ukolio\Response\NotAuthorizedResponse;
-use Ukolio\Response\NotFoundResponse;
-use Ukolio\Response\OkResponse;
-use Ukolio\Route\Routes;
-use Ukolio\Service\Auth\PermissionCheckerInterface;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
-use Ukolio\Service\Request\RequestServiceInterface;
-use Ukolio\Service\Script\ScriptProviderInterface;
-use Ukolio\Service\Script\ScriptRunDispatcherInterface;
+use Kytario\Dto\ScriptCreateDto;
+use Kytario\Dto\ScriptDto;
+use Kytario\Dto\ScriptRunDto;
+use Kytario\Dto\ScriptUpdateDto;
+use Kytario\Model\Entity\Enum\ScriptTriggerEnum;
+use Kytario\Model\Entity\Script;
+use Kytario\Model\Entity\ScriptRun;
+use Kytario\Response\ErrorResponse;
+use Kytario\Response\NotAuthorizedResponse;
+use Kytario\Response\NotFoundResponse;
+use Kytario\Response\OkResponse;
+use Kytario\Route\Routes;
+use Kytario\Service\Auth\PermissionCheckerInterface;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Service\Request\RequestServiceInterface;
+use Kytario\Service\Script\ScriptProviderInterface;
+use Kytario\Service\Script\ScriptRunDispatcherInterface;
 
 final readonly class ScriptController
 {

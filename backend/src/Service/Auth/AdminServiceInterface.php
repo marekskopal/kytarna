@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Auth;
+namespace Kytario\Service\Auth;
 
 use Iterator;
-use Ukolio\Model\Entity\Enum\SystemRoleEnum;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Entity\Workspace;
+use Kytario\Model\Entity\Enum\SystemRoleEnum;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Entity\Workspace;
 
 interface AdminServiceInterface
 {

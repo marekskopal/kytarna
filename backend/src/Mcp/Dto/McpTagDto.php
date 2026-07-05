@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Mcp\Dto;
+namespace Kytario\Mcp\Dto;
 
-use Ukolio\Model\Entity\Tag;
+use Kytario\Model\Entity\Tag;
 
 final readonly class McpTagDto
 {

@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
 use Iterator;
 use RuntimeException;
-use Ukolio\Model\Entity\Enum\EventTypeEnum;
-use Ukolio\Model\Entity\Enum\WorkspaceRoleEnum;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Model\Entity\WorkspaceUser;
-use Ukolio\Model\Repository\UserRepository;
-use Ukolio\Model\Repository\WorkspaceRepository;
-use Ukolio\Model\Repository\WorkspaceUserRepository;
-use Ukolio\Validator\TextFieldValidator;
+use Kytario\Model\Entity\Enum\EventTypeEnum;
+use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Model\Entity\WorkspaceUser;
+use Kytario\Model\Repository\UserRepository;
+use Kytario\Model\Repository\WorkspaceRepository;
+use Kytario\Model\Repository\WorkspaceUserRepository;
+use Kytario\Validator\TextFieldValidator;
 
 final readonly class WorkspaceProvider implements WorkspaceProviderInterface
 {

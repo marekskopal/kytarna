@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Model\Repository;
+namespace Kytario\Model\Repository;
 
 use Iterator;
 use MarekSkopal\ORM\Query\Expression\RawExpression;
 use MarekSkopal\ORM\Repository\AbstractRepository;
-use Ukolio\Model\Entity\Enum\NotificationTypeEnum;
-use Ukolio\Model\Entity\Notification;
+use Kytario\Model\Entity\Enum\NotificationTypeEnum;
+use Kytario\Model\Entity\Notification;
 
 /** @extends AbstractRepository<Notification> */
 final class NotificationRepository extends AbstractRepository

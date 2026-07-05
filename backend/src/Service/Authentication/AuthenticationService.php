@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Authentication;
+namespace Kytario\Service\Authentication;
 
 use Firebase\JWT\JWT;
-use Ukolio\Dto\AuthenticationDto;
-use Ukolio\Dto\CredentialsDto;
-use Ukolio\Model\Entity\User;
-use Ukolio\Service\Authentication\Exception\AuthenticationException;
-use Ukolio\Service\Provider\UserProviderInterface;
+use Kytario\Dto\AuthenticationDto;
+use Kytario\Dto\CredentialsDto;
+use Kytario\Model\Entity\User;
+use Kytario\Service\Authentication\Exception\AuthenticationException;
+use Kytario\Service\Provider\UserProviderInterface;
 
 final readonly class AuthenticationService implements AuthenticationServiceInterface
 {

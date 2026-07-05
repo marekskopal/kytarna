@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Model\Entity;
+namespace Kytario\Model\Entity;
 
 use DateTimeImmutable;
 use MarekSkopal\ORM\Attribute\Column;
@@ -10,9 +10,9 @@ use MarekSkopal\ORM\Attribute\ColumnEnum;
 use MarekSkopal\ORM\Attribute\Entity;
 use MarekSkopal\ORM\Attribute\ManyToOne;
 use MarekSkopal\ORM\Enum\Type;
-use Ukolio\Model\Entity\Enum\ScriptRunStatusEnum;
-use Ukolio\Model\Entity\Enum\ScriptTriggerEnum;
-use Ukolio\Model\Repository\ScriptRunRepository;
+use Kytario\Model\Entity\Enum\ScriptRunStatusEnum;
+use Kytario\Model\Entity\Enum\ScriptTriggerEnum;
+use Kytario\Model\Repository\ScriptRunRepository;
 
 #[Entity(repositoryClass: ScriptRunRepository::class)]
 class ScriptRun extends AEntity

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\App\Bootstrap;
+namespace Kytario\Tests\App\Bootstrap;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
-use Ukolio\App\Bootstrap\EnvironmentValidator;
+use Kytario\App\Bootstrap\EnvironmentValidator;
 
 #[CoversClass(EnvironmentValidator::class)]
 final class EnvironmentValidatorTest extends TestCase
@@ -21,11 +21,11 @@ final class EnvironmentValidatorTest extends TestCase
 		return [
 			'AUTHORIZATION_TOKEN_KEY' => self::ValidTokenKey,
 			'MYSQL_HOST' => 'db',
-			'MYSQL_DATABASE' => 'ukolio',
-			'MYSQL_USER' => 'ukolio',
+			'MYSQL_DATABASE' => 'kytario',
+			'MYSQL_USER' => 'kytario',
 			'MYSQL_PASSWORD' => self::StrongPassword,
 			'MYSQL_ROOT_PASSWORD' => self::StrongPassword,
-			'S3_BUCKET' => 'ukolio-files',
+			'S3_BUCKET' => 'kytario-files',
 			'S3_ACCESS_KEY' => self::StrongPassword,
 			'S3_SECRET_KEY' => self::StrongPassword,
 			'REDIS_HOST' => 'redis',
@@ -93,7 +93,7 @@ final class EnvironmentValidatorTest extends TestCase
 	{
 		$env = self::baseEnv();
 		$env['APP_ENV'] = 'production';
-		$env['MYSQL_PASSWORD'] = 'ukolio';
+		$env['MYSQL_PASSWORD'] = 'kytario';
 
 		$validator = new EnvironmentValidator($env);
 
@@ -108,8 +108,8 @@ final class EnvironmentValidatorTest extends TestCase
 	{
 		$env = self::baseEnv();
 		$env['APP_ENV'] = 'production';
-		$env['MYSQL_PASSWORD'] = 'ukolio';
-		$env['MYSQL_ROOT_PASSWORD'] = 'ukolio';
+		$env['MYSQL_PASSWORD'] = 'kytario';
+		$env['MYSQL_ROOT_PASSWORD'] = 'kytario';
 		$env['S3_ACCESS_KEY'] = 'minioadmin';
 		$env['S3_SECRET_KEY'] = 'minioadmin';
 
@@ -130,7 +130,7 @@ final class EnvironmentValidatorTest extends TestCase
 	{
 		$env = self::baseEnv();
 		$env['APP_ENV'] = 'production';
-		$env['REDIS_PASSWORD'] = 'ukolio';
+		$env['REDIS_PASSWORD'] = 'kytario';
 
 		$validator = new EnvironmentValidator($env);
 
@@ -144,7 +144,7 @@ final class EnvironmentValidatorTest extends TestCase
 	{
 		$env = self::baseEnv();
 		$env['APP_ENV'] = 'production';
-		$env['RABBITMQ_PASSWORD'] = 'ukolio';
+		$env['RABBITMQ_PASSWORD'] = 'kytario';
 
 		$validator = new EnvironmentValidator($env);
 
@@ -230,8 +230,8 @@ final class EnvironmentValidatorTest extends TestCase
 		$this->expectNotToPerformAssertions();
 
 		$env = self::baseEnv();
-		$env['MYSQL_PASSWORD'] = 'ukolio';
-		$env['MYSQL_ROOT_PASSWORD'] = 'ukolio';
+		$env['MYSQL_PASSWORD'] = 'kytario';
+		$env['MYSQL_ROOT_PASSWORD'] = 'kytario';
 		$env['S3_ACCESS_KEY'] = 'minioadmin';
 		$env['S3_SECRET_KEY'] = 'minioadmin';
 		$env['BACKEND_CORS_ALLOWED_ORIGIN'] = '*';

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Dto;
+namespace Kytario\Dto;
 
 use RuntimeException;
-use Ukolio\Model\Entity\Enum\TaskRelationTypeEnum;
+use Kytario\Model\Entity\Enum\TaskRelationTypeEnum;
 
 /** @implements ArrayFactoryInterface<array{targetTaskId: int, type: string}> */
 final readonly class TaskRelationCreateDto implements ArrayFactoryInterface

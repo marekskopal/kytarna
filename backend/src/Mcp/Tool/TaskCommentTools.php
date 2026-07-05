@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Mcp\Tool;
+namespace Kytario\Mcp\Tool;
 
 use Mcp\Capability\Attribute\McpTool;
 use RuntimeException;
-use Ukolio\Mcp\Dto\McpTaskCommentDto;
-use Ukolio\Mcp\Dto\McpTaskCommentListDto;
-use Ukolio\Mcp\McpUserContextInterface;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\TaskComment;
-use Ukolio\Service\Auth\PermissionCheckerInterface;
-use Ukolio\Service\Provider\TaskCommentProviderInterface;
-use Ukolio\Service\Provider\TaskProviderInterface;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Mcp\Dto\McpTaskCommentDto;
+use Kytario\Mcp\Dto\McpTaskCommentListDto;
+use Kytario\Mcp\McpUserContextInterface;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\TaskComment;
+use Kytario\Service\Auth\PermissionCheckerInterface;
+use Kytario\Service\Provider\TaskCommentProviderInterface;
+use Kytario\Service\Provider\TaskProviderInterface;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
 
 final readonly class TaskCommentTools
 {

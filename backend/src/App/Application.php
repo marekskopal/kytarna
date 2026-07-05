@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\App;
+namespace Kytario\App;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Ukolio\Service\Dbal\DbContext;
+use Kytario\Service\Dbal\DbContext;
 
 final readonly class Application
 {

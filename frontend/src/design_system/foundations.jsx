@@ -1,5 +1,5 @@
 // ============================================================
-// Ukolio Design System — Foundations
+// Kytario Design System — Foundations
 // Brand mark, color palette, type scale, spacing, radii, shadows
 // ============================================================
 
@@ -26,7 +26,7 @@ function BrandBoard() {
       <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 28 }}>
         <Mark size={56} />
         <div>
-          <div style={{ fontSize: 30, fontWeight: 600, letterSpacing: '-0.024em' }}>ukolio</div>
+          <div style={{ fontSize: 30, fontWeight: 600, letterSpacing: '-0.024em' }}>kytario</div>
           <div className="uk-caption">Multi-tenant kanban · MCP-native</div>
         </div>
       </div>
@@ -43,7 +43,7 @@ function BrandBoard() {
             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8
           }}>
             <Mark size={28} invert={t.invert} />
-            <span style={{ fontSize: 18, fontWeight: 600, letterSpacing: '-0.02em' }}>ukolio</span>
+            <span style={{ fontSize: 18, fontWeight: 600, letterSpacing: '-0.02em' }}>kytario</span>
           </div>
         ))}
       </div>

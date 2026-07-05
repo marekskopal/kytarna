@@ -2,34 +2,34 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Mcp\Tool;
+namespace Kytario\Mcp\Tool;
 
 use DateTimeImmutable;
 use Mcp\Capability\Attribute\McpTool;
 use RuntimeException;
-use Ukolio\Dto\DateInput;
-use Ukolio\Dto\TaskRecurrenceWriteDto;
-use Ukolio\Mcp\Dto\McpTaskDto;
-use Ukolio\Mcp\Dto\McpTaskListDto;
-use Ukolio\Mcp\McpUserContextInterface;
-use Ukolio\Mcp\Tool\Helper\PriorityResolver;
-use Ukolio\Mcp\Tool\Helper\StatusResolver;
-use Ukolio\Model\Entity\Enum\StatusTypeEnum;
-use Ukolio\Model\Entity\Project;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Model\Repository\UserRepository;
-use Ukolio\Service\Provider\BulkTaskProviderInterface;
-use Ukolio\Service\Provider\Enum\BulkOpEnum;
-use Ukolio\Service\Provider\ProjectProviderInterface;
-use Ukolio\Service\Provider\StatusProviderInterface;
-use Ukolio\Service\Provider\TaskCodeResolverInterface;
-use Ukolio\Service\Provider\TaskFieldValueProviderInterface;
-use Ukolio\Service\Provider\TaskProviderInterface;
-use Ukolio\Service\Provider\TaskRecurrenceProviderInterface;
-use Ukolio\Service\Provider\TaskTagProviderInterface;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Dto\DateInput;
+use Kytario\Dto\TaskRecurrenceWriteDto;
+use Kytario\Mcp\Dto\McpTaskDto;
+use Kytario\Mcp\Dto\McpTaskListDto;
+use Kytario\Mcp\McpUserContextInterface;
+use Kytario\Mcp\Tool\Helper\PriorityResolver;
+use Kytario\Mcp\Tool\Helper\StatusResolver;
+use Kytario\Model\Entity\Enum\StatusTypeEnum;
+use Kytario\Model\Entity\Project;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Model\Repository\UserRepository;
+use Kytario\Service\Provider\BulkTaskProviderInterface;
+use Kytario\Service\Provider\Enum\BulkOpEnum;
+use Kytario\Service\Provider\ProjectProviderInterface;
+use Kytario\Service\Provider\StatusProviderInterface;
+use Kytario\Service\Provider\TaskCodeResolverInterface;
+use Kytario\Service\Provider\TaskFieldValueProviderInterface;
+use Kytario\Service\Provider\TaskProviderInterface;
+use Kytario\Service\Provider\TaskRecurrenceProviderInterface;
+use Kytario\Service\Provider\TaskTagProviderInterface;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
 
 final readonly class TaskTools
 {

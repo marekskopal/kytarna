@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Queue;
+namespace Kytario\Service\Queue;
 
 use JsonException;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use RuntimeException;
-use Ukolio\Service\Queue\Enum\QueueEnum;
+use Kytario\Service\Queue\Enum\QueueEnum;
 use const JSON_THROW_ON_ERROR;
 
 final class QueuePublisher

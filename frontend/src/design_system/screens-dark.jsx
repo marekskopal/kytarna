@@ -1,5 +1,5 @@
 // ============================================================
-// Ukolio — Application screens applying the new design system
+// Kytario — Application screens applying the new design system
 // ============================================================
 
 // Shared topbar shell
@@ -27,7 +27,7 @@ function TopBarDark({ active = 'tasks' }) {
       gap: 14
     }}>
       <Mark size={22} />
-      <span style={{ fontWeight: 600, letterSpacing: '-0.018em', fontSize: 14 }}>ukolio</span>
+      <span style={{ fontWeight: 600, letterSpacing: '-0.018em', fontSize: 14 }}>kytario</span>
 
       <span style={{ width: 1, height: 18, background: '#2a2a2e', margin: '0 4px' }} />
 
@@ -76,7 +76,7 @@ function LoginScreenDark() {
         <div style={{ width: '100%', maxWidth: 320 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 32 }}>
             <Mark size={28}/>
-            <span style={{ fontWeight: 600, letterSpacing: '-0.02em', fontSize: 18 }}>ukolio</span>
+            <span style={{ fontWeight: 600, letterSpacing: '-0.02em', fontSize: 18 }}>kytario</span>
           </div>
 
           <h1 className="uk-h2" style={{ marginBottom: 4 }}>Sign in</h1>
@@ -85,7 +85,7 @@ function LoginScreenDark() {
           <form style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             <div className="uk-field">
               <label className="uk-label">Email</label>
-              <input className="uk-input" defaultValue="marek@ukolio.com"/>
+              <input className="uk-input" defaultValue="marek@kytario.com"/>
             </div>
             <div className="uk-field">
               <label className="uk-label" style={{ display: 'flex', alignItems: 'center' }}>
@@ -140,8 +140,8 @@ function LoginScreenDark() {
           maxWidth: 380
         }}>
           <div style={{ color: '#71717a', marginBottom: 4 }}># claude.json</div>
-          <div><span style={{ color: '#71717a' }}>"ukolio"</span>: {'{'}</div>
-          <div>&nbsp;&nbsp;<span style={{ color: '#71717a' }}>"url"</span>: <span style={{ color: '#a3b5e8' }}>"https://app.ukolio.com/api/mcp"</span>,</div>
+          <div><span style={{ color: '#71717a' }}>"kytario"</span>: {'{'}</div>
+          <div>&nbsp;&nbsp;<span style={{ color: '#71717a' }}>"url"</span>: <span style={{ color: '#a3b5e8' }}>"https://app.kytario.com/api/mcp"</span>,</div>
           <div>&nbsp;&nbsp;<span style={{ color: '#71717a' }}>"transport"</span>: <span style={{ color: '#a3b5e8' }}>"http"</span></div>
           <div>{'}'}</div>
         </div>
@@ -836,7 +836,7 @@ function EventsScreenDark() {
     { when: '12:14', actor: 'JK',  action: 'opened review', target: 'UKO-317 · Document MCP OAuth + PKCE',       proj: 'MCP onboarding' },
     { when: '11:50', actor: 'AI',  action: 'updated description', target: 'UKO-316',                              proj: 'Frontend polish', client: 'Claude (claude-sonnet-4-5)' },
     { when: '11:02', actor: 'EP',  action: 'closed task',   target: 'UKO-310 · Set up Mailpit in compose',       proj: 'Documentation' },
-    { when: '10:18', actor: 'MS',  action: 'invited member',target: 'eva@ukolio.com (Member)',                    proj: '—' },
+    { when: '10:18', actor: 'MS',  action: 'invited member',target: 'eva@kytario.com (Member)',                    proj: '—' },
     { when: '09:44', actor: 'AI',  action: 'created task',  target: 'UKO-319 · Cache key collision in tests',    proj: 'Backend rewrite', client: 'Claude Desktop' },
     { when: '09:01', actor: 'JK',  action: 'changed status',target: 'UKO-312 → In Review',                       proj: 'Backend rewrite' },
   ];
@@ -935,10 +935,10 @@ function EventsScreenDark() {
 // ============================================================
 function WorkspaceScreenDark() {
   const members = [
-    ['MS','Marek Skopal','marek@ukolio.com','Owner','active 1m ago','#3a2410','#fbbf24'],
-    ['JK','Jakub Kostka','jakub@ukolio.com','Admin','active 14m ago','#1a2540','#60a5fa'],
-    ['EP','Eva Pokorna','eva@ukolio.com','Member','active yesterday','#0f2418','#22c55e'],
-    ['TN','Tomas Novak','tomas@ukolio.com','Member','invited 3d ago, pending','#1f1f23','#a1a1a8'],
+    ['MS','Marek Skopal','marek@kytario.com','Owner','active 1m ago','#3a2410','#fbbf24'],
+    ['JK','Jakub Kostka','jakub@kytario.com','Admin','active 14m ago','#1a2540','#60a5fa'],
+    ['EP','Eva Pokorna','eva@kytario.com','Member','active yesterday','#0f2418','#22c55e'],
+    ['TN','Tomas Novak','tomas@kytario.com','Member','invited 3d ago, pending','#1f1f23','#a1a1a8'],
   ];
   const tokens = [
     ['Claude Desktop',    'claude-sonnet-4-5', 'created May 12', 'last used 2m ago'],
@@ -1051,8 +1051,8 @@ function WorkspaceScreenDark() {
                 <div className="uk-field">
                   <label className="uk-label">Transfer to</label>
                   <select className="uk-select" defaultValue="jk">
-                    <option value="jk">Jakub Kostka — jakub@ukolio.com</option>
-                    <option value="ep">Eva Pokorna — eva@ukolio.com</option>
+                    <option value="jk">Jakub Kostka — jakub@kytario.com</option>
+                    <option value="ep">Eva Pokorna — eva@kytario.com</option>
                   </select>
                 </div>
                 <label className="uk-check">

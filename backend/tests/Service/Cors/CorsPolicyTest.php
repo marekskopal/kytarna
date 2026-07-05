@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Service\Cors;
+namespace Kytario\Tests\Service\Cors;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Ukolio\Service\Cors\CorsPolicy;
+use Kytario\Service\Cors\CorsPolicy;
 
 #[CoversClass(CorsPolicy::class)]
 final class CorsPolicyTest extends TestCase

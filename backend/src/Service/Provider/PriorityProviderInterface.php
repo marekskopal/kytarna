@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
 use Iterator;
-use Ukolio\Model\Entity\Priority;
-use Ukolio\Model\Entity\Workspace;
+use Kytario\Model\Entity\Priority;
+use Kytario\Model\Entity\Workspace;
 
 interface PriorityProviderInterface
 {

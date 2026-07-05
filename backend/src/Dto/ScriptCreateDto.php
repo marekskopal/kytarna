@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Dto;
+namespace Kytario\Dto;
 
 /** @implements ArrayFactoryInterface<array{name: string, source: string, trigger: string, triggerConfig?: string|null, active?: bool}> */
 final readonly class ScriptCreateDto implements ArrayFactoryInterface

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Controller;
+namespace Kytario\Tests\Controller;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use Ukolio\Controller\TagController;
-use Ukolio\Model\Entity\Enum\WorkspaceRoleEnum;
-use Ukolio\Tests\Support\Fixture;
-use Ukolio\Tests\Support\IntegrationTestCase;
+use Kytario\Controller\TagController;
+use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytario\Tests\Support\Fixture;
+use Kytario\Tests\Support\IntegrationTestCase;
 
 #[CoversClass(TagController::class)]
 final class TagControllerTest extends IntegrationTestCase

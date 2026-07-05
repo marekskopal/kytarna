@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
 use RuntimeException;
-use Ukolio\Model\Entity\Enum\EventTypeEnum;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\TaskFile;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Repository\TaskFileRepository;
-use Ukolio\Service\Actor\ActorContextInterface;
-use Ukolio\Service\Storage\FileStorageInterface;
-use Ukolio\Service\Storage\S3Config;
+use Kytario\Model\Entity\Enum\EventTypeEnum;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\TaskFile;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Repository\TaskFileRepository;
+use Kytario\Service\Actor\ActorContextInterface;
+use Kytario\Service\Storage\FileStorageInterface;
+use Kytario\Service\Storage\S3Config;
 
 final readonly class TaskFileProvider implements TaskFileProviderInterface
 {

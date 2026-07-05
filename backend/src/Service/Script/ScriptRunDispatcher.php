@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Script;
+namespace Kytario\Service\Script;
 
-use Ukolio\Dto\ScriptRunQueueDto;
-use Ukolio\Model\Entity\Enum\ScriptTriggerEnum;
-use Ukolio\Model\Entity\Script;
-use Ukolio\Service\Queue\Enum\QueueEnum;
-use Ukolio\Service\Queue\QueuePublisher;
+use Kytario\Dto\ScriptRunQueueDto;
+use Kytario\Model\Entity\Enum\ScriptTriggerEnum;
+use Kytario\Model\Entity\Script;
+use Kytario\Service\Queue\Enum\QueueEnum;
+use Kytario\Service\Queue\QueuePublisher;
 
 final readonly class ScriptRunDispatcher implements ScriptRunDispatcherInterface
 {

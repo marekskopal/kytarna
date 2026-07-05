@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Realtime;
+namespace Kytario\Service\Realtime;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
 use Throwable;
-use Ukolio\Model\Entity\Enum\EventTypeEnum;
+use Kytario\Model\Entity\Enum\EventTypeEnum;
 use const JSON_THROW_ON_ERROR;
 
 final readonly class RealtimePublisher implements RealtimePublisherInterface
 {
-	public const string TopicPrefix = 'ukolio/workspaces/';
+	public const string TopicPrefix = 'kytario/workspaces/';
 
 	/** Per-user private topic — only the user's own Mercure JWT authorizes it (see MercureCookieIssuer). */
-	public const string UserTopicPrefix = 'ukolio/users/';
+	public const string UserTopicPrefix = 'kytario/users/';
 
 	public function __construct(
 		private HubInterface $hub,

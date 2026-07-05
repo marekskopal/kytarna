@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Recurrence;
+namespace Kytario\Service\Recurrence;
 
 use DateTimeImmutable;
-use Ukolio\Model\Entity\Enum\RecurrenceCadenceEnum;
-use Ukolio\Model\Entity\Enum\RecurrenceEndTypeEnum;
+use Kytario\Model\Entity\Enum\RecurrenceCadenceEnum;
+use Kytario\Model\Entity\Enum\RecurrenceEndTypeEnum;
 
 /** Validated, parsed recurrence settings handed to TaskRecurrenceProvider::set(). */
 final readonly class RecurrenceConfig

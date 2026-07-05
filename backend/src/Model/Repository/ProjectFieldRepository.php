@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Model\Repository;
+namespace Kytario\Model\Repository;
 
 use Iterator;
 use MarekSkopal\ORM\Repository\AbstractRepository;
-use Ukolio\Model\Entity\ProjectField;
+use Kytario\Model\Entity\ProjectField;
 
 /** @extends AbstractRepository<ProjectField> */
 final class ProjectFieldRepository extends AbstractRepository

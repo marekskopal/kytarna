@@ -1,5 +1,5 @@
 // ============================================================
-// Ukolio Design System — 07 · Scripts (automation)
+// Kytario Design System — 07 · Scripts (automation)
 // Self-contained: merges its own icons over the DS Icon set,
 // reuses window.TopBar / window.Mark, exports only *Board comps.
 // ============================================================
@@ -42,7 +42,7 @@ function hlLine(code) {
     else {
       const w = m[4], dot = /\.\s*$/.test(code.slice(0, m.index));
       let c = null;
-      if (w === 'ukolio') c = 'tk-host';
+      if (w === 'kytario') c = 'tk-host';
       else if (!dot && KW.has(w)) c = 'tk-kw';
       else if (!dot && LIT.has(w)) c = 'tk-lit';
       else if (!dot && BLT.has(w)) c = 'tk-builtin';
@@ -57,24 +57,24 @@ function hlLine(code) {
 const CAPS = { timeMs: 5000, memMb: 64, http: 20, taskApi: 200 };
 const API_REF = [
   { group: 'tasks', items: [
-    { sig: 'ukolio.tasks.list(filters?)', ret: 'Task[]', desc: 'Tasks in the workspace. filters: { search, statusIds, onlyActive, limit, offset }.', snip: 'const tasks = ukolio.tasks.list({ onlyActive: true });' },
-    { sig: 'ukolio.tasks.get(id)', ret: 'Task | null', desc: 'Look up by task code (MP-3) or numeric id.', snip: 'const task = ukolio.tasks.get("MP-12");' },
-    { sig: 'ukolio.tasks.create(input)', ret: 'Task', desc: '{ projectId, name, description?, priorityName?, statusName?, dueDate? }.', snip: 'ukolio.tasks.create({ projectId: 1, name: "Follow up" });' },
-    { sig: 'ukolio.tasks.move(id, statusName)', ret: 'Task', desc: 'Move a task to a status by name.', snip: 'ukolio.tasks.move("MP-12", "Done");' },
-    { sig: 'ukolio.tasks.addComment(id, body)', ret: '{ id, body }', desc: 'Add a Markdown comment (tagged Agent).', snip: 'ukolio.tasks.addComment("MP-12", "Triaged.");' },
+    { sig: 'kytario.tasks.list(filters?)', ret: 'Task[]', desc: 'Tasks in the workspace. filters: { search, statusIds, onlyActive, limit, offset }.', snip: 'const tasks = kytario.tasks.list({ onlyActive: true });' },
+    { sig: 'kytario.tasks.get(id)', ret: 'Task | null', desc: 'Look up by task code (MP-3) or numeric id.', snip: 'const task = kytario.tasks.get("MP-12");' },
+    { sig: 'kytario.tasks.create(input)', ret: 'Task', desc: '{ projectId, name, description?, priorityName?, statusName?, dueDate? }.', snip: 'kytario.tasks.create({ projectId: 1, name: "Follow up" });' },
+    { sig: 'kytario.tasks.move(id, statusName)', ret: 'Task', desc: 'Move a task to a status by name.', snip: 'kytario.tasks.move("MP-12", "Done");' },
+    { sig: 'kytario.tasks.addComment(id, body)', ret: '{ id, body }', desc: 'Add a Markdown comment (tagged Agent).', snip: 'kytario.tasks.addComment("MP-12", "Triaged.");' },
   ]},
   { group: 'projects', items: [
-    { sig: 'ukolio.projects.list()', ret: 'Project[]', desc: 'All projects in the workspace.', snip: 'const projects = ukolio.projects.list();' },
-    { sig: 'ukolio.workflow(projectId)', ret: '{ statuses }', desc: 'Workflow + ordered statuses for a project.', snip: 'const wf = ukolio.workflow(1);' },
+    { sig: 'kytario.projects.list()', ret: 'Project[]', desc: 'All projects in the workspace.', snip: 'const projects = kytario.projects.list();' },
+    { sig: 'kytario.workflow(projectId)', ret: '{ statuses }', desc: 'Workflow + ordered statuses for a project.', snip: 'const wf = kytario.workflow(1);' },
   ]},
   { group: 'vars', items: [
-    { sig: 'ukolio.vars.get(key)', ret: 'string | null', desc: 'Read a workspace variable. Secrets decrypt on read.', snip: 'const url = ukolio.vars.get("SLACK_WEBHOOK_URL");' },
-    { sig: 'ukolio.vars.set(key, value, opts?)', ret: 'void', desc: 'Write a variable. opts { secret: true } encrypts at rest.', snip: 'ukolio.vars.set("LAST_RUN", today);' },
+    { sig: 'kytario.vars.get(key)', ret: 'string | null', desc: 'Read a workspace variable. Secrets decrypt on read.', snip: 'const url = kytario.vars.get("SLACK_WEBHOOK_URL");' },
+    { sig: 'kytario.vars.set(key, value, opts?)', ret: 'void', desc: 'Write a variable. opts { secret: true } encrypts at rest.', snip: 'kytario.vars.set("LAST_RUN", today);' },
   ]},
   { group: 'runtime', items: [
-    { sig: 'ukolio.log(...args)', ret: 'void', desc: 'Append a line to the run log shown below.', snip: 'ukolio.log("done", count);' },
-    { sig: 'ukolio.fetch(url, opts?)', ret: '{ status, headers, text }', desc: 'http(s) only · 10s timeout · 5 MB cap · 20 calls/run.', snip: 'const res = ukolio.fetch(url, { method: "POST", body });' },
-    { sig: 'ukolio.context', ret: '{ triggerType, event, scheduledAt }', desc: 'Why this run fired; event payload for Event triggers.', snip: 'if (ukolio.context.triggerType === "Event") { }' },
+    { sig: 'kytario.log(...args)', ret: 'void', desc: 'Append a line to the run log shown below.', snip: 'kytario.log("done", count);' },
+    { sig: 'kytario.fetch(url, opts?)', ret: '{ status, headers, text }', desc: 'http(s) only · 10s timeout · 5 MB cap · 20 calls/run.', snip: 'const res = kytario.fetch(url, { method: "POST", body });' },
+    { sig: 'kytario.context', ret: '{ triggerType, event, scheduledAt }', desc: 'Why this run fired; event payload for Event triggers.', snip: 'if (kytario.context.triggerType === "Event") { }' },
   ]},
 ];
 
@@ -82,24 +82,24 @@ const DIGEST_SRC =
 `// Weekly stale-task digest → Slack
 // Trigger: Scheduled · 0 9 * * 1  (every Monday 09:00)
 
-const webhook = ukolio.vars.get("SLACK_WEBHOOK_URL");
-const open = ukolio.tasks.list({ onlyActive: true, limit: 200 });
+const webhook = kytario.vars.get("SLACK_WEBHOOK_URL");
+const open = kytario.tasks.list({ onlyActive: true, limit: 200 });
 
 const cutoff = Date.now() - 14 * 24 * 60 * 60 * 1000;
 const stale = open.filter((t) => new Date(t.createdAt).getTime() < cutoff);
 
-ukolio.log(\`Scanned \${open.length} open tasks · \${stale.length} stale\`);
+kytario.log(\`Scanned \${open.length} open tasks · \${stale.length} stale\`);
 
 if (stale.length > 0 && webhook) {
   const lines = stale.map((t) => \`• \${t.code} — \${t.name}\`).join("\\n");
-  const res = ukolio.fetch(webhook, {
+  const res = kytario.fetch(webhook, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ text: \`*\${stale.length} stale tasks*\\n\${lines}\` }),
   });
-  ukolio.log(\`Slack webhook → \${res.status}\`);
+  kytario.log(\`Slack webhook → \${res.status}\`);
 } else {
-  ukolio.log("Nothing to report.");
+  kytario.log("Nothing to report.");
 }
 `;
 
@@ -169,7 +169,7 @@ function CodeEditor({ value, onChange, errorLine, dark }) {
 }
 
 function ApiPanel({ onInsert }) {
-  const [open, setOpen] = useState('ukolio.tasks.list(filters?)');
+  const [open, setOpen] = useState('kytario.tasks.list(filters?)');
   return <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
     <div style={{ flex: 1, overflow: 'auto', padding: '6px 0' }}>
       {API_REF.map((g) => <div key={g.group} style={{ padding: '6px 0' }}>
@@ -215,7 +215,7 @@ function TriggerPanel({ trigger, onChange }) {
       {trigger.type === 'Event' && <div>
         <div className="uk-label" style={{ marginBottom: 8 }}>Run when… <span style={{ color: 'var(--uk-fg-subtle)', fontWeight: 400 }}>({trigger.events.length} selected)</span></div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>{EVENT_TYPES.map((ev) => { const on = trigger.events.includes(ev); return <label key={ev} className="uk-row uk-row--interactive" style={{ borderRadius: 6, padding: '7px 8px', gap: 9, minHeight: 0, background: on ? 'var(--uk-accent-soft)' : undefined }}><span className="uk-check"><input type="checkbox" checked={on} onChange={() => tog(ev)}/><span className="uk-check-box"/></span><code className="uk-mono" style={{ fontSize: 12, color: on ? 'var(--uk-accent)' : 'var(--uk-fg)' }}>{ev}</code></label>; })}</div>
-        <div style={{ display: 'flex', gap: 7, marginTop: 10, fontSize: 11, color: 'var(--uk-fg-subtle)', lineHeight: 1.5 }}><SIcon.Sparkle style={{ marginTop: 1, flexShrink: 0 }}/>The event payload is available as <code className="uk-mono" style={{ background: 'var(--uk-surface-2)', padding: '0 3px', borderRadius: 3 }}>ukolio.context.event</code>.</div>
+        <div style={{ display: 'flex', gap: 7, marginTop: 10, fontSize: 11, color: 'var(--uk-fg-subtle)', lineHeight: 1.5 }}><SIcon.Sparkle style={{ marginTop: 1, flexShrink: 0 }}/>The event payload is available as <code className="uk-mono" style={{ background: 'var(--uk-surface-2)', padding: '0 3px', borderRadius: 3 }}>kytario.context.event</code>.</div>
       </div>}
     </div>
   </div>;
@@ -271,7 +271,7 @@ function ScriptsListBoard() {
       </div>
       <div className="uk-alert" style={{ marginBottom: 16, alignItems: 'flex-start', background: 'var(--uk-surface-2)', borderColor: 'var(--uk-border)' }}>
         <SIcon.Code style={{ color: 'var(--uk-accent)', marginTop: 1 }}/>
-        <div style={{ fontSize: 12.5, color: 'var(--uk-fg-muted)', lineHeight: 1.55 }}>Scripts run as <strong style={{ color: 'var(--uk-fg)' }}>you</strong> inside a hardened V8 sandbox — {CAPS.timeMs / 1000}s CPU, {CAPS.memMb} MB, no filesystem. Calls to the <code className="uk-mono" style={{ background: 'var(--uk-surface)', padding: '0 4px', borderRadius: 3 }}>ukolio</code> API are scoped to this workspace. Admins only.</div>
+        <div style={{ fontSize: 12.5, color: 'var(--uk-fg-muted)', lineHeight: 1.55 }}>Scripts run as <strong style={{ color: 'var(--uk-fg)' }}>you</strong> inside a hardened V8 sandbox — {CAPS.timeMs / 1000}s CPU, {CAPS.memMb} MB, no filesystem. Calls to the <code className="uk-mono" style={{ background: 'var(--uk-surface)', padding: '0 4px', borderRadius: 3 }}>kytario</code> API are scoped to this workspace. Admins only.</div>
       </div>
       <div className="uk-card" style={{ overflow: 'hidden' }}><table className="uk-table">
         <thead><tr><th>Script</th><th style={{ width: 200 }}>Trigger</th><th style={{ width: 90 }}>Active</th><th style={{ width: 150 }}>Last run</th><th style={{ width: 70 }}>Runs</th><th style={{ width: 110 }}></th></tr></thead>
@@ -364,7 +364,7 @@ function VariablesBoard() {
     <div style={{ flex: 1, overflow: 'auto' }}><div style={{ maxWidth: 880, margin: '0 auto', width: '100%', padding: '24px 24px 40px' }}>
       <button className="uk-btn uk-btn--ghost uk-btn--sm" style={{ padding: '0 8px', marginBottom: 12, color: 'var(--uk-fg-muted)' }}><SIcon.Back/>Back to scripts</button>
       <h1 className="uk-h2" style={{ marginBottom: 3 }}>Script variables</h1>
-      <p className="uk-caption" style={{ maxWidth: 560, marginBottom: 18 }}>Workspace-scoped key/value store, read from scripts via <code className="uk-mono" style={{ background: 'var(--uk-surface-2)', padding: '0 4px', borderRadius: 3 }}>ukolio.vars.get(key)</code>. Secrets are encrypted at rest (AES-256-GCM) and redacted from run logs.</p>
+      <p className="uk-caption" style={{ maxWidth: 560, marginBottom: 18 }}>Workspace-scoped key/value store, read from scripts via <code className="uk-mono" style={{ background: 'var(--uk-surface-2)', padding: '0 4px', borderRadius: 3 }}>kytario.vars.get(key)</code>. Secrets are encrypted at rest (AES-256-GCM) and redacted from run logs.</p>
       <div className="uk-card" style={{ padding: 14, marginBottom: 16 }}><div style={{ display: 'flex', gap: 10, alignItems: 'flex-end', flexWrap: 'wrap' }}>
         <div className="uk-field" style={{ flex: '1 1 200px' }}><label className="uk-label">Key</label><input className="uk-input uk-mono" placeholder="SLACK_WEBHOOK_URL" value={key} onChange={(e) => setKey(e.target.value)} style={{ fontSize: 12.5 }}/></div>
         <div className="uk-field" style={{ flex: '2 1 280px' }}><label className="uk-label">Value</label><input className="uk-input" type={secret ? 'password' : 'text'} placeholder="value" value={val} onChange={(e) => setVal(e.target.value)}/></div>

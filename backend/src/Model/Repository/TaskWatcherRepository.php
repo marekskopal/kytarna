@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Model\Repository;
+namespace Kytario\Model\Repository;
 
 use Iterator;
 use MarekSkopal\ORM\Repository\AbstractRepository;
-use Ukolio\Model\Entity\TaskWatcher;
+use Kytario\Model\Entity\TaskWatcher;
 
 /** @extends AbstractRepository<TaskWatcher> */
 final class TaskWatcherRepository extends AbstractRepository

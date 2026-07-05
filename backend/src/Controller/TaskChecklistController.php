@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Controller;
+namespace Kytario\Controller;
 
 use Laminas\Diactoros\Response\JsonResponse;
 use MarekSkopal\Router\Attribute\RouteDelete;
@@ -12,24 +12,24 @@ use MarekSkopal\Router\Attribute\RoutePut;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
-use Ukolio\Dto\TaskChecklistItemCreateDto;
-use Ukolio\Dto\TaskChecklistItemDto;
-use Ukolio\Dto\TaskChecklistItemMoveDto;
-use Ukolio\Dto\TaskChecklistItemUpdateDto;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\TaskChecklistItem;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Repository\UserRepository;
-use Ukolio\Response\ErrorResponse;
-use Ukolio\Response\NotAuthorizedResponse;
-use Ukolio\Response\NotFoundResponse;
-use Ukolio\Response\OkResponse;
-use Ukolio\Route\Routes;
-use Ukolio\Service\Auth\PermissionCheckerInterface;
-use Ukolio\Service\Provider\TaskChecklistProviderInterface;
-use Ukolio\Service\Provider\TaskCodeResolverInterface;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
-use Ukolio\Service\Request\RequestServiceInterface;
+use Kytario\Dto\TaskChecklistItemCreateDto;
+use Kytario\Dto\TaskChecklistItemDto;
+use Kytario\Dto\TaskChecklistItemMoveDto;
+use Kytario\Dto\TaskChecklistItemUpdateDto;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\TaskChecklistItem;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Repository\UserRepository;
+use Kytario\Response\ErrorResponse;
+use Kytario\Response\NotAuthorizedResponse;
+use Kytario\Response\NotFoundResponse;
+use Kytario\Response\OkResponse;
+use Kytario\Route\Routes;
+use Kytario\Service\Auth\PermissionCheckerInterface;
+use Kytario\Service\Provider\TaskChecklistProviderInterface;
+use Kytario\Service\Provider\TaskCodeResolverInterface;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Service\Request\RequestServiceInterface;
 
 final readonly class TaskChecklistController
 {

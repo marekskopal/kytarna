@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
-use Ukolio\Model\Entity\Status;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Repository\TaskRepository;
+use Kytario\Model\Entity\Status;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Repository\TaskRepository;
 
 /**
  * Encapsulates the per-status position bookkeeping for tasks.

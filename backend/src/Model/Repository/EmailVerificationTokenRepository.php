@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Model\Repository;
+namespace Kytario\Model\Repository;
 
 use MarekSkopal\ORM\Repository\AbstractRepository;
-use Ukolio\Model\Entity\EmailVerificationToken;
+use Kytario\Model\Entity\EmailVerificationToken;
 
 /** @extends AbstractRepository<EmailVerificationToken> */
 final class EmailVerificationTokenRepository extends AbstractRepository

@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Service\Provider;
+namespace Kytario\Tests\Service\Provider;
 
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\CoversClass;
-use Ukolio\Model\Entity\Enum\RecurrenceCadenceEnum;
-use Ukolio\Model\Entity\Enum\RecurrenceEndTypeEnum;
-use Ukolio\Model\Entity\Enum\StatusTypeEnum;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Repository\StatusRepository;
-use Ukolio\Model\Repository\WorkflowRepository;
-use Ukolio\Service\Provider\TaskChecklistProviderInterface;
-use Ukolio\Service\Provider\TaskProviderInterface;
-use Ukolio\Service\Provider\TaskRecurrenceProvider;
-use Ukolio\Service\Provider\TaskRecurrenceProviderInterface;
-use Ukolio\Service\Recurrence\RecurrenceConfig;
-use Ukolio\Tests\Support\Fixture;
-use Ukolio\Tests\Support\IntegrationTestCase;
+use Kytario\Model\Entity\Enum\RecurrenceCadenceEnum;
+use Kytario\Model\Entity\Enum\RecurrenceEndTypeEnum;
+use Kytario\Model\Entity\Enum\StatusTypeEnum;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Repository\StatusRepository;
+use Kytario\Model\Repository\WorkflowRepository;
+use Kytario\Service\Provider\TaskChecklistProviderInterface;
+use Kytario\Service\Provider\TaskProviderInterface;
+use Kytario\Service\Provider\TaskRecurrenceProvider;
+use Kytario\Service\Provider\TaskRecurrenceProviderInterface;
+use Kytario\Service\Recurrence\RecurrenceConfig;
+use Kytario\Tests\Support\Fixture;
+use Kytario\Tests\Support\IntegrationTestCase;
 
 #[CoversClass(TaskRecurrenceProvider::class)]
 final class TaskRecurrenceProviderTest extends IntegrationTestCase

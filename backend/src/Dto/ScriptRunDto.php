@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Dto;
+namespace Kytario\Dto;
 
-use Ukolio\Model\Entity\ScriptRun;
+use Kytario\Model\Entity\ScriptRun;
 use const DATE_ATOM;
 
 final readonly class ScriptRunDto

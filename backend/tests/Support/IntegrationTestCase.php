@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Support;
+namespace Kytario\Tests\Support;
 
 use Laminas\Diactoros\ServerRequest;
 use Laminas\Diactoros\Stream;
@@ -12,8 +12,8 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Ukolio\App\Application;
-use Ukolio\Model\Entity\User;
+use Kytario\App\Application;
+use Kytario\Model\Entity\User;
 
 abstract class IntegrationTestCase extends TestCase
 {

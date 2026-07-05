@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Service\Realtime;
+namespace Kytario\Tests\Service\Realtime;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use PHPUnit\Framework\Attributes\CoversClass;
 use stdClass;
-use Ukolio\Model\Entity\Enum\WorkspaceRoleEnum;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
-use Ukolio\Service\Realtime\MercureCookieIssuer;
-use Ukolio\Service\Realtime\RealtimePublisher;
-use Ukolio\Tests\Support\Fixture;
-use Ukolio\Tests\Support\IntegrationTestCase;
+use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Service\Realtime\MercureCookieIssuer;
+use Kytario\Service\Realtime\RealtimePublisher;
+use Kytario\Tests\Support\Fixture;
+use Kytario\Tests\Support\IntegrationTestCase;
 
 #[CoversClass(MercureCookieIssuer::class)]
 final class MercureCookieIssuerTest extends IntegrationTestCase

@@ -2,29 +2,29 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
 use Iterator;
 use RuntimeException;
-use Ukolio\Model\Entity\Enum\EventTypeEnum;
-use Ukolio\Model\Entity\Priority;
-use Ukolio\Model\Entity\Project;
-use Ukolio\Model\Entity\Status;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Model\Repository\Enum\ArchivedFilterEnum;
-use Ukolio\Model\Repository\Enum\OrderDirectionEnum;
-use Ukolio\Model\Repository\Enum\SubtaskFilterEnum;
-use Ukolio\Model\Repository\Enum\TaskOrderByEnum;
-use Ukolio\Model\Repository\TaskRecurrenceRepository;
-use Ukolio\Model\Repository\TaskRelationRepository;
-use Ukolio\Model\Repository\TaskRepository;
-use Ukolio\Model\Repository\TaskTagRepository;
-use Ukolio\Service\Actor\ActorContextInterface;
-use Ukolio\Service\Search\SearchIndexer;
-use Ukolio\Validator\TextFieldValidator;
+use Kytario\Model\Entity\Enum\EventTypeEnum;
+use Kytario\Model\Entity\Priority;
+use Kytario\Model\Entity\Project;
+use Kytario\Model\Entity\Status;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Model\Repository\Enum\ArchivedFilterEnum;
+use Kytario\Model\Repository\Enum\OrderDirectionEnum;
+use Kytario\Model\Repository\Enum\SubtaskFilterEnum;
+use Kytario\Model\Repository\Enum\TaskOrderByEnum;
+use Kytario\Model\Repository\TaskRecurrenceRepository;
+use Kytario\Model\Repository\TaskRelationRepository;
+use Kytario\Model\Repository\TaskRepository;
+use Kytario\Model\Repository\TaskTagRepository;
+use Kytario\Service\Actor\ActorContextInterface;
+use Kytario\Service\Search\SearchIndexer;
+use Kytario\Validator\TextFieldValidator;
 
 final readonly class TaskProvider implements TaskProviderInterface
 {

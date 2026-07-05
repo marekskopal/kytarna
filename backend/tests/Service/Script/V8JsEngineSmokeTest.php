@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Service\Script;
+namespace Kytario\Tests\Service\Script;
 
 use PHPUnit\Framework\Attributes\CoversNothing;
-use Ukolio\Model\Entity\Enum\ScriptRunStatusEnum;
-use Ukolio\Model\Entity\Enum\ScriptTriggerEnum;
-use Ukolio\Service\Script\Engine\ScriptEngineInterface;
-use Ukolio\Service\Script\Host\ScriptHostApiFactory;
-use Ukolio\Service\Script\Host\ScriptRunContext;
-use Ukolio\Tests\Support\AppHarness;
-use Ukolio\Tests\Support\Fixture;
-use Ukolio\Tests\Support\IntegrationTestCase;
+use Kytario\Model\Entity\Enum\ScriptRunStatusEnum;
+use Kytario\Model\Entity\Enum\ScriptTriggerEnum;
+use Kytario\Service\Script\Engine\ScriptEngineInterface;
+use Kytario\Service\Script\Host\ScriptHostApiFactory;
+use Kytario\Service\Script\Host\ScriptRunContext;
+use Kytario\Tests\Support\AppHarness;
+use Kytario\Tests\Support\Fixture;
+use Kytario\Tests\Support\IntegrationTestCase;
 
 /**
  * Live execution smoke test for the V8 sandbox. Only runs where ext-v8js is loaded (the
@@ -39,7 +39,7 @@ final class V8JsEngineSmokeTest extends IntegrationTestCase
 		$context = new ScriptRunContext(owner: $user, workspace: $workspace, triggerType: ScriptTriggerEnum::Manual);
 		$hostApi = $factory->create($context);
 
-		$result = $engine->execute('ukolio.log("hi from v8");', $hostApi, 5000, 67108864);
+		$result = $engine->execute('kytario.log("hi from v8");', $hostApi, 5000, 67108864);
 
 		self::assertSame(ScriptRunStatusEnum::Success, $result->status, $result->error ?? '');
 		self::assertStringContainsString('hi from v8', $context->getLogs());

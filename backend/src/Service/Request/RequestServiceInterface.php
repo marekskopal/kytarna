@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Request;
+namespace Kytario\Service\Request;
 
 use Psr\Http\Message\ServerRequestInterface;
-use Ukolio\Dto\ArrayFactoryInterface;
-use Ukolio\Model\Entity\User;
+use Kytario\Dto\ArrayFactoryInterface;
+use Kytario\Model\Entity\User;
 
 interface RequestServiceInterface
 {

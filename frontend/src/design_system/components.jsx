@@ -1,5 +1,5 @@
 // ============================================================
-// Ukolio Design System — Components
+// Kytario Design System — Components
 // Buttons, forms, badges, alerts, lists, tables, task cards
 // ============================================================
 
@@ -115,7 +115,7 @@ function FormsBoard() {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', columnGap: 28, rowGap: 16 }}>
         <div className="uk-field">
           <label className="uk-label">Email</label>
-          <input className="uk-input" defaultValue="marek@ukolio.com" />
+          <input className="uk-input" defaultValue="marek@kytario.com" />
           <span className="uk-hint">Used for invitations and notifications.</span>
         </div>
 
@@ -289,7 +289,7 @@ function BadgesBoard() {
           <div style={{ paddingTop: 1 }}><Icon.Check style={{ color: '#16794a' }}/></div>
           <div>
             <div className="uk-alert-title">Invitation sent</div>
-            <div className="uk-alert-body">jakub@ukolio.com will get an email shortly.</div>
+            <div className="uk-alert-body">jakub@kytario.com will get an email shortly.</div>
           </div>
         </div>
         <div className="uk-alert uk-alert--warn">
@@ -370,9 +370,9 @@ function ListsBoard() {
           <div className="uk-card" style={{ overflow: 'hidden' }}>
             <div className="uk-list">
               {[
-                ['MS','Marek Skopal','marek@ukolio.com','Owner','#fbe5d6','#a35c00'],
-                ['JK','Jakub Kostka','jakub@ukolio.com','Admin','#dbeaff','#1e58b6'],
-                ['EP','Eva Pokorna','eva@ukolio.com','Member','#dcefe2','#16794a'],
+                ['MS','Marek Skopal','marek@kytario.com','Owner','#fbe5d6','#a35c00'],
+                ['JK','Jakub Kostka','jakub@kytario.com','Admin','#dbeaff','#1e58b6'],
+                ['EP','Eva Pokorna','eva@kytario.com','Member','#dcefe2','#16794a'],
               ].map(([initials, name, email, role, bg, fg]) => (
                 <div key={email} className="uk-row uk-row--interactive">
                   <span className="uk-avatar" style={{ background: bg, color: fg }}>{initials}</span>

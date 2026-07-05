@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Validator;
+namespace Kytario\Validator;
 
 final readonly class PasswordValidator
 {

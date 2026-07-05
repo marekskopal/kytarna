@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Middleware;
+namespace Kytario\Middleware;
 
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
@@ -12,11 +12,11 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use stdClass;
-use Ukolio\Middleware\Exception\NotAuthorizedException;
-use Ukolio\Route\Routes;
-use Ukolio\Service\Authentication\AuthenticationServiceInterface;
-use Ukolio\Service\Provider\UserProviderInterface;
-use Ukolio\Service\Realtime\RealtimeOriginContextInterface;
+use Kytario\Middleware\Exception\NotAuthorizedException;
+use Kytario\Route\Routes;
+use Kytario\Service\Authentication\AuthenticationServiceInterface;
+use Kytario\Service\Provider\UserProviderInterface;
+use Kytario\Service\Realtime\RealtimeOriginContextInterface;
 
 final readonly class AuthorizationMiddleware implements MiddlewareInterface
 {

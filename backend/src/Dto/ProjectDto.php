@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Dto;
+namespace Kytario\Dto;
 
-use Ukolio\Model\Entity\Project;
+use Kytario\Model\Entity\Project;
 use const DATE_ATOM;
 
 final readonly class ProjectDto

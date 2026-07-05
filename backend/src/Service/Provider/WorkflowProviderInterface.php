@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
 use Iterator;
-use Ukolio\Model\Entity\Project;
-use Ukolio\Model\Entity\Workflow;
-use Ukolio\Model\Entity\Workspace;
+use Kytario\Model\Entity\Project;
+use Kytario\Model\Entity\Workflow;
+use Kytario\Model\Entity\Workspace;
 
 interface WorkflowProviderInterface
 {

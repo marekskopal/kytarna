@@ -3,7 +3,7 @@
     "version": 1,
     "newProjectRoot": "projects",
     "projects": {
-        "ukolio": {
+        "kytario": {
             "projectType": "application",
             "schematics": {
                 "@schematics/angular:component": {
@@ -19,7 +19,7 @@
                 "build": {
                     "builder": "@angular/build:application",
                     "options": {
-                        "outputPath": "dist/ukolio",
+                        "outputPath": "dist/kytario",
                         "index": "src/index.html",
                         "browser": "src/main.ts",
                         "polyfills": ["zone.js"],
@@ -59,8 +59,8 @@
                 "serve": {
                     "builder": "@angular/build:dev-server",
                     "configurations": {
-                        "production": {"buildTarget": "ukolio:build:production"},
-                        "development": {"buildTarget": "ukolio:build:development"}
+                        "production": {"buildTarget": "kytario:build:production"},
+                        "development": {"buildTarget": "kytario:build:development"}
                     },
                     "defaultConfiguration": "development"
                 },

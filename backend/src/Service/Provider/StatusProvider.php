@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
 use Iterator;
-use Ukolio\Model\Entity\Enum\StatusTypeEnum;
-use Ukolio\Model\Entity\Status;
-use Ukolio\Model\Entity\Workflow;
-use Ukolio\Model\Repository\StatusRepository;
+use Kytario\Model\Entity\Enum\StatusTypeEnum;
+use Kytario\Model\Entity\Status;
+use Kytario\Model\Entity\Workflow;
+use Kytario\Model\Repository\StatusRepository;
 
 final readonly class StatusProvider implements StatusProviderInterface
 {

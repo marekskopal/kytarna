@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Script\Engine;
+namespace Kytario\Service\Script\Engine;
 
 use Throwable;
 use V8Js;
@@ -12,7 +12,7 @@ use V8JsTimeLimitException;
 
 /**
  * Sandbox backed by Google V8 via ext-v8js. Each call spins up a fresh V8Js instance (isolate),
- * exposes the host API as the global `ukolio`, and runs the source under hard time/memory limits.
+ * exposes the host API as the global `kytario`, and runs the source under hard time/memory limits.
  *
  * The extension is only loaded in the dedicated script-worker container; everywhere else
  * isAvailable() returns false and execute() refuses to run.
@@ -20,11 +20,11 @@ use V8JsTimeLimitException;
 final readonly class V8JsScriptEngine implements ScriptEngineInterface
 {
 	// V8Js exposes properties assigned on the instance (`$v8->api = …`) under a single global object
-	// named here. We expose the host API as `host.api` and alias it to `ukolio` so user code uses the
+	// named here. We expose the host API as `host.api` and alias it to `kytario` so user code uses the
 	// documented name. (This build's constructor is (object_name, variables, snapshot_blob) and does
 	// not surface the `variables` map, so property assignment is the portable mechanism.)
 	private const string GlobalObject = 'host';
-	private const string Prelude = 'var ukolio = host.api;';
+	private const string Prelude = 'var kytario = host.api;';
 
 	public function isAvailable(): bool
 	{

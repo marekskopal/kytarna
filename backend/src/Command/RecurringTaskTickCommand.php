@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Command;
+namespace Kytario\Command;
 
 use DateTimeImmutable;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Ukolio\App\ApplicationFactory;
-use Ukolio\Dto\RecurringTaskSpawnQueueDto;
-use Ukolio\Model\Repository\TaskRecurrenceRepository;
-use Ukolio\Service\Cache\CacheFactory;
-use Ukolio\Service\Queue\Enum\QueueEnum;
-use Ukolio\Service\Queue\QueuePublisher;
+use Kytario\App\ApplicationFactory;
+use Kytario\Dto\RecurringTaskSpawnQueueDto;
+use Kytario\Model\Repository\TaskRecurrenceRepository;
+use Kytario\Service\Cache\CacheFactory;
+use Kytario\Service\Queue\Enum\QueueEnum;
+use Kytario\Service\Queue\QueuePublisher;
 use const DATE_ATOM;
 
 /**

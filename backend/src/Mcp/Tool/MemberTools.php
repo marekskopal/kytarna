@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Mcp\Tool;
+namespace Kytario\Mcp\Tool;
 
 use DateTimeImmutable;
 use Mcp\Capability\Attribute\McpTool;
 use RuntimeException;
-use Ukolio\Mcp\Dto\McpInvitationDto;
-use Ukolio\Mcp\Dto\McpMemberDto;
-use Ukolio\Mcp\Dto\McpMemberListDto;
-use Ukolio\Mcp\McpUserContextInterface;
-use Ukolio\Model\Entity\Enum\WorkspaceRoleEnum;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Model\Repository\InvitationRepository;
-use Ukolio\Service\Auth\PermissionCheckerInterface;
-use Ukolio\Service\Authentication\RateLimitConfig;
-use Ukolio\Service\Provider\InvitationProviderInterface;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Mcp\Dto\McpInvitationDto;
+use Kytario\Mcp\Dto\McpMemberDto;
+use Kytario\Mcp\Dto\McpMemberListDto;
+use Kytario\Mcp\McpUserContextInterface;
+use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Model\Repository\InvitationRepository;
+use Kytario\Service\Auth\PermissionCheckerInterface;
+use Kytario\Service\Authentication\RateLimitConfig;
+use Kytario\Service\Provider\InvitationProviderInterface;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
 
 final readonly class MemberTools
 {

@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Script;
+namespace Kytario\Service\Script;
 
 use DateTimeImmutable;
 use Iterator;
 use RuntimeException;
-use Ukolio\Model\Entity\Enum\EventTypeEnum;
-use Ukolio\Model\Entity\Enum\ScriptTriggerEnum;
-use Ukolio\Model\Entity\Script;
-use Ukolio\Model\Entity\ScriptRun;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Model\Repository\ScriptRepository;
-use Ukolio\Model\Repository\ScriptRunRepository;
-use Ukolio\Service\Provider\EventProviderInterface;
-use Ukolio\Service\Script\Trigger\CronEvaluatorInterface;
+use Kytario\Model\Entity\Enum\EventTypeEnum;
+use Kytario\Model\Entity\Enum\ScriptTriggerEnum;
+use Kytario\Model\Entity\Script;
+use Kytario\Model\Entity\ScriptRun;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Model\Repository\ScriptRepository;
+use Kytario\Model\Repository\ScriptRunRepository;
+use Kytario\Service\Provider\EventProviderInterface;
+use Kytario\Service\Script\Trigger\CronEvaluatorInterface;
 
 final readonly class ScriptProvider implements ScriptProviderInterface
 {

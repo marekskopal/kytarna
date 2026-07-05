@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Script\Trigger;
+namespace Kytario\Service\Script\Trigger;
 
 use DateTimeImmutable;
 

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Model\Repository;
+namespace Kytario\Model\Repository;
 
 use Iterator;
 use MarekSkopal\ORM\Repository\AbstractRepository;
-use Ukolio\Model\Entity\Status;
+use Kytario\Model\Entity\Status;
 
 /** @extends AbstractRepository<Status> */
 final class StatusRepository extends AbstractRepository

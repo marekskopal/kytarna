@@ -2,30 +2,30 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Controller;
+namespace Kytario\Controller;
 
 use Laminas\Diactoros\Response\JsonResponse;
 use MarekSkopal\Router\Attribute\RouteGet;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Ukolio\Dto\BoardDto;
-use Ukolio\Dto\ProjectDto;
-use Ukolio\Dto\StatusDto;
-use Ukolio\Dto\TaskDto;
-use Ukolio\Dto\WorkflowDto;
-use Ukolio\Model\Entity\Status;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Response\NotFoundResponse;
-use Ukolio\Route\Routes;
-use Ukolio\Service\Provider\ProjectProviderInterface;
-use Ukolio\Service\Provider\StatusProviderInterface;
-use Ukolio\Service\Provider\SubtaskProviderInterface;
-use Ukolio\Service\Provider\TaskChecklistProviderInterface;
-use Ukolio\Service\Provider\TaskProviderInterface;
-use Ukolio\Service\Provider\TaskTagProviderInterface;
-use Ukolio\Service\Provider\WorkflowProviderInterface;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
-use Ukolio\Service\Request\RequestServiceInterface;
+use Kytario\Dto\BoardDto;
+use Kytario\Dto\ProjectDto;
+use Kytario\Dto\StatusDto;
+use Kytario\Dto\TaskDto;
+use Kytario\Dto\WorkflowDto;
+use Kytario\Model\Entity\Status;
+use Kytario\Model\Entity\Task;
+use Kytario\Response\NotFoundResponse;
+use Kytario\Route\Routes;
+use Kytario\Service\Provider\ProjectProviderInterface;
+use Kytario\Service\Provider\StatusProviderInterface;
+use Kytario\Service\Provider\SubtaskProviderInterface;
+use Kytario\Service\Provider\TaskChecklistProviderInterface;
+use Kytario\Service\Provider\TaskProviderInterface;
+use Kytario\Service\Provider\TaskTagProviderInterface;
+use Kytario\Service\Provider\WorkflowProviderInterface;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Service\Request\RequestServiceInterface;
 
 final readonly class BoardController
 {

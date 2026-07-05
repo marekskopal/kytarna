@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Command;
+namespace Kytario\Command;
 
 use DateTimeImmutable;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Ukolio\App\ApplicationFactory;
-use Ukolio\Model\Entity\Enum\NotificationTypeEnum;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Repository\TaskRepository;
-use Ukolio\Service\Notification\NotificationDispatcherInterface;
-use Ukolio\Service\Provider\NotificationProviderInterface;
-use Ukolio\Service\Provider\TaskWatcherProviderInterface;
+use Kytario\App\ApplicationFactory;
+use Kytario\Model\Entity\Enum\NotificationTypeEnum;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Repository\TaskRepository;
+use Kytario\Service\Notification\NotificationDispatcherInterface;
+use Kytario\Service\Provider\NotificationProviderInterface;
+use Kytario\Service\Provider\TaskWatcherProviderInterface;
 use const DATE_ATOM;
 
 /**

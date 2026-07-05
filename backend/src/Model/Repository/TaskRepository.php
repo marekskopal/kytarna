@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Model\Repository;
+namespace Kytario\Model\Repository;
 
 use DateTimeImmutable;
 use EmptyIterator;
@@ -10,11 +10,11 @@ use Iterator;
 use MarekSkopal\ORM\Query\Expression\RawExpression;
 use MarekSkopal\ORM\Query\Select;
 use MarekSkopal\ORM\Repository\AbstractRepository;
-use Ukolio\Model\Entity\Enum\StatusTypeEnum;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Repository\Enum\ArchivedFilterEnum;
-use Ukolio\Model\Repository\Enum\OrderDirectionEnum;
-use Ukolio\Model\Repository\Enum\TaskOrderByEnum;
+use Kytario\Model\Entity\Enum\StatusTypeEnum;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Repository\Enum\ArchivedFilterEnum;
+use Kytario\Model\Repository\Enum\OrderDirectionEnum;
+use Kytario\Model\Repository\Enum\TaskOrderByEnum;
 
 /** @extends AbstractRepository<Task> */
 final class TaskRepository extends AbstractRepository

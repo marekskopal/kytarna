@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Service\Translator;
+namespace Kytario\Tests\Service\Translator;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Ukolio\Model\Entity\Enum\LocaleEnum;
-use Ukolio\Service\Translator\TranslatorService;
+use Kytario\Model\Entity\Enum\LocaleEnum;
+use Kytario\Service\Translator\TranslatorService;
 
 #[CoversClass(TranslatorService::class)]
 final class TranslatorServiceTest extends TestCase
@@ -16,7 +16,7 @@ final class TranslatorServiceTest extends TestCase
 
 	protected function setUp(): void
 	{
-		$this->dir = sys_get_temp_dir() . '/ukolio-translator-' . uniqid();
+		$this->dir = sys_get_temp_dir() . '/kytario-translator-' . uniqid();
 		mkdir($this->dir);
 		file_put_contents(
 			$this->dir . '/en.json',

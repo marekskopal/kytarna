@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Dto;
+namespace Kytario\Dto;
 
 use RuntimeException;
-use Ukolio\Service\Provider\Enum\BulkOpEnum;
+use Kytario\Service\Provider\Enum\BulkOpEnum;
 
 /** @implements ArrayFactoryInterface<array<string, mixed>> */
 final readonly class TaskBulkRequestDto implements ArrayFactoryInterface

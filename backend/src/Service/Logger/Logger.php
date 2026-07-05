@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Logger;
+namespace Kytario\Service\Logger;
 
 use Psr\Log\LoggerInterface;
 use Tracy\Bridges\Psr\TracyToPsrLoggerAdapter;

@@ -1,5 +1,5 @@
 // ============================================================
-// Ukolio Design System — Landing page (marketing)
+// Kytario Design System — Landing page (marketing)
 // Uses the same tokens & components as the app screens so it
 // reads as a coherent surface in the canvas.
 // ============================================================
@@ -40,7 +40,7 @@ function LandingTopBar() {
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
         <Mark size={24} />
-        <span style={{ fontWeight: 600, letterSpacing: '-0.02em', fontSize: 15 }}>ukolio</span>
+        <span style={{ fontWeight: 600, letterSpacing: '-0.02em', fontSize: 15 }}>kytario</span>
       </div>
 
       <nav style={{ display: 'flex', alignItems: 'center', gap: 22, marginLeft: 12 }}>
@@ -137,7 +137,7 @@ function Hero() {
           marginTop: 22, maxWidth: 620,
           fontSize: 17, lineHeight: 1.55, color: 'var(--uk-fg-muted)',
         }}>
-          Ukolio is a multi-tenant task manager built around the Model Context
+          Kytario is a multi-tenant task manager built around the Model Context
           Protocol. Claude, Cursor, ChatGPT — any MCP client — plans, creates,
           moves, and closes tasks alongside your team. You get the human
           overview. Agents get a proper API, not a scraped UI.
@@ -267,9 +267,9 @@ function Pillars() {
     <section style={{ padding: '72px 0', borderTop: '1px solid var(--uk-border)' }}>
       <div style={{ maxWidth: 1120, margin: '0 auto', padding: '0 28px' }}>
         <SectionHead
-          eyebrow="Why Ukolio"
+          eyebrow="Why Kytario"
           title="A task manager designed for humans and agents to share."
-          lead='Most tools bolt on an "AI assistant." Ukolio was designed the other way around — agents are first-class actors, with their own auth, their own audit trail, and tools shaped for them.'
+          lead='Most tools bolt on an "AI assistant." Kytario was designed the other way around — agents are first-class actors, with their own auth, their own audit trail, and tools shaped for them.'
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
           {items.map(it => (
@@ -300,7 +300,7 @@ function HowItWorks() {
     },
     {
       title: 'Add the MCP server to your client',
-      body: 'Drop in the Ukolio MCP URL. Your client discovers the OAuth endpoints, opens a browser tab for consent, and exchanges a PKCE-pinned code for a token — no shared secrets.',
+      body: 'Drop in the Kytario MCP URL. Your client discovers the OAuth endpoints, opens a browser tab for consent, and exchanges a PKCE-pinned code for a token — no shared secrets.',
     },
     {
       title: 'Let agents plan, create, and close',
@@ -318,7 +318,7 @@ function HowItWorks() {
         <SectionHead
           eyebrow="For agents"
           title="Connect your MCP client in under a minute."
-          lead="Point your client at the Ukolio MCP URL. Discovery, registration, and consent are handled automatically."
+          lead="Point your client at the Kytario MCP URL. Discovery, registration, and consent are handled automatically."
         />
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48, alignItems: 'start' }}>
@@ -363,8 +363,8 @@ function CodeBlock() {
       <C k="comment"># claude_desktop_config.json</C><br />
       {'{'}<br />
       {'  '}<C k="key">"mcpServers"</C>: {'{'}<br />
-      {'    '}<C k="key">"ukolio"</C>: {'{'}<br />
-      {'      '}<C k="key">"url"</C>: <C k="str">"https://app.ukolio.com/api/mcp"</C><br />
+      {'    '}<C k="key">"kytario"</C>: {'{'}<br />
+      {'      '}<C k="key">"url"</C>: <C k="str">"https://app.kytario.com/api/mcp"</C><br />
       {'    }'}<br />
       {'  }'}<br />
       {'}'}<br />
@@ -374,10 +374,10 @@ function CodeBlock() {
       &nbsp;&nbsp;Backend project. Mark anything mentioning<br />
       &nbsp;&nbsp;the migration as Urgent.<br />
       <br />
-      <C k="fn">→ ukolio.find_project_by_name("Backend")</C><br />
-      <C k="fn">→ ukolio.list_statuses(projectId)</C><br />
-      <C k="fn">→ ukolio.create_task × 12</C><br />
-      <C k="fn">→ ukolio.set_task_tags(["urgent"])</C>
+      <C k="fn">→ kytario.find_project_by_name("Backend")</C><br />
+      <C k="fn">→ kytario.list_statuses(projectId)</C><br />
+      <C k="fn">→ kytario.create_task × 12</C><br />
+      <C k="fn">→ kytario.set_task_tags(["urgent"])</C>
     </div>
   );
 }
@@ -413,7 +413,7 @@ function FeatureGrid() {
         <SectionHead
           eyebrow="Everything you'd expect"
           title="A complete task manager. Just one your tools can actually use."
-          lead="Ukolio isn't a minimal toy wrapped around an MCP server. It's a full Kanban with the structure real teams need — and every part of it is reachable from agents and humans alike."
+          lead="Kytario isn't a minimal toy wrapped around an MCP server. It's a full Kanban with the structure real teams need — and every part of it is reachable from agents and humans alike."
         />
 
         <div style={{
@@ -461,7 +461,7 @@ function Trust() {
         <SectionHead
           eyebrow="Built right"
           title="The boring details, done seriously."
-          lead="You're going to give agents write access to your team's work. Ukolio takes that seriously."
+          lead="You're going to give agents write access to your team's work. Kytario takes that seriously."
         />
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '18px 32px' }}>
@@ -532,7 +532,7 @@ function LandingFooter() {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <Mark size={20} />
-          <span style={{ fontWeight: 600, color: 'var(--uk-fg)', letterSpacing: '-0.015em' }}>ukolio</span>
+          <span style={{ fontWeight: 600, color: 'var(--uk-fg)', letterSpacing: '-0.015em' }}>kytario</span>
           <span style={{ marginLeft: 6 }}>© 2026</span>
         </div>
         <div style={{ display: 'flex', gap: 18 }}>

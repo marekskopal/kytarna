@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Mcp\Tool;
+namespace Kytario\Mcp\Tool;
 
 use Mcp\Capability\Attribute\McpTool;
 use RuntimeException;
-use Ukolio\Mcp\Dto\McpProjectDto;
-use Ukolio\Mcp\Dto\McpProjectListDto;
-use Ukolio\Mcp\McpUserContextInterface;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Service\Provider\ProjectProviderInterface;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Mcp\Dto\McpProjectDto;
+use Kytario\Mcp\Dto\McpProjectListDto;
+use Kytario\Mcp\McpUserContextInterface;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Service\Provider\ProjectProviderInterface;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
 
 final readonly class ProjectTools
 {
@@ -118,7 +118,7 @@ final readonly class ProjectTools
 	{
 		$workspace = $this->workspaceProvider->getCurrentWorkspace($this->userContext->getUser());
 		if ($workspace === null) {
-			throw new RuntimeException('No active workspace. Create one in the Ukolio app first.');
+			throw new RuntimeException('No active workspace. Create one in the Kytario app first.');
 		}
 
 		return $workspace;

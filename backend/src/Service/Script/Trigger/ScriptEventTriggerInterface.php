@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Script\Trigger;
+namespace Kytario\Service\Script\Trigger;
 
-use Ukolio\Model\Entity\Event;
+use Kytario\Model\Entity\Event;
 
 interface ScriptEventTriggerInterface
 {

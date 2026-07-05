@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Dto;
+namespace Kytario\Dto;
 
-use Ukolio\Model\Entity\Enum\FieldTypeEnum;
+use Kytario\Model\Entity\Enum\FieldTypeEnum;
 
 /** @implements ArrayFactoryInterface<array{name: string, type: string, required?: bool, defaultValue?: ?string, options?: ?array<string>}> */
 final readonly class FieldUpdateDto implements ArrayFactoryInterface

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Authentication;
+namespace Kytario\Service\Authentication;
 
 use DateTimeImmutable;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Repository\UserRepository;
-use Ukolio\Service\Authentication\Exception\AccountLockedException;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Repository\UserRepository;
+use Kytario\Service\Authentication\Exception\AccountLockedException;
 
 final readonly class LoginAttemptService
 {

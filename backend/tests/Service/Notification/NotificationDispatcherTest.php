@@ -2,29 +2,29 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Service\Notification;
+namespace Kytario\Tests\Service\Notification;
 
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\CoversClass;
-use Ukolio\Model\Entity\Enum\ActorTypeEnum;
-use Ukolio\Model\Entity\Enum\EventTypeEnum;
-use Ukolio\Model\Entity\Enum\NotificationTypeEnum;
-use Ukolio\Model\Entity\Enum\WorkspaceRoleEnum;
-use Ukolio\Model\Entity\Event;
-use Ukolio\Model\Entity\Notification;
-use Ukolio\Model\Entity\Project;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Model\Repository\StatusRepository;
-use Ukolio\Model\Repository\TaskRepository;
-use Ukolio\Model\Repository\WorkflowRepository;
-use Ukolio\Service\Notification\NotificationDispatcher;
-use Ukolio\Service\Notification\NotificationDispatcherInterface;
-use Ukolio\Service\Provider\NotificationProviderInterface;
-use Ukolio\Service\Provider\TaskWatcherProviderInterface;
-use Ukolio\Tests\Support\Fixture;
-use Ukolio\Tests\Support\IntegrationTestCase;
+use Kytario\Model\Entity\Enum\ActorTypeEnum;
+use Kytario\Model\Entity\Enum\EventTypeEnum;
+use Kytario\Model\Entity\Enum\NotificationTypeEnum;
+use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytario\Model\Entity\Event;
+use Kytario\Model\Entity\Notification;
+use Kytario\Model\Entity\Project;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Model\Repository\StatusRepository;
+use Kytario\Model\Repository\TaskRepository;
+use Kytario\Model\Repository\WorkflowRepository;
+use Kytario\Service\Notification\NotificationDispatcher;
+use Kytario\Service\Notification\NotificationDispatcherInterface;
+use Kytario\Service\Provider\NotificationProviderInterface;
+use Kytario\Service\Provider\TaskWatcherProviderInterface;
+use Kytario\Tests\Support\Fixture;
+use Kytario\Tests\Support\IntegrationTestCase;
 use const JSON_THROW_ON_ERROR;
 
 #[CoversClass(NotificationDispatcher::class)]

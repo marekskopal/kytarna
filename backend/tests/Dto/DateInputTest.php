@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Dto;
+namespace Kytario\Tests\Dto;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
-use Ukolio\Dto\DateInput;
+use Kytario\Dto\DateInput;
 
 #[CoversClass(DateInput::class)]
 final class DateInputTest extends TestCase

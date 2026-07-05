@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Model\Repository;
+namespace Kytario\Model\Repository;
 
 use EmptyIterator;
 use Iterator;
 use MarekSkopal\ORM\Repository\AbstractRepository;
-use Ukolio\Model\Entity\TaskChecklistItem;
+use Kytario\Model\Entity\TaskChecklistItem;
 
 /** @extends AbstractRepository<TaskChecklistItem> */
 final class TaskChecklistItemRepository extends AbstractRepository

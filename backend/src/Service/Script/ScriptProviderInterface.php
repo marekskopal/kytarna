@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Script;
+namespace Kytario\Service\Script;
 
 use Iterator;
-use Ukolio\Model\Entity\Enum\ScriptTriggerEnum;
-use Ukolio\Model\Entity\Script;
-use Ukolio\Model\Entity\ScriptRun;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Entity\Workspace;
+use Kytario\Model\Entity\Enum\ScriptTriggerEnum;
+use Kytario\Model\Entity\Script;
+use Kytario\Model\Entity\ScriptRun;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Entity\Workspace;
 
 interface ScriptProviderInterface
 {

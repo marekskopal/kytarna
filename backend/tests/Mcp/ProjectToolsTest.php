@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Mcp;
+namespace Kytario\Tests\Mcp;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use Ukolio\Mcp\McpUserContextInterface;
-use Ukolio\Mcp\Tool\ProjectTools;
-use Ukolio\Model\Entity\User;
-use Ukolio\Service\Actor\ActorContextInterface;
-use Ukolio\Tests\Support\AppHarness;
-use Ukolio\Tests\Support\Fixture;
-use Ukolio\Tests\Support\IntegrationTestCase;
+use Kytario\Mcp\McpUserContextInterface;
+use Kytario\Mcp\Tool\ProjectTools;
+use Kytario\Model\Entity\User;
+use Kytario\Service\Actor\ActorContextInterface;
+use Kytario\Tests\Support\AppHarness;
+use Kytario\Tests\Support\Fixture;
+use Kytario\Tests\Support\IntegrationTestCase;
 
 #[CoversClass(ProjectTools::class)]
 final class ProjectToolsTest extends IntegrationTestCase

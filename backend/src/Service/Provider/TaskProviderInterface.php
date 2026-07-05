@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
 use Iterator;
-use Ukolio\Model\Entity\Priority;
-use Ukolio\Model\Entity\Project;
-use Ukolio\Model\Entity\Status;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Model\Repository\Enum\ArchivedFilterEnum;
-use Ukolio\Model\Repository\Enum\OrderDirectionEnum;
-use Ukolio\Model\Repository\Enum\SubtaskFilterEnum;
-use Ukolio\Model\Repository\Enum\TaskOrderByEnum;
+use Kytario\Model\Entity\Priority;
+use Kytario\Model\Entity\Project;
+use Kytario\Model\Entity\Status;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Model\Repository\Enum\ArchivedFilterEnum;
+use Kytario\Model\Repository\Enum\OrderDirectionEnum;
+use Kytario\Model\Repository\Enum\SubtaskFilterEnum;
+use Kytario\Model\Repository\Enum\TaskOrderByEnum;
 
 interface TaskProviderInterface
 {

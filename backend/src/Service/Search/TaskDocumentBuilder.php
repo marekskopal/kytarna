@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Search;
+namespace Kytario\Service\Search;
 
-use Ukolio\Model\Entity\Enum\FieldTypeEnum;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Repository\TaskCommentRepository;
-use Ukolio\Model\Repository\TaskFieldValueRepository;
-use Ukolio\Model\Repository\TaskTagRepository;
+use Kytario\Model\Entity\Enum\FieldTypeEnum;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Repository\TaskCommentRepository;
+use Kytario\Model\Repository\TaskFieldValueRepository;
+use Kytario\Model\Repository\TaskTagRepository;
 
 final readonly class TaskDocumentBuilder
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Dto;
+namespace Kytario\Dto;
 
 /** @implements ArrayFactoryInterface<array{scriptId: int, triggerType: string, event?: array<string, mixed>|null, scheduledAt?: string|null}> */
 final readonly class ScriptRunQueueDto implements ArrayFactoryInterface

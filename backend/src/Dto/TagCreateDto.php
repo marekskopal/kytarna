@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Dto;
+namespace Kytario\Dto;
 
 /** @implements ArrayFactoryInterface<array{name: string, color: string}> */
 final readonly class TagCreateDto implements ArrayFactoryInterface

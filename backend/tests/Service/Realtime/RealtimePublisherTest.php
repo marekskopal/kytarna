@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Service\Realtime;
+namespace Kytario\Tests\Service\Realtime;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -10,9 +10,9 @@ use Psr\Log\NullLogger;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Jwt\TokenFactoryInterface;
 use Symfony\Component\Mercure\Update;
-use Ukolio\Model\Entity\Enum\EventTypeEnum;
-use Ukolio\Service\Realtime\RealtimeOriginContext;
-use Ukolio\Service\Realtime\RealtimePublisher;
+use Kytario\Model\Entity\Enum\EventTypeEnum;
+use Kytario\Service\Realtime\RealtimeOriginContext;
+use Kytario\Service\Realtime\RealtimePublisher;
 use const JSON_THROW_ON_ERROR;
 
 #[CoversClass(RealtimePublisher::class)]
@@ -28,7 +28,7 @@ final class RealtimePublisherTest extends TestCase
 		$publisher->publish(type: EventTypeEnum::TaskCreated, workspaceId: 42, projectId: 7, taskId: 123);
 
 		self::assertCount(1, $hub->updates);
-		self::assertSame(['ukolio/workspaces/42'], $hub->updates[0]->getTopics());
+		self::assertSame(['kytario/workspaces/42'], $hub->updates[0]->getTopics());
 		// Updates MUST be private so Mercure enforces the per-workspace subscriber-JWT
 		// authorization; a public update leaks to any (even anonymous) subscriber.
 		self::assertTrue($hub->updates[0]->isPrivate());
@@ -54,7 +54,7 @@ final class RealtimePublisherTest extends TestCase
 
 		self::assertCount(1, $hub->updates);
 		// Addressed to the recipient's own topic — not the workspace topic — so other members never see it.
-		self::assertSame(['ukolio/users/99'], $hub->updates[0]->getTopics());
+		self::assertSame(['kytario/users/99'], $hub->updates[0]->getTopics());
 		self::assertTrue($hub->updates[0]->isPrivate());
 
 		$payload = json_decode($hub->updates[0]->getData(), associative: true, flags: JSON_THROW_ON_ERROR);

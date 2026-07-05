@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Dto;
+namespace Kytario\Dto;
 
 /** @implements ArrayFactoryInterface<array{refreshToken: string}> */
 final readonly class RefreshTokenDto implements ArrayFactoryInterface

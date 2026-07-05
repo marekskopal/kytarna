@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\App\ServiceProvider;
+namespace Kytario\App\ServiceProvider;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Mercure\Hub;
 use Symfony\Component\Mercure\HubInterface;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
-use Ukolio\Service\Realtime\MercureCookieIssuer;
-use Ukolio\Service\Realtime\MercureCookieIssuerInterface;
-use Ukolio\Service\Realtime\MercurePublisherTokenProvider;
-use Ukolio\Service\Realtime\NullMercureHub;
-use Ukolio\Service\Realtime\RealtimeOriginContext;
-use Ukolio\Service\Realtime\RealtimeOriginContextInterface;
-use Ukolio\Service\Realtime\RealtimePublisher;
-use Ukolio\Service\Realtime\RealtimePublisherInterface;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Service\Realtime\MercureCookieIssuer;
+use Kytario\Service\Realtime\MercureCookieIssuerInterface;
+use Kytario\Service\Realtime\MercurePublisherTokenProvider;
+use Kytario\Service\Realtime\NullMercureHub;
+use Kytario\Service\Realtime\RealtimeOriginContext;
+use Kytario\Service\Realtime\RealtimeOriginContextInterface;
+use Kytario\Service\Realtime\RealtimePublisher;
+use Kytario\Service\Realtime\RealtimePublisherInterface;
 
 final class RealtimeServiceProvider extends AbstractServiceProvider
 {

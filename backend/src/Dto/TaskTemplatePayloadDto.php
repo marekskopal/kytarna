@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Dto;
+namespace Kytario\Dto;
 
 use JsonException;
 use RuntimeException;
-use Ukolio\Model\Entity\Task;
+use Kytario\Model\Entity\Task;
 use const JSON_THROW_ON_ERROR;
 
 /**

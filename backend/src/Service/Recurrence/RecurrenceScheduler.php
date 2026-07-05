@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Recurrence;
+namespace Kytario\Service\Recurrence;
 
 use DateTimeImmutable;
-use Ukolio\Model\Entity\Enum\RecurrenceCadenceEnum;
-use Ukolio\Model\Entity\Enum\RecurrenceEndTypeEnum;
-use Ukolio\Model\Entity\TaskRecurrence;
-use Ukolio\Service\Script\Trigger\CronEvaluatorInterface;
+use Kytario\Model\Entity\Enum\RecurrenceCadenceEnum;
+use Kytario\Model\Entity\Enum\RecurrenceEndTypeEnum;
+use Kytario\Model\Entity\TaskRecurrence;
+use Kytario\Service\Script\Trigger\CronEvaluatorInterface;
 
 /**
  * Computes spawn timestamps for a recurrence rule. The schedule is *absolute* — each occurrence is

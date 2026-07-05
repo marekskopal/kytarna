@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Controller;
+namespace Kytario\Controller;
 
 use Laminas\Diactoros\Response\JsonResponse;
 use MarekSkopal\Router\Attribute\RouteDelete;
@@ -10,16 +10,16 @@ use MarekSkopal\Router\Attribute\RouteGet;
 use MarekSkopal\Router\Attribute\RoutePost;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Ukolio\Dto\TaskWatcherDto;
-use Ukolio\Dto\TaskWatchersDto;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\TaskWatcher;
-use Ukolio\Model\Entity\User;
-use Ukolio\Response\NotFoundResponse;
-use Ukolio\Route\Routes;
-use Ukolio\Service\Provider\TaskCodeResolverInterface;
-use Ukolio\Service\Provider\TaskWatcherProviderInterface;
-use Ukolio\Service\Request\RequestServiceInterface;
+use Kytario\Dto\TaskWatcherDto;
+use Kytario\Dto\TaskWatchersDto;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\TaskWatcher;
+use Kytario\Model\Entity\User;
+use Kytario\Response\NotFoundResponse;
+use Kytario\Route\Routes;
+use Kytario\Service\Provider\TaskCodeResolverInterface;
+use Kytario\Service\Provider\TaskWatcherProviderInterface;
+use Kytario\Service\Request\RequestServiceInterface;
 
 final readonly class TaskWatcherController
 {

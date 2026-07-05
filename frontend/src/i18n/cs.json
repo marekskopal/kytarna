@@ -1,6 +1,6 @@
 {
     "app": {
-        "brand": "Ukolio",
+        "brand": "Kytario",
         "actions": {
             "save": "Uložit",
             "cancel": "Zrušit",
@@ -129,7 +129,7 @@
             },
             "variables": {
                 "title": "Proměnné skriptů",
-                "subtitle": "Úložiště klíč/hodnota pro pracovní prostor dostupné skriptům přes ukolio.vars. Tajné hodnoty jsou šifrovány a už se nezobrazí.",
+                "subtitle": "Úložiště klíč/hodnota pro pracovní prostor dostupné skriptům přes kytario.vars. Tajné hodnoty jsou šifrovány a už se nezobrazí.",
                 "manage": "Proměnné",
                 "key": "Klíč",
                 "value": "Hodnota",
@@ -155,7 +155,7 @@
             "noProblems": "Žádné problémy — poslední běh proběhl v pořádku.",
             "insertSnippet": "Vložit úryvek",
             "sandboxLimits": "Na běh: 5 s CPU · 64 MB · 20 fetch · 200 volání task-API. Bez přístupu k souborům.",
-            "eventPayloadNote": "Data události jsou dostupná jako ukolio.context.event.",
+            "eventPayloadNote": "Data události jsou dostupná jako kytario.context.event.",
             "validationRequired": "Název a zdrojový kód jsou povinné.",
             "panel": {
                 "show": "Zobrazit panel",
@@ -346,7 +346,7 @@
         "auth": {
             "asideOverline": "MCP-native",
             "asideHeadline": "Vaše kanban nástěnka, kterou řídí agenti.",
-            "asideBody": "Ukolio je multi-tenantní task manager postavený tak, aby AI agenti byli hlavními aktéry. Připojte jakéhokoliv MCP klienta a nechte ho úkoly plánovat, vytvářet i uzavírat společně s týmem.",
+            "asideBody": "Kytario je multi-tenantní task manager postavený tak, aby AI agenti byli hlavními aktéry. Připojte jakéhokoliv MCP klienta a nechte ho úkoly plánovat, vytvářet i uzavírat společně s týmem.",
             "asideSnippetLabel": "MCP endpoint",
             "login": {
                 "title": "Přihlášení",

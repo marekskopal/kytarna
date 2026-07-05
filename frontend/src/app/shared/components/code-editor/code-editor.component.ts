@@ -53,7 +53,7 @@ export class CodeEditorComponent implements AfterViewInit, OnDestroy {
 
         effect(() => {
             const dark = this.themeService.resolvedTheme() === 'dark';
-            this.monaco?.editor.setTheme(dark ? 'ukolio-dark' : 'ukolio-light');
+            this.monaco?.editor.setTheme(dark ? 'kytario-dark' : 'kytario-light');
         });
 
         effect(() => {
@@ -74,7 +74,7 @@ export class CodeEditorComponent implements AfterViewInit, OnDestroy {
             value: this.value(),
             language: this.language(),
             readOnly: this.readOnly(),
-            theme: this.themeService.resolvedTheme() === 'dark' ? 'ukolio-dark' : 'ukolio-light',
+            theme: this.themeService.resolvedTheme() === 'dark' ? 'kytario-dark' : 'kytario-light',
             automaticLayout: true,
             minimap: {enabled: false},
             fontSize: 13,

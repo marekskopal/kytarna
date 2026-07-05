@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Auth;
+namespace Kytario\Service\Auth;
 
 use Psr\Log\LoggerInterface;
 use RuntimeException;
-use Ukolio\Model\Entity\Enum\EventTypeEnum;
-use Ukolio\Model\Entity\Enum\SystemRoleEnum;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Repository\UserRepository;
-use Ukolio\Model\Repository\WorkspaceUserRepository;
-use Ukolio\Service\Provider\EventProviderInterface;
+use Kytario\Model\Entity\Enum\EventTypeEnum;
+use Kytario\Model\Entity\Enum\SystemRoleEnum;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Repository\UserRepository;
+use Kytario\Model\Repository\WorkspaceUserRepository;
+use Kytario\Service\Provider\EventProviderInterface;
 
 final readonly class CurrentUserDeletionService implements CurrentUserDeletionServiceInterface
 {

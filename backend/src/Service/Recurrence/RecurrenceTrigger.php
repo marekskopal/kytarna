@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Recurrence;
+namespace Kytario\Service\Recurrence;
 
 use Psr\Log\LoggerInterface;
 use Throwable;
-use Ukolio\Dto\RecurringTaskSpawnQueueDto;
-use Ukolio\Model\Entity\Enum\EventTypeEnum;
-use Ukolio\Model\Entity\Enum\StatusTypeEnum;
-use Ukolio\Model\Entity\Event;
-use Ukolio\Model\Repository\StatusRepository;
-use Ukolio\Model\Repository\TaskRecurrenceRepository;
-use Ukolio\Service\Queue\Enum\QueueEnum;
-use Ukolio\Service\Queue\QueuePublisher;
+use Kytario\Dto\RecurringTaskSpawnQueueDto;
+use Kytario\Model\Entity\Enum\EventTypeEnum;
+use Kytario\Model\Entity\Enum\StatusTypeEnum;
+use Kytario\Model\Entity\Event;
+use Kytario\Model\Repository\StatusRepository;
+use Kytario\Model\Repository\TaskRecurrenceRepository;
+use Kytario\Service\Queue\Enum\QueueEnum;
+use Kytario\Service\Queue\QueuePublisher;
 
 /**
  * Spawn-on-complete half of the hybrid recurrence model. Hangs off EventProvider::recordEvent the

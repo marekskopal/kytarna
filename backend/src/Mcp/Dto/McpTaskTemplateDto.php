@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Mcp\Dto;
+namespace Kytario\Mcp\Dto;
 
-use Ukolio\Dto\TaskTemplatePayloadDto;
-use Ukolio\Model\Entity\TaskTemplate;
+use Kytario\Dto\TaskTemplatePayloadDto;
+use Kytario\Model\Entity\TaskTemplate;
 
 final readonly class McpTaskTemplateDto
 {

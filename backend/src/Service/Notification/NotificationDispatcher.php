@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Notification;
+namespace Kytario\Service\Notification;
 
 use Psr\Log\LoggerInterface;
 use Throwable;
-use Ukolio\Dto\NotificationEmailQueueDto;
-use Ukolio\Model\Entity\Enum\ActorTypeEnum;
-use Ukolio\Model\Entity\Enum\EventTypeEnum;
-use Ukolio\Model\Entity\Enum\NotificationTypeEnum;
-use Ukolio\Model\Entity\Event;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Repository\TaskCommentRepository;
-use Ukolio\Model\Repository\TaskRepository;
-use Ukolio\Model\Repository\UserRepository;
-use Ukolio\Service\Provider\NotificationProviderInterface;
-use Ukolio\Service\Provider\TaskWatcherProviderInterface;
-use Ukolio\Service\Queue\Enum\QueueEnum;
-use Ukolio\Service\Queue\QueuePublisher;
-use Ukolio\Service\Realtime\RealtimePublisherInterface;
+use Kytario\Dto\NotificationEmailQueueDto;
+use Kytario\Model\Entity\Enum\ActorTypeEnum;
+use Kytario\Model\Entity\Enum\EventTypeEnum;
+use Kytario\Model\Entity\Enum\NotificationTypeEnum;
+use Kytario\Model\Entity\Event;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Repository\TaskCommentRepository;
+use Kytario\Model\Repository\TaskRepository;
+use Kytario\Model\Repository\UserRepository;
+use Kytario\Service\Provider\NotificationProviderInterface;
+use Kytario\Service\Provider\TaskWatcherProviderInterface;
+use Kytario\Service\Queue\Enum\QueueEnum;
+use Kytario\Service\Queue\QueuePublisher;
+use Kytario\Service\Realtime\RealtimePublisherInterface;
 
 /**
  * Turns audit events into per-user notifications (U-83). Hangs off EventProvider::recordEvent the

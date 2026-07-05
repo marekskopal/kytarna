@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\OAuth;
+namespace Kytario\OAuth;
 
 final readonly class PkceVerifier
 {

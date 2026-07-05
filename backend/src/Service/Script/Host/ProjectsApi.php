@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Script\Host;
+namespace Kytario\Service\Script\Host;
 
-use Ukolio\Service\Provider\ProjectProviderInterface;
+use Kytario\Service\Provider\ProjectProviderInterface;
 
 /**
- * Exposed to JS as `ukolio.projects`.
+ * Exposed to JS as `kytario.projects`.
  */
 final readonly class ProjectsApi
 {

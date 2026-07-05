@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Dto;
+namespace Kytario\Dto;
 
 use DateTimeImmutable;
 use RuntimeException;
-use Ukolio\Model\Repository\Enum\ArchivedFilterEnum;
-use Ukolio\Model\Repository\Enum\OrderDirectionEnum;
-use Ukolio\Model\Repository\Enum\SubtaskFilterEnum;
-use Ukolio\Model\Repository\Enum\TaskOrderByEnum;
+use Kytario\Model\Repository\Enum\ArchivedFilterEnum;
+use Kytario\Model\Repository\Enum\OrderDirectionEnum;
+use Kytario\Model\Repository\Enum\SubtaskFilterEnum;
+use Kytario\Model\Repository\Enum\TaskOrderByEnum;
 use const PHP_INT_MAX;
 
 /** Parsed and validated query parameters of the workspace-wide task list (GET /api/tasks). */

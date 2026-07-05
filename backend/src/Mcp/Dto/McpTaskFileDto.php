@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Mcp\Dto;
+namespace Kytario\Mcp\Dto;
 
-use Ukolio\Model\Entity\TaskFile;
+use Kytario\Model\Entity\TaskFile;
 use const DATE_ATOM;
 
 final readonly class McpTaskFileDto

@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Service\Script;
+namespace Kytario\Tests\Service\Script;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use Psr\Log\NullLogger;
-use Ukolio\Model\Entity\Enum\EventTypeEnum;
-use Ukolio\Model\Entity\Enum\ScriptTriggerEnum;
-use Ukolio\Model\Entity\Event;
-use Ukolio\Model\Entity\Script;
-use Ukolio\Model\Repository\ScriptRepository;
-use Ukolio\Service\Script\ScriptExecutionGuard;
-use Ukolio\Service\Script\ScriptProviderInterface;
-use Ukolio\Service\Script\ScriptRunDispatcherInterface;
-use Ukolio\Service\Script\Trigger\ScriptEventTrigger;
-use Ukolio\Tests\Support\AppHarness;
-use Ukolio\Tests\Support\Fixture;
-use Ukolio\Tests\Support\IntegrationTestCase;
+use Kytario\Model\Entity\Enum\EventTypeEnum;
+use Kytario\Model\Entity\Enum\ScriptTriggerEnum;
+use Kytario\Model\Entity\Event;
+use Kytario\Model\Entity\Script;
+use Kytario\Model\Repository\ScriptRepository;
+use Kytario\Service\Script\ScriptExecutionGuard;
+use Kytario\Service\Script\ScriptProviderInterface;
+use Kytario\Service\Script\ScriptRunDispatcherInterface;
+use Kytario\Service\Script\Trigger\ScriptEventTrigger;
+use Kytario\Tests\Support\AppHarness;
+use Kytario\Tests\Support\Fixture;
+use Kytario\Tests\Support\IntegrationTestCase;
 
 #[CoversClass(ScriptEventTrigger::class)]
 final class ScriptEventTriggerTest extends IntegrationTestCase
@@ -33,7 +33,7 @@ final class ScriptEventTriggerTest extends IntegrationTestCase
 			$user,
 			$workspace,
 			'On task created',
-			'ukolio.log("hi");',
+			'kytario.log("hi");',
 			ScriptTriggerEnum::Event,
 			'["TaskCreated"]',
 			true,

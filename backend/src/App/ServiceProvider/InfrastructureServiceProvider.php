@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\App\ServiceProvider;
+namespace Kytario\App\ServiceProvider;
 
 use AsyncAws\S3\S3Client;
 use Http\Discovery\Psr17FactoryDiscovery;
@@ -11,21 +11,21 @@ use Predis\Client;
 use Predis\ClientInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Log\LoggerInterface;
-use Ukolio\Model\Repository\TaskCommentRepository;
-use Ukolio\Model\Repository\TaskFieldValueRepository;
-use Ukolio\Model\Repository\TaskRepository;
-use Ukolio\Model\Repository\TaskTagRepository;
-use Ukolio\Service\Cache\CacheFactory;
-use Ukolio\Service\Cache\CacheFactoryInterface;
-use Ukolio\Service\Cors\CorsPolicy;
-use Ukolio\Service\Logger\Logger;
-use Ukolio\Service\Queue\QueuePublisher;
-use Ukolio\Service\Search\MeiliClient;
-use Ukolio\Service\Search\SearchIndexer;
-use Ukolio\Service\Search\TaskDocumentBuilder;
-use Ukolio\Service\Storage\FileStorageInterface;
-use Ukolio\Service\Storage\S3Config;
-use Ukolio\Service\Storage\S3FileStorage;
+use Kytario\Model\Repository\TaskCommentRepository;
+use Kytario\Model\Repository\TaskFieldValueRepository;
+use Kytario\Model\Repository\TaskRepository;
+use Kytario\Model\Repository\TaskTagRepository;
+use Kytario\Service\Cache\CacheFactory;
+use Kytario\Service\Cache\CacheFactoryInterface;
+use Kytario\Service\Cors\CorsPolicy;
+use Kytario\Service\Logger\Logger;
+use Kytario\Service\Queue\QueuePublisher;
+use Kytario\Service\Search\MeiliClient;
+use Kytario\Service\Search\SearchIndexer;
+use Kytario\Service\Search\TaskDocumentBuilder;
+use Kytario\Service\Storage\FileStorageInterface;
+use Kytario\Service\Storage\S3Config;
+use Kytario\Service\Storage\S3FileStorage;
 
 final class InfrastructureServiceProvider extends AbstractServiceProvider
 {

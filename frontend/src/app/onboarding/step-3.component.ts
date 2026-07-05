@@ -37,7 +37,7 @@ export class OnboardingStep3Component {
     protected readonly claudeSnippet = computed(() =>
         `{
   "mcpServers": {
-    "ukolio": {
+    "kytario": {
       "url": "${this.mcpUrl}"
     }
   }
@@ -47,7 +47,7 @@ export class OnboardingStep3Component {
     protected readonly cursorSnippet = computed(() =>
         `{
   "mcp.servers": {
-    "ukolio": {
+    "kytario": {
       "url": "${this.mcpUrl}"
     }
   }

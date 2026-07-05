@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Mcp\Tool;
+namespace Kytario\Mcp\Tool;
 
 use DateTimeImmutable;
 use Mcp\Capability\Attribute\McpTool;
 use RuntimeException;
-use Ukolio\Mcp\Dto\McpTaskDto;
-use Ukolio\Mcp\Dto\McpTaskRelationDto;
-use Ukolio\Mcp\Dto\McpTaskRelationListDto;
-use Ukolio\Mcp\McpUserContextInterface;
-use Ukolio\Mcp\Tool\Helper\PriorityResolver;
-use Ukolio\Model\Entity\Enum\TaskRelationTypeEnum;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\TaskRelation;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Repository\UserRepository;
-use Ukolio\Service\Provider\SubtaskProviderInterface;
-use Ukolio\Service\Provider\TaskProviderInterface;
-use Ukolio\Service\Provider\TaskRelationProviderInterface;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Mcp\Dto\McpTaskDto;
+use Kytario\Mcp\Dto\McpTaskRelationDto;
+use Kytario\Mcp\Dto\McpTaskRelationListDto;
+use Kytario\Mcp\McpUserContextInterface;
+use Kytario\Mcp\Tool\Helper\PriorityResolver;
+use Kytario\Model\Entity\Enum\TaskRelationTypeEnum;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\TaskRelation;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Repository\UserRepository;
+use Kytario\Service\Provider\SubtaskProviderInterface;
+use Kytario\Service\Provider\TaskProviderInterface;
+use Kytario\Service\Provider\TaskRelationProviderInterface;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
 
 final readonly class TaskRelationTools
 {

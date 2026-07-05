@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio;
+namespace Kytario;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -10,16 +10,16 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use Psr\Log\LoggerInterface;
 use Throwable;
-use Ukolio\App\ApplicationFactory;
-use Ukolio\Jobs\Handler\EmailVerificationHandler;
-use Ukolio\Jobs\Handler\InvitationHandler;
-use Ukolio\Jobs\Handler\JobHandler;
-use Ukolio\Jobs\Handler\NotificationHandler;
-use Ukolio\Jobs\Handler\PasswordResetHandler;
-use Ukolio\Jobs\Handler\RecurringTaskSpawnHandler;
-use Ukolio\Jobs\Handler\SearchReindexHandler;
-use Ukolio\Jobs\Message\AmqpReceivedMessage;
-use Ukolio\Service\Queue\Enum\QueueEnum;
+use Kytario\App\ApplicationFactory;
+use Kytario\Jobs\Handler\EmailVerificationHandler;
+use Kytario\Jobs\Handler\InvitationHandler;
+use Kytario\Jobs\Handler\JobHandler;
+use Kytario\Jobs\Handler\NotificationHandler;
+use Kytario\Jobs\Handler\PasswordResetHandler;
+use Kytario\Jobs\Handler\RecurringTaskSpawnHandler;
+use Kytario\Jobs\Handler\SearchReindexHandler;
+use Kytario\Jobs\Message\AmqpReceivedMessage;
+use Kytario\Service\Queue\Enum\QueueEnum;
 
 $application = ApplicationFactory::create();
 

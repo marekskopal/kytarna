@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Task;
+namespace Kytario\Service\Task;
 
 use JsonException;
 use RuntimeException;
-use Ukolio\Dto\ArrayFactoryInterface;
-use Ukolio\Jobs\Message\ReceivedMessageInterface;
+use Kytario\Dto\ArrayFactoryInterface;
+use Kytario\Jobs\Message\ReceivedMessageInterface;
 use const JSON_THROW_ON_ERROR;
 
 final readonly class TaskService implements TaskServiceInterface

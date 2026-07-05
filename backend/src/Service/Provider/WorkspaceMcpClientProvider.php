@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
-use Ukolio\Dto\WorkspaceMcpClientDto;
-use Ukolio\Model\Entity\OAuthAuthorization;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Model\Repository\OAuthAuthorizationRepository;
-use Ukolio\Model\Repository\OAuthClientRepository;
+use Kytario\Dto\WorkspaceMcpClientDto;
+use Kytario\Model\Entity\OAuthAuthorization;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Model\Repository\OAuthAuthorizationRepository;
+use Kytario\Model\Repository\OAuthClientRepository;
 use const DATE_ATOM;
 
 final readonly class WorkspaceMcpClientProvider implements WorkspaceMcpClientProviderInterface

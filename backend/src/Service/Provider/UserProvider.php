@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
 use SensitiveParameter;
-use Ukolio\Model\Entity\Enum\LocaleEnum;
-use Ukolio\Model\Entity\Enum\ThemeEnum;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Repository\UserRepository;
+use Kytario\Model\Entity\Enum\LocaleEnum;
+use Kytario\Model\Entity\Enum\ThemeEnum;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Repository\UserRepository;
 use const PASSWORD_BCRYPT;
 
 final readonly class UserProvider implements UserProviderInterface

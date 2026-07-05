@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Request;
+namespace Kytario\Service\Request;
 
 use ErrorException;
 use Nette\Utils\Json;
@@ -10,9 +10,9 @@ use Nette\Utils\JsonException;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
 use TypeError;
-use Ukolio\Dto\ArrayFactoryInterface;
-use Ukolio\Middleware\AuthorizationMiddleware;
-use Ukolio\Model\Entity\User;
+use Kytario\Dto\ArrayFactoryInterface;
+use Kytario\Middleware\AuthorizationMiddleware;
+use Kytario\Model\Entity\User;
 use ValueError;
 
 final readonly class RequestService implements RequestServiceInterface

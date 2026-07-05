@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Task;
+namespace Kytario\Service\Task;
 
-use Ukolio\Dto\ArrayFactoryInterface;
-use Ukolio\Jobs\Message\ReceivedMessageInterface;
+use Kytario\Dto\ArrayFactoryInterface;
+use Kytario\Jobs\Message\ReceivedMessageInterface;
 
 interface TaskServiceInterface
 {

@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Controller;
+namespace Kytario\Tests\Controller;
 
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\CoversClass;
-use Ukolio\Controller\ScriptController;
-use Ukolio\Model\Entity\Enum\EventTypeEnum;
-use Ukolio\Model\Entity\Enum\ScriptRunStatusEnum;
-use Ukolio\Model\Entity\Enum\ScriptTriggerEnum;
-use Ukolio\Model\Entity\Enum\WorkspaceRoleEnum;
-use Ukolio\Model\Entity\Script;
-use Ukolio\Model\Entity\ScriptRun;
-use Ukolio\Model\Entity\User;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Model\Repository\ScriptRunRepository;
-use Ukolio\Service\Provider\EventProviderInterface;
-use Ukolio\Service\Script\ScriptProviderInterface;
-use Ukolio\Tests\Support\AppHarness;
-use Ukolio\Tests\Support\Fixture;
-use Ukolio\Tests\Support\IntegrationTestCase;
+use Kytario\Controller\ScriptController;
+use Kytario\Model\Entity\Enum\EventTypeEnum;
+use Kytario\Model\Entity\Enum\ScriptRunStatusEnum;
+use Kytario\Model\Entity\Enum\ScriptTriggerEnum;
+use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytario\Model\Entity\Script;
+use Kytario\Model\Entity\ScriptRun;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Model\Repository\ScriptRunRepository;
+use Kytario\Service\Provider\EventProviderInterface;
+use Kytario\Service\Script\ScriptProviderInterface;
+use Kytario\Tests\Support\AppHarness;
+use Kytario\Tests\Support\Fixture;
+use Kytario\Tests\Support\IntegrationTestCase;
 
 #[CoversClass(ScriptController::class)]
 final class ScriptControllerTest extends IntegrationTestCase
@@ -82,7 +82,7 @@ final class ScriptControllerTest extends IntegrationTestCase
 		$member = Fixture::createUser('member@example.com');
 		Fixture::addMember($workspace, $member, WorkspaceRoleEnum::Member);
 
-		$body = ['name' => 'Nope', 'source' => 'ukolio.log(1);', 'trigger' => 'Manual', 'triggerConfig' => null, 'active' => true];
+		$body = ['name' => 'Nope', 'source' => 'kytario.log(1);', 'trigger' => 'Manual', 'triggerConfig' => null, 'active' => true];
 		$response = $this->request('POST', '/api/workspaces/' . $workspace->id . '/scripts', $body, $member);
 
 		self::assertSame(401, $response->getStatusCode());
@@ -93,7 +93,7 @@ final class ScriptControllerTest extends IntegrationTestCase
 		$owner = Fixture::createUser();
 		$workspace = Fixture::createWorkspace($owner);
 
-		$body = ['name' => 'Digest', 'source' => 'ukolio.log(1);', 'trigger' => 'Manual', 'triggerConfig' => null, 'active' => true];
+		$body = ['name' => 'Digest', 'source' => 'kytario.log(1);', 'trigger' => 'Manual', 'triggerConfig' => null, 'active' => true];
 		$created = $this->request('POST', '/api/workspaces/' . $workspace->id . '/scripts', $body, $owner);
 		self::assertSame(200, $created->getStatusCode());
 		self::assertSame(1, $this->countEvents($workspace, EventTypeEnum::ScriptCreated));
@@ -117,7 +117,7 @@ final class ScriptControllerTest extends IntegrationTestCase
 		$provider = AppHarness::container()->get(ScriptProviderInterface::class);
 		assert($provider instanceof ScriptProviderInterface);
 
-		return $provider->create($user, $workspace, 'Digest', 'ukolio.log("hi");', ScriptTriggerEnum::Manual, null, true);
+		return $provider->create($user, $workspace, 'Digest', 'kytario.log("hi");', ScriptTriggerEnum::Manual, null, true);
 	}
 
 	private function persistRun(Script $script, ScriptRunStatusEnum $status, int $httpCalls, int $taskApiCalls): void

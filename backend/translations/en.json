@@ -1,9 +1,9 @@
 {
     "email": {
         "subject": {
-            "invitation": "You've been invited to {workspace} on Ukolio",
-            "passwordReset": "Reset your Ukolio password",
-            "emailVerification": "Verify your Ukolio email",
+            "invitation": "You've been invited to {workspace} on Kytario",
+            "passwordReset": "Reset your Kytario password",
+            "emailVerification": "Verify your Kytario email",
             "notification": {
                 "TaskMention": "{actor} mentioned you on {task}",
                 "TaskAssigned": "{actor} assigned {task} to you",
@@ -12,7 +12,7 @@
             }
         },
         "invitation": {
-            "title": "You've been invited to Ukolio",
+            "title": "You've been invited to Kytario",
             "intro": "{inviter} has invited you to join the workspace <strong>{workspace}</strong>.",
             "action": "Click the button below to accept the invitation. If you don't have an account yet, you'll be asked to sign up first using this email address.",
             "button": "Accept invitation",
@@ -22,7 +22,7 @@
         "passwordReset": {
             "title": "Reset your password",
             "greeting": "Hi {name},",
-            "intro": "We received a request to reset the password for your Ukolio account. Click the button below to choose a new password.",
+            "intro": "We received a request to reset the password for your Kytario account. Click the button below to choose a new password.",
             "button": "Reset password",
             "fallback": "Or copy this link into your browser:",
             "expires": "This link expires in 1 hour.",
@@ -31,11 +31,11 @@
         "emailVerification": {
             "title": "Verify your email",
             "greeting": "Hi {name},",
-            "intro": "Welcome to Ukolio! Please confirm this is your email address so you can start inviting teammates and connecting AI agents.",
+            "intro": "Welcome to Kytario! Please confirm this is your email address so you can start inviting teammates and connecting AI agents.",
             "button": "Verify email",
             "fallback": "Or copy this link into your browser:",
             "expires": "This link expires in 24 hours.",
-            "ignore": "If you didn't sign up for Ukolio, you can safely ignore this email."
+            "ignore": "If you didn't sign up for Kytario, you can safely ignore this email."
         },
         "notification": {
             "greeting": "Hi {name},",

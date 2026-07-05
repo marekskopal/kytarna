@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Dto;
+namespace Kytario\Dto;
 
 /** @implements ArrayFactoryInterface<array{position?: int}> */
 final readonly class TaskChecklistItemMoveDto implements ArrayFactoryInterface

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Jobs\Handler;
+namespace Kytario\Jobs\Handler;
 
 use Psr\Log\LoggerInterface;
-use Ukolio\Dto\SearchReindexQueueDto;
-use Ukolio\Jobs\Message\ReceivedMessageInterface;
-use Ukolio\Service\Search\MeiliClient;
-use Ukolio\Service\Task\TaskServiceInterface;
+use Kytario\Dto\SearchReindexQueueDto;
+use Kytario\Jobs\Message\ReceivedMessageInterface;
+use Kytario\Service\Search\MeiliClient;
+use Kytario\Service\Task\TaskServiceInterface;
 
 final readonly class SearchReindexHandler implements JobHandler
 {

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Mcp\Dto;
+namespace Kytario\Mcp\Dto;
 
-use Ukolio\Model\Entity\Event;
+use Kytario\Model\Entity\Event;
 use const JSON_THROW_ON_ERROR;
 
 final readonly class McpEventDto

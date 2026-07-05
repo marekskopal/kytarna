@@ -1,6 +1,6 @@
-# Contributing to Ukolio
+# Contributing to Kytario
 
-Thanks for considering a contribution. Ukolio is MIT-licensed and built in the
+Thanks for considering a contribution. Kytario is MIT-licensed and built in the
 open. Bug reports, fixes, docs, and features are all welcome.
 
 ## Ground rules
@@ -21,8 +21,8 @@ You need Docker, `make`, and (for direct backend/frontend commands) PHP 8.5,
 Composer, Node 22+, and `pnpm`.
 
 ```bash
-git clone git@github.com:marekskopal/ukolio.git
-cd ukolio
+git clone git@github.com:marekskopal/kytario.git
+cd kytario
 cp .env.example .env
 sed -i.bak "s|AUTHORIZATION_TOKEN_KEY=.*|AUTHORIZATION_TOKEN_KEY=$(openssl rand -hex 32)|" .env && rm .env.bak
 make up                                                    # build & start the full stack
@@ -63,7 +63,7 @@ required extensions, and the test database. Run them directly with:
 ```bash
 docker compose exec backend vendor/bin/phpstan analyse --no-progress
 docker compose exec backend vendor/bin/phpcs
-docker compose exec -T -e TEST_MYSQL_DATABASE=ukolio_test backend vendor/bin/phpunit
+docker compose exec -T -e TEST_MYSQL_DATABASE=kytario_test backend vendor/bin/phpunit
 ```
 
 ## Code style expectations
@@ -110,7 +110,7 @@ locally if you need to).
 - **Bugs**: open a GitHub issue with the minimum repro (URL, steps, expected
   vs. actual, browser / PHP version, logs). Stack traces help.
 - **Security**: please **don't** file a public issue. Open a
-  [private security advisory](https://github.com/marekskopal/ukolio/security/advisories/new)
+  [private security advisory](https://github.com/marekskopal/kytario/security/advisories/new)
   on GitHub and we'll coordinate a fix and disclosure timeline.
 
 ## License

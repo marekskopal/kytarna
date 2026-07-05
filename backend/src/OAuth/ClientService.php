@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\OAuth;
+namespace Kytario\OAuth;
 
 use DateTimeImmutable;
 use MarekSkopal\ORM\Database\DatabaseInterface;
 use RuntimeException;
-use Ukolio\Model\Entity\OAuthClient;
-use Ukolio\Model\Repository\OAuthClientRepository;
+use Kytario\Model\Entity\OAuthClient;
+use Kytario\Model\Repository\OAuthClientRepository;
 use const JSON_THROW_ON_ERROR;
 
 final readonly class ClientService implements ClientServiceInterface

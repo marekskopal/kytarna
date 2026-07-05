@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Service\Script;
+namespace Kytario\Tests\Service\Script;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use RuntimeException;
-use Ukolio\Mcp\McpUserContextInterface;
-use Ukolio\Mcp\Tool\TaskTools;
-use Ukolio\Model\Entity\Enum\ScriptTriggerEnum;
-use Ukolio\Service\Actor\ActorContextInterface;
-use Ukolio\Service\Script\Host\EventsApi;
-use Ukolio\Service\Script\Host\ScriptHostApiFactory;
-use Ukolio\Service\Script\Host\ScriptRunContext;
-use Ukolio\Tests\Support\AppHarness;
-use Ukolio\Tests\Support\Fixture;
-use Ukolio\Tests\Support\IntegrationTestCase;
+use Kytario\Mcp\McpUserContextInterface;
+use Kytario\Mcp\Tool\TaskTools;
+use Kytario\Model\Entity\Enum\ScriptTriggerEnum;
+use Kytario\Service\Actor\ActorContextInterface;
+use Kytario\Service\Script\Host\EventsApi;
+use Kytario\Service\Script\Host\ScriptHostApiFactory;
+use Kytario\Service\Script\Host\ScriptRunContext;
+use Kytario\Tests\Support\AppHarness;
+use Kytario\Tests\Support\Fixture;
+use Kytario\Tests\Support\IntegrationTestCase;
 
 #[CoversClass(EventsApi::class)]
 final class EventsApiTest extends IntegrationTestCase

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Mcp\Tool\Helper;
+namespace Kytario\Mcp\Tool\Helper;
 
 use RuntimeException;
-use Ukolio\Model\Entity\Priority;
-use Ukolio\Model\Entity\Project;
-use Ukolio\Service\Provider\PriorityProviderInterface;
+use Kytario\Model\Entity\Priority;
+use Kytario\Model\Entity\Project;
+use Kytario\Service\Provider\PriorityProviderInterface;
 
 final readonly class PriorityResolver
 {

@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Controller;
+namespace Kytario\Controller;
 
 use Laminas\Diactoros\Response\JsonResponse;
 use MarekSkopal\Router\Attribute\RouteGet;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Ukolio\Response\ErrorResponse;
-use Ukolio\Route\Routes;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
-use Ukolio\Service\Request\RequestServiceInterface;
-use Ukolio\Service\Search\Dto\SearchFiltersDto;
-use Ukolio\Service\Search\MeiliClient;
+use Kytario\Response\ErrorResponse;
+use Kytario\Route\Routes;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Service\Request\RequestServiceInterface;
+use Kytario\Service\Search\Dto\SearchFiltersDto;
+use Kytario\Service\Search\MeiliClient;
 
 final readonly class SearchController
 {

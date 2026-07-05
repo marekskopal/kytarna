@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Controller;
+namespace Kytario\Tests\Controller;
 
 use DateTimeImmutable;
 use Laminas\Diactoros\ServerRequest;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Psr\Http\Message\ResponseInterface;
-use Ukolio\Controller\OAuthController;
-use Ukolio\Model\Repository\OAuthClientRepository;
-use Ukolio\OAuth\ClientServiceInterface;
-use Ukolio\Tests\Support\AppHarness;
-use Ukolio\Tests\Support\Fixture;
-use Ukolio\Tests\Support\IntegrationTestCase;
+use Kytario\Controller\OAuthController;
+use Kytario\Model\Repository\OAuthClientRepository;
+use Kytario\OAuth\ClientServiceInterface;
+use Kytario\Tests\Support\AppHarness;
+use Kytario\Tests\Support\Fixture;
+use Kytario\Tests\Support\IntegrationTestCase;
 
 #[CoversClass(OAuthController::class)]
 final class OAuthControllerTest extends IntegrationTestCase

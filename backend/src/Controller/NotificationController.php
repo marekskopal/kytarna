@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Controller;
+namespace Kytario\Controller;
 
 use Laminas\Diactoros\Response\JsonResponse;
 use MarekSkopal\Router\Attribute\RouteDelete;
@@ -10,14 +10,14 @@ use MarekSkopal\Router\Attribute\RouteGet;
 use MarekSkopal\Router\Attribute\RoutePost;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Ukolio\Dto\NotificationDto;
-use Ukolio\Dto\NotificationListDto;
-use Ukolio\Model\Entity\Notification;
-use Ukolio\Response\NotFoundResponse;
-use Ukolio\Response\OkResponse;
-use Ukolio\Route\Routes;
-use Ukolio\Service\Provider\NotificationProviderInterface;
-use Ukolio\Service\Request\RequestServiceInterface;
+use Kytario\Dto\NotificationDto;
+use Kytario\Dto\NotificationListDto;
+use Kytario\Model\Entity\Notification;
+use Kytario\Response\NotFoundResponse;
+use Kytario\Response\OkResponse;
+use Kytario\Route\Routes;
+use Kytario\Service\Provider\NotificationProviderInterface;
+use Kytario\Service\Request\RequestServiceInterface;
 
 final readonly class NotificationController
 {

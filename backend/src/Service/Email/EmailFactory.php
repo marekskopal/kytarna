@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Email;
+namespace Kytario\Service\Email;
 
 use Symfony\Component\Mime\Email;
-use Ukolio\Dto\NotificationEmailQueueDto;
-use Ukolio\Email\EmailVerificationEmail;
-use Ukolio\Email\InvitationEmail;
-use Ukolio\Email\NotificationEmail;
-use Ukolio\Email\PasswordResetEmail;
-use Ukolio\Model\Entity\Enum\LocaleEnum;
-use Ukolio\Service\Translator\TranslatorServiceInterface;
+use Kytario\Dto\NotificationEmailQueueDto;
+use Kytario\Email\EmailVerificationEmail;
+use Kytario\Email\InvitationEmail;
+use Kytario\Email\NotificationEmail;
+use Kytario\Email\PasswordResetEmail;
+use Kytario\Model\Entity\Enum\LocaleEnum;
+use Kytario\Service\Translator\TranslatorServiceInterface;
 
 final readonly class EmailFactory
 {
@@ -22,7 +22,7 @@ final readonly class EmailFactory
 	public function __construct(private TranslatorServiceInterface $translator)
 	{
 		$from = (string) getenv('EMAIL_FROM');
-		$this->from = $from !== '' ? $from : 'no-reply@ukolio.local';
+		$this->from = $from !== '' ? $from : 'no-reply@kytario.local';
 
 		$host = (string) getenv('PROXY_HOST');
 		$host = $host !== '' ? $host : 'localhost';

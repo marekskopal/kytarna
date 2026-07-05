@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\TaskRecurrence;
-use Ukolio\Model\Entity\User;
-use Ukolio\Service\Recurrence\RecurrenceConfig;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\TaskRecurrence;
+use Kytario\Model\Entity\User;
+use Kytario\Service\Recurrence\RecurrenceConfig;
 
 interface TaskRecurrenceProviderInterface
 {

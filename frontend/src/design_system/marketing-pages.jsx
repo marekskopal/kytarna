@@ -1,5 +1,5 @@
 // ============================================================
-// Ukolio — additional marketing pages
+// Kytario — additional marketing pages
 // Pricing · Contact · Text (legal/long-form)
 // Reuses LandingTopBar / LandingFooter from landing.jsx
 // ============================================================
@@ -285,7 +285,7 @@ function CommunityPlan() {
         <h2 style={{
           fontSize: 32, lineHeight: 1.15, letterSpacing: '-0.02em',
           fontWeight: 600, marginBottom: 14,
-        }}>Ukolio Community Edition.</h2>
+        }}>Kytario Community Edition.</h2>
 
         <p style={{
           fontSize: 15, lineHeight: 1.6, opacity: 0.78,
@@ -297,7 +297,7 @@ function CommunityPlan() {
         </p>
 
         <div style={{ display: 'flex', gap: 10, marginTop: 24, flexWrap: 'wrap' }}>
-          <a href="https://github.com/ukolio/ukolio"
+          <a href="https://github.com/kytario/kytario"
              style={{
                display: 'inline-flex', alignItems: 'center', gap: 10,
                background: 'var(--uk-bg)', color: 'var(--uk-fg)',
@@ -319,7 +319,7 @@ function CommunityPlan() {
             </svg>
             View on GitHub
           </a>
-          <a href="https://github.com/ukolio/ukolio#self-hosting"
+          <a href="https://github.com/kytario/kytario#self-hosting"
              style={{
                display: 'inline-flex', alignItems: 'center', gap: 8,
                background: 'transparent', color: 'var(--uk-bg)',
@@ -516,7 +516,7 @@ const Dash = () => <span style={{ color: 'var(--uk-fg-faint)' }}>—</span>;
 function PricingFAQ() {
   const items = [
     {
-      q: 'Can I self-host Ukolio?',
+      q: 'Can I self-host Kytario?',
       a: 'Yes. The full source is MIT-licensed. A single docker compose up gives you the hosted experience locally, including the MCP server and OAuth flow.',
     },
     {
@@ -537,7 +537,7 @@ function PricingFAQ() {
     },
     {
       q: 'Do you offer discounts for non-profits or education?',
-      a: 'Yes — 50% off Pro for registered non-profits and accredited educational institutions. Contact info@ukolio.com.',
+      a: 'Yes — 50% off Pro for registered non-profits and accredited educational institutions. Contact info@kytario.com.',
     },
   ];
 
@@ -621,12 +621,12 @@ function ContactScreen() {
               marginBottom: 8, textAlign: 'center',
             }}>Email us</div>
 
-            <a href="mailto:info@ukolio.com" style={{
+            <a href="mailto:info@kytario.com" style={{
               fontSize: 28, fontWeight: 600, letterSpacing: '-0.018em',
               color: 'var(--uk-fg)', textDecoration: 'none',
               fontFamily: 'var(--uk-font-mono)',
               textAlign: 'center',
-            }}>info@ukolio.com</a>
+            }}>info@kytario.com</a>
 
             <div style={{
               marginTop: 22, paddingTop: 18,
@@ -645,7 +645,7 @@ function ContactScreen() {
           <p style={{
             marginTop: 40, fontSize: 13, color: 'var(--uk-fg-subtle)',
           }}>
-            For security disclosures, please email <a href="mailto:security@ukolio.com" style={{ color: 'var(--uk-accent)' }}>security@ukolio.com</a>.
+            For security disclosures, please email <a href="mailto:security@kytario.com" style={{ color: 'var(--uk-accent)' }}>security@kytario.com</a>.
           </p>
         </div>
       </section>
@@ -731,8 +731,8 @@ function TextPageScreen() {
             </div>
 
             <p style={prosePara}>
-              These Terms govern your use of Ukolio, a task-management product operated by
-              Ukolio s.r.o. ("we", "us"). By creating an account or connecting an MCP
+              These Terms govern your use of Kytario, a task-management product operated by
+              Kytario s.r.o. ("we", "us"). By creating an account or connecting an MCP
               client to your workspace, you agree to be bound by them. Please read the
               whole thing — it's not long.
             </p>
@@ -746,7 +746,7 @@ function TextPageScreen() {
             <h2 id="accounts" style={proseH2}>1 · Accounts &amp; access</h2>
 
             <p style={prosePara}>
-              You need an account to use Ukolio. You're responsible for keeping your
+              You need an account to use Kytario. You're responsible for keeping your
               credentials secure and for everything that happens under your account
               — including actions taken by agents you've authorised. We may suspend
               accounts that are inactive for more than 12 consecutive months.
@@ -778,7 +778,7 @@ function TextPageScreen() {
             </p>
 
             <ol style={proseOl}>
-              <li>The client discovers Ukolio's OAuth endpoints via RFC 9728 resource
+              <li>The client discovers Kytario's OAuth endpoints via RFC 9728 resource
                   metadata.</li>
               <li>The client registers itself dynamically and opens a browser window
                   requesting your consent.</li>
@@ -795,7 +795,7 @@ function TextPageScreen() {
             <h2 id="data" style={proseH2}>3 · Your data</h2>
 
             <p style={prosePara}>
-              You retain ownership of everything you put into Ukolio: tasks, comments,
+              You retain ownership of everything you put into Kytario: tasks, comments,
               attachments, custom fields, tags. We process this data only to provide
               the service and to comply with applicable law. We do <strong>not</strong> train
               machine-learning models on your content.
@@ -839,7 +839,7 @@ function TextPageScreen() {
             <h2 id="liability" style={proseH2}>5 · Liability</h2>
 
             <p style={prosePara}>
-              Ukolio is provided "as is". To the maximum extent permitted by law, our
+              Kytario is provided "as is". To the maximum extent permitted by law, our
               total liability arising out of or in connection with these Terms is
               limited to the fees you paid us in the 12 months preceding the event
               giving rise to the claim. Nothing in these Terms limits liability that
@@ -849,8 +849,8 @@ function TextPageScreen() {
             <h2 id="contact" style={proseH2}>6 · Contact</h2>
 
             <p style={prosePara}>
-              Questions about these Terms? Email <a href="mailto:info@ukolio.com" style={proseLink}>info@ukolio.com</a>.
-              For data-protection inquiries, use <a href="mailto:dpo@ukolio.com" style={proseLink}>dpo@ukolio.com</a>.
+              Questions about these Terms? Email <a href="mailto:info@kytario.com" style={proseLink}>info@kytario.com</a>.
+              For data-protection inquiries, use <a href="mailto:dpo@kytario.com" style={proseLink}>dpo@kytario.com</a>.
             </p>
 
             <div style={{
@@ -859,7 +859,7 @@ function TextPageScreen() {
               display: 'flex', gap: 12, alignItems: 'center',
               fontSize: 13, color: 'var(--uk-fg-subtle)',
             }}>
-              <span>Ukolio s.r.o.</span>
+              <span>Kytario s.r.o.</span>
               <span style={{ width: 3, height: 3, borderRadius: 999, background: 'var(--uk-fg-faint)' }}/>
               <span>Karlovo náměstí 10, 120 00 Praha 2, Czech Republic</span>
               <span style={{ width: 3, height: 3, borderRadius: 999, background: 'var(--uk-fg-faint)' }}/>

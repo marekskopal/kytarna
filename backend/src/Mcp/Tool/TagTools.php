@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Mcp\Tool;
+namespace Kytario\Mcp\Tool;
 
 use Mcp\Capability\Attribute\McpTool;
 use RuntimeException;
-use Ukolio\Mcp\Dto\McpTagDto;
-use Ukolio\Mcp\Dto\McpTagListDto;
-use Ukolio\Mcp\Dto\McpTaskDto;
-use Ukolio\Mcp\McpUserContextInterface;
-use Ukolio\Model\Entity\Enum\EventTypeEnum;
-use Ukolio\Model\Entity\Tag;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Service\Auth\PermissionCheckerInterface;
-use Ukolio\Service\Provider\EventProviderInterface;
-use Ukolio\Service\Provider\TagProviderInterface;
-use Ukolio\Service\Provider\TaskFieldValueProviderInterface;
-use Ukolio\Service\Provider\TaskProviderInterface;
-use Ukolio\Service\Provider\TaskTagProviderInterface;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Mcp\Dto\McpTagDto;
+use Kytario\Mcp\Dto\McpTagListDto;
+use Kytario\Mcp\Dto\McpTaskDto;
+use Kytario\Mcp\McpUserContextInterface;
+use Kytario\Model\Entity\Enum\EventTypeEnum;
+use Kytario\Model\Entity\Tag;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Service\Auth\PermissionCheckerInterface;
+use Kytario\Service\Provider\EventProviderInterface;
+use Kytario\Service\Provider\TagProviderInterface;
+use Kytario\Service\Provider\TaskFieldValueProviderInterface;
+use Kytario\Service\Provider\TaskProviderInterface;
+use Kytario\Service\Provider\TaskTagProviderInterface;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
 
 final readonly class TagTools
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Dto;
+namespace Kytario\Dto;
 
 /** @implements ArrayFactoryInterface<array{fieldIds: list<int>}> */
 final readonly class ProjectFieldsUpdateDto implements ArrayFactoryInterface

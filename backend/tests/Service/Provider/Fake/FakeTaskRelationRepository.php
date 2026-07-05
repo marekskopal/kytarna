@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Service\Provider\Fake;
+namespace Kytario\Tests\Service\Provider\Fake;
 
 use ArrayIterator;
 use Iterator;
 use MarekSkopal\ORM\Query\QueryProvider;
 use MarekSkopal\ORM\Schema\Provider\SchemaProvider;
 use ReflectionClass;
-use Ukolio\Model\Entity\Enum\TaskRelationTypeEnum;
-use Ukolio\Model\Entity\TaskRelation;
-use Ukolio\Model\Repository\TaskRelationRepository;
+use Kytario\Model\Entity\Enum\TaskRelationTypeEnum;
+use Kytario\Model\Entity\TaskRelation;
+use Kytario\Model\Repository\TaskRelationRepository;
 
 final class FakeTaskRelationRepository extends TaskRelationRepository
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Command;
+namespace Kytario\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

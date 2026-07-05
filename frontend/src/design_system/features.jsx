@@ -1,5 +1,5 @@
 // ============================================================
-// Ukolio Design System — New features
+// Kytario Design System — New features
 // Covers backend migrations:
 //   20260518_TaskFiles      — per-task uploads
 //   20260519_TaskRelations  — Related / Duplicates / Parent / DependsOn

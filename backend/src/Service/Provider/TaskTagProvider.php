@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Provider;
+namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
 use RuntimeException;
-use Ukolio\Model\Entity\Task;
-use Ukolio\Model\Entity\TaskTag;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Model\Repository\TagRepository;
-use Ukolio\Model\Repository\TaskTagRepository;
-use Ukolio\Service\Search\SearchIndexer;
+use Kytario\Model\Entity\Task;
+use Kytario\Model\Entity\TaskTag;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Model\Repository\TagRepository;
+use Kytario\Model\Repository\TaskTagRepository;
+use Kytario\Service\Search\SearchIndexer;
 
 final readonly class TaskTagProvider implements TaskTagProviderInterface
 {

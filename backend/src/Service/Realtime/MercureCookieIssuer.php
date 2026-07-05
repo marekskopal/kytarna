@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Realtime;
+namespace Kytario\Service\Realtime;
 
 use Firebase\JWT\JWT;
-use Ukolio\Model\Entity\User;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Model\Entity\User;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
 
 final readonly class MercureCookieIssuer implements MercureCookieIssuerInterface
 {

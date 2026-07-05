@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Mcp\Dto;
+namespace Kytario\Mcp\Dto;
 
-use Ukolio\Model\Entity\Project;
+use Kytario\Model\Entity\Project;
 
 final readonly class McpProjectDto
 {

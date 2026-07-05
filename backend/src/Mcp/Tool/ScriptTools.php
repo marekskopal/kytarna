@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Mcp\Tool;
+namespace Kytario\Mcp\Tool;
 
 use Mcp\Capability\Attribute\McpTool;
 use RuntimeException;
-use Ukolio\Dto\ScriptDto;
-use Ukolio\Dto\ScriptRunDto;
-use Ukolio\Mcp\Dto\McpScriptListDto;
-use Ukolio\Mcp\Dto\McpScriptRunListDto;
-use Ukolio\Mcp\McpUserContextInterface;
-use Ukolio\Model\Entity\Enum\ScriptTriggerEnum;
-use Ukolio\Model\Entity\Script;
-use Ukolio\Model\Entity\Workspace;
-use Ukolio\Service\Auth\PermissionCheckerInterface;
-use Ukolio\Service\Provider\WorkspaceProviderInterface;
-use Ukolio\Service\Script\ScriptProviderInterface;
-use Ukolio\Service\Script\ScriptRunDispatcherInterface;
+use Kytario\Dto\ScriptDto;
+use Kytario\Dto\ScriptRunDto;
+use Kytario\Mcp\Dto\McpScriptListDto;
+use Kytario\Mcp\Dto\McpScriptRunListDto;
+use Kytario\Mcp\McpUserContextInterface;
+use Kytario\Model\Entity\Enum\ScriptTriggerEnum;
+use Kytario\Model\Entity\Script;
+use Kytario\Model\Entity\Workspace;
+use Kytario\Service\Auth\PermissionCheckerInterface;
+use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Kytario\Service\Script\ScriptProviderInterface;
+use Kytario\Service\Script\ScriptRunDispatcherInterface;
 
 /**
- * Manage sandboxed automation Scripts (the `ukolio.*` JS runtime). Mutations require workspace
+ * Manage sandboxed automation Scripts (the `kytario.*` JS runtime). Mutations require workspace
  * admin (canManageScripts). Scheduled triggers use a standard 5-field cron in triggerConfig
  * (e.g. "0 3 * * *"); Event triggers use a JSON array of event-type names.
  */
@@ -71,7 +71,7 @@ final readonly class ScriptTools
 	 * Create an automation script. Requires workspace admin.
 	 *
 	 * @param string $name Display name
-	 * @param string $source JavaScript source using the `ukolio` API
+	 * @param string $source JavaScript source using the `kytario` API
 	 * @param string $trigger One of "Manual", "Scheduled", "Event" (default "Manual")
 	 * @param string|null $triggerConfig Cron expression for Scheduled (e.g. "0 3 * * *"); JSON array of event types for Event; null for Manual
 	 * @param bool $active Whether the script is enabled (default true)
@@ -244,7 +244,7 @@ final readonly class ScriptTools
 	{
 		$workspace = $this->workspaceProvider->getCurrentWorkspace($this->userContext->getUser());
 		if ($workspace === null) {
-			throw new RuntimeException('No active workspace. Create one in the Ukolio app first.');
+			throw new RuntimeException('No active workspace. Create one in the Kytario app first.');
 		}
 
 		return $workspace;

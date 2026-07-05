@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Search;
+namespace Kytario\Service\Search;
 
 use Psr\Log\LoggerInterface;
 use Throwable;
-use Ukolio\Dto\SearchReindexQueueDto;
-use Ukolio\Service\Queue\Enum\QueueEnum;
-use Ukolio\Service\Queue\QueuePublisher;
+use Kytario\Dto\SearchReindexQueueDto;
+use Kytario\Service\Queue\Enum\QueueEnum;
+use Kytario\Service\Queue\QueuePublisher;
 
 /**
  * Publishes async Meilisearch reindex jobs. Failures are logged and swallowed so a flaky

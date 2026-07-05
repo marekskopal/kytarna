@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Ukolio\Tests\Support\AppHarness;
+use Kytario\Tests\Support\AppHarness;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -11,11 +11,11 @@ require __DIR__ . '/../vendor/autoload.php';
 $testEnv = [
 	'AUTHORIZATION_TOKEN_KEY' => 'test-token-key-test-token-key-test-token-key-0123',
 	'MYSQL_HOST' => getenv('MYSQL_HOST') !== false && getenv('MYSQL_HOST') !== '' ? getenv('MYSQL_HOST') : 'db',
-	'MYSQL_USER' => getenv('MYSQL_USER') !== false && getenv('MYSQL_USER') !== '' ? getenv('MYSQL_USER') : 'ukolio',
-	'MYSQL_PASSWORD' => getenv('MYSQL_PASSWORD') !== false && getenv('MYSQL_PASSWORD') !== '' ? getenv('MYSQL_PASSWORD') : 'ukolio',
+	'MYSQL_USER' => getenv('MYSQL_USER') !== false && getenv('MYSQL_USER') !== '' ? getenv('MYSQL_USER') : 'kytario',
+	'MYSQL_PASSWORD' => getenv('MYSQL_PASSWORD') !== false && getenv('MYSQL_PASSWORD') !== '' ? getenv('MYSQL_PASSWORD') : 'kytario',
 	'MYSQL_DATABASE' => getenv('TEST_MYSQL_DATABASE') !== false && getenv('TEST_MYSQL_DATABASE') !== ''
 		? (string) getenv('TEST_MYSQL_DATABASE')
-		: 'ukolio_test',
+		: 'kytario_test',
 	'S3_BUCKET' => 'test-bucket',
 	'S3_ACCESS_KEY' => 'test-access-key',
 	'S3_SECRET_KEY' => 'test-secret-key',
@@ -24,13 +24,13 @@ $testEnv = [
 	'S3_USE_PATH_STYLE' => 'true',
 	'REDIS_HOST' => getenv('REDIS_HOST') !== false && getenv('REDIS_HOST') !== '' ? getenv('REDIS_HOST') : 'redis',
 	'REDIS_PORT' => getenv('REDIS_PORT') !== false && getenv('REDIS_PORT') !== '' ? getenv('REDIS_PORT') : '6379',
-	'REDIS_PASSWORD' => getenv('REDIS_PASSWORD') !== false && getenv('REDIS_PASSWORD') !== '' ? getenv('REDIS_PASSWORD') : 'ukolio',
+	'REDIS_PASSWORD' => getenv('REDIS_PASSWORD') !== false && getenv('REDIS_PASSWORD') !== '' ? getenv('REDIS_PASSWORD') : 'kytario',
 	'RABBITMQ_HOST' => getenv('RABBITMQ_HOST') !== false && getenv('RABBITMQ_HOST') !== '' ? getenv('RABBITMQ_HOST') : 'rabbitmq',
 	'RABBITMQ_PORT' => getenv('RABBITMQ_PORT') !== false && getenv('RABBITMQ_PORT') !== '' ? getenv('RABBITMQ_PORT') : '5672',
-	'RABBITMQ_USER' => getenv('RABBITMQ_USER') !== false && getenv('RABBITMQ_USER') !== '' ? getenv('RABBITMQ_USER') : 'ukolio',
+	'RABBITMQ_USER' => getenv('RABBITMQ_USER') !== false && getenv('RABBITMQ_USER') !== '' ? getenv('RABBITMQ_USER') : 'kytario',
 	'RABBITMQ_PASSWORD' => getenv('RABBITMQ_PASSWORD') !== false && getenv('RABBITMQ_PASSWORD') !== '' ? getenv(
 		'RABBITMQ_PASSWORD',
-	) : 'ukolio',
+	) : 'kytario',
 	'BACKEND_AMQP_CONSUMER_PREFETCH' => getenv('BACKEND_AMQP_CONSUMER_PREFETCH') !== false && getenv(
 		'BACKEND_AMQP_CONSUMER_PREFETCH',
 	) !== '' ? getenv('BACKEND_AMQP_CONSUMER_PREFETCH') : '10',
@@ -60,11 +60,11 @@ $database = (string) getenv('MYSQL_DATABASE');
 $user = (string) getenv('MYSQL_USER');
 $password = (string) getenv('MYSQL_PASSWORD');
 
-if ($database === 'ukolio') {
+if ($database === 'kytario') {
 	fwrite(
 		STDERR,
-		"Refusing to run tests against the production database 'ukolio'. "
-		. "Set TEST_MYSQL_DATABASE to a dedicated test database (default: ukolio_test).\n",
+		"Refusing to run tests against the production database 'kytario'. "
+		. "Set TEST_MYSQL_DATABASE to a dedicated test database (default: kytario_test).\n",
 	);
 	exit(1);
 }

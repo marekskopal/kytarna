@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Service\Script;
+namespace Kytario\Tests\Service\Script;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use Ukolio\Model\Entity\Enum\ScriptTriggerEnum;
-use Ukolio\Service\Script\Host\ScriptHostApiFactory;
-use Ukolio\Service\Script\Host\ScriptRunContext;
-use Ukolio\Service\Script\Host\TasksApi;
-use Ukolio\Tests\Support\AppHarness;
-use Ukolio\Tests\Support\Fixture;
-use Ukolio\Tests\Support\IntegrationTestCase;
+use Kytario\Model\Entity\Enum\ScriptTriggerEnum;
+use Kytario\Service\Script\Host\ScriptHostApiFactory;
+use Kytario\Service\Script\Host\ScriptRunContext;
+use Kytario\Service\Script\Host\TasksApi;
+use Kytario\Tests\Support\AppHarness;
+use Kytario\Tests\Support\Fixture;
+use Kytario\Tests\Support\IntegrationTestCase;
 
 #[CoversClass(TasksApi::class)]
 final class TasksApiTest extends IntegrationTestCase

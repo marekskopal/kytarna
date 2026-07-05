@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\OAuth;
+namespace Kytario\Tests\OAuth;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use Ukolio\OAuth\AuthorizationService;
-use Ukolio\OAuth\AuthorizationServiceInterface;
-use Ukolio\OAuth\ClientServiceInterface;
-use Ukolio\Tests\Support\AppHarness;
-use Ukolio\Tests\Support\Fixture;
-use Ukolio\Tests\Support\IntegrationTestCase;
+use Kytario\OAuth\AuthorizationService;
+use Kytario\OAuth\AuthorizationServiceInterface;
+use Kytario\OAuth\ClientServiceInterface;
+use Kytario\Tests\Support\AppHarness;
+use Kytario\Tests\Support\Fixture;
+use Kytario\Tests\Support\IntegrationTestCase;
 
 #[CoversClass(AuthorizationService::class)]
 final class AuthorizationServiceTest extends IntegrationTestCase

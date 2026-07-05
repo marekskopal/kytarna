@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Tests\Service\Semver;
+namespace Kytario\Tests\Service\Semver;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Ukolio\Service\Semver\SemverComparator;
+use Kytario\Service\Semver\SemverComparator;
 
 #[CoversClass(SemverComparator::class)]
 final class SemverComparatorTest extends TestCase

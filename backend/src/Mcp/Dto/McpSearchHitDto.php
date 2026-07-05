@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Mcp\Dto;
+namespace Kytario\Mcp\Dto;
 
-use Ukolio\Service\Search\Dto\SearchHitDto;
+use Kytario\Service\Search\Dto\SearchHitDto;
 
 final readonly class McpSearchHitDto
 {

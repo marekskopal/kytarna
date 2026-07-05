@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ukolio\Service\Authentication\Exception;
+namespace Kytario\Service\Authentication\Exception;
 
 final class AccountLockedException extends \RuntimeException
 {
