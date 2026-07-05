@@ -41,31 +41,31 @@ enum Routes: string
 	case InvitationLookup = '/api/invitations/lookup';
 	case InvitationAccept = '/api/invitations/accept';
 
-	case Projects = '/api/projects';
-	case Project = '/api/projects/{projectId:number}';
-	case ProjectBoard = '/api/projects/{projectId:number}/board';
-	case ProjectEvents = '/api/projects/{projectId:number}/events';
-	case ProjectWorkflow = '/api/projects/{projectId:number}/workflow';
-	case ProjectTasks = '/api/projects/{projectId:number}/tasks';
+	case Courses = '/api/courses';
+	case Course = '/api/courses/{courseId:number}';
+	case CourseBoard = '/api/courses/{courseId:number}/board';
+	case CourseEvents = '/api/courses/{courseId:number}/events';
+	case CourseWorkflow = '/api/courses/{courseId:number}/workflow';
+	case CourseLectures = '/api/courses/{courseId:number}/lectures';
 
 	case Workflows = '/api/workflows';
 	case WorkflowStatuses = '/api/workflows/{workflowId:number}/statuses';
 	case Status = '/api/statuses/{statusId:number}';
 	case StatusMove = '/api/statuses/{statusId:number}/move';
 
-	case Tasks = '/api/tasks';
-	case TasksBulk = '/api/tasks/bulk';
-	// taskId pattern accepts numeric IDs and project-prefixed codes (uppercase + dash, e.g. MP-3).
-	// Lowercase is intentionally excluded so static sibling paths like /api/tasks/bulk don't collide.
-	case Task = '/api/tasks/{taskId:[A-Z0-9][A-Z0-9-]*}';
-	case TaskMove = '/api/tasks/{taskId:[A-Z0-9][A-Z0-9-]*}/move';
-	case TaskArchive = '/api/tasks/{taskId:[A-Z0-9][A-Z0-9-]*}/archive';
-	case TaskUnarchive = '/api/tasks/{taskId:[A-Z0-9][A-Z0-9-]*}/unarchive';
-	case TaskFiles = '/api/tasks/{taskId:[A-Z0-9][A-Z0-9-]*}/files';
-	case TaskFile = '/api/tasks/{taskId:[A-Z0-9][A-Z0-9-]*}/files/{fileId:number}';
-	case TaskFileContent = '/api/tasks/{taskId:[A-Z0-9][A-Z0-9-]*}/files/{fileId:number}/content';
-	case TaskWatchers = '/api/tasks/{taskId:[A-Z0-9][A-Z0-9-]*}/watchers';
-	case TaskWatch = '/api/tasks/{taskId:[A-Z0-9][A-Z0-9-]*}/watch';
+	case Lectures = '/api/lectures';
+	case LecturesBulk = '/api/lectures/bulk';
+	// lectureId pattern accepts numeric IDs and course-prefixed codes (uppercase + dash, e.g. MP-3).
+	// Lowercase is intentionally excluded so static sibling paths like /api/lectures/bulk don't collide.
+	case Lecture = '/api/lectures/{lectureId:[A-Z0-9][A-Z0-9-]*}';
+	case LectureMove = '/api/lectures/{lectureId:[A-Z0-9][A-Z0-9-]*}/move';
+	case LectureArchive = '/api/lectures/{lectureId:[A-Z0-9][A-Z0-9-]*}/archive';
+	case LectureUnarchive = '/api/lectures/{lectureId:[A-Z0-9][A-Z0-9-]*}/unarchive';
+	case LectureFiles = '/api/lectures/{lectureId:[A-Z0-9][A-Z0-9-]*}/files';
+	case LectureFile = '/api/lectures/{lectureId:[A-Z0-9][A-Z0-9-]*}/files/{fileId:number}';
+	case LectureFileContent = '/api/lectures/{lectureId:[A-Z0-9][A-Z0-9-]*}/files/{fileId:number}/content';
+	case LectureWatchers = '/api/lectures/{lectureId:[A-Z0-9][A-Z0-9-]*}/watchers';
+	case LectureWatch = '/api/lectures/{lectureId:[A-Z0-9][A-Z0-9-]*}/watch';
 
 	case Notifications = '/api/notifications';
 	case NotificationsReadAll = '/api/notifications/read-all';

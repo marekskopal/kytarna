@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Kytario\Model\Repository;
 
 use Iterator;
-use Kytario\Model\Entity\Enum\NotificationTypeEnum;
 use Kytario\Model\Entity\Notification;
 use MarekSkopal\ORM\Query\Expression\RawExpression;
 use MarekSkopal\ORM\Repository\AbstractRepository;
@@ -54,16 +53,5 @@ final class NotificationRepository extends AbstractRepository
 			->where(['user_id' => $userId])
 			->where([new RawExpression(self::UnreadPredicate), '=', 1])
 			->count();
-	}
-
-	/** True if a notification of this type for this task+user was already created at/after the given moment. */
-	public function existsSince(int $userId, int $taskId, NotificationTypeEnum $type, string $sinceDateTime): bool
-	{
-		return $this->select()
-			->where(['user_id' => $userId])
-			->where(['task_id' => $taskId])
-			->where(['type' => $type->value])
-			->where(['created_at', '>=', $sinceDateTime])
-			->count() > 0;
 	}
 }

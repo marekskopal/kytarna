@@ -31,7 +31,7 @@ final readonly class S3Config
 		$pathStyle = strtolower((string) getenv('S3_USE_PATH_STYLE'));
 		$pathStyleEndpoint = $pathStyle === '1' || $pathStyle === 'true' || $pathStyle === 'yes';
 
-		$maxMbRaw = (string) getenv('TASK_FILE_MAX_SIZE_MB');
+		$maxMbRaw = (string) getenv('LECTURE_FILE_MAX_SIZE_MB');
 		$maxMb = $maxMbRaw === '' ? 25 : (int) $maxMbRaw;
 		if ($maxMb <= 0) {
 			$maxMb = 25;

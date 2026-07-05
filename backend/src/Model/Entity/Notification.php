@@ -14,9 +14,9 @@ use MarekSkopal\ORM\Attribute\ManyToOne;
 use MarekSkopal\ORM\Enum\Type;
 
 /**
- * A per-user, in-app notification (U-83). The recipient is the only ORM relation; task/project/actor
- * are denormalised plain ints (mirroring Event.taskId) so deleting a task never blocks and the
- * notification survives. `data` holds a small JSON blob (taskCode, taskName, statusName, …) that the
+ * A per-user, in-app notification (U-83). The recipient is the only ORM relation; lecture/course/actor
+ * are denormalised plain ints (mirroring Event.lectureId) so deleting a lecture never blocks and the
+ * notification survives. `data` holds a small JSON blob (lectureCode, lectureName, statusName, …) that the
  * frontend renders via i18n, keeping the message locale-agnostic.
  */
 #[Entity(repositoryClass: NotificationRepository::class)]
@@ -30,9 +30,9 @@ class Notification extends AEntity
 		#[ColumnEnum(enum: NotificationTypeEnum::class)]
 		public NotificationTypeEnum $type,
 		#[Column(type: Type::Int, nullable: true)]
-		public ?int $taskId = null,
+		public ?int $lectureId = null,
 		#[Column(type: Type::Int, nullable: true)]
-		public ?int $projectId = null,
+		public ?int $courseId = null,
 		#[Column(type: Type::Int, nullable: true)]
 		public ?int $actorId = null,
 		#[Column(type: Type::String, nullable: true)]

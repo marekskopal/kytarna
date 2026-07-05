@@ -6,10 +6,10 @@ namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
 use Iterator;
+use Kytario\Model\Entity\Course;
 use Kytario\Model\Entity\Enum\ActorTypeEnum;
 use Kytario\Model\Entity\Enum\EventTypeEnum;
 use Kytario\Model\Entity\Event;
-use Kytario\Model\Entity\Project;
 use Kytario\Model\Entity\User;
 use Kytario\Model\Entity\Workspace;
 use Kytario\Model\Repository\EventRepository;
@@ -27,16 +27,16 @@ final readonly class EventProvider implements EventProviderInterface
 	}
 
 	/** @param array<string,mixed> $metadata */
-	public function recordEvent(User $author, Project $project, EventTypeEnum $type, array $metadata, ?int $taskId = null): Event
+	public function recordEvent(User $author, Course $course, EventTypeEnum $type, array $metadata, ?int $lectureId = null): Event
 	{
 		$now = new DateTimeImmutable();
 		$event = new Event(
 			author: $author,
 			type: $type,
 			metadata: json_encode($metadata, JSON_THROW_ON_ERROR),
-			project: $project,
-			workspaceId: $project->workspace->id,
-			taskId: $taskId,
+			course: $course,
+			workspaceId: $course->workspace->id,
+			lectureId: $lectureId,
 			actorType: $this->actorContext->getActorType(),
 			mcpClientId: $this->actorContext->getMcpClientId(),
 			mcpClientName: $this->actorContext->getMcpClientName(),
@@ -59,7 +59,7 @@ final readonly class EventProvider implements EventProviderInterface
 			author: $author,
 			type: $type,
 			metadata: json_encode($metadata, JSON_THROW_ON_ERROR),
-			project: null,
+			course: null,
 			workspaceId: $workspace?->id,
 			actorType: $this->actorContext->getActorType(),
 			mcpClientId: $this->actorContext->getMcpClientId(),
@@ -74,9 +74,9 @@ final readonly class EventProvider implements EventProviderInterface
 	}
 
 	/** @return Iterator<Event> */
-	public function getEvents(Project $project, int $limit = 100, int $offset = 0): Iterator
+	public function getEvents(Course $course, int $limit = 100, int $offset = 0): Iterator
 	{
-		return $this->eventRepository->findByProject($project->id, $limit, $offset);
+		return $this->eventRepository->findByCourse($course->id, $limit, $offset);
 	}
 
 	/** @return Iterator<Event> */
@@ -88,13 +88,13 @@ final readonly class EventProvider implements EventProviderInterface
 	/** @return Iterator<Event> */
 	public function getWorkspaceEventsFiltered(
 		Workspace $workspace,
-		?int $projectId,
-		?int $taskId,
+		?int $courseId,
+		?int $lectureId,
 		?EventTypeEnum $type,
 		int $limit,
 		int $offset,
 	): Iterator {
-		return $this->eventRepository->findByWorkspaceFiltered($workspace->id, $projectId, $taskId, $type, $limit, $offset);
+		return $this->eventRepository->findByWorkspaceFiltered($workspace->id, $courseId, $lectureId, $type, $limit, $offset);
 	}
 
 	public function countWorkspaceEventsSince(Workspace $workspace, int $sinceTimestamp): int

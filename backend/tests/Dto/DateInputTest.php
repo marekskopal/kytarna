@@ -15,13 +15,13 @@ final class DateInputTest extends TestCase
 {
 	public function testNullAndEmptyStringMeanNoDate(): void
 	{
-		self::assertNull(DateInput::parse(null, 'dueDate'));
-		self::assertNull(DateInput::parse('', 'dueDate'));
+		self::assertNull(DateInput::parse(null, 'startDate'));
+		self::assertNull(DateInput::parse('', 'startDate'));
 	}
 
 	public function testValidDateParses(): void
 	{
-		$date = DateInput::parse('2026-05-10', 'dueDate');
+		$date = DateInput::parse('2026-05-10', 'startDate');
 		self::assertNotNull($date);
 		self::assertSame('2026-05-10', $date->format('Y-m-d'));
 	}
@@ -44,6 +44,6 @@ final class DateInputTest extends TestCase
 	public function testInvalidInputThrows(mixed $value): void
 	{
 		$this->expectException(RuntimeException::class);
-		DateInput::parse($value, 'dueDate');
+		DateInput::parse($value, 'startDate');
 	}
 }

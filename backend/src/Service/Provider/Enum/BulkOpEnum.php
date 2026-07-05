@@ -9,6 +9,5 @@ enum BulkOpEnum: string
 	case Move = 'move';
 	case Tag = 'tag';
 	case Untag = 'untag';
-	case Assign = 'assign';
 	case Delete = 'delete';
 }

@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Kytario\Service\Email;
 
-use Kytario\Dto\NotificationEmailQueueDto;
 use Kytario\Email\EmailVerificationEmail;
 use Kytario\Email\InvitationEmail;
-use Kytario\Email\NotificationEmail;
 use Kytario\Email\PasswordResetEmail;
 use Kytario\Model\Entity\Enum\LocaleEnum;
 use Kytario\Service\Translator\TranslatorServiceInterface;
@@ -55,45 +53,6 @@ final readonly class EmailFactory
 		return new Email()
 			->from($this->from)
 			->to($recipientEmail)
-			->subject($subject)
-			->html($html);
-	}
-
-	public function createNotificationEmail(NotificationEmailQueueDto $payload): Email
-	{
-		$locale = $payload->locale;
-		$typeKey = $payload->type->value;
-		$taskCode = $payload->taskCode ?? '';
-
-		// SaaS layout: the app lives under /app (the bare marketing site is at /), so an in-app
-		// deep link must include the /app prefix. (On the open-source `public` branch this is root.)
-		$taskUrl = $payload->projectId !== null
-			? $this->appUrl . '/app/projects/' . $payload->projectId . '/board?task=' . urlencode($taskCode)
-			: $this->appUrl . '/app';
-
-		$replace = [
-			'{actor}' => $payload->actorName ?? '',
-			'{task}' => $taskCode,
-			'{taskName}' => $payload->taskName ?? '',
-			'{name}' => $payload->recipientName,
-			'{status}' => $payload->statusName ?? '',
-		];
-
-		$subject = strtr($this->translator->translate('email.subject.notification.' . $typeKey, $locale), $replace);
-
-		$t = $this->translator->section('email.notification', $locale);
-
-		$html = NotificationEmail::getHtml(
-			greeting: strtr($t['greeting'] ?? '', $replace),
-			intro: strtr($t[$typeKey] ?? '', $replace),
-			taskUrl: $taskUrl,
-			button: $t['button'] ?? 'Open task',
-			fallback: $t['fallback'] ?? '',
-		);
-
-		return new Email()
-			->from($this->from)
-			->to($payload->recipientEmail)
 			->subject($subject)
 			->html($html);
 	}

@@ -14,8 +14,8 @@ use MarekSkopal\ORM\Enum\Type;
 class Workflow extends AEntity
 {
 	public function __construct(
-		#[ManyToOne(entityClass: Project::class)]
-		public readonly Project $project,
+		#[ManyToOne(entityClass: Course::class)]
+		public readonly Course $course,
 		#[Column(type: Type::String)]
 		public string $name,
 	) {

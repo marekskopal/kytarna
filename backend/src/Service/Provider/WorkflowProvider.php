@@ -6,8 +6,8 @@ namespace Kytario\Service\Provider;
 
 use DateTimeImmutable;
 use Iterator;
+use Kytario\Model\Entity\Course;
 use Kytario\Model\Entity\Enum\StatusTypeEnum;
-use Kytario\Model\Entity\Project;
 use Kytario\Model\Entity\Workflow;
 use Kytario\Model\Entity\Workspace;
 use Kytario\Model\Repository\WorkflowRepository;
@@ -23,9 +23,9 @@ final readonly class WorkflowProvider implements WorkflowProviderInterface
 		return $this->workflowRepository->findById($workflowId);
 	}
 
-	public function getWorkflowByProject(Project $project): ?Workflow
+	public function getWorkflowByCourse(Course $course): ?Workflow
 	{
-		return $this->workflowRepository->findByProject($project->id);
+		return $this->workflowRepository->findByCourse($course->id);
 	}
 
 	/** @return Iterator<Workflow> */
@@ -34,18 +34,18 @@ final readonly class WorkflowProvider implements WorkflowProviderInterface
 		return $this->workflowRepository->findByWorkspace($workspace->id);
 	}
 
-	public function createDefaultWorkflow(Project $project): Workflow
+	public function createDefaultWorkflow(Course $course): Workflow
 	{
 		$now = new DateTimeImmutable();
-		$workflow = new Workflow(project: $project, name: 'Default');
+		$workflow = new Workflow(course: $course, name: 'Default');
 		$workflow->createdAt = $now;
 		$workflow->updatedAt = $now;
 
 		$this->workflowRepository->persist($workflow);
 
-		$this->statusProvider->createStatus($workflow, 'To Do', '#94a3b8', StatusTypeEnum::Start, 0);
-		$this->statusProvider->createStatus($workflow, 'In Progress', '#fbbf24', StatusTypeEnum::Normal, 1);
-		$this->statusProvider->createStatus($workflow, 'Done', '#4ade80', StatusTypeEnum::Finish, 2);
+		$this->statusProvider->createStatus($workflow, 'To Learn', '#94a3b8', StatusTypeEnum::Start, 0);
+		$this->statusProvider->createStatus($workflow, 'Learning', '#fbbf24', StatusTypeEnum::Normal, 1);
+		$this->statusProvider->createStatus($workflow, 'Mastered', '#4ade80', StatusTypeEnum::Finish, 2);
 
 		return $workflow;
 	}

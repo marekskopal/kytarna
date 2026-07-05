@@ -4,40 +4,40 @@ declare(strict_types=1);
 
 namespace Kytario\App\ServiceProvider;
 
+use Kytario\Model\Entity\Course;
 use Kytario\Model\Entity\EmailVerificationToken;
 use Kytario\Model\Entity\Event;
 use Kytario\Model\Entity\Invitation;
+use Kytario\Model\Entity\Lecture;
+use Kytario\Model\Entity\LectureFile;
+use Kytario\Model\Entity\LectureTag;
+use Kytario\Model\Entity\LectureWatcher;
 use Kytario\Model\Entity\Notification;
 use Kytario\Model\Entity\OAuthAuthorization;
 use Kytario\Model\Entity\OAuthClient;
 use Kytario\Model\Entity\PasswordResetToken;
-use Kytario\Model\Entity\Project;
 use Kytario\Model\Entity\SavedView;
 use Kytario\Model\Entity\Status;
 use Kytario\Model\Entity\Tag;
-use Kytario\Model\Entity\Task;
-use Kytario\Model\Entity\TaskFile;
-use Kytario\Model\Entity\TaskTag;
-use Kytario\Model\Entity\TaskWatcher;
 use Kytario\Model\Entity\User;
 use Kytario\Model\Entity\Workflow;
 use Kytario\Model\Entity\Workspace;
 use Kytario\Model\Entity\WorkspaceUser;
+use Kytario\Model\Repository\CourseRepository;
 use Kytario\Model\Repository\EmailVerificationTokenRepository;
 use Kytario\Model\Repository\EventRepository;
 use Kytario\Model\Repository\InvitationRepository;
+use Kytario\Model\Repository\LectureFileRepository;
+use Kytario\Model\Repository\LectureRepository;
+use Kytario\Model\Repository\LectureTagRepository;
+use Kytario\Model\Repository\LectureWatcherRepository;
 use Kytario\Model\Repository\NotificationRepository;
 use Kytario\Model\Repository\OAuthAuthorizationRepository;
 use Kytario\Model\Repository\OAuthClientRepository;
 use Kytario\Model\Repository\PasswordResetTokenRepository;
-use Kytario\Model\Repository\ProjectRepository;
 use Kytario\Model\Repository\SavedViewRepository;
 use Kytario\Model\Repository\StatusRepository;
 use Kytario\Model\Repository\TagRepository;
-use Kytario\Model\Repository\TaskFileRepository;
-use Kytario\Model\Repository\TaskRepository;
-use Kytario\Model\Repository\TaskTagRepository;
-use Kytario\Model\Repository\TaskWatcherRepository;
 use Kytario\Model\Repository\UserRepository;
 use Kytario\Model\Repository\WorkflowRepository;
 use Kytario\Model\Repository\WorkspaceRepository;
@@ -66,19 +66,19 @@ final class OrmServiceProvider extends AbstractServiceProvider
 			InvitationRepository::class,
 			PasswordResetTokenRepository::class,
 			EmailVerificationTokenRepository::class,
-			ProjectRepository::class,
+			CourseRepository::class,
 			WorkflowRepository::class,
 			StatusRepository::class,
-			TaskRepository::class,
-			TaskFileRepository::class,
+			LectureRepository::class,
+			LectureFileRepository::class,
 			TagRepository::class,
-			TaskTagRepository::class,
+			LectureTagRepository::class,
 			SavedViewRepository::class,
 			EventRepository::class,
 			OAuthClientRepository::class,
 			OAuthAuthorizationRepository::class,
 			NotificationRepository::class,
-			TaskWatcherRepository::class,
+			LectureWatcherRepository::class,
 		], true);
 	}
 
@@ -98,19 +98,19 @@ final class OrmServiceProvider extends AbstractServiceProvider
 		$this->addRepository($container, $orm, InvitationRepository::class, Invitation::class);
 		$this->addRepository($container, $orm, PasswordResetTokenRepository::class, PasswordResetToken::class);
 		$this->addRepository($container, $orm, EmailVerificationTokenRepository::class, EmailVerificationToken::class);
-		$this->addRepository($container, $orm, ProjectRepository::class, Project::class);
+		$this->addRepository($container, $orm, CourseRepository::class, Course::class);
 		$this->addRepository($container, $orm, WorkflowRepository::class, Workflow::class);
 		$this->addRepository($container, $orm, StatusRepository::class, Status::class);
-		$this->addRepository($container, $orm, TaskRepository::class, Task::class);
-		$this->addRepository($container, $orm, TaskFileRepository::class, TaskFile::class);
+		$this->addRepository($container, $orm, LectureRepository::class, Lecture::class);
+		$this->addRepository($container, $orm, LectureFileRepository::class, LectureFile::class);
 		$this->addRepository($container, $orm, TagRepository::class, Tag::class);
-		$this->addRepository($container, $orm, TaskTagRepository::class, TaskTag::class);
+		$this->addRepository($container, $orm, LectureTagRepository::class, LectureTag::class);
 		$this->addRepository($container, $orm, SavedViewRepository::class, SavedView::class);
 		$this->addRepository($container, $orm, EventRepository::class, Event::class);
 		$this->addRepository($container, $orm, OAuthClientRepository::class, OAuthClient::class);
 		$this->addRepository($container, $orm, OAuthAuthorizationRepository::class, OAuthAuthorization::class);
 		$this->addRepository($container, $orm, NotificationRepository::class, Notification::class);
-		$this->addRepository($container, $orm, TaskWatcherRepository::class, TaskWatcher::class);
+		$this->addRepository($container, $orm, LectureWatcherRepository::class, LectureWatcher::class);
 	}
 
 	/**

@@ -7,28 +7,28 @@ namespace Kytario\Tests\Service\Provider\Fake;
 use ArrayIterator;
 use DateTimeImmutable;
 use Iterator;
+use Kytario\Model\Entity\Course;
 use Kytario\Model\Entity\Enum\ActorTypeEnum;
 use Kytario\Model\Entity\Enum\EventTypeEnum;
 use Kytario\Model\Entity\Event;
-use Kytario\Model\Entity\Project;
 use Kytario\Model\Entity\User;
 use Kytario\Model\Entity\Workspace;
 use Kytario\Service\Provider\EventProviderInterface;
 
 final class FakeEventProvider implements EventProviderInterface
 {
-	/** @var list<array{type: EventTypeEnum, metadata: array<string,mixed>, taskId: ?int}> */
+	/** @var list<array{type: EventTypeEnum, metadata: array<string,mixed>, lectureId: ?int}> */
 	public array $recorded = [];
 
-	public function recordEvent(User $author, Project $project, EventTypeEnum $type, array $metadata, ?int $taskId = null): Event
+	public function recordEvent(User $author, Course $course, EventTypeEnum $type, array $metadata, ?int $lectureId = null): Event
 	{
-		$this->recorded[] = ['type' => $type, 'metadata' => $metadata, 'taskId' => $taskId];
+		$this->recorded[] = ['type' => $type, 'metadata' => $metadata, 'lectureId' => $lectureId];
 		$event = new Event(
 			author: $author,
 			type: $type,
 			metadata: '{}',
-			project: $project,
-			taskId: $taskId,
+			course: $course,
+			lectureId: $lectureId,
 			actorType: ActorTypeEnum::Human,
 		);
 		$event->id = count($this->recorded);
@@ -47,7 +47,7 @@ final class FakeEventProvider implements EventProviderInterface
 	}
 
 	/** @return Iterator<Event> */
-	public function getEvents(Project $project, int $limit = 100, int $offset = 0): Iterator
+	public function getEvents(Course $course, int $limit = 100, int $offset = 0): Iterator
 	{
 		return new ArrayIterator([]);
 	}
@@ -61,8 +61,8 @@ final class FakeEventProvider implements EventProviderInterface
 	/** @return Iterator<Event> */
 	public function getWorkspaceEventsFiltered(
 		Workspace $workspace,
-		?int $projectId,
-		?int $taskId,
+		?int $courseId,
+		?int $lectureId,
 		?EventTypeEnum $type,
 		int $limit,
 		int $offset,

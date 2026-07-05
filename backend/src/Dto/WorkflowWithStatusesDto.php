@@ -12,8 +12,8 @@ final readonly class WorkflowWithStatusesDto
 	/** @param list<StatusDto> $statuses */
 	public function __construct(
 		public int $id,
-		public int $projectId,
-		public string $projectName,
+		public int $courseId,
+		public string $courseName,
 		public string $name,
 		public array $statuses,
 	) {
@@ -29,8 +29,8 @@ final readonly class WorkflowWithStatusesDto
 
 		return new self(
 			id: $workflow->id,
-			projectId: $workflow->project->id,
-			projectName: $workflow->project->name,
+			courseId: $workflow->course->id,
+			courseName: $workflow->course->name,
 			name: $workflow->name,
 			statuses: $statusDtos,
 		);

@@ -5,23 +5,22 @@ declare(strict_types=1);
 namespace Kytario\Tests\Service\Notification;
 
 use DateTimeImmutable;
+use Kytario\Model\Entity\Course;
 use Kytario\Model\Entity\Enum\ActorTypeEnum;
 use Kytario\Model\Entity\Enum\EventTypeEnum;
-use Kytario\Model\Entity\Enum\NotificationTypeEnum;
 use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
 use Kytario\Model\Entity\Event;
+use Kytario\Model\Entity\Lecture;
 use Kytario\Model\Entity\Notification;
-use Kytario\Model\Entity\Project;
-use Kytario\Model\Entity\Task;
 use Kytario\Model\Entity\User;
 use Kytario\Model\Entity\Workspace;
+use Kytario\Model\Repository\LectureRepository;
 use Kytario\Model\Repository\StatusRepository;
-use Kytario\Model\Repository\TaskRepository;
 use Kytario\Model\Repository\WorkflowRepository;
 use Kytario\Service\Notification\NotificationDispatcher;
 use Kytario\Service\Notification\NotificationDispatcherInterface;
+use Kytario\Service\Provider\LectureWatcherProviderInterface;
 use Kytario\Service\Provider\NotificationProviderInterface;
-use Kytario\Service\Provider\TaskWatcherProviderInterface;
 use Kytario\Tests\Support\Fixture;
 use Kytario\Tests\Support\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -30,80 +29,48 @@ use const JSON_THROW_ON_ERROR;
 #[CoversClass(NotificationDispatcher::class)]
 final class NotificationDispatcherTest extends IntegrationTestCase
 {
-	public function testAssignmentNotifiesAssigneeAndAutoWatches(): void
-	{
-		$owner = Fixture::createUser(name: 'Owner');
-		$workspace = Fixture::createWorkspace($owner);
-		$bob = $this->createMember($workspace, 'Bob');
-		$project = Fixture::createProject($owner, $workspace);
-
-		$task = $this->createTask($owner, $project->id, 'Assigned task', $bob->id);
-
-		self::assertSame([NotificationTypeEnum::TaskAssigned->value], $this->typesFor($bob));
-		self::assertTrue($this->watcherProvider()->isWatching($task, $bob));
-		// The actor (owner) is never notified about their own action.
-		self::assertCount(0, $this->notificationsFor($owner));
-	}
-
 	public function testHumanMoveNotifiesWatchersButAgentMoveIsSuppressed(): void
 	{
 		$owner = Fixture::createUser(name: 'Owner');
 		$workspace = Fixture::createWorkspace($owner);
 		$bob = $this->createMember($workspace, 'Bob');
-		$project = Fixture::createProject($owner, $workspace);
+		$course = Fixture::createCourse($owner, $workspace);
 
-		$task = $this->createTask($owner, $project->id, 'Movable task', $bob->id);
-		$taskId = $task->id;
+		$lecture = $this->createLecture($owner, $course->id, 'Movable lecture');
+		$lectureId = $lecture->id;
+		$this->watcherProvider()->watch($lecture, $bob);
 
 		// An agent-driven move must not ping watchers (agents churn statuses).
-		$this->dispatcher()->onEvent($this->moveEvent($owner, $workspace, $project, $task, ActorTypeEnum::Agent));
-		self::assertCount(0, $this->ofType($bob, NotificationTypeEnum::TaskMoved));
+		$this->dispatcher()->onEvent($this->moveEvent($owner, $workspace, $course, $lecture, ActorTypeEnum::Agent));
+		self::assertCount(0, $this->notificationsFor($bob));
 
 		// A human move pings the watcher (Bob), but not the actor (owner).
-		$secondStatusId = $this->statusIdAtIndex($project->id, 1);
+		$secondStatusId = $this->statusIdAtIndex($course->id, 1);
 		$this->request(
 			'PUT',
-			'/api/tasks/' . $taskId . '/move',
+			'/api/lectures/' . $lectureId . '/move',
 			body: ['statusId' => $secondStatusId, 'position' => 0],
 			authenticatedAs: $owner,
 		);
 
-		self::assertCount(1, $this->ofType($bob, NotificationTypeEnum::TaskMoved));
-		self::assertCount(0, $this->ofType($owner, NotificationTypeEnum::TaskMoved));
+		self::assertCount(1, $this->notificationsFor($bob));
+		self::assertCount(0, $this->notificationsFor($owner));
 	}
 
-	private function moveEvent(User $author, Workspace $workspace, Project $project, Task $task, ActorTypeEnum $actorType): Event
+	private function moveEvent(User $author, Workspace $workspace, Course $course, Lecture $lecture, ActorTypeEnum $actorType): Event
 	{
 		$event = new Event(
 			author: $author,
-			type: EventTypeEnum::TaskMoved,
-			metadata: json_encode(['toStatusName' => 'In Progress', 'taskName' => $task->name], JSON_THROW_ON_ERROR),
-			project: $project,
+			type: EventTypeEnum::LectureMoved,
+			metadata: json_encode(['toStatusName' => 'Learning', 'lectureName' => $lecture->name], JSON_THROW_ON_ERROR),
+			course: $course,
 			workspaceId: $workspace->id,
-			taskId: $task->id,
+			lectureId: $lecture->id,
 			actorType: $actorType,
 		);
 		$event->createdAt = new DateTimeImmutable();
 		$event->updatedAt = new DateTimeImmutable();
 		return $event;
-	}
-
-	/** @return list<Notification> */
-	private function ofType(User $user, NotificationTypeEnum $type): array
-	{
-		return array_values(array_filter(
-			$this->notificationsFor($user),
-			static fn (Notification $n): bool => $n->type === $type,
-		));
-	}
-
-	/** @return list<string> */
-	private function typesFor(User $user): array
-	{
-		return array_map(
-			static fn (Notification $n): string => $n->type->value,
-			$this->notificationsFor($user),
-		);
 	}
 
 	/** @return list<Notification> */
@@ -121,10 +88,10 @@ final class NotificationDispatcherTest extends IntegrationTestCase
 		return $dispatcher;
 	}
 
-	private function watcherProvider(): TaskWatcherProviderInterface
+	private function watcherProvider(): LectureWatcherProviderInterface
 	{
-		$provider = $this->container->get(TaskWatcherProviderInterface::class);
-		assert($provider instanceof TaskWatcherProviderInterface);
+		$provider = $this->container->get(LectureWatcherProviderInterface::class);
+		assert($provider instanceof LectureWatcherProviderInterface);
 		return $provider;
 	}
 
@@ -135,38 +102,30 @@ final class NotificationDispatcherTest extends IntegrationTestCase
 		return $user;
 	}
 
-	private function createTask(User $author, int $projectId, string $name, ?int $assigneeId = null): Task
+	private function createLecture(User $author, int $courseId, string $name): Lecture
 	{
-		$body = ['statusId' => $this->firstStatusId($projectId), 'name' => $name, 'description' => null];
-		if ($assigneeId !== null) {
-			$body['assigneeId'] = $assigneeId;
-		}
+		$body = ['statusId' => $this->statusIdAtIndex($courseId, 0), 'name' => $name, 'description' => null];
 
-		$response = $this->request('POST', '/api/projects/' . $projectId . '/tasks', body: $body, authenticatedAs: $author);
+		$response = $this->request('POST', '/api/courses/' . $courseId . '/lectures', body: $body, authenticatedAs: $author);
 		self::assertSame(200, $response->getStatusCode());
 
-		return $this->task(self::intField($this->jsonBody($response)['id']));
+		return $this->lecture(self::intField($this->jsonBody($response)['id']));
 	}
 
-	private function task(int $taskId): Task
+	private function lecture(int $lectureId): Lecture
 	{
-		$taskRepository = $this->container->get(TaskRepository::class);
-		assert($taskRepository instanceof TaskRepository);
-		$task = $taskRepository->findById($taskId);
-		assert($task instanceof Task);
-		return $task;
+		$lectureRepository = $this->container->get(LectureRepository::class);
+		assert($lectureRepository instanceof LectureRepository);
+		$lecture = $lectureRepository->findById($lectureId);
+		assert($lecture instanceof Lecture);
+		return $lecture;
 	}
 
-	private function firstStatusId(int $projectId): int
-	{
-		return $this->statusIdAtIndex($projectId, 0);
-	}
-
-	private function statusIdAtIndex(int $projectId, int $index): int
+	private function statusIdAtIndex(int $courseId, int $index): int
 	{
 		$workflowRepo = $this->container->get(WorkflowRepository::class);
 		assert($workflowRepo instanceof WorkflowRepository);
-		$workflow = $workflowRepo->findByProject($projectId);
+		$workflow = $workflowRepo->findByCourse($courseId);
 		assert($workflow !== null);
 
 		$statusRepo = $this->container->get(StatusRepository::class);

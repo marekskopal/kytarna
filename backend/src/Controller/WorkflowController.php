@@ -12,7 +12,7 @@ use Kytario\Response\NotAuthorizedResponse;
 use Kytario\Response\NotFoundResponse;
 use Kytario\Route\Routes;
 use Kytario\Service\Auth\PermissionCheckerInterface;
-use Kytario\Service\Provider\ProjectProviderInterface;
+use Kytario\Service\Provider\CourseProviderInterface;
 use Kytario\Service\Provider\StatusProviderInterface;
 use Kytario\Service\Provider\WorkflowProviderInterface;
 use Kytario\Service\Provider\WorkspaceProviderInterface;
@@ -26,7 +26,7 @@ use Psr\Http\Message\ServerRequestInterface;
 final readonly class WorkflowController
 {
 	public function __construct(
-		private ProjectProviderInterface $projectProvider,
+		private CourseProviderInterface $courseProvider,
 		private WorkflowProviderInterface $workflowProvider,
 		private StatusProviderInterface $statusProvider,
 		private WorkspaceProviderInterface $workspaceProvider,
@@ -55,48 +55,48 @@ final readonly class WorkflowController
 		return new JsonResponse($workflows);
 	}
 
-	#[RouteGet(Routes::ProjectWorkflow->value)]
-	public function actionGetWorkflow(ServerRequestInterface $request, int $projectId): ResponseInterface
+	#[RouteGet(Routes::CourseWorkflow->value)]
+	public function actionGetWorkflow(ServerRequestInterface $request, int $courseId): ResponseInterface
 	{
 		$workspace = $this->workspaceProvider->getCurrentWorkspace($this->requestService->getUser($request));
 		if ($workspace === null) {
-			return new NotFoundResponse('Project with id "' . $projectId . '" was not found.');
+			return new NotFoundResponse('Course with id "' . $courseId . '" was not found.');
 		}
 
-		$project = $this->projectProvider->getProject($workspace, $projectId);
-		if ($project === null) {
-			return new NotFoundResponse('Project with id "' . $projectId . '" was not found.');
+		$course = $this->courseProvider->getCourse($workspace, $courseId);
+		if ($course === null) {
+			return new NotFoundResponse('Course with id "' . $courseId . '" was not found.');
 		}
 
-		$workflow = $this->workflowProvider->getWorkflowByProject($project);
+		$workflow = $this->workflowProvider->getWorkflowByCourse($course);
 		if ($workflow === null) {
-			return new NotFoundResponse('Project has no workflow.');
+			return new NotFoundResponse('Course has no workflow.');
 		}
 
 		return new JsonResponse(WorkflowDto::fromEntity($workflow));
 	}
 
-	#[RoutePut(Routes::ProjectWorkflow->value)]
-	public function actionPutWorkflow(ServerRequestInterface $request, int $projectId): ResponseInterface
+	#[RoutePut(Routes::CourseWorkflow->value)]
+	public function actionPutWorkflow(ServerRequestInterface $request, int $courseId): ResponseInterface
 	{
 		$user = $this->requestService->getUser($request);
 		$workspace = $this->workspaceProvider->getCurrentWorkspace($user);
 		if ($workspace === null) {
-			return new NotFoundResponse('Project with id "' . $projectId . '" was not found.');
+			return new NotFoundResponse('Course with id "' . $courseId . '" was not found.');
 		}
 
-		$project = $this->projectProvider->getProject($workspace, $projectId);
-		if ($project === null) {
-			return new NotFoundResponse('Project with id "' . $projectId . '" was not found.');
+		$course = $this->courseProvider->getCourse($workspace, $courseId);
+		if ($course === null) {
+			return new NotFoundResponse('Course with id "' . $courseId . '" was not found.');
 		}
 
-		if (!$this->permissionChecker->canManageProjects($user, $workspace)) {
+		if (!$this->permissionChecker->canManageCourses($user, $workspace)) {
 			return new NotAuthorizedResponse('You do not have permission to update the workflow.');
 		}
 
-		$workflow = $this->workflowProvider->getWorkflowByProject($project);
+		$workflow = $this->workflowProvider->getWorkflowByCourse($course);
 		if ($workflow === null) {
-			return new NotFoundResponse('Project has no workflow.');
+			return new NotFoundResponse('Course has no workflow.');
 		}
 
 		$dto = $this->requestService->getRequestBodyDto($request, WorkflowUpdateDto::class);

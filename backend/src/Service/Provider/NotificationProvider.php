@@ -22,8 +22,8 @@ final readonly class NotificationProvider implements NotificationProviderInterfa
 		User $recipient,
 		int $workspaceId,
 		NotificationTypeEnum $type,
-		?int $taskId,
-		?int $projectId,
+		?int $lectureId,
+		?int $courseId,
 		?int $actorId,
 		?string $actorName,
 		array $data,
@@ -33,8 +33,8 @@ final readonly class NotificationProvider implements NotificationProviderInterfa
 			user: $recipient,
 			workspaceId: $workspaceId,
 			type: $type,
-			taskId: $taskId,
-			projectId: $projectId,
+			lectureId: $lectureId,
+			courseId: $courseId,
 			actorId: $actorId,
 			actorName: $actorName,
 			data: $data === [] ? null : json_encode($data, JSON_THROW_ON_ERROR),
@@ -94,11 +94,5 @@ final readonly class NotificationProvider implements NotificationProviderInterfa
 	public function delete(Notification $notification): void
 	{
 		$this->notificationRepository->delete($notification);
-	}
-
-	public function dueReminderExistsToday(int $userId, int $taskId, NotificationTypeEnum $type): bool
-	{
-		$startOfDay = new DateTimeImmutable('today midnight');
-		return $this->notificationRepository->existsSince($userId, $taskId, $type, $startOfDay->format('Y-m-d H:i:s'));
 	}
 }

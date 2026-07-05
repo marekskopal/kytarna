@@ -13,8 +13,8 @@ final readonly class EventDto
 	public function __construct(
 		public int $id,
 		public ?string $authorName,
-		public ?int $taskId,
-		public ?string $taskCode,
+		public ?int $lectureId,
+		public ?string $lectureCode,
 		public string $type,
 		public array $metadata,
 		public string $actorType,
@@ -24,7 +24,7 @@ final readonly class EventDto
 	) {
 	}
 
-	public static function fromEntity(Event $event, ?string $taskCode = null): self
+	public static function fromEntity(Event $event, ?string $lectureCode = null): self
 	{
 		/** @var array<string,mixed> $metadata */
 		$metadata = json_decode($event->metadata, true) ?? [];
@@ -32,8 +32,8 @@ final readonly class EventDto
 		return new self(
 			id: $event->id,
 			authorName: $event->author?->name,
-			taskId: $event->taskId,
-			taskCode: $taskCode,
+			lectureId: $event->lectureId,
+			lectureCode: $lectureCode,
 			type: $event->type->value,
 			metadata: $metadata,
 			actorType: $event->actorType->value,

@@ -6,8 +6,6 @@ namespace Kytario\Tests\Controller;
 
 use Kytario\Controller\WorkspaceController;
 use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
-use Kytario\Model\Repository\StatusRepository;
-use Kytario\Model\Repository\WorkflowRepository;
 use Kytario\OAuth\AuthorizationServiceInterface;
 use Kytario\OAuth\ClientServiceInterface;
 use Kytario\Tests\Support\Fixture;
@@ -137,36 +135,18 @@ final class WorkspaceControllerTest extends IntegrationTestCase
 		self::assertSame(422, $response->getStatusCode());
 	}
 
-	public function testRemovingMemberUnassignsTheirTasks(): void
+	public function testRemovingMemberRevokesTheirAccess(): void
 	{
 		$owner = Fixture::createUser(email: 'owner@example.com');
 		$member = Fixture::createUser(email: 'member@example.com');
 		$workspace = Fixture::createWorkspace($owner);
 		Fixture::addMember($workspace, $member, WorkspaceRoleEnum::Member);
-		$project = Fixture::createProject($owner, $workspace);
-
-		$create = $this->request(
-			'POST',
-			'/api/projects/' . $project->id . '/tasks',
-			body: [
-				'statusId' => $this->firstStatusId($project->id),
-				'name' => 'Member task',
-				'description' => null,
-				'assigneeId' => $member->id,
-			],
-			authenticatedAs: $owner,
-		);
-		self::assertSame(200, $create->getStatusCode());
-		$body = $this->jsonBody($create);
-		self::assertSame($member->id, $body['assigneeId']);
-		$code = self::stringField($body['code']);
 
 		$remove = $this->request('DELETE', '/api/workspaces/' . $workspace->id . '/members/' . $member->id, authenticatedAs: $owner);
 		self::assertSame(200, $remove->getStatusCode());
 
-		$get = $this->request('GET', '/api/tasks/' . $code, authenticatedAs: $owner);
-		self::assertSame(200, $get->getStatusCode());
-		self::assertNull($this->jsonBody($get)['assigneeId']);
+		$list = $this->request('GET', '/api/workspaces/' . $workspace->id . '/members', authenticatedAs: $member);
+		self::assertSame(401, $list->getStatusCode());
 	}
 
 	public function testRevokeMcpClientKillsItsTokens(): void
@@ -210,20 +190,5 @@ final class WorkspaceControllerTest extends IntegrationTestCase
 		} catch (\RuntimeException $e) {
 			self::assertSame('Access token has been revoked', $e->getMessage());
 		}
-	}
-
-	private function firstStatusId(int $projectId): int
-	{
-		$workflowRepo = $this->container->get(WorkflowRepository::class);
-		assert($workflowRepo instanceof WorkflowRepository);
-		$workflow = $workflowRepo->findByProject($projectId);
-		assert($workflow !== null);
-
-		$statusRepo = $this->container->get(StatusRepository::class);
-		assert($statusRepo instanceof StatusRepository);
-		foreach ($statusRepo->findByWorkflow($workflow->id) as $status) {
-			return $status->id;
-		}
-		self::fail('No statuses found');
 	}
 }

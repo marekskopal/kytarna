@@ -18,8 +18,8 @@ final class StatusControllerTest extends IntegrationTestCase
 	{
 		$owner = Fixture::createUser();
 		$workspace = Fixture::createWorkspace($owner);
-		$project = Fixture::createProject($owner, $workspace);
-		$workflowId = $this->workflowId($project->id);
+		$course = Fixture::createCourse($owner, $workspace);
+		$workflowId = $this->workflowId($course->id);
 
 		// Create a new status
 		$create = $this->request(
@@ -69,8 +69,8 @@ final class StatusControllerTest extends IntegrationTestCase
 	{
 		$owner = Fixture::createUser();
 		$workspace = Fixture::createWorkspace($owner);
-		$project = Fixture::createProject($owner, $workspace);
-		$workflowId = $this->workflowId($project->id);
+		$course = Fixture::createCourse($owner, $workspace);
+		$workflowId = $this->workflowId($course->id);
 
 		// Default workflow has 3 statuses. Delete two; the third must remain.
 		$statuses = $this->statusIdsFor($workflowId);
@@ -81,11 +81,11 @@ final class StatusControllerTest extends IntegrationTestCase
 		self::assertSame(422, $delete->getStatusCode());
 	}
 
-	private function workflowId(int $projectId): int
+	private function workflowId(int $courseId): int
 	{
 		$workflowRepo = $this->container->get(WorkflowRepository::class);
 		assert($workflowRepo instanceof WorkflowRepository);
-		$workflow = $workflowRepo->findByProject($projectId);
+		$workflow = $workflowRepo->findByCourse($courseId);
 		assert($workflow !== null);
 		return $workflow->id;
 	}

@@ -101,7 +101,7 @@ final readonly class PermissionChecker implements PermissionCheckerInterface
 			|| $actorMembership->role === WorkspaceRoleEnum::Admin;
 	}
 
-	public function canManageProjects(User $user, Workspace $workspace): bool
+	public function canManageCourses(User $user, Workspace $workspace): bool
 	{
 		if ($this->isSystemAdmin($user)) {
 			return true;
@@ -116,7 +116,7 @@ final readonly class PermissionChecker implements PermissionCheckerInterface
 			|| $membership->role === WorkspaceRoleEnum::Admin;
 	}
 
-	public function canManageTasks(User $user, Workspace $workspace): bool
+	public function canManageLectures(User $user, Workspace $workspace): bool
 	{
 		if ($this->isSystemAdmin($user)) {
 			return true;

@@ -1,2 +1,2 @@
 SHELL=/bin/sh
-0 * * * *  php /app/bin/console notifications:due-tick
+# No scheduled jobs at the moment.

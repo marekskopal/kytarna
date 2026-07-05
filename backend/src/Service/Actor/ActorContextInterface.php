@@ -11,7 +11,7 @@ use Kytario\Model\Entity\Enum\ActorTypeEnum;
  *
  * Defaults to {@see ActorTypeEnum::Human}. MCP entrypoints flip this to
  * {@see ActorTypeEnum::Agent} and attach the OAuth client identifier so that
- * downstream providers (tasks, events) can tag agent-originated rows.
+ * downstream providers (lectures, events) can tag agent-originated rows.
  */
 interface ActorContextInterface
 {

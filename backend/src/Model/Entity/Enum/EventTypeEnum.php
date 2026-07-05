@@ -6,9 +6,9 @@ namespace Kytario\Model\Entity\Enum;
 
 enum EventTypeEnum: string
 {
-	case ProjectCreated = 'ProjectCreated';
-	case ProjectUpdated = 'ProjectUpdated';
-	case ProjectDeleted = 'ProjectDeleted';
+	case CourseCreated = 'CourseCreated';
+	case CourseUpdated = 'CourseUpdated';
+	case CourseDeleted = 'CourseDeleted';
 
 	case WorkflowUpdated = 'WorkflowUpdated';
 
@@ -17,14 +17,13 @@ enum EventTypeEnum: string
 	case StatusDeleted = 'StatusDeleted';
 	case StatusMoved = 'StatusMoved';
 
-	case TaskCreated = 'TaskCreated';
-	case TaskUpdated = 'TaskUpdated';
-	case TaskAssigned = 'TaskAssigned';
-	case TaskDeleted = 'TaskDeleted';
-	case TaskMoved = 'TaskMoved';
-	case TaskArchived = 'TaskArchived';
-	case TaskUnarchived = 'TaskUnarchived';
-	case TasksBulkUpdated = 'TasksBulkUpdated';
+	case LectureCreated = 'LectureCreated';
+	case LectureUpdated = 'LectureUpdated';
+	case LectureDeleted = 'LectureDeleted';
+	case LectureMoved = 'LectureMoved';
+	case LectureArchived = 'LectureArchived';
+	case LectureUnarchived = 'LectureUnarchived';
+	case LecturesBulkUpdated = 'LecturesBulkUpdated';
 
 	case MemberRoleChanged = 'MemberRoleChanged';
 	case OwnershipTransferred = 'OwnershipTransferred';
@@ -32,13 +31,13 @@ enum EventTypeEnum: string
 	case AdminDeletedUser = 'AdminDeletedUser';
 	case AdminChangedSystemRole = 'AdminChangedSystemRole';
 
-	case TaskFileAdded = 'TaskFileAdded';
-	case TaskFileDeleted = 'TaskFileDeleted';
+	case LectureFileAdded = 'LectureFileAdded';
+	case LectureFileDeleted = 'LectureFileDeleted';
 
 	case TagCreated = 'TagCreated';
 	case TagUpdated = 'TagUpdated';
 	case TagDeleted = 'TagDeleted';
-	case TaskTagsUpdated = 'TaskTagsUpdated';
+	case LectureTagsUpdated = 'LectureTagsUpdated';
 
 	case UserSelfDeleted = 'UserSelfDeleted';
 }

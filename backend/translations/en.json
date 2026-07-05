@@ -3,13 +3,7 @@
         "subject": {
             "invitation": "You've been invited to {workspace} on Kytario",
             "passwordReset": "Reset your Kytario password",
-            "emailVerification": "Verify your Kytario email",
-            "notification": {
-                "TaskMention": "{actor} mentioned you on {task}",
-                "TaskAssigned": "{actor} assigned {task} to you",
-                "DueSoon": "{task} is due tomorrow",
-                "DueToday": "{task} is due today"
-            }
+            "emailVerification": "Verify your Kytario email"
         },
         "invitation": {
             "title": "You've been invited to Kytario",
@@ -31,20 +25,11 @@
         "emailVerification": {
             "title": "Verify your email",
             "greeting": "Hi {name},",
-            "intro": "Welcome to Kytario! Please confirm this is your email address so you can start inviting teammates and connecting AI agents.",
+            "intro": "Welcome to Kytario! Please confirm this is your email address so you can start building your guitar courses and connecting AI agents.",
             "button": "Verify email",
             "fallback": "Or copy this link into your browser:",
             "expires": "This link expires in 24 hours.",
             "ignore": "If you didn't sign up for Kytario, you can safely ignore this email."
-        },
-        "notification": {
-            "greeting": "Hi {name},",
-            "TaskMention": "{actor} mentioned you on {task} — {taskName}.",
-            "TaskAssigned": "{actor} assigned the task {task} ({taskName}) to you.",
-            "DueSoon": "The task {task} ({taskName}) is due tomorrow.",
-            "DueToday": "The task {task} ({taskName}) is due today.",
-            "button": "Open task",
-            "fallback": "Or copy this link into your browser:"
         }
     }
 }

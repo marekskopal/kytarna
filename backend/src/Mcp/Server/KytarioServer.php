@@ -24,19 +24,21 @@ final readonly class KytarioServer
 				basePath: dirname(__DIR__, 2),
 				scanDirs: ['Mcp/Tool'],
 			)
-			->setServerInfo(name: 'kytario', version: '1.0.0', description: 'Kytario MCP server — projects and tasks')
+			->setServerInfo(name: 'kytario', version: '1.0.0', description: 'Kytario MCP server — guitar courses and lectures')
 			->setInstructions(
-				'This server manages projects and tasks for the authenticated user. '
-				. 'Typical flow when creating tasks from an external source: '
-				. '1) call find_project_by_name to check if the target project exists; '
-				. '2) if it does not, call create_project (a default "To Do → In Progress → Done" workflow is created automatically); '
-				. '3) call create_task for each item (defaults to the Start status, e.g. "To Do"). '
-				. 'Typical flow when working on a task: '
-				. '1) call find_task_by_name to locate the task; '
-				. '2) call move_task with statusName="In Progress" to start it; '
-				. '3) when finished, call move_task with statusName="Done". '
-				. 'Use list_statuses to discover the column names for a given project — workflows are per-project and customizable. '
-				. 'Tasks also support tags, file attachments, watchers, and an audit log (list_events).',
+				'This server manages the authenticated user\'s guitar learning content. '
+				. 'A workspace contains courses (e.g. "Fingerstyle Basics"), and each course contains lectures '
+				. '(songs, exercises, techniques) that move through a per-course practice workflow. '
+				. 'Typical flow when adding lectures from an external source: '
+				. '1) call find_course_by_name to check if the target course exists; '
+				. '2) if it does not, call create_course (a default "To Learn → Learning → Mastered" workflow is created automatically); '
+				. '3) call create_lecture for each item (defaults to the Start status, e.g. "To Learn"). '
+				. 'Typical flow when practising a lecture: '
+				. '1) call find_lecture_by_name to locate the lecture; '
+				. '2) call move_lecture with statusName="Learning" to start practising it; '
+				. '3) once it is mastered, call move_lecture with statusName="Mastered". '
+				. 'Use list_statuses to discover the column names for a given course — workflows are per-course and customizable. '
+				. 'Lectures also support tags, file attachments, watchers, and an audit log (list_events).',
 			);
 
 		if ($sessionStore !== null) {

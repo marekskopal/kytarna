@@ -271,9 +271,9 @@ final class CurrentUserControllerTest extends IntegrationTestCase
 		$workspaceNames = array_column($memberships, 'workspaceName');
 		self::assertContains('Acme', $workspaceNames);
 		self::assertArrayHasKey('events', $body);
-		self::assertArrayHasKey('taskComments', $body);
-		self::assertArrayHasKey('taskFiles', $body);
-		self::assertArrayHasKey('taskRelationsCreated', $body);
+		self::assertArrayHasKey('lectureComments', $body);
+		self::assertArrayHasKey('lectureFiles', $body);
+		self::assertArrayHasKey('lectureRelationsCreated', $body);
 		self::assertArrayHasKey('oauthClients', $body);
 		self::assertArrayHasKey('invitationsSent', $body);
 	}

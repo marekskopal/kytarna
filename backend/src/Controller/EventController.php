@@ -9,13 +9,13 @@ use Kytario\Dto\WorkspaceAgentStatsDto;
 use Kytario\Model\Entity\Enum\ActorTypeEnum;
 use Kytario\Model\Entity\Enum\EventTypeEnum;
 use Kytario\Model\Entity\Event;
-use Kytario\Model\Repository\TaskRepository;
+use Kytario\Model\Repository\LectureRepository;
 use Kytario\Response\NotAuthorizedResponse;
 use Kytario\Response\NotFoundResponse;
 use Kytario\Route\Routes;
 use Kytario\Service\Auth\PermissionCheckerInterface;
+use Kytario\Service\Provider\CourseProviderInterface;
 use Kytario\Service\Provider\EventProviderInterface;
-use Kytario\Service\Provider\ProjectProviderInterface;
 use Kytario\Service\Provider\WorkspaceProviderInterface;
 use Kytario\Service\Request\RequestServiceInterface;
 use Laminas\Diactoros\Response\JsonResponse;
@@ -26,38 +26,41 @@ use Psr\Http\Message\ServerRequestInterface;
 final readonly class EventController
 {
 	public function __construct(
-		private ProjectProviderInterface $projectProvider,
+		private CourseProviderInterface $courseProvider,
 		private EventProviderInterface $eventProvider,
 		private WorkspaceProviderInterface $workspaceProvider,
 		private PermissionCheckerInterface $permissionChecker,
 		private RequestServiceInterface $requestService,
-		private TaskRepository $taskRepository,
+		private LectureRepository $lectureRepository,
 	) {
 	}
 
-	#[RouteGet(Routes::ProjectEvents->value)]
-	public function actionGetEvents(ServerRequestInterface $request, int $projectId): ResponseInterface
+	#[RouteGet(Routes::CourseEvents->value)]
+	public function actionGetEvents(ServerRequestInterface $request, int $courseId): ResponseInterface
 	{
 		$user = $this->requestService->getUser($request);
 		$workspace = $this->workspaceProvider->getCurrentWorkspace($user);
 		if ($workspace === null) {
-			return new NotFoundResponse('Project with id "' . $projectId . '" was not found.');
+			return new NotFoundResponse('Course with id "' . $courseId . '" was not found.');
 		}
 
-		$project = $this->projectProvider->getProject($workspace, $projectId);
-		if ($project === null) {
-			return new NotFoundResponse('Project with id "' . $projectId . '" was not found.');
+		$course = $this->courseProvider->getCourse($workspace, $courseId);
+		if ($course === null) {
+			return new NotFoundResponse('Course with id "' . $courseId . '" was not found.');
 		}
 
 		$query = $request->getQueryParams();
 		$limit = is_numeric($query['limit'] ?? null) ? (int) $query['limit'] : 100;
 		$offset = is_numeric($query['offset'] ?? null) ? (int) $query['offset'] : 0;
 
-		$eventEntities = iterator_to_array($this->eventProvider->getEvents($project, $limit, $offset), false);
-		$codeByTaskId = $this->buildTaskCodeMap($eventEntities);
+		$eventEntities = iterator_to_array($this->eventProvider->getEvents($course, $limit, $offset), false);
+		$codeByLectureId = $this->buildLectureCodeMap($eventEntities);
 
 		$events = array_map(
-			static fn (Event $e): EventDto => EventDto::fromEntity($e, $e->taskId !== null ? ($codeByTaskId[$e->taskId] ?? null) : null),
+			static fn (Event $e): EventDto => EventDto::fromEntity(
+				$e,
+				$e->lectureId !== null ? ($codeByLectureId[$e->lectureId] ?? null) : null,
+			),
 			$eventEntities,
 		);
 
@@ -83,10 +86,13 @@ final readonly class EventController
 		$actorType = $this->parseActorType(is_string($query['actorType'] ?? null) ? $query['actorType'] : null);
 
 		$eventEntities = iterator_to_array($this->eventProvider->getWorkspaceEvents($workspace, $actorType, $limit, $offset), false);
-		$codeByTaskId = $this->buildTaskCodeMap($eventEntities);
+		$codeByLectureId = $this->buildLectureCodeMap($eventEntities);
 
 		$events = array_map(
-			static fn (Event $e): EventDto => EventDto::fromEntity($e, $e->taskId !== null ? ($codeByTaskId[$e->taskId] ?? null) : null),
+			static fn (Event $e): EventDto => EventDto::fromEntity(
+				$e,
+				$e->lectureId !== null ? ($codeByLectureId[$e->lectureId] ?? null) : null,
+			),
 			$eventEntities,
 		);
 
@@ -97,21 +103,21 @@ final readonly class EventController
 	 * @param list<Event> $events
 	 * @return array<int, string>
 	 */
-	private function buildTaskCodeMap(array $events): array
+	private function buildLectureCodeMap(array $events): array
 	{
-		$taskIds = [];
+		$lectureIds = [];
 		foreach ($events as $event) {
-			if ($event->taskId !== null) {
-				$taskIds[$event->taskId] = true;
+			if ($event->lectureId !== null) {
+				$lectureIds[$event->lectureId] = true;
 			}
 		}
-		if ($taskIds === []) {
+		if ($lectureIds === []) {
 			return [];
 		}
 
 		$map = [];
-		foreach ($this->taskRepository->findByIds(array_keys($taskIds)) as $task) {
-			$map[$task->id] = $task->project->prefix . '-' . $task->sequenceNumber;
+		foreach ($this->lectureRepository->findByIds(array_keys($lectureIds)) as $lecture) {
+			$map[$lecture->id] = $lecture->course->prefix . '-' . $lecture->sequenceNumber;
 		}
 		return $map;
 	}
@@ -132,8 +138,8 @@ final readonly class EventController
 		$since = time() - 86400;
 
 		$eventsLast24h = $this->eventProvider->countWorkspaceEventsSince($workspace, $since);
-		$tasksCreatedLast24h = $this->eventProvider->countWorkspaceEventsOfTypeSince($workspace, EventTypeEnum::TaskCreated, $since);
-		$tasksClosedLast24h = $this->eventProvider->countWorkspaceEventsOfTypeSince($workspace, EventTypeEnum::TaskMoved, $since);
+		$lecturesCreatedLast24h = $this->eventProvider->countWorkspaceEventsOfTypeSince($workspace, EventTypeEnum::LectureCreated, $since);
+		$lecturesClosedLast24h = $this->eventProvider->countWorkspaceEventsOfTypeSince($workspace, EventTypeEnum::LectureMoved, $since);
 
 		$activeAgentNames = [];
 		foreach ($this->eventProvider->getWorkspaceEvents($workspace, ActorTypeEnum::Agent, 500, 0) as $event) {
@@ -148,8 +154,8 @@ final readonly class EventController
 
 		return new JsonResponse(new WorkspaceAgentStatsDto(
 			eventsLast24h: $eventsLast24h,
-			tasksCreatedLast24h: $tasksCreatedLast24h,
-			tasksClosedLast24h: $tasksClosedLast24h,
+			lecturesCreatedLast24h: $lecturesCreatedLast24h,
+			lecturesClosedLast24h: $lecturesClosedLast24h,
 			activeAgents: count($activeAgentNames),
 			activeAgentNames: $activeAgentNames,
 		));

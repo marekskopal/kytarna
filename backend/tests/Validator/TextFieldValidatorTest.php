@@ -14,16 +14,16 @@ final class TextFieldValidatorTest extends TestCase
 {
 	public function testValidNameIsTrimmed(): void
 	{
-		self::assertSame('My Task', TextFieldValidator::validateName('  My Task  ', 'Task'));
+		self::assertSame('My Lecture', TextFieldValidator::validateName('  My Lecture  ', 'Lecture'));
 	}
 
 	public function testEmptyNameIsRejected(): void
 	{
 		try {
-			TextFieldValidator::validateName('   ', 'Task');
+			TextFieldValidator::validateName('   ', 'Lecture');
 			self::fail('Expected RuntimeException.');
 		} catch (RuntimeException $e) {
-			self::assertSame('Task name is required.', $e->getMessage());
+			self::assertSame('Lecture name is required.', $e->getMessage());
 			self::assertSame(422, $e->getCode());
 		}
 	}
@@ -31,10 +31,10 @@ final class TextFieldValidatorTest extends TestCase
 	public function testOverlongNameIsRejected(): void
 	{
 		try {
-			TextFieldValidator::validateName(str_repeat('a', TextFieldValidator::MaxNameLength + 1), 'Project');
+			TextFieldValidator::validateName(str_repeat('a', TextFieldValidator::MaxNameLength + 1), 'Course');
 			self::fail('Expected RuntimeException.');
 		} catch (RuntimeException $e) {
-			self::assertStringContainsString('Project name is too long', $e->getMessage());
+			self::assertStringContainsString('Course name is too long', $e->getMessage());
 			self::assertSame(422, $e->getCode());
 		}
 	}
@@ -42,7 +42,7 @@ final class TextFieldValidatorTest extends TestCase
 	public function testMaxLengthNameIsAccepted(): void
 	{
 		$name = str_repeat('a', TextFieldValidator::MaxNameLength);
-		self::assertSame($name, TextFieldValidator::validateName($name, 'Task'));
+		self::assertSame($name, TextFieldValidator::validateName($name, 'Lecture'));
 	}
 
 	public function testNullDescriptionIsAccepted(): void

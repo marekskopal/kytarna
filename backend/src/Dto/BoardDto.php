@@ -8,9 +8,9 @@ final readonly class BoardDto
 {
 	/**
 	 * @param list<StatusDto> $statuses
-	 * @param list<TaskDto> $tasks
+	 * @param list<LectureDto> $lectures
 	 */
-	public function __construct(public ProjectDto $project, public WorkflowDto $workflow, public array $statuses, public array $tasks,)
+	public function __construct(public CourseDto $course, public WorkflowDto $workflow, public array $statuses, public array $lectures,)
 	{
 	}
 }

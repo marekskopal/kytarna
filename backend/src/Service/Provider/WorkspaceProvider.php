@@ -24,7 +24,6 @@ final readonly class WorkspaceProvider implements WorkspaceProviderInterface
 		private WorkspaceUserRepository $workspaceUserRepository,
 		private UserRepository $userRepository,
 		private EventProviderInterface $eventProvider,
-		private TaskProviderInterface $taskProvider,
 	) {
 	}
 
@@ -108,7 +107,6 @@ final readonly class WorkspaceProvider implements WorkspaceProviderInterface
 
 	public function removeMember(WorkspaceUser $membership): void
 	{
-		$this->taskProvider->unassignTasksForUserInWorkspace($membership->user, $membership->workspace);
 		$this->workspaceUserRepository->delete($membership);
 	}
 

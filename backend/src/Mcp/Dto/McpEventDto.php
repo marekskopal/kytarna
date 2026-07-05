@@ -12,9 +12,9 @@ final readonly class McpEventDto
 	public function __construct(
 		public int $id,
 		public string $type,
-		public ?int $projectId,
+		public ?int $courseId,
 		public ?int $workspaceId,
-		public ?int $taskId,
+		public ?int $lectureId,
 		public string $actorType,
 		public ?int $authorId,
 		public ?string $authorName,
@@ -33,9 +33,9 @@ final readonly class McpEventDto
 		return new self(
 			id: $event->id,
 			type: $event->type->value,
-			projectId: $event->project?->id,
+			courseId: $event->course?->id,
 			workspaceId: $event->workspaceId,
-			taskId: $event->taskId,
+			lectureId: $event->lectureId,
 			actorType: $event->actorType->value,
 			authorId: $event->author?->id,
 			authorName: $event->author?->name,

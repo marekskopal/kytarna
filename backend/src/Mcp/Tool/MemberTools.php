@@ -52,7 +52,7 @@ final readonly class MemberTools
 
 	/**
 	 * Find a workspace member by email (case-insensitive exact match). Returns null if not found.
-	 * Use this to resolve a human-readable email into a userId before calling update_task or create_task.
+	 * Use this to resolve a human-readable email into a userId before calling update_lecture or create_lecture.
 	 *
 	 * @param string $email Email to look up
 	 */

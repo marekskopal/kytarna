@@ -14,10 +14,10 @@ use MarekSkopal\ORM\Repository\AbstractRepository;
 final class EventRepository extends AbstractRepository
 {
 	/** @return Iterator<Event> */
-	public function findByProject(int $projectId, int $limit = 100, int $offset = 0): Iterator
+	public function findByCourse(int $courseId, int $limit = 100, int $offset = 0): Iterator
 	{
 		return $this->select()
-			->where(['project_id' => $projectId])
+			->where(['course_id' => $courseId])
 			->orderBy('id', 'DESC')
 			->limit($limit)
 			->offset($offset)
@@ -59,14 +59,14 @@ final class EventRepository extends AbstractRepository
 	}
 
 	/**
-	 * Workspace-scoped event lookup with optional project/task/type narrowing, newest first.
+	 * Workspace-scoped event lookup with optional course/lecture/type narrowing, newest first.
 	 *
 	 * @return Iterator<Event>
 	 */
 	public function findByWorkspaceFiltered(
 		int $workspaceId,
-		?int $projectId,
-		?int $taskId,
+		?int $courseId,
+		?int $lectureId,
 		?EventTypeEnum $type,
 		int $limit,
 		int $offset,
@@ -74,12 +74,12 @@ final class EventRepository extends AbstractRepository
 		$select = $this->select()
 			->where(['workspace_id' => $workspaceId]);
 
-		if ($projectId !== null) {
-			$select->where(['project_id' => $projectId]);
+		if ($courseId !== null) {
+			$select->where(['course_id' => $courseId]);
 		}
 
-		if ($taskId !== null) {
-			$select->where(['task_id' => $taskId]);
+		if ($lectureId !== null) {
+			$select->where(['lecture_id' => $lectureId]);
 		}
 
 		if ($type !== null) {

@@ -16,17 +16,17 @@ final class WorkflowRepository extends AbstractRepository
 		return $this->findOne(['id' => $workflowId]);
 	}
 
-	public function findByProject(int $projectId): ?Workflow
+	public function findByCourse(int $courseId): ?Workflow
 	{
-		return $this->findOne(['project_id' => $projectId]);
+		return $this->findOne(['course_id' => $courseId]);
 	}
 
 	/** @return Iterator<Workflow> */
 	public function findByWorkspace(int $workspaceId): Iterator
 	{
 		return $this->select()
-			->where(['project.workspace_id' => $workspaceId])
-			->orderBy('project.name', 'ASC')
+			->where(['course.workspace_id' => $workspaceId])
+			->orderBy('course.name', 'ASC')
 			->orderBy('id', 'ASC')
 			->fetchAll();
 	}

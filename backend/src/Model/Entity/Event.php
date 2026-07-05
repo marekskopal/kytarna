@@ -23,12 +23,12 @@ class Event extends AEntity
 		public EventTypeEnum $type,
 		#[Column(type: Type::Text)]
 		public string $metadata,
-		#[ManyToOne(entityClass: Project::class, nullable: true)]
-		public readonly ?Project $project = null,
+		#[ManyToOne(entityClass: Course::class, nullable: true)]
+		public readonly ?Course $course = null,
 		#[Column(type: Type::Int, size: 11, nullable: true)]
 		public ?int $workspaceId = null,
 		#[Column(type: Type::Int, nullable: true)]
-		public ?int $taskId = null,
+		public ?int $lectureId = null,
 		#[ColumnEnum(enum: ActorTypeEnum::class, default: ActorTypeEnum::Human)]
 		public ActorTypeEnum $actorType = ActorTypeEnum::Human,
 		#[Column(type: Type::String, size: 128, nullable: true)]

@@ -8,7 +8,7 @@ use Kytario\Dto\EmailVerificationQueueDto;
 use Kytario\Jobs\Message\ReceivedMessageInterface;
 use Kytario\Service\Email\EmailFactory;
 use Kytario\Service\Email\MailerFactory;
-use Kytario\Service\Task\TaskServiceInterface;
+use Kytario\Service\Payload\PayloadServiceInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
@@ -16,7 +16,7 @@ final readonly class EmailVerificationHandler implements JobHandler
 {
 	public function __construct(
 		private LoggerInterface $logger,
-		private TaskServiceInterface $taskService,
+		private PayloadServiceInterface $payloadService,
 		private MailerFactory $mailerFactory,
 		private EmailFactory $emailFactory,
 	) {
@@ -24,7 +24,7 @@ final readonly class EmailVerificationHandler implements JobHandler
 
 	public function handle(ReceivedMessageInterface $message): void
 	{
-		$payload = $this->taskService->getPayloadDto($message, EmailVerificationQueueDto::class);
+		$payload = $this->payloadService->getPayloadDto($message, EmailVerificationQueueDto::class);
 
 		$email = $this->emailFactory->createEmailVerificationEmail(
 			recipientEmail: $payload->recipientEmail,

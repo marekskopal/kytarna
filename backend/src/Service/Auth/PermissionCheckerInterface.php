@@ -23,9 +23,9 @@ interface PermissionCheckerInterface
 
 	public function canChangeRole(User $actor, Workspace $workspace, WorkspaceUser $target, WorkspaceRoleEnum $newRole): bool;
 
-	public function canManageProjects(User $user, Workspace $workspace): bool;
+	public function canManageCourses(User $user, Workspace $workspace): bool;
 
-	public function canManageTasks(User $user, Workspace $workspace): bool;
+	public function canManageLectures(User $user, Workspace $workspace): bool;
 
 	public function canManageTags(User $user, Workspace $workspace): bool;
 

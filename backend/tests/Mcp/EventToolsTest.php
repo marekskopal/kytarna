@@ -6,7 +6,7 @@ namespace Kytario\Tests\Mcp;
 
 use Kytario\Mcp\McpUserContextInterface;
 use Kytario\Mcp\Tool\EventTools;
-use Kytario\Mcp\Tool\TaskTools;
+use Kytario\Mcp\Tool\LectureTools;
 use Kytario\Model\Entity\User;
 use Kytario\Service\Actor\ActorContextInterface;
 use Kytario\Tests\Support\AppHarness;
@@ -22,77 +22,77 @@ final class EventToolsTest extends IntegrationTestCase
 	{
 		$user = Fixture::createUser();
 		$workspace = Fixture::createWorkspace($user);
-		$project = Fixture::createProject($user, $workspace);
+		$course = Fixture::createCourse($user, $workspace);
 
-		[$taskTools, $eventTools] = $this->bootAs($user);
+		[$lectureTools, $eventTools] = $this->bootAs($user);
 
-		$task = $taskTools->createTask(projectId: $project->id, name: 'Ship it');
-		$taskTools->moveTask(taskId: $task->id, statusName: 'Done');
+		$lecture = $lectureTools->createLecture(courseId: $course->id, name: 'Ship it');
+		$lectureTools->moveLecture(lectureId: $lecture->id, statusName: 'Mastered');
 
 		$events = $eventTools->listEvents()->events;
 		self::assertNotEmpty($events);
 		// Newest first: the move is the most recent event.
-		self::assertSame('TaskMoved', $events[0]->type);
-		self::assertSame($task->id, $events[0]->taskId);
+		self::assertSame('LectureMoved', $events[0]->type);
+		self::assertSame($lecture->id, $events[0]->lectureId);
 		$meta = $events[0]->metadata;
 		self::assertIsArray($meta);
-		self::assertSame('Done', $meta['toStatusName']);
+		self::assertSame('Mastered', $meta['toStatusName']);
 	}
 
 	public function testListEventsFiltersByType(): void
 	{
 		$user = Fixture::createUser();
 		$workspace = Fixture::createWorkspace($user);
-		$project = Fixture::createProject($user, $workspace);
+		$course = Fixture::createCourse($user, $workspace);
 
-		[$taskTools, $eventTools] = $this->bootAs($user);
+		[$lectureTools, $eventTools] = $this->bootAs($user);
 
-		$task = $taskTools->createTask(projectId: $project->id, name: 'Filter me');
-		$taskTools->moveTask(taskId: $task->id, statusName: 'Done');
+		$lecture = $lectureTools->createLecture(courseId: $course->id, name: 'Filter me');
+		$lectureTools->moveLecture(lectureId: $lecture->id, statusName: 'Mastered');
 
-		$moved = $eventTools->listEvents(type: 'TaskMoved')->events;
+		$moved = $eventTools->listEvents(type: 'LectureMoved')->events;
 		self::assertCount(1, $moved);
-		self::assertSame('TaskMoved', $moved[0]->type);
-		self::assertSame($task->id, $moved[0]->taskId);
+		self::assertSame('LectureMoved', $moved[0]->type);
+		self::assertSame($lecture->id, $moved[0]->lectureId);
 		$meta = $moved[0]->metadata;
 		self::assertIsArray($meta);
-		self::assertSame('Done', $meta['toStatusName']);
+		self::assertSame('Mastered', $meta['toStatusName']);
 	}
 
-	public function testListTaskEventsScopesToSingleTaskByCode(): void
+	public function testListLectureEventsScopesToSingleLectureByCode(): void
 	{
 		$user = Fixture::createUser();
 		$workspace = Fixture::createWorkspace($user);
-		$project = Fixture::createProject($user, $workspace);
+		$course = Fixture::createCourse($user, $workspace);
 
-		[$taskTools, $eventTools] = $this->bootAs($user);
+		[$lectureTools, $eventTools] = $this->bootAs($user);
 
-		$kept = $taskTools->createTask(projectId: $project->id, name: 'Keep');
-		$other = $taskTools->createTask(projectId: $project->id, name: 'Other');
-		$taskTools->moveTask(taskId: $other->id, statusName: 'Done');
+		$kept = $lectureTools->createLecture(courseId: $course->id, name: 'Keep');
+		$other = $lectureTools->createLecture(courseId: $course->id, name: 'Other');
+		$lectureTools->moveLecture(lectureId: $other->id, statusName: 'Mastered');
 
-		$events = $eventTools->listTaskEvents(taskId: $kept->code)->events;
+		$events = $eventTools->listLectureEvents(lectureId: $kept->code)->events;
 		self::assertNotEmpty($events);
 		foreach ($events as $event) {
-			self::assertSame($kept->id, $event->taskId);
+			self::assertSame($kept->id, $event->lectureId);
 		}
 	}
 
-	public function testArchivingRecordsTaskArchivedEvent(): void
+	public function testArchivingRecordsLectureArchivedEvent(): void
 	{
 		$user = Fixture::createUser();
 		$workspace = Fixture::createWorkspace($user);
-		$project = Fixture::createProject($user, $workspace);
+		$course = Fixture::createCourse($user, $workspace);
 
-		[$taskTools, $eventTools] = $this->bootAs($user);
+		[$lectureTools, $eventTools] = $this->bootAs($user);
 
-		$task = $taskTools->createTask(projectId: $project->id, name: 'Archive me');
-		// Exercises the events.type ENUM accepting TaskArchived (see AddTaskArchivedEventTypes migration).
-		$taskTools->archiveTask(taskId: $task->id);
+		$lecture = $lectureTools->createLecture(courseId: $course->id, name: 'Archive me');
+		// Exercises the events.type ENUM accepting LectureArchived (see AddLectureArchivedEventTypes migration).
+		$lectureTools->archiveLecture(lectureId: $lecture->id);
 
-		$events = $eventTools->listEvents(taskId: $task->id, type: 'TaskArchived')->events;
+		$events = $eventTools->listEvents(lectureId: $lecture->id, type: 'LectureArchived')->events;
 		self::assertCount(1, $events);
-		self::assertSame($task->id, $events[0]->taskId);
+		self::assertSame($lecture->id, $events[0]->lectureId);
 	}
 
 	public function testUnknownEventTypeThrows(): void
@@ -106,7 +106,7 @@ final class EventToolsTest extends IntegrationTestCase
 		$eventTools->listEvents(type: 'NotARealType');
 	}
 
-	/** @return array{0: TaskTools, 1: EventTools} */
+	/** @return array{0: LectureTools, 1: EventTools} */
 	private function bootAs(User $user): array
 	{
 		$ctx = AppHarness::container()->get(McpUserContextInterface::class);
@@ -117,12 +117,12 @@ final class EventToolsTest extends IntegrationTestCase
 		assert($actor instanceof ActorContextInterface);
 		$actor->setAgent('cli', 'Test CLI');
 
-		$taskTools = AppHarness::container()->get(TaskTools::class);
-		assert($taskTools instanceof TaskTools);
+		$lectureTools = AppHarness::container()->get(LectureTools::class);
+		assert($lectureTools instanceof LectureTools);
 
 		$eventTools = AppHarness::container()->get(EventTools::class);
 		assert($eventTools instanceof EventTools);
 
-		return [$taskTools, $eventTools];
+		return [$lectureTools, $eventTools];
 	}
 }

@@ -8,8 +8,8 @@ use DateTimeImmutable;
 use Kytario\Model\Entity\User;
 use Kytario\Model\Repository\EventRepository;
 use Kytario\Model\Repository\InvitationRepository;
+use Kytario\Model\Repository\LectureFileRepository;
 use Kytario\Model\Repository\OAuthClientRepository;
-use Kytario\Model\Repository\TaskFileRepository;
 use Kytario\Model\Repository\WorkspaceUserRepository;
 use const DATE_ATOM;
 use const JSON_THROW_ON_ERROR;
@@ -20,7 +20,7 @@ final readonly class UserDataExportService implements UserDataExportServiceInter
 		private WorkspaceUserRepository $workspaceUserRepository,
 		private InvitationRepository $invitationRepository,
 		private EventRepository $eventRepository,
-		private TaskFileRepository $taskFileRepository,
+		private LectureFileRepository $lectureFileRepository,
 		private OAuthClientRepository $oAuthClientRepository,
 	) {
 	}
@@ -45,7 +45,7 @@ final readonly class UserDataExportService implements UserDataExportServiceInter
 			'workspaceMemberships' => $this->collectMemberships($user->id),
 			'invitationsSent' => $this->collectInvitations($user->id),
 			'events' => $this->collectEvents($user->id),
-			'taskFiles' => $this->collectFiles($user->id),
+			'lectureFiles' => $this->collectFiles($user->id),
 			'oauthClients' => $this->collectOAuthClients($user->id),
 		];
 	}
@@ -94,9 +94,9 @@ final readonly class UserDataExportService implements UserDataExportServiceInter
 				'id' => $event->id,
 				'type' => $event->type->value,
 				'metadata' => $metadata,
-				'projectId' => $event->project?->id,
+				'courseId' => $event->course?->id,
 				'workspaceId' => $event->workspaceId,
-				'taskId' => $event->taskId,
+				'lectureId' => $event->lectureId,
 				'actorType' => $event->actorType->value,
 				'mcpClientId' => $event->mcpClientId,
 				'mcpClientName' => $event->mcpClientName,
@@ -110,10 +110,10 @@ final readonly class UserDataExportService implements UserDataExportServiceInter
 	private function collectFiles(int $userId): array
 	{
 		$out = [];
-		foreach ($this->taskFileRepository->findByUploader($userId) as $file) {
+		foreach ($this->lectureFileRepository->findByUploader($userId) as $file) {
 			$out[] = [
 				'id' => $file->id,
-				'taskId' => $file->task->id,
+				'lectureId' => $file->lecture->id,
 				'filename' => $file->filename,
 				'mimeType' => $file->mimeType,
 				'size' => $file->size,

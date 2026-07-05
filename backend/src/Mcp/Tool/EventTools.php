@@ -10,7 +10,7 @@ use Kytario\Mcp\McpUserContextInterface;
 use Kytario\Model\Entity\Enum\EventTypeEnum;
 use Kytario\Model\Entity\Workspace;
 use Kytario\Service\Provider\EventProviderInterface;
-use Kytario\Service\Provider\TaskCodeResolverInterface;
+use Kytario\Service\Provider\LectureCodeResolverInterface;
 use Kytario\Service\Provider\WorkspaceProviderInterface;
 use Mcp\Capability\Attribute\McpTool;
 use RuntimeException;
@@ -24,69 +24,69 @@ final readonly class EventTools
 		private McpUserContextInterface $userContext,
 		private WorkspaceProviderInterface $workspaceProvider,
 		private EventProviderInterface $eventProvider,
-		private TaskCodeResolverInterface $taskCodeResolver,
+		private LectureCodeResolverInterface $lectureCodeResolver,
 	) {
 	}
 
 	/**
-	 * List audit-log events for the current workspace, newest first. Optionally narrow by project,
-	 * task (numeric id), or event type. Use this to answer "when did X happen" — e.g. the latest
-	 * `TaskMoved` event's createdAt tells you when a task entered its current status.
+	 * List audit-log events for the current workspace, newest first. Optionally narrow by course,
+	 * lecture (numeric id), or event type. Use this to answer "when did X happen" — e.g. the latest
+	 * `LectureMoved` event's createdAt tells you when a lecture entered its current status.
 	 *
-	 * @param int|null $projectId Optional: only events for this project
-	 * @param int|null $taskId Optional: only events for this task (numeric id)
-	 * @param string|null $type Optional: only events of this type (e.g. "TaskMoved", "TaskCreated")
+	 * @param int|null $courseId Optional: only events for this course
+	 * @param int|null $lectureId Optional: only events for this lecture (numeric id)
+	 * @param string|null $type Optional: only events of this type (e.g. "LectureMoved", "LectureCreated")
 	 * @param int $limit Max events to return (default 50, max 200)
 	 * @param int $offset Pagination offset
 	 */
 	#[McpTool(
 		name: 'list_events',
-		description: 'List workspace audit-log events (newest first), optionally filtered by projectId, taskId, or type. '
-			. 'Event createdAt is ISO 8601; TaskMoved metadata carries toStatusId/toStatusName so you can tell when a task entered a status.',
+		description: 'List workspace audit-log events (newest first), optionally filtered by courseId, lectureId, or type. '
+			. 'Event createdAt is ISO 8601; LectureMoved metadata carries toStatusId/toStatusName so you can tell when a lecture entered a status.',
 	)]
 	public function listEvents(
-		?int $projectId = null,
-		?int $taskId = null,
+		?int $courseId = null,
+		?int $lectureId = null,
 		?string $type = null,
 		int $limit = self::DefaultLimit,
 		int $offset = 0,
 	): McpEventListDto {
 		$workspace = $this->requireWorkspace();
 
-		return $this->collect($workspace, $projectId, $taskId, $this->resolveType($type), $limit, $offset);
+		return $this->collect($workspace, $courseId, $lectureId, $this->resolveType($type), $limit, $offset);
 	}
 
 	/**
-	 * List events for a single task by numeric id or code (e.g. "U-45"), newest first. Convenience
-	 * wrapper over list_events that accepts a task code.
+	 * List events for a single lecture by numeric id or code (e.g. "U-45"), newest first. Convenience
+	 * wrapper over list_events that accepts a lecture code.
 	 *
-	 * @param int|string $taskId Task numeric id or code (e.g. "U-45")
+	 * @param int|string $lectureId Lecture numeric id or code (e.g. "U-45")
 	 * @param string|null $type Optional: only events of this type
 	 * @param int $limit Max events to return (default 50, max 200)
 	 * @param int $offset Pagination offset
 	 */
 	#[McpTool(
-		name: 'list_task_events',
-		description: 'List audit-log events for a single task (by id or code), newest first. Optionally filtered by type.',
+		name: 'list_lecture_events',
+		description: 'List audit-log events for a single lecture (by id or code), newest first. Optionally filtered by type.',
 	)]
-	public function listTaskEvents(
-		int|string $taskId,
+	public function listLectureEvents(
+		int|string $lectureId,
 		?string $type = null,
 		int $limit = self::DefaultLimit,
 		int $offset = 0,
 	): McpEventListDto {
 		$workspace = $this->requireWorkspace();
 
-		$task = $this->taskCodeResolver->resolveForUser($this->userContext->getUser(), (string) $taskId)
-			?? throw new RuntimeException(sprintf('Task "%s" not found.', (string) $taskId));
+		$lecture = $this->lectureCodeResolver->resolveForUser($this->userContext->getUser(), (string) $lectureId)
+			?? throw new RuntimeException(sprintf('Lecture "%s" not found.', (string) $lectureId));
 
-		return $this->collect($workspace, null, $task->id, $this->resolveType($type), $limit, $offset);
+		return $this->collect($workspace, null, $lecture->id, $this->resolveType($type), $limit, $offset);
 	}
 
 	private function collect(
 		Workspace $workspace,
-		?int $projectId,
-		?int $taskId,
+		?int $courseId,
+		?int $lectureId,
 		?EventTypeEnum $type,
 		int $limit,
 		int $offset,
@@ -97,8 +97,8 @@ final readonly class EventTools
 		$events = [];
 		foreach ($this->eventProvider->getWorkspaceEventsFiltered(
 			$workspace,
-			$projectId,
-			$taskId,
+			$courseId,
+			$lectureId,
 			$type,
 			$boundedLimit,
 			$boundedOffset,

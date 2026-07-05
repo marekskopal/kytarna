@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Kytario\Tests\Support;
 
 use Firebase\JWT\JWT;
+use Kytario\Model\Entity\Course;
 use Kytario\Model\Entity\Enum\LocaleEnum;
 use Kytario\Model\Entity\Enum\SystemRoleEnum;
 use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
-use Kytario\Model\Entity\Project;
 use Kytario\Model\Entity\User;
 use Kytario\Model\Entity\Workspace;
 use Kytario\Model\Repository\UserRepository;
 use Kytario\Service\Authentication\AuthenticationServiceInterface;
-use Kytario\Service\Provider\ProjectProviderInterface;
+use Kytario\Service\Provider\CourseProviderInterface;
 use Kytario\Service\Provider\UserProviderInterface;
 use Kytario\Service\Provider\WorkspaceProviderInterface;
 
@@ -67,11 +67,11 @@ final class Fixture
 		$provider->addMember($workspace, $user, $role);
 	}
 
-	public static function createProject(User $author, Workspace $workspace, string $name = 'Test Project'): Project
+	public static function createCourse(User $author, Workspace $workspace, string $name = 'Test Course'): Course
 	{
-		$provider = AppHarness::container()->get(ProjectProviderInterface::class);
-		assert($provider instanceof ProjectProviderInterface);
-		return $provider->createProject($author, $workspace, $name, null);
+		$provider = AppHarness::container()->get(CourseProviderInterface::class);
+		assert($provider instanceof CourseProviderInterface);
+		return $provider->createCourse($author, $workspace, $name, null);
 	}
 
 	public static function accessTokenFor(User $user): string

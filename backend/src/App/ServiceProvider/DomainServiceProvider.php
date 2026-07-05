@@ -23,38 +23,40 @@ use Kytario\Service\Auth\UserDataExportService;
 use Kytario\Service\Auth\UserDataExportServiceInterface;
 use Kytario\Service\Notification\NotificationDispatcher;
 use Kytario\Service\Notification\NotificationDispatcherInterface;
-use Kytario\Service\Provider\BulkTaskProvider;
-use Kytario\Service\Provider\BulkTaskProviderInterface;
+use Kytario\Service\Payload\PayloadService;
+use Kytario\Service\Payload\PayloadServiceInterface;
+use Kytario\Service\Provider\BulkLectureProvider;
+use Kytario\Service\Provider\BulkLectureProviderInterface;
+use Kytario\Service\Provider\CoursePrefixGenerator;
+use Kytario\Service\Provider\CoursePrefixGeneratorInterface;
+use Kytario\Service\Provider\CourseProvider;
+use Kytario\Service\Provider\CourseProviderInterface;
 use Kytario\Service\Provider\EmailVerificationProvider;
 use Kytario\Service\Provider\EmailVerificationProviderInterface;
 use Kytario\Service\Provider\EventProvider;
 use Kytario\Service\Provider\EventProviderInterface;
 use Kytario\Service\Provider\InvitationProvider;
 use Kytario\Service\Provider\InvitationProviderInterface;
+use Kytario\Service\Provider\LectureCodeResolver;
+use Kytario\Service\Provider\LectureCodeResolverInterface;
+use Kytario\Service\Provider\LectureFileProvider;
+use Kytario\Service\Provider\LectureFileProviderInterface;
+use Kytario\Service\Provider\LectureProvider;
+use Kytario\Service\Provider\LectureProviderInterface;
+use Kytario\Service\Provider\LectureTagProvider;
+use Kytario\Service\Provider\LectureTagProviderInterface;
+use Kytario\Service\Provider\LectureWatcherProvider;
+use Kytario\Service\Provider\LectureWatcherProviderInterface;
 use Kytario\Service\Provider\NotificationProvider;
 use Kytario\Service\Provider\NotificationProviderInterface;
 use Kytario\Service\Provider\PasswordResetProvider;
 use Kytario\Service\Provider\PasswordResetProviderInterface;
-use Kytario\Service\Provider\ProjectPrefixGenerator;
-use Kytario\Service\Provider\ProjectPrefixGeneratorInterface;
-use Kytario\Service\Provider\ProjectProvider;
-use Kytario\Service\Provider\ProjectProviderInterface;
 use Kytario\Service\Provider\SavedViewProvider;
 use Kytario\Service\Provider\SavedViewProviderInterface;
 use Kytario\Service\Provider\StatusProvider;
 use Kytario\Service\Provider\StatusProviderInterface;
 use Kytario\Service\Provider\TagProvider;
 use Kytario\Service\Provider\TagProviderInterface;
-use Kytario\Service\Provider\TaskCodeResolver;
-use Kytario\Service\Provider\TaskCodeResolverInterface;
-use Kytario\Service\Provider\TaskFileProvider;
-use Kytario\Service\Provider\TaskFileProviderInterface;
-use Kytario\Service\Provider\TaskProvider;
-use Kytario\Service\Provider\TaskProviderInterface;
-use Kytario\Service\Provider\TaskTagProvider;
-use Kytario\Service\Provider\TaskTagProviderInterface;
-use Kytario\Service\Provider\TaskWatcherProvider;
-use Kytario\Service\Provider\TaskWatcherProviderInterface;
 use Kytario\Service\Provider\UserProvider;
 use Kytario\Service\Provider\UserProviderInterface;
 use Kytario\Service\Provider\WorkflowProvider;
@@ -65,8 +67,6 @@ use Kytario\Service\Provider\WorkspaceProvider;
 use Kytario\Service\Provider\WorkspaceProviderInterface;
 use Kytario\Service\Request\RequestService;
 use Kytario\Service\Request\RequestServiceInterface;
-use Kytario\Service\Task\TaskService;
-use Kytario\Service\Task\TaskServiceInterface;
 use Kytario\Service\Translator\TranslatorService;
 use Kytario\Service\Translator\TranslatorServiceInterface;
 use League\Container\ServiceProvider\AbstractServiceProvider;
@@ -88,16 +88,16 @@ final class DomainServiceProvider extends AbstractServiceProvider
 			InvitationProviderInterface::class,
 			PasswordResetProviderInterface::class,
 			EmailVerificationProviderInterface::class,
-			ProjectProviderInterface::class,
-			ProjectPrefixGeneratorInterface::class,
+			CourseProviderInterface::class,
+			CoursePrefixGeneratorInterface::class,
 			WorkflowProviderInterface::class,
 			StatusProviderInterface::class,
-			TaskProviderInterface::class,
-			BulkTaskProviderInterface::class,
-			TaskCodeResolverInterface::class,
-			TaskFileProviderInterface::class,
+			LectureProviderInterface::class,
+			BulkLectureProviderInterface::class,
+			LectureCodeResolverInterface::class,
+			LectureFileProviderInterface::class,
 			TagProviderInterface::class,
-			TaskTagProviderInterface::class,
+			LectureTagProviderInterface::class,
 			SavedViewProviderInterface::class,
 			EventProviderInterface::class,
 			McpUserContextInterface::class,
@@ -106,8 +106,8 @@ final class DomainServiceProvider extends AbstractServiceProvider
 			ClientServiceInterface::class,
 			AuthorizationServiceInterface::class,
 			TranslatorServiceInterface::class,
-			TaskServiceInterface::class,
-			TaskWatcherProviderInterface::class,
+			PayloadServiceInterface::class,
+			LectureWatcherProviderInterface::class,
 			NotificationProviderInterface::class,
 			NotificationDispatcherInterface::class,
 		], true);
@@ -130,18 +130,18 @@ final class DomainServiceProvider extends AbstractServiceProvider
 		$c->add(InvitationProviderInterface::class, InvitationProvider::class);
 		$c->add(PasswordResetProviderInterface::class, PasswordResetProvider::class);
 		$c->add(EmailVerificationProviderInterface::class, EmailVerificationProvider::class);
-		$c->add(TaskServiceInterface::class, TaskService::class);
+		$c->add(PayloadServiceInterface::class, PayloadService::class);
 		$c->add(EventProviderInterface::class, EventProvider::class);
 		$c->add(StatusProviderInterface::class, StatusProvider::class);
 		$c->add(WorkflowProviderInterface::class, WorkflowProvider::class);
-		$c->add(ProjectProviderInterface::class, ProjectProvider::class);
-		$c->add(ProjectPrefixGeneratorInterface::class, ProjectPrefixGenerator::class);
-		$c->add(TaskProviderInterface::class, TaskProvider::class);
-		$c->add(BulkTaskProviderInterface::class, BulkTaskProvider::class);
-		$c->add(TaskCodeResolverInterface::class, TaskCodeResolver::class);
-		$c->add(TaskFileProviderInterface::class, TaskFileProvider::class);
+		$c->add(CourseProviderInterface::class, CourseProvider::class);
+		$c->add(CoursePrefixGeneratorInterface::class, CoursePrefixGenerator::class);
+		$c->add(LectureProviderInterface::class, LectureProvider::class);
+		$c->add(BulkLectureProviderInterface::class, BulkLectureProvider::class);
+		$c->add(LectureCodeResolverInterface::class, LectureCodeResolver::class);
+		$c->add(LectureFileProviderInterface::class, LectureFileProvider::class);
 		$c->add(TagProviderInterface::class, TagProvider::class);
-		$c->add(TaskTagProviderInterface::class, TaskTagProvider::class);
+		$c->add(LectureTagProviderInterface::class, LectureTagProvider::class);
 		$c->add(SavedViewProviderInterface::class, SavedViewProvider::class);
 		$c->add(McpUserContextInterface::class, McpUserContext::class);
 		$c->add(ActorContextInterface::class, ActorContext::class);
@@ -153,7 +153,7 @@ final class DomainServiceProvider extends AbstractServiceProvider
 		$c->add(ClientServiceInterface::class, ClientService::class);
 		$c->add(AuthorizationServiceInterface::class, AuthorizationService::class);
 
-		$c->add(TaskWatcherProviderInterface::class, TaskWatcherProvider::class);
+		$c->add(LectureWatcherProviderInterface::class, LectureWatcherProvider::class);
 		$c->add(NotificationProviderInterface::class, NotificationProvider::class);
 		$c->add(NotificationDispatcherInterface::class, NotificationDispatcher::class);
 	}

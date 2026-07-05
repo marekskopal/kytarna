@@ -13,8 +13,8 @@ final readonly class NotificationDto
 	public function __construct(
 		public int $id,
 		public string $type,
-		public ?int $taskId,
-		public ?int $projectId,
+		public ?int $lectureId,
+		public ?int $courseId,
 		public ?int $actorId,
 		public ?string $actorName,
 		public array $data,
@@ -36,8 +36,8 @@ final readonly class NotificationDto
 		return new self(
 			id: $notification->id,
 			type: $notification->type->value,
-			taskId: $notification->taskId,
-			projectId: $notification->projectId,
+			lectureId: $notification->lectureId,
+			courseId: $notification->courseId,
 			actorId: $notification->actorId,
 			actorName: $notification->actorName,
 			data: $data,

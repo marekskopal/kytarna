@@ -3,13 +3,7 @@
         "subject": {
             "invitation": "Pozvánka do pracovního prostoru {workspace} v Kytario",
             "passwordReset": "Obnovení hesla pro Kytario",
-            "emailVerification": "Ověřte svůj e-mail pro Kytario",
-            "notification": {
-                "TaskMention": "{actor} vás zmínil(a) v {task}",
-                "TaskAssigned": "{actor} vám přiřadil(a) úkol {task}",
-                "DueSoon": "Úkol {task} má termín zítra",
-                "DueToday": "Úkol {task} má termín dnes"
-            }
+            "emailVerification": "Ověřte svůj e-mail pro Kytario"
         },
         "invitation": {
             "title": "Pozvánka do Kytario",
@@ -31,20 +25,11 @@
         "emailVerification": {
             "title": "Ověření e-mailu",
             "greeting": "Dobrý den, {name},",
-            "intro": "Vítejte v Kytario! Potvrďte prosím, že vám patří tato e-mailová adresa, abyste mohli zvát kolegy a propojovat AI agenty.",
+            "intro": "Vítejte v Kytario! Potvrďte prosím, že vám patří tato e-mailová adresa, abyste mohli začít budovat své kytarové kurzy a propojovat AI agenty.",
             "button": "Ověřit e-mail",
             "fallback": "Nebo zkopírujte tento odkaz do prohlížeče:",
             "expires": "Tento odkaz vyprší za 24 hodin.",
             "ignore": "Pokud jste si Kytario nezakládal(a), můžete tento e-mail bez obav ignorovat."
-        },
-        "notification": {
-            "greeting": "Dobrý den, {name},",
-            "TaskMention": "{actor} vás zmínil(a) v {task} — {taskName}.",
-            "TaskAssigned": "{actor} vám přiřadil(a) úkol {task} ({taskName}).",
-            "DueSoon": "Úkol {task} ({taskName}) má termín zítra.",
-            "DueToday": "Úkol {task} ({taskName}) má termín dnes.",
-            "button": "Otevřít úkol",
-            "fallback": "Nebo zkopírujte tento odkaz do prohlížeče:"
         }
     }
 }

@@ -22,16 +22,16 @@ final class NotificationControllerTest extends IntegrationTestCase
 		$owner = Fixture::createUser(name: 'Owner');
 		$workspace = Fixture::createWorkspace($owner);
 		$bob = $this->createMember($workspace, 'Bob');
-		$project = Fixture::createProject($owner, $workspace);
+		$course = Fixture::createCourse($owner, $workspace);
 
-		// Assigning a task to Bob creates a TaskAssigned notification for him.
-		$this->createTask($owner, $project->id, 'Task one', $bob->id);
+		// Moving a lecture watched by Bob creates a LectureMoved notification for him.
+		$this->createWatchedAndMovedLecture($owner, $bob, $course->id, 'Lecture one');
 
 		$list = $this->jsonBody($this->request('GET', '/api/notifications', authenticatedAs: $bob));
 		self::assertSame(1, $list['unreadCount']);
 		$items = $this->items($list);
 		self::assertCount(1, $items);
-		self::assertSame('TaskAssigned', $items[0]['type']);
+		self::assertSame('LectureMoved', $items[0]['type']);
 		self::assertFalse($items[0]['read']);
 		$notificationId = self::intField($items[0]['id']);
 
@@ -41,7 +41,7 @@ final class NotificationControllerTest extends IntegrationTestCase
 		self::assertTrue($read['read']);
 		self::assertSame(0, $this->unreadCount($bob));
 
-		$this->createTask($owner, $project->id, 'Task two', $bob->id);
+		$this->createWatchedAndMovedLecture($owner, $bob, $course->id, 'Lecture two');
 		self::assertSame(1, $this->unreadCount($bob));
 
 		$marked = $this->jsonBody($this->request('POST', '/api/notifications/read-all', authenticatedAs: $bob));
@@ -58,12 +58,12 @@ final class NotificationControllerTest extends IntegrationTestCase
 		$owner = Fixture::createUser(name: 'Owner');
 		$workspace = Fixture::createWorkspace($owner);
 		$bob = $this->createMember($workspace, 'Bob');
-		$project = Fixture::createProject($owner, $workspace);
-		$this->createTask($owner, $project->id, 'Task', $bob->id);
+		$course = Fixture::createCourse($owner, $workspace);
+		$this->createWatchedAndMovedLecture($owner, $bob, $course->id, 'Lecture');
 
 		$items = $this->items($this->jsonBody($this->request('GET', '/api/notifications', authenticatedAs: $bob)));
 		$this->request('POST', '/api/notifications/' . self::intField($items[0]['id']) . '/read', authenticatedAs: $bob);
-		$this->createTask($owner, $project->id, 'Task two', $bob->id);
+		$this->createWatchedAndMovedLecture($owner, $bob, $course->id, 'Lecture two');
 
 		$unread = $this->items($this->jsonBody($this->request('GET', '/api/notifications?unreadOnly=1', authenticatedAs: $bob)));
 		self::assertCount(1, $unread);
@@ -74,8 +74,8 @@ final class NotificationControllerTest extends IntegrationTestCase
 		$owner = Fixture::createUser(name: 'Owner');
 		$workspace = Fixture::createWorkspace($owner);
 		$bob = $this->createMember($workspace, 'Bob');
-		$project = Fixture::createProject($owner, $workspace);
-		$this->createTask($owner, $project->id, 'Task', $bob->id);
+		$course = Fixture::createCourse($owner, $workspace);
+		$this->createWatchedAndMovedLecture($owner, $bob, $course->id, 'Lecture');
 
 		$items = $this->items($this->jsonBody($this->request('GET', '/api/notifications', authenticatedAs: $bob)));
 		$id = self::intField($items[0]['id']);
@@ -114,35 +114,48 @@ final class NotificationControllerTest extends IntegrationTestCase
 		return $user;
 	}
 
-	private function createTask(User $author, int $projectId, string $name, int $assigneeId): void
+	/** Creates a lecture, lets the watcher start watching it, then the author moves it — the only notifying flow. */
+	private function createWatchedAndMovedLecture(User $author, User $watcher, int $courseId, string $name): void
 	{
 		$response = $this->request(
 			'POST',
-			'/api/projects/' . $projectId . '/tasks',
+			'/api/courses/' . $courseId . '/lectures',
 			body: [
-				'statusId' => $this->firstStatusId($projectId),
+				'statusId' => $this->statusIdAtIndex($courseId, 0),
 				'name' => $name,
 				'description' => null,
-				'assigneeId' => $assigneeId,
 			],
 			authenticatedAs: $author,
 		);
 		self::assertSame(200, $response->getStatusCode());
+		$lectureId = self::intField($this->jsonBody($response)['id']);
+
+		$watch = $this->request('POST', '/api/lectures/' . $lectureId . '/watch', authenticatedAs: $watcher);
+		self::assertSame(200, $watch->getStatusCode());
+
+		$move = $this->request(
+			'PUT',
+			'/api/lectures/' . $lectureId . '/move',
+			body: ['statusId' => $this->statusIdAtIndex($courseId, 1), 'position' => 0],
+			authenticatedAs: $author,
+		);
+		self::assertSame(200, $move->getStatusCode());
 	}
 
-	private function firstStatusId(int $projectId): int
+	private function statusIdAtIndex(int $courseId, int $index): int
 	{
 		$workflowRepo = $this->container->get(WorkflowRepository::class);
 		assert($workflowRepo instanceof WorkflowRepository);
-		$workflow = $workflowRepo->findByProject($projectId);
+		$workflow = $workflowRepo->findByCourse($courseId);
 		assert($workflow !== null);
 
 		$statusRepo = $this->container->get(StatusRepository::class);
 		assert($statusRepo instanceof StatusRepository);
+		$ids = [];
 		foreach ($statusRepo->findByWorkflow($workflow->id) as $status) {
-			return $status->id;
+			$ids[] = $status->id;
 		}
-
-		self::fail('Project has no statuses.');
+		self::assertArrayHasKey($index, $ids);
+		return $ids[$index];
 	}
 }

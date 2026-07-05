@@ -32,7 +32,7 @@ final class PermissionCheckerTest extends TestCase
 		self::assertTrue($checker->isSystemAdmin($admin));
 		self::assertTrue($checker->canManageWorkspace($admin, $ws));
 		self::assertTrue($checker->canManageMembers($admin, $ws));
-		self::assertTrue($checker->canManageProjects($admin, $ws));
+		self::assertTrue($checker->canManageCourses($admin, $ws));
 		self::assertTrue($checker->canViewWorkspace($admin, $ws));
 	}
 
@@ -51,8 +51,8 @@ final class PermissionCheckerTest extends TestCase
 
 		self::assertTrue($checker->canManageWorkspace($owner, $ws));
 		self::assertFalse($checker->canManageWorkspace($member, $ws));
-		self::assertFalse($checker->canManageProjects($member, $ws));
-		self::assertTrue($checker->canManageTasks($member, $ws));
+		self::assertFalse($checker->canManageCourses($member, $ws));
+		self::assertTrue($checker->canManageLectures($member, $ws));
 	}
 
 	public function testAdminCanManageMembersButNotWorkspaceItself(): void
@@ -70,7 +70,7 @@ final class PermissionCheckerTest extends TestCase
 
 		self::assertFalse($checker->canManageWorkspace($admin, $ws));
 		self::assertTrue($checker->canManageMembers($admin, $ws));
-		self::assertTrue($checker->canManageProjects($admin, $ws));
+		self::assertTrue($checker->canManageCourses($admin, $ws));
 	}
 
 	public function testAdminCannotRemoveOwnerOrAnotherAdmin(): void

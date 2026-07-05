@@ -85,7 +85,7 @@ final readonly class TagProvider implements TagProviderInterface
 			['tagId' => $tag->id, 'name' => $tag->name],
 		);
 
-		// task_tags rows cascade away via DB FK on delete.
+		// lecture_tags rows cascade away via DB FK on delete.
 		$this->tagRepository->delete($tag);
 	}
 

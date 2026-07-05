@@ -7,8 +7,8 @@ namespace Kytario\Service\Provider;
 use RuntimeException;
 
 /**
- * Type-coerces untyped payload values from JSON / JSON-RPC input for BulkTaskProvider.
- * Lives outside BulkTaskProvider purely to keep that class's cognitive complexity under threshold.
+ * Type-coerces untyped payload values from JSON / JSON-RPC input for BulkLectureProvider.
+ * Lives outside BulkLectureProvider purely to keep that class's cognitive complexity under threshold.
  */
 final readonly class BulkPayloadParser
 {

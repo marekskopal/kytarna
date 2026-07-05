@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Kytario\Mcp\Tool;
 
+use Kytario\Mcp\Dto\McpLectureDto;
 use Kytario\Mcp\Dto\McpTagDto;
 use Kytario\Mcp\Dto\McpTagListDto;
-use Kytario\Mcp\Dto\McpTaskDto;
 use Kytario\Mcp\McpUserContextInterface;
 use Kytario\Model\Entity\Enum\EventTypeEnum;
+use Kytario\Model\Entity\Lecture;
 use Kytario\Model\Entity\Tag;
-use Kytario\Model\Entity\Task;
 use Kytario\Model\Entity\Workspace;
 use Kytario\Service\Auth\PermissionCheckerInterface;
 use Kytario\Service\Provider\EventProviderInterface;
+use Kytario\Service\Provider\LectureProviderInterface;
+use Kytario\Service\Provider\LectureTagProviderInterface;
 use Kytario\Service\Provider\TagProviderInterface;
-use Kytario\Service\Provider\TaskProviderInterface;
-use Kytario\Service\Provider\TaskTagProviderInterface;
 use Kytario\Service\Provider\WorkspaceProviderInterface;
 use Mcp\Capability\Attribute\McpTool;
 use RuntimeException;
@@ -26,8 +26,8 @@ final readonly class TagTools
 	public function __construct(
 		private McpUserContextInterface $userContext,
 		private TagProviderInterface $tagProvider,
-		private TaskTagProviderInterface $taskTagProvider,
-		private TaskProviderInterface $taskProvider,
+		private LectureTagProviderInterface $lectureTagProvider,
+		private LectureProviderInterface $lectureProvider,
 		private WorkspaceProviderInterface $workspaceProvider,
 		private PermissionCheckerInterface $permissionChecker,
 		private EventProviderInterface $eventProvider,
@@ -111,11 +111,11 @@ final readonly class TagTools
 	}
 
 	/**
-	 * Delete a tag. Detaches it from every task that referenced it.
+	 * Delete a tag. Detaches it from every lecture that referenced it.
 	 *
 	 * @param int $tagId Tag ID
 	 */
-	#[McpTool(name: 'delete_tag', description: 'Delete a tag (detaches from all tasks)')]
+	#[McpTool(name: 'delete_tag', description: 'Delete a tag (detaches from all lectures)')]
 	public function deleteTag(int $tagId): string
 	{
 		$workspace = $this->requireWorkspace();
@@ -128,30 +128,30 @@ final readonly class TagTools
 	}
 
 	/**
-	 * Replace the full set of tags applied to a task with the given IDs. Pass [] to clear.
+	 * Replace the full set of tags applied to a lecture with the given IDs. Pass [] to clear.
 	 *
-	 * @param int $taskId Task ID
-	 * @param list<int> $tagIds Tag IDs (must all belong to the same workspace as the task)
+	 * @param int $lectureId Lecture ID
+	 * @param list<int> $tagIds Tag IDs (must all belong to the same workspace as the lecture)
 	 */
-	#[McpTool(name: 'set_task_tags', description: 'Replace the set of tags applied to a task')]
-	public function setTaskTags(int $taskId, array $tagIds): McpTaskDto
+	#[McpTool(name: 'set_lecture_tags', description: 'Replace the set of tags applied to a lecture')]
+	public function setLectureTags(int $lectureId, array $tagIds): McpLectureDto
 	{
-		$task = $this->requireTask($taskId);
-		$workspace = $task->project->workspace;
+		$lecture = $this->requireLecture($lectureId);
+		$workspace = $lecture->course->workspace;
 
-		$tagChanges = $this->taskTagProvider->setTagsForTask($workspace, $task, $tagIds);
+		$tagChanges = $this->lectureTagProvider->setTagsForLecture($workspace, $lecture, $tagIds);
 
 		if ($tagChanges['added'] !== [] || $tagChanges['removed'] !== []) {
 			$this->eventProvider->recordEvent(
 				$this->userContext->getUser(),
-				$task->project,
-				EventTypeEnum::TaskTagsUpdated,
-				['taskName' => $task->name, 'added' => $tagChanges['added'], 'removed' => $tagChanges['removed']],
-				$task->id,
+				$lecture->course,
+				EventTypeEnum::LectureTagsUpdated,
+				['lectureName' => $lecture->name, 'added' => $tagChanges['added'], 'removed' => $tagChanges['removed']],
+				$lecture->id,
 			);
 		}
 
-		return McpTaskDto::fromEntity($task, $this->taskTagProvider->getTagIdsForTask($task));
+		return McpLectureDto::fromEntity($lecture, $this->lectureTagProvider->getTagIdsForLecture($lecture));
 	}
 
 	private function requireWorkspace(): Workspace
@@ -173,13 +173,13 @@ final readonly class TagTools
 		return $tag;
 	}
 
-	private function requireTask(int $taskId): Task
+	private function requireLecture(int $lectureId): Lecture
 	{
-		$task = $this->taskProvider->getTask($taskId);
-		if ($task === null || !$this->workspaceProvider->isMember($this->userContext->getUser(), $task->project->workspace)) {
-			throw new RuntimeException(sprintf('Task %d not found.', $taskId));
+		$lecture = $this->lectureProvider->getLecture($lectureId);
+		if ($lecture === null || !$this->workspaceProvider->isMember($this->userContext->getUser(), $lecture->course->workspace)) {
+			throw new RuntimeException(sprintf('Lecture %d not found.', $lectureId));
 		}
-		return $task;
+		return $lecture;
 	}
 
 	private function requireManageTags(Workspace $workspace): void

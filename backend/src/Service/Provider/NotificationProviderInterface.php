@@ -15,8 +15,8 @@ interface NotificationProviderInterface
 		User $recipient,
 		int $workspaceId,
 		NotificationTypeEnum $type,
-		?int $taskId,
-		?int $projectId,
+		?int $lectureId,
+		?int $courseId,
 		?int $actorId,
 		?string $actorName,
 		array $data,
@@ -35,7 +35,4 @@ interface NotificationProviderInterface
 	public function markAllRead(User $user): int;
 
 	public function delete(Notification $notification): void;
-
-	/** True if a Due reminder of this type for this task+user was already created today. */
-	public function dueReminderExistsToday(int $userId, int $taskId, NotificationTypeEnum $type): bool;
 }

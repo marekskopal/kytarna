@@ -10,7 +10,6 @@ use Kytario\App\ApplicationFactory;
 use Kytario\Jobs\Handler\EmailVerificationHandler;
 use Kytario\Jobs\Handler\InvitationHandler;
 use Kytario\Jobs\Handler\JobHandler;
-use Kytario\Jobs\Handler\NotificationHandler;
 use Kytario\Jobs\Handler\PasswordResetHandler;
 use Kytario\Jobs\Message\AmqpReceivedMessage;
 use Kytario\Service\Queue\Enum\QueueEnum;
@@ -37,7 +36,6 @@ $handlerMap = [
 	QueueEnum::Invitation->value => InvitationHandler::class,
 	QueueEnum::EmailVerification->value => EmailVerificationHandler::class,
 	QueueEnum::PasswordReset->value => PasswordResetHandler::class,
-	QueueEnum::Notification->value => NotificationHandler::class,
 ];
 
 $prefetch = (int) getenv('BACKEND_AMQP_CONSUMER_PREFETCH');

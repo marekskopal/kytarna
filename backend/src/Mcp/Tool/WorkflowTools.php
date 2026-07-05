@@ -11,7 +11,7 @@ use Kytario\Model\Entity\Enum\StatusTypeEnum;
 use Kytario\Model\Entity\Status;
 use Kytario\Model\Entity\Workflow;
 use Kytario\Service\Auth\PermissionCheckerInterface;
-use Kytario\Service\Provider\ProjectProviderInterface;
+use Kytario\Service\Provider\CourseProviderInterface;
 use Kytario\Service\Provider\StatusProviderInterface;
 use Kytario\Service\Provider\WorkflowProviderInterface;
 use Kytario\Service\Provider\WorkspaceProviderInterface;
@@ -22,7 +22,7 @@ final readonly class WorkflowTools
 {
 	public function __construct(
 		private McpUserContextInterface $userContext,
-		private ProjectProviderInterface $projectProvider,
+		private CourseProviderInterface $courseProvider,
 		private WorkflowProviderInterface $workflowProvider,
 		private StatusProviderInterface $statusProvider,
 		private WorkspaceProviderInterface $workspaceProvider,
@@ -31,16 +31,16 @@ final readonly class WorkflowTools
 	}
 
 	/**
-	 * List all statuses (Kanban columns) for a project's workflow, ordered by position.
-	 * Each status has a type: Start, Normal, or Finish — Start is the initial column for new tasks,
-	 * Finish marks completion. The default workflow is "To Do" (Start), "In Progress" (Normal), "Done" (Finish).
+	 * List all statuses (Kanban columns) for a course's workflow, ordered by position.
+	 * Each status has a type: Start, Normal, or Finish — Start is the initial column for new lectures,
+	 * Finish marks completion. The default workflow is "To Learn" (Start), "Learning" (Normal), "Mastered" (Finish).
 	 *
-	 * @param int $projectId Project ID
+	 * @param int $courseId Course ID
 	 */
-	#[McpTool(name: 'list_statuses', description: 'List workflow statuses (columns) for a project, ordered by position')]
-	public function listStatuses(int $projectId): McpStatusListDto
+	#[McpTool(name: 'list_statuses', description: 'List workflow statuses (columns) for a course, ordered by position')]
+	public function listStatuses(int $courseId): McpStatusListDto
 	{
-		$workflow = $this->resolveWorkflow($projectId);
+		$workflow = $this->resolveWorkflow($courseId);
 
 		$statuses = [];
 		foreach ($this->statusProvider->getStatuses($workflow) as $status) {
@@ -51,15 +51,15 @@ final readonly class WorkflowTools
 	}
 
 	/**
-	 * Find a status in a project's workflow by name (case-insensitive, exact match). Returns null if not found.
+	 * Find a status in a course's workflow by name (case-insensitive, exact match). Returns null if not found.
 	 *
-	 * @param int $projectId Project ID
-	 * @param string $name Status name to look up (e.g. "In Progress")
+	 * @param int $courseId Course ID
+	 * @param string $name Status name to look up (e.g. "Learning")
 	 */
-	#[McpTool(name: 'find_status_by_name', description: 'Find a workflow status by name within a project (case-insensitive, exact match)')]
-	public function findStatusByName(int $projectId, string $name): ?McpStatusDto
+	#[McpTool(name: 'find_status_by_name', description: 'Find a workflow status by name within a course (case-insensitive, exact match)')]
+	public function findStatusByName(int $courseId, string $name): ?McpStatusDto
 	{
-		$workflow = $this->resolveWorkflow($projectId);
+		$workflow = $this->resolveWorkflow($courseId);
 
 		$needle = mb_strtolower($name);
 		foreach ($this->statusProvider->getStatuses($workflow) as $status) {
@@ -72,23 +72,18 @@ final readonly class WorkflowTools
 	}
 
 	/**
-	 * Create a new status (Kanban column) in a project's workflow.
+	 * Create a new status (Kanban column) in a course's workflow.
 	 *
-	 * @param int $projectId Project ID
+	 * @param int $courseId Course ID
 	 * @param string $name Column name (e.g. "In Review")
 	 * @param string $type Status type: Start, Normal, or Finish. A workflow needs exactly one Start and at least one Finish.
 	 * @param string $color Hex color (e.g. "#a855f7")
 	 * @param int|null $position Zero-based insertion index; appended to the end if null
 	 */
-	#[McpTool(name: 'create_status', description: 'Create a new workflow status (Kanban column) in a project')]
-	public function createStatus(
-		int $projectId,
-		string $name,
-		string $type,
-		string $color = '#94a3b8',
-		?int $position = null,
-	): McpStatusDto {
-		$workflow = $this->resolveWorkflowForManagement($projectId);
+	#[McpTool(name: 'create_status', description: 'Create a new workflow status (Kanban column) in a course')]
+	public function createStatus(int $courseId, string $name, string $type, string $color = '#94a3b8', ?int $position = null,): McpStatusDto
+	{
+		$workflow = $this->resolveWorkflowForManagement($courseId);
 
 		$status = $this->statusProvider->createStatus(
 			workflow: $workflow,
@@ -141,7 +136,7 @@ final readonly class WorkflowTools
 	}
 
 	/**
-	 * Delete a status. Cannot delete the last remaining status of a workflow. Tasks currently in the status must be moved first.
+	 * Delete a status. Cannot delete the last remaining status of a workflow. Lectures currently in the status must be moved first.
 	 *
 	 * @param int $statusId Status ID
 	 */
@@ -160,30 +155,30 @@ final readonly class WorkflowTools
 		return 'Status deleted.';
 	}
 
-	private function resolveWorkflow(int $projectId): Workflow
+	private function resolveWorkflow(int $courseId): Workflow
 	{
 		$workspace = $this->workspaceProvider->getCurrentWorkspace($this->userContext->getUser());
 		if ($workspace === null) {
 			throw new RuntimeException('No active workspace.');
 		}
 
-		$project = $this->projectProvider->getProject($workspace, $projectId);
-		if ($project === null) {
-			throw new RuntimeException(sprintf('Project %d not found.', $projectId));
+		$course = $this->courseProvider->getCourse($workspace, $courseId);
+		if ($course === null) {
+			throw new RuntimeException(sprintf('Course %d not found.', $courseId));
 		}
 
-		$workflow = $this->workflowProvider->getWorkflowByProject($project);
+		$workflow = $this->workflowProvider->getWorkflowByCourse($course);
 		if ($workflow === null) {
-			throw new RuntimeException(sprintf('Workflow for project %d not found.', $projectId));
+			throw new RuntimeException(sprintf('Workflow for course %d not found.', $courseId));
 		}
 
 		return $workflow;
 	}
 
-	private function resolveWorkflowForManagement(int $projectId): Workflow
+	private function resolveWorkflowForManagement(int $courseId): Workflow
 	{
-		$workflow = $this->resolveWorkflow($projectId);
-		if (!$this->permissionChecker->canManageProjects($this->userContext->getUser(), $workflow->project->workspace)) {
+		$workflow = $this->resolveWorkflow($courseId);
+		if (!$this->permissionChecker->canManageCourses($this->userContext->getUser(), $workflow->course->workspace)) {
 			throw new RuntimeException('You do not have permission to manage workflow statuses.');
 		}
 		return $workflow;
@@ -197,11 +192,11 @@ final readonly class WorkflowTools
 		}
 
 		$workspace = $this->workspaceProvider->getCurrentWorkspace($this->userContext->getUser());
-		if ($workspace === null || $status->workflow->project->workspace->id !== $workspace->id) {
+		if ($workspace === null || $status->workflow->course->workspace->id !== $workspace->id) {
 			throw new RuntimeException(sprintf('Status %d not found.', $statusId));
 		}
 
-		if (!$this->permissionChecker->canManageProjects($this->userContext->getUser(), $workspace)) {
+		if (!$this->permissionChecker->canManageCourses($this->userContext->getUser(), $workspace)) {
 			throw new RuntimeException('You do not have permission to manage workflow statuses.');
 		}
 

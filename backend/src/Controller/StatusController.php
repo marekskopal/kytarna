@@ -47,7 +47,7 @@ final readonly class StatusController
 		}
 		assert($workflow !== null);
 
-		if (!$this->permissionChecker->canManageProjects($user, $workflow->project->workspace)) {
+		if (!$this->permissionChecker->canManageCourses($user, $workflow->course->workspace)) {
 			return new NotAuthorizedResponse('You do not have permission to manage workflow statuses.');
 		}
 
@@ -74,7 +74,7 @@ final readonly class StatusController
 		}
 		assert($status !== null);
 
-		if (!$this->permissionChecker->canManageProjects($user, $status->workflow->project->workspace)) {
+		if (!$this->permissionChecker->canManageCourses($user, $status->workflow->course->workspace)) {
 			return new NotAuthorizedResponse('You do not have permission to manage workflow statuses.');
 		}
 
@@ -94,7 +94,7 @@ final readonly class StatusController
 		}
 		assert($status !== null);
 
-		if (!$this->permissionChecker->canManageProjects($user, $status->workflow->project->workspace)) {
+		if (!$this->permissionChecker->canManageCourses($user, $status->workflow->course->workspace)) {
 			return new NotAuthorizedResponse('You do not have permission to manage workflow statuses.');
 		}
 
@@ -114,7 +114,7 @@ final readonly class StatusController
 		}
 		assert($status !== null);
 
-		if (!$this->permissionChecker->canManageProjects($user, $status->workflow->project->workspace)) {
+		if (!$this->permissionChecker->canManageCourses($user, $status->workflow->course->workspace)) {
 			return new NotAuthorizedResponse('You do not have permission to manage workflow statuses.');
 		}
 
@@ -133,7 +133,7 @@ final readonly class StatusController
 		if ($workflow === null) {
 			return false;
 		}
-		return $this->permissionChecker->canViewWorkspace($user, $workflow->project->workspace);
+		return $this->permissionChecker->canViewWorkspace($user, $workflow->course->workspace);
 	}
 
 	private function canAccessStatus(User $user, ?Status $status): bool
@@ -141,6 +141,6 @@ final readonly class StatusController
 		if ($status === null) {
 			return false;
 		}
-		return $this->permissionChecker->canViewWorkspace($user, $status->workflow->project->workspace);
+		return $this->permissionChecker->canViewWorkspace($user, $status->workflow->course->workspace);
 	}
 }

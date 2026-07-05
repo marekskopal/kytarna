@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Kytario\Mcp\Tool\Helper;
 
+use Kytario\Model\Entity\Course;
 use Kytario\Model\Entity\Enum\StatusTypeEnum;
-use Kytario\Model\Entity\Project;
 use Kytario\Model\Entity\Status;
 use Kytario\Service\Provider\StatusProviderInterface;
 use Kytario\Service\Provider\WorkflowProviderInterface;
@@ -17,12 +17,12 @@ final readonly class StatusResolver
 	{
 	}
 
-	public function resolve(Project $project, ?int $statusId, ?string $statusName): ?Status
+	public function resolve(Course $course, ?int $statusId, ?string $statusName): ?Status
 	{
 		if ($statusId !== null) {
 			$status = $this->statusProvider->getStatus($statusId);
-			if ($status === null || $status->workflow->project->id !== $project->id) {
-				throw new RuntimeException(sprintf('Status %d not found in project %d.', $statusId, $project->id));
+			if ($status === null || $status->workflow->course->id !== $course->id) {
+				throw new RuntimeException(sprintf('Status %d not found in course %d.', $statusId, $course->id));
 			}
 			return $status;
 		}
@@ -30,9 +30,9 @@ final readonly class StatusResolver
 			return null;
 		}
 
-		$workflow = $this->workflowProvider->getWorkflowByProject($project);
+		$workflow = $this->workflowProvider->getWorkflowByCourse($course);
 		if ($workflow === null) {
-			throw new RuntimeException(sprintf('Workflow for project %d not found.', $project->id));
+			throw new RuntimeException(sprintf('Workflow for course %d not found.', $course->id));
 		}
 		$needle = mb_strtolower($statusName);
 		foreach ($this->statusProvider->getStatuses($workflow) as $status) {
@@ -41,12 +41,12 @@ final readonly class StatusResolver
 			}
 		}
 
-		throw new RuntimeException(sprintf('Status "%s" not found in project %d.', $statusName, $project->id));
+		throw new RuntimeException(sprintf('Status "%s" not found in course %d.', $statusName, $course->id));
 	}
 
-	public function findByType(Project $project, StatusTypeEnum $type): ?Status
+	public function findByType(Course $course, StatusTypeEnum $type): ?Status
 	{
-		$workflow = $this->workflowProvider->getWorkflowByProject($project);
+		$workflow = $this->workflowProvider->getWorkflowByCourse($course);
 		if ($workflow === null) {
 			return null;
 		}

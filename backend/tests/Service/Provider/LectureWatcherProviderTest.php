@@ -1,0 +1,104 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Kytario\Tests\Service\Provider;
+
+use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytario\Model\Entity\Lecture;
+use Kytario\Model\Entity\User;
+use Kytario\Model\Repository\LectureRepository;
+use Kytario\Model\Repository\StatusRepository;
+use Kytario\Model\Repository\WorkflowRepository;
+use Kytario\Service\Provider\LectureWatcherProvider;
+use Kytario\Service\Provider\LectureWatcherProviderInterface;
+use Kytario\Tests\Support\Fixture;
+use Kytario\Tests\Support\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+
+#[CoversClass(LectureWatcherProvider::class)]
+final class LectureWatcherProviderTest extends IntegrationTestCase
+{
+	public function testWatchIsIdempotentAndUnwatchRemoves(): void
+	{
+		$owner = Fixture::createUser();
+		$workspace = Fixture::createWorkspace($owner);
+		$course = Fixture::createCourse($owner, $workspace);
+		$lecture = $this->createLecture($owner, $course->id, 'Watched lecture');
+
+		$provider = $this->watcherProvider();
+
+		self::assertFalse($provider->isWatching($lecture, $owner));
+
+		$provider->watch($lecture, $owner);
+		$provider->watch($lecture, $owner);
+
+		self::assertTrue($provider->isWatching($lecture, $owner));
+		self::assertCount(1, $provider->listWatchers($lecture));
+		self::assertSame([$owner->id], $provider->listWatcherUserIds($lecture));
+
+		$provider->unwatch($lecture, $owner);
+
+		self::assertFalse($provider->isWatching($lecture, $owner));
+		self::assertCount(0, $provider->listWatchers($lecture));
+	}
+
+	public function testDeleteAllForLectureClearsEveryWatcher(): void
+	{
+		$owner = Fixture::createUser();
+		$member = Fixture::createUser();
+		$workspace = Fixture::createWorkspace($owner);
+		Fixture::addMember($workspace, $member, WorkspaceRoleEnum::Member);
+		$course = Fixture::createCourse($owner, $workspace);
+		$lecture = $this->createLecture($owner, $course->id, 'Shared lecture');
+
+		$provider = $this->watcherProvider();
+		$provider->watch($lecture, $owner);
+		$provider->watch($lecture, $member);
+		self::assertCount(2, $provider->listWatchers($lecture));
+
+		$provider->deleteAllForLecture($lecture);
+
+		self::assertCount(0, $provider->listWatchers($lecture));
+	}
+
+	private function watcherProvider(): LectureWatcherProviderInterface
+	{
+		$provider = $this->container->get(LectureWatcherProviderInterface::class);
+		assert($provider instanceof LectureWatcherProviderInterface);
+		return $provider;
+	}
+
+	private function createLecture(User $author, int $courseId, string $name): Lecture
+	{
+		$response = $this->request(
+			'POST',
+			'/api/courses/' . $courseId . '/lectures',
+			body: ['statusId' => $this->firstStatusId($courseId), 'name' => $name, 'description' => null],
+			authenticatedAs: $author,
+		);
+		$lectureId = self::intField($this->jsonBody($response)['id']);
+
+		$lectureRepository = $this->container->get(LectureRepository::class);
+		assert($lectureRepository instanceof LectureRepository);
+		$lecture = $lectureRepository->findById($lectureId);
+		assert($lecture instanceof Lecture);
+		return $lecture;
+	}
+
+	private function firstStatusId(int $courseId): int
+	{
+		$workflowRepo = $this->container->get(WorkflowRepository::class);
+		assert($workflowRepo instanceof WorkflowRepository);
+		$workflow = $workflowRepo->findByCourse($courseId);
+		assert($workflow !== null);
+
+		$statusRepo = $this->container->get(StatusRepository::class);
+		assert($statusRepo instanceof StatusRepository);
+		foreach ($statusRepo->findByWorkflow($workflow->id) as $status) {
+			return $status->id;
+		}
+
+		self::fail('Course has no statuses.');
+	}
+}
