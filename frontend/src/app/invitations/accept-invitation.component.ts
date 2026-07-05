@@ -63,7 +63,7 @@ export class AcceptInvitationComponent implements OnInit {
             await this.currentUserService.load();
             await this.workspaceService.loadAll();
             this.workspaceService.currentWorkspaceId.set(invitation.workspaceId);
-            await this.router.navigate(['/projects']);
+            await this.router.navigate(['/courses']);
         } catch (e: unknown) {
             this.error.set(e instanceof Error ? e.message : await this.translate.instant('app.invitation.notFound') as string);
         } finally {

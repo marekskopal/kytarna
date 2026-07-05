@@ -59,37 +59,37 @@ export const appRoutes: Routes = [
         canActivate: [AuthGuard],
         loadComponent: () => import('@app/shared/components/layout/layout.component').then((m) => m.LayoutComponent),
         children: [
-            {path: '', redirectTo: 'projects', pathMatch: 'full'},
+            {path: '', redirectTo: 'courses', pathMatch: 'full'},
             {
-                path: 'projects',
-                loadComponent: () => import('@app/projects/projects.component').then((m) => m.ProjectsComponent),
+                path: 'courses',
+                loadComponent: () => import('@app/courses/courses.component').then((m) => m.CoursesComponent),
             },
             {
-                path: 'tasks',
-                loadComponent: () => import('@app/tasks/tasks-grid.component').then((m) => m.TasksGridComponent),
+                path: 'lectures',
+                loadComponent: () => import('@app/lectures/lectures-grid.component').then((m) => m.LecturesGridComponent),
             },
             {
                 path: 'agents',
                 loadComponent: () => import('@app/agents/agents.component').then((m) => m.AgentsComponent),
             },
             {
-                path: 'projects/new',
-                loadComponent: () => import('@app/projects/add-edit-project.component').then((m) => m.AddEditProjectComponent),
+                path: 'courses/new',
+                loadComponent: () => import('@app/courses/add-edit-course.component').then((m) => m.AddEditCourseComponent),
             },
             {
-                path: 'projects/:id/edit',
-                loadComponent: () => import('@app/projects/add-edit-project.component').then((m) => m.AddEditProjectComponent),
+                path: 'courses/:id/edit',
+                loadComponent: () => import('@app/courses/add-edit-course.component').then((m) => m.AddEditCourseComponent),
             },
             {
-                path: 'projects/:id/board',
+                path: 'courses/:id/board',
                 loadComponent: () => import('@app/board/board.component').then((m) => m.BoardComponent),
             },
             {
-                path: 'projects/:id/workflow',
+                path: 'courses/:id/workflow',
                 loadComponent: () => import('@app/workflow-editor/workflow-editor.component').then((m) => m.WorkflowEditorComponent),
             },
             {
-                path: 'projects/:id/events',
+                path: 'courses/:id/events',
                 loadComponent: () => import('@app/events/events.component').then((m) => m.EventsComponent),
             },
             {

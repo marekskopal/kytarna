@@ -20,7 +20,7 @@ export class SignUpPage {
     }
 
     public async expectLandedInsideApp(): Promise<void> {
-        // After onboarding is dismissed, the user lands at /projects.
-        await expect(this.page).toHaveURL(/\/projects/, {timeout: 15_000});
+        // After onboarding is dismissed, the user lands at /courses.
+        await expect(this.page).toHaveURL(/\/courses/, {timeout: 15_000});
     }
 }

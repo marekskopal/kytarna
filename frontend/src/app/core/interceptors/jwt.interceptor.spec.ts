@@ -41,7 +41,7 @@ function setup(options: {loggedIn: boolean}): {http: HttpClient; httpMock: HttpT
     };
 }
 
-async function flushMicrotasks(): Promise<void> {
+async function flushMicrolectures(): Promise<void> {
     await new Promise<void>((resolve) => setTimeout(resolve, 0));
 }
 
@@ -57,9 +57,9 @@ describe('jwtInterceptor', () => {
     it('attaches the Authorization header to API requests when logged in', () => {
         const {http, httpMock} = setup({loggedIn: true});
 
-        http.get(`${environment.apiUrl}/projects`).subscribe();
+        http.get(`${environment.apiUrl}/courses`).subscribe();
 
-        const req = httpMock.expectOne(`${environment.apiUrl}/projects`);
+        const req = httpMock.expectOne(`${environment.apiUrl}/courses`);
         expect(req.request.headers.get('Authorization')).toBe('Bearer access-token');
         req.flush({});
     });
@@ -87,9 +87,9 @@ describe('jwtInterceptor', () => {
     it('does not attach Authorization when logged out', () => {
         const {http, httpMock} = setup({loggedIn: false});
 
-        http.get(`${environment.apiUrl}/projects`).subscribe();
+        http.get(`${environment.apiUrl}/courses`).subscribe();
 
-        const req = httpMock.expectOne(`${environment.apiUrl}/projects`);
+        const req = httpMock.expectOne(`${environment.apiUrl}/courses`);
         expect(req.request.headers.has('Authorization')).toBe(false);
         req.flush({});
     });
@@ -98,15 +98,15 @@ describe('jwtInterceptor', () => {
         const {http, httpMock, authService} = setup({loggedIn: true});
 
         let observed: unknown = null;
-        http.get<{ok: boolean}>(`${environment.apiUrl}/projects`).subscribe((v) => observed = v);
+        http.get<{ok: boolean}>(`${environment.apiUrl}/courses`).subscribe((v) => observed = v);
 
-        const initial = httpMock.expectOne(`${environment.apiUrl}/projects`);
+        const initial = httpMock.expectOne(`${environment.apiUrl}/courses`);
         expect(initial.request.headers.get('Authorization')).toBe('Bearer access-token');
         initial.flush({}, {status: 401, statusText: 'Unauthorized'});
 
-        await flushMicrotasks();
+        await flushMicrolectures();
 
-        const retry = httpMock.expectOne(`${environment.apiUrl}/projects`);
+        const retry = httpMock.expectOne(`${environment.apiUrl}/courses`);
         expect(retry.request.headers.get('Authorization')).toBe('Bearer access-token');
         retry.flush({ok: true});
 
@@ -125,7 +125,7 @@ describe('jwtInterceptor', () => {
         reqA.flush({}, {status: 401, statusText: 'Unauthorized'});
         reqB.flush({}, {status: 401, statusText: 'Unauthorized'});
 
-        await flushMicrotasks();
+        await flushMicrolectures();
 
         expect(authService.refreshToken).toHaveBeenCalledTimes(1);
 
@@ -140,14 +140,14 @@ describe('jwtInterceptor', () => {
         authService.refreshToken.mockRejectedValueOnce(new Error('refresh failed'));
 
         let caught: unknown = null;
-        http.get(`${environment.apiUrl}/projects`).subscribe({
+        http.get(`${environment.apiUrl}/courses`).subscribe({
             error: (err) => caught = err,
         });
 
-        const initial = httpMock.expectOne(`${environment.apiUrl}/projects`);
+        const initial = httpMock.expectOne(`${environment.apiUrl}/courses`);
         initial.flush({}, {status: 401, statusText: 'Unauthorized'});
 
-        await flushMicrotasks();
+        await flushMicrolectures();
 
         expect(authService.refreshToken).toHaveBeenCalledTimes(1);
         expect(authService.logout).toHaveBeenCalledTimes(1);

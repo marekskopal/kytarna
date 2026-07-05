@@ -1,0 +1,116 @@
+.lecture-progress {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.progress-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    align-items: flex-end;
+}
+
+.progress-totals {
+    display: flex;
+    gap: 24px;
+}
+
+.progress-total-value {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.progress-spark {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.progress-spark-svg {
+    max-width: 100%;
+    height: 48px;
+}
+
+.progress-spark-range {
+    font-size: 11px;
+    opacity: 0.7;
+}
+
+.progress-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid var(--uk-color-border, #e4e4e7);
+    border-radius: 8px;
+}
+
+.progress-form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.progress-field {
+    flex: 1 1 120px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.progress-form-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.progress-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.progress-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.progress-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--uk-color-border, #f0f0f2);
+}
+
+.progress-item-date {
+    font-size: 12px;
+    min-width: 84px;
+    padding-top: 2px;
+}
+
+.progress-item-body {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.progress-item-stats {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.progress-item-note {
+    margin: 0;
+    font-size: 13px;
+}

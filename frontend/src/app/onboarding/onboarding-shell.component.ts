@@ -79,7 +79,7 @@ export class OnboardingShellComponent implements OnInit, OnDestroy {
         this.skipping.set(true);
         try {
             await this.onboardingService.complete();
-            await this.router.navigateByUrl('/projects');
+            await this.router.navigateByUrl('/courses');
         } finally {
             this.skipping.set(false);
         }

@@ -8,7 +8,7 @@ import {firstValueFrom} from 'rxjs';
 export class BoardService {
     private readonly http = inject(HttpClient);
 
-    public getBoard(projectId: number): Promise<Board> {
-        return firstValueFrom(this.http.get<Board>(`${environment.apiUrl}/projects/${projectId}/board`));
+    public getBoard(courseId: number): Promise<Board> {
+        return firstValueFrom(this.http.get<Board>(`${environment.apiUrl}/courses/${courseId}/board`));
     }
 }

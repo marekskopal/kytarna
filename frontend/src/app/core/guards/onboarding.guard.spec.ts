@@ -60,10 +60,10 @@ describe('OnboardingGuard', () => {
         expect(router.navigate).not.toHaveBeenCalled();
     });
 
-    it('redirects to /projects when onboarding is already completed', async () => {
+    it('redirects to /courses when onboarding is already completed', async () => {
         const {guard, router} = setup(makeUser('2026-05-23T10:00:00+00:00'));
 
         await expect(guard.canActivate()).resolves.toBe(false);
-        expect(router.navigate).toHaveBeenCalledWith(['/projects']);
+        expect(router.navigate).toHaveBeenCalledWith(['/courses']);
     });
 });

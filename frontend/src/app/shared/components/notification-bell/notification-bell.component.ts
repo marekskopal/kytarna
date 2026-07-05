@@ -57,9 +57,9 @@ export class NotificationBellComponent implements OnInit {
         }
         this.open.set(false);
 
-        const code = notification.data.taskCode;
+        const code = notification.data.lectureCode;
         if (code !== undefined && code !== '') {
-            await this.router.navigate(['/tasks'], {queryParams: {open: code}});
+            await this.router.navigate(['/lectures'], {queryParams: {open: code}});
         }
     }
 

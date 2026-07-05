@@ -101,6 +101,6 @@ export class LoginComponent implements AfterViewInit {
     }
 
     private returnUrl(): string {
-        return this.route.snapshot.queryParamMap.get('returnUrl') ?? '/projects';
+        return this.route.snapshot.queryParamMap.get('returnUrl') ?? '/courses';
     }
 }

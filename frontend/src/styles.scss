@@ -666,10 +666,10 @@ hr {
 }
 
 // ════════════════════════════════════════════════════════════
-// Task card (kanban)
+// Lecture card (kanban)
 // 10/11 px padding, 5 px radius, agent variant + overdue cues.
 // ════════════════════════════════════════════════════════════
-.uk-task {
+.uk-lecture {
     display: flex;
     flex-direction: column;
     gap: $space-2;

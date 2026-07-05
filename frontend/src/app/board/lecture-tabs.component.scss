@@ -1,0 +1,81 @@
+.lecture-tabs {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.lecture-tabs-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.lecture-tabs-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.lecture-tab-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border: 1px solid var(--uk-color-border, #d4d4d8);
+    border-radius: 999px;
+    background: transparent;
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+}
+
+.lecture-tab-chip--active {
+    border-color: var(--uk-color-accent, #5e6ad2);
+    color: var(--uk-color-accent, #5e6ad2);
+    font-weight: 600;
+}
+
+.lecture-tab-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 1px 4px;
+    border-radius: 3px;
+    background: #e0f2fe;
+    color: #0e7490;
+}
+
+.lecture-tabs-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.file-upload-trigger {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.file-upload-trigger.is-disabled {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.file-upload-input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.lecture-tab-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+}
+
+.lecture-tab-meta-spacer {
+    flex: 1 1 auto;
+}

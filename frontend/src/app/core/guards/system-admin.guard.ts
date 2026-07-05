@@ -20,7 +20,7 @@ export class SystemAdminGuard {
         if (user.systemRole === 'SystemAdmin') {
             return true;
         }
-        this.router.navigate(['/projects']);
+        this.router.navigate(['/courses']);
         return false;
     }
 }

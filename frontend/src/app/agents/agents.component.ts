@@ -34,7 +34,7 @@ export class AgentsComponent {
             case 'Agents':
                 return events.filter((e) => e.actorType === 'Agent');
             case 'StatusChanges':
-                return events.filter((e) => e.type === 'TaskMoved' || e.type === 'StatusUpdated');
+                return events.filter((e) => e.type === 'LectureMoved' || e.type === 'StatusUpdated');
             case 'All':
             default:
                 return events;
@@ -75,11 +75,11 @@ export class AgentsComponent {
     }
 
     protected eventTarget(event: AuditEvent): string {
-        if (event.taskCode !== null) {
-            return event.taskCode;
+        if (event.lectureCode !== null) {
+            return event.lectureCode;
         }
-        if (event.taskId !== null) {
-            return `T-${event.taskId}`;
+        if (event.lectureId !== null) {
+            return `L-${event.lectureId}`;
         }
         const meta = event.metadata;
         if (typeof meta['name'] === 'string') {

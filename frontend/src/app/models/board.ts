@@ -1,11 +1,11 @@
-import {Project} from './project';
+import {Course} from './course';
+import {Lecture} from './lecture';
 import {Status} from './status';
-import {Task} from './task';
 import {Workflow} from './workflow';
 
 export interface Board {
-    project: Project;
+    course: Course;
     workflow: Workflow;
     statuses: Status[];
-    tasks: Task[];
+    lectures: Lecture[];
 }

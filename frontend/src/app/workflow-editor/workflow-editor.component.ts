@@ -34,8 +34,8 @@ export class WorkflowEditorComponent implements OnInit {
     });
 
     public async ngOnInit(): Promise<void> {
-        const projectId = Number(this.route.snapshot.paramMap.get('id'));
-        this.board.set(await this.boardService.getBoard(projectId));
+        const courseId = Number(this.route.snapshot.paramMap.get('id'));
+        this.board.set(await this.boardService.getBoard(courseId));
     }
 
     protected async save(status: Status): Promise<void> {
@@ -65,8 +65,8 @@ export class WorkflowEditorComponent implements OnInit {
         try {
             await this.statusService.moveStatus(movedId, event.currentIndex);
         } catch {
-            const projectId = Number(this.route.snapshot.paramMap.get('id'));
-            this.board.set(await this.boardService.getBoard(projectId));
+            const courseId = Number(this.route.snapshot.paramMap.get('id'));
+            this.board.set(await this.boardService.getBoard(courseId));
         }
     }
 

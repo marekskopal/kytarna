@@ -126,7 +126,7 @@ export class LayoutComponent implements OnInit {
         this.switcherOpen.set(false);
         try {
             await this.workspaceService.switchTo(workspaceId);
-            await this.router.navigate(['/projects']);
+            await this.router.navigate(['/courses']);
         } catch {
             // error interceptor
         }
@@ -144,7 +144,7 @@ export class LayoutComponent implements OnInit {
             await this.workspaceService.switchTo(ws.id);
             const message = await this.translate.instant('app.workspaces.created', {name: ws.name}) as string;
             this.alertService.success(message);
-            await this.router.navigate(['/projects']);
+            await this.router.navigate(['/courses']);
         } catch {
             // error interceptor
         }

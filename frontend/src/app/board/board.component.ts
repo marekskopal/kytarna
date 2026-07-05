@@ -1,28 +1,28 @@
 import {CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {ChangeDetectionStrategy, Component, computed, inject, OnInit, signal} from '@angular/core';
 import {ActivatedRoute, RouterLink} from '@angular/router';
-import {TaskCardComponent} from '@app/board/task-card.component';
-import {TaskDetailDrawerComponent} from '@app/board/task-detail-drawer.component';
+import {LectureCardComponent} from '@app/board/lecture-card.component';
+import {LectureDetailDrawerComponent} from '@app/board/lecture-detail-drawer.component';
 import {Board} from '@app/models/board';
+import {Lecture} from '@app/models/lecture';
 import {Status} from '@app/models/status';
 import {Tag} from '@app/models/tag';
-import {Task} from '@app/models/task';
 import {BoardService} from '@app/services/board.service';
 import {CurrentUserService} from '@app/services/current-user.service';
+import {LectureService} from '@app/services/lecture.service';
 import {TagService} from '@app/services/tag.service';
-import {TaskService} from '@app/services/task.service';
 import {WorkspaceService} from '@app/services/workspace.service';
 import {TranslatePipe} from '@ngx-translate/core';
 
 interface Column {
     status: Status;
-    tasks: Task[];
+    lectures: Lecture[];
 }
 
 @Component({
     selector: 'uk-board',
     standalone: true,
-    imports: [CdkDropListGroup, CdkDropList, CdkDrag, RouterLink, TaskCardComponent, TaskDetailDrawerComponent, TranslatePipe],
+    imports: [CdkDropListGroup, CdkDropList, CdkDrag, RouterLink, LectureCardComponent, LectureDetailDrawerComponent, TranslatePipe],
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './board.component.html',
     styleUrl: './board.component.scss',
@@ -30,18 +30,18 @@ interface Column {
 export class BoardComponent implements OnInit {
     private readonly route = inject(ActivatedRoute);
     private readonly boardService = inject(BoardService);
-    private readonly taskService = inject(TaskService);
+    private readonly lectureService = inject(LectureService);
     private readonly tagService = inject(TagService);
     private readonly workspaceService = inject(WorkspaceService);
     private readonly currentUserService = inject(CurrentUserService);
 
     protected readonly loading = signal(true);
     protected readonly board = signal<Board | null>(null);
-    protected readonly projectId = signal<number | null>(null);
+    protected readonly courseId = signal<number | null>(null);
     protected readonly workspaceTags = signal<Tag[]>([]);
 
     protected readonly drawerOpen = signal(false);
-    protected readonly editingTask = signal<Task | null>(null);
+    protected readonly editingLecture = signal<Lecture | null>(null);
     protected readonly defaultStatusId = signal<number | null>(null);
 
     protected readonly columns = computed<Column[]>(() => {
@@ -53,7 +53,7 @@ export class BoardComponent implements OnInit {
             .sort((a, b) => a.position - b.position)
             .map((status) => ({
                 status,
-                tasks: board.tasks
+                lectures: board.lectures
                     .filter((t) => t.statusId === status.id)
                     .sort((a, b) => a.position - b.position),
             }));
@@ -61,23 +61,23 @@ export class BoardComponent implements OnInit {
 
     public async ngOnInit(): Promise<void> {
         const id = Number(this.route.snapshot.paramMap.get('id'));
-        this.projectId.set(id);
+        this.courseId.set(id);
         await Promise.all([
             this.loadBoard(),
             this.loadWorkspaceTags(),
         ]);
 
-        const openTaskParam = this.route.snapshot.queryParamMap.get('openTask');
-        if (openTaskParam !== null) {
-            const openId = Number(openTaskParam);
+        const openLectureParam = this.route.snapshot.queryParamMap.get('openLecture');
+        if (openLectureParam !== null) {
+            const openId = Number(openLectureParam);
             if (Number.isFinite(openId) && openId > 0) {
                 try {
-                    const task = await this.taskService.getTask(openId);
-                    this.editingTask.set(task);
+                    const lecture = await this.lectureService.getLecture(openId);
+                    this.editingLecture.set(lecture);
                     this.defaultStatusId.set(null);
                     this.drawerOpen.set(true);
                 } catch {
-                    // task may have been deleted; ignore
+                    // lecture may have been deleted; ignore
                 }
             }
         }
@@ -86,7 +86,7 @@ export class BoardComponent implements OnInit {
     private async loadBoard(): Promise<void> {
         this.loading.set(true);
         try {
-            this.board.set(await this.boardService.getBoard(this.projectId()!));
+            this.board.set(await this.boardService.getBoard(this.courseId()!));
         } finally {
             this.loading.set(false);
         }
@@ -112,57 +112,57 @@ export class BoardComponent implements OnInit {
         }
     }
 
-    protected async onDrop(event: CdkDragDrop<Task[]>, targetStatus: Status): Promise<void> {
+    protected async onDrop(event: CdkDragDrop<Lecture[]>, targetStatus: Status): Promise<void> {
         const previousArr = event.previousContainer.data;
         const currentArr = event.container.data;
-        let movedTask: Task;
+        let movedLecture: Lecture;
 
         if (event.previousContainer === event.container) {
             if (event.previousIndex === event.currentIndex) {
                 return;
             }
-            movedTask = currentArr[event.previousIndex];
+            movedLecture = currentArr[event.previousIndex];
             moveItemInArray(currentArr, event.previousIndex, event.currentIndex);
         } else {
-            movedTask = previousArr[event.previousIndex];
+            movedLecture = previousArr[event.previousIndex];
             transferArrayItem(previousArr, currentArr, event.previousIndex, event.currentIndex);
         }
 
         currentArr.forEach((t, i) => { t.position = i; t.statusId = targetStatus.id; });
         previousArr.forEach((t, i) => { t.position = i; });
 
-        this.board.update((b) => b ? {...b, tasks: [...b.tasks]} : b);
+        this.board.update((b) => b ? {...b, lectures: [...b.lectures]} : b);
 
         try {
-            await this.taskService.moveTask(movedTask.id, targetStatus.id, event.currentIndex);
+            await this.lectureService.moveLecture(movedLecture.id, targetStatus.id, event.currentIndex);
         } catch {
             await this.loadBoard();
         }
     }
 
     protected openCreate(status: Status): void {
-        this.editingTask.set(null);
+        this.editingLecture.set(null);
         this.defaultStatusId.set(status.id);
         this.drawerOpen.set(true);
     }
 
-    protected openEdit(task: Task): void {
-        this.editingTask.set(task);
+    protected openEdit(lecture: Lecture): void {
+        this.editingLecture.set(lecture);
         this.defaultStatusId.set(null);
         this.drawerOpen.set(true);
     }
 
     protected closeDrawer(): void {
         this.drawerOpen.set(false);
-        this.editingTask.set(null);
+        this.editingLecture.set(null);
     }
 
-    protected onTaskSaved(_task: Task): void {
+    protected onLectureSaved(_lecture: Lecture): void {
         this.closeDrawer();
         void this.loadBoard();
     }
 
-    protected onTaskDeleted(_id: number): void {
+    protected onLectureDeleted(_id: number): void {
         this.closeDrawer();
         void this.loadBoard();
     }

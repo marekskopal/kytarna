@@ -1,6 +1,6 @@
 <div class="shell">
     <header class="topbar">
-        <a routerLink="/projects" class="brand" [attr.aria-label]="'app.brand' | translate">
+        <a routerLink="/courses" class="brand" [attr.aria-label]="'app.brand' | translate">
             <uk-brand-logo [height]="22" />
         </a>
 
@@ -45,11 +45,11 @@
         </div>
 
         <nav class="nav" [attr.aria-label]="'app.nav.primary' | translate">
-            <a routerLink="/projects" routerLinkActive="nav-link--active" [routerLinkActiveOptions]="{exact: false}" class="nav-link">
-                {{ 'app.nav.projects' | translate }}
+            <a routerLink="/courses" routerLinkActive="nav-link--active" [routerLinkActiveOptions]="{exact: false}" class="nav-link">
+                {{ 'app.nav.courses' | translate }}
             </a>
-            <a routerLink="/tasks" routerLinkActive="nav-link--active" [routerLinkActiveOptions]="{exact: false}" class="nav-link">
-                {{ 'app.nav.tasks' | translate }}
+            <a routerLink="/lectures" routerLinkActive="nav-link--active" [routerLinkActiveOptions]="{exact: false}" class="nav-link">
+                {{ 'app.nav.lectures' | translate }}
             </a>
             <a routerLink="/agents" routerLinkActive="nav-link--active" [routerLinkActiveOptions]="{exact: false}" class="nav-link">
                 {{ 'app.nav.agents' | translate }}

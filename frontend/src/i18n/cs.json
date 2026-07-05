@@ -1,612 +1,683 @@
 {
-    "app": {
-        "brand": "Kytario",
-        "actions": {
-            "save": "Uložit",
-            "cancel": "Zrušit",
-            "delete": "Smazat",
-            "edit": "Upravit",
-            "create": "Vytvořit",
-            "back": "Zpět",
-            "loading": "Načítání…",
-            "joining": "Připojuji…",
-            "send": "Odeslat",
-            "confirm": "Potvrdit",
-            "remove": "Odebrat",
-            "rename": "Přejmenovat",
-            "continue": "Pokračovat",
-            "goHome": "Domů",
-            "view": "Zobrazit",
-            "close": "Zavřít"
+  "app": {
+    "brand": "Kytario",
+    "actions": {
+      "save": "Uložit",
+      "cancel": "Zrušit",
+      "delete": "Smazat",
+      "edit": "Upravit",
+      "create": "Vytvořit",
+      "back": "Zpět",
+      "loading": "Načítání…",
+      "joining": "Připojuji…",
+      "send": "Odeslat",
+      "confirm": "Potvrdit",
+      "remove": "Odebrat",
+      "rename": "Přejmenovat",
+      "continue": "Pokračovat",
+      "goHome": "Domů",
+      "view": "Zobrazit",
+      "close": "Zavřít"
+    },
+    "common": {
+      "noWorkspace": "Žádný pracovní prostor",
+      "description": "Popis",
+      "name": "Název",
+      "email": "E-mail",
+      "password": "Heslo",
+      "language": "Jazyk",
+      "empty": "Zatím tu nic není.",
+      "required": "Povinné",
+      "loading": "Načítání…",
+      "edit": "Upravit",
+      "delete": "Smazat",
+      "save": "Uložit",
+      "cancel": "Zrušit",
+      "add": "Přidat"
+    },
+    "markdownEditor": {
+      "edit": "Editor",
+      "preview": "Náhled",
+      "nothingToPreview": "Není co zobrazit."
+    },
+    "nav": {
+      "primary": "Hlavní",
+      "courses": "Projekty",
+      "lectures": "Úkoly",
+      "agents": "Agenti",
+      "workspaces": "Pracovní prostory",
+      "admin": "Správa",
+      "signOut": "Odhlásit se",
+      "settings": "Nastavení",
+      "newWorkspace": "+ Nový pracovní prostor",
+      "manageWorkspaces": "Spravovat pracovní prostory",
+      "aiPalette": "Otevřít paletu příkazů agenta",
+      "openUserMenu": "Otevřít uživatelské menu"
+    },
+    "agent": {
+      "agent": "agent",
+      "createdBy": "Vytvořeno agentem",
+      "viaMcp": "přes MCP"
+    },
+    "agents": {
+      "title": "Aktivita agentů",
+      "subtitle": "Živý audit log napříč pracovním prostorem.",
+      "show": "Zobrazit:",
+      "empty": "Zatím žádná aktivita.",
+      "placeholder": "Bez dat",
+      "kpi": {
+        "events": "Události · 24 h",
+        "eventsSub": "Za posledních 24 hodin",
+        "activeAgents": "Aktivní agenti",
+        "noAgentsConnected": "Žádní agenti připojeni",
+        "lecturesCreated": "Vytvořené úkoly",
+        "lecturesCreatedSub": "Za posledních 24 h",
+        "lecturesClosed": "Uzavřené úkoly",
+        "lecturesClosedSub": "Sledováno přes LectureMoved"
+      },
+      "chips": {
+        "all": "Vše",
+        "humans": "Lidé",
+        "agents": "Agenti",
+        "statusChanges": "Změny stavu"
+      },
+      "verb": {
+        "CourseCreated": "vytvořil(a) projekt",
+        "CourseUpdated": "upravil(a) projekt",
+        "CourseDeleted": "smazal(a) projekt",
+        "WorkflowUpdated": "upravil(a) workflow",
+        "StatusCreated": "přidal(a) stav",
+        "StatusUpdated": "upravil(a) stav",
+        "StatusDeleted": "smazal(a) stav",
+        "StatusMoved": "přesunul(a) stav",
+        "LectureCreated": "vytvořil(a) úkol",
+        "LectureUpdated": "upravil(a) úkol",
+        "LectureDeleted": "smazal(a) úkol",
+        "LectureMoved": "přesunul(a) úkol",
+        "LectureArchived": "archivoval(a) úkol",
+        "LectureUnarchived": "obnovil(a) úkol z archivu",
+        "MemberRoleChanged": "změnil(a) roli člena",
+        "OwnershipTransferred": "převedl(a) vlastnictví",
+        "AdminDeletedWorkspace": "(admin) smazal pracovní prostor",
+        "AdminDeletedUser": "(admin) smazal uživatele",
+        "AdminChangedSystemRole": "(admin) změnil systémovou roli",
+        "LectureFileAdded": "přidal(a) přílohu",
+        "LectureFileDeleted": "odebral(a) přílohu",
+        "UserSelfDeleted": "smazal(a) svůj účet"
+      },
+      "deletedAuthor": "Smazaný uživatel"
+    },
+    "lectures": {
+      "title": "Úkoly",
+      "subtitle": "{{count}} úkolů napříč všemi projekty",
+      "search": "Hledat podle názvu…",
+      "filterStatus": "Stav",
+      "onlyActive": "Pouze aktivní",
+      "clearFilters": "Vymazat filtry",
+      "noWorkflows": "Zatím žádné pracovní postupy.",
+      "empty": "Žádné úkoly neodpovídají filtrům.",
+      "col": {
+        "created": "Vytvořeno",
+        "name": "Název",
+        "status": "Stav"
+      },
+      "bulk": {
+        "selectedCount": "Vybráno: {{count}}",
+        "clear": "Zrušit výběr",
+        "toggleRow": "Přepnout výběr úkolu",
+        "toggleAll": "Přepnout výběr všech úkolů na stránce",
+        "move": "Přesunout do…",
+        "addTag": "Přidat štítek…",
+        "removeTag": "Odebrat štítek…",
+        "delete": "Smazat",
+        "confirmDelete": "Smazat {{count}} úkol(y)? Tuto akci nelze vrátit.",
+        "partialSuccess": "{{succeeded}} aktualizováno, {{skipped}} přeskočeno.",
+        "showSkipped": "Zobrazit detail",
+        "hideSkipped": "Skrýt detail"
+      },
+      "archivedFilter": {
+        "label": "Filtr archivace",
+        "active": "Aktivní úkoly",
+        "archived": "Jen archivované",
+        "all": "Vše (vč. archivu)"
+      },
+      "archivedBadge": "Archivováno"
+    },
+    "savedViews": {
+      "picker": "Pohledy",
+      "noViews": "Zatím žádné uložené pohledy.",
+      "saveAs": "Uložit aktuální filtry jako pohled…",
+      "nameLabel": "Název pohledu",
+      "save": "Uložit",
+      "setDefault": "Nastavit jako výchozí",
+      "delete": "Smazat pohled",
+      "confirmDelete": "Smazat pohled „{{name}}“?"
+    },
+    "pagination": {
+      "showing": "Zobrazeno {{from}}–{{to}} z {{total}}",
+      "none": "Nic k zobrazení",
+      "prev": "Předchozí stránka",
+      "next": "Další stránka",
+      "perPage": "Na stránku"
+    },
+    "auth": {
+      "asideOverline": "MCP-native",
+      "asideHeadline": "Vaše kanban nástěnka, kterou řídí agenti.",
+      "asideBody": "Kytario je multi-tenantní lecture manager postavený tak, aby AI agenti byli hlavními aktéry. Připojte jakéhokoliv MCP klienta a nechte ho úkoly plánovat, vytvářet i uzavírat společně s týmem.",
+      "asideSnippetLabel": "MCP endpoint",
+      "login": {
+        "title": "Přihlášení",
+        "subtitle": "k vašemu pracovnímu prostoru",
+        "submit": "Přihlásit se",
+        "submitting": "Přihlašuji…",
+        "noAccount": "Nemáte účet?",
+        "signUp": "Registrovat se",
+        "forgotPassword": "Zapomněli jste heslo?",
+        "or": "nebo"
+      },
+      "signUp": {
+        "title": "Vytvořit účet",
+        "subtitle": "Začněte spravovat své projekty.",
+        "submit": "Registrovat se",
+        "submitting": "Vytvářím účet…",
+        "hasAccount": "Už máte účet?",
+        "logIn": "Přihlásit se"
+      },
+      "forgotPassword": {
+        "title": "Zapomněli jste heslo?",
+        "subtitle": "Zadejte svůj e-mail a pošleme vám odkaz pro obnovení.",
+        "submit": "Odeslat odkaz",
+        "submitting": "Odesílám…",
+        "sent": "Pokud k tomuto e-mailu existuje účet, odkaz pro obnovení je na cestě. Zkontrolujte si schránku.",
+        "backToLogin": "Zpět na přihlášení"
+      },
+      "resetPassword": {
+        "title": "Nastavit nové heslo",
+        "subtitle": "Zvolte si nové heslo a obnovte přístup k účtu.",
+        "newPassword": "Nové heslo",
+        "confirmPassword": "Potvrdit nové heslo",
+        "submit": "Aktualizovat heslo",
+        "submitting": "Aktualizuji…",
+        "invalidToken": "Tento odkaz pro obnovení chybí nebo už není platný.",
+        "requestNew": "Vyžádat nový odkaz",
+        "backToLogin": "Zpět na přihlášení"
+      },
+      "verifyEmail": {
+        "title": "Ověření e-mailu",
+        "verifying": "Ověřujeme vaši e-mailovou adresu…",
+        "success": "E-mail je ověřen. Vítejte!",
+        "invalid": "Tento ověřovací odkaz chybí, vypršel nebo už byl použit.",
+        "requestNew": "Vyžádat nový ověřovací e-mail",
+        "backToApp": "Zpět do aplikace",
+        "backToLogin": "Zpět na přihlášení"
+      },
+      "errors": {
+        "invalidCredentials": "Neplatný e-mail nebo heslo.",
+        "passwordPolicy": "Heslo musí mít alespoň 8 znaků a obsahovat velké písmeno, malé písmeno a číslici.",
+        "passwordMismatch": "Hesla se neshodují."
+      },
+      "oauth": {
+        "loginTitle": "Přihlaste se a autorizujte",
+        "loginSubtitle": "{{clientName}} se chce připojit k vašemu pracovnímu prostoru.",
+        "loginAndAuthorize": "Přihlásit a autorizovat",
+        "signingIn": "Přihlašuji…",
+        "consentTitle": "Povolit přístup",
+        "consentSubtitle": "Povolit aplikaci {{clientName}} připojení k vašemu pracovnímu prostoru?",
+        "authorize": "Autorizovat",
+        "authorizing": "Autorizuji…",
+        "errorTitle": "Nelze autorizovat",
+        "invalidRequest": "Neplatné parametry OAuth požadavku.",
+        "unknownClient": "Neznámá aplikace."
+      }
+    },
+    "courses": {
+      "title": "Projekty",
+      "new": "Nový projekt",
+      "empty": "Zatím žádné projekty.",
+      "openBoard": "Otevřít tabuli",
+      "workflow": "Pracovní postup",
+      "history": "Historie",
+      "deleteConfirm": "Smazat projekt „{{name}}\"? Odstraní se i všechny jeho úkoly a historie.",
+      "deleted": "Projekt smazán.",
+      "created": "Projekt vytvořen.",
+      "updated": "Projekt aktualizován.",
+      "edit": "Upravit projekt",
+      "namePlaceholder": "Název projektu",
+      "descriptionPlaceholder": "Volitelný popis"
+    },
+    "board": {
+      "addLecture": "+ Přidat úkol",
+      "newLecture": "Nový úkol",
+      "viewBoard": "Nástěnka",
+      "viewWorkflow": "Workflow",
+      "viewEvents": "Události",
+      "breadcrumb": "Projekty",
+      "filter": "Filtr",
+      "noLectures": "Žádné úkoly v tomto sloupci.",
+      "lectureCreated": "Úkol vytvořen.",
+      "lectureUpdated": "Úkol upraven.",
+      "lectureDeleted": "Úkol smazán.",
+      "deleteLectureConfirm": "Smazat úkol „{{name}}\"?",
+      "drawer": {
+        "newLecture": "Nový úkol",
+        "editLecture": "Upravit úkol",
+        "close": "Zavřít",
+        "preview": "Náhled",
+        "edit": "Editor",
+        "saveChanges": "Uložit změny",
+        "archive": "Archivovat",
+        "unarchive": "Obnovit z archivu",
+        "archived": "Úkol archivován",
+        "unarchived": "Úkol obnoven z archivu",
+        "titlePlaceholder": "Název úkolu",
+        "descriptionPlaceholder": "Podporuje Markdown…",
+        "nothingToPreview": "Není co zobrazit.",
+        "status": "Stav",
+        "files": {
+          "title": "Přílohy",
+          "upload": "Nahrát soubor",
+          "uploading": "Nahrávání…",
+          "uploaded": "Soubor nahrán.",
+          "empty": "Žádné přílohy.",
+          "saveFirst": "Pro přidání příloh nejprve uložte úkol.",
+          "delete": "Smazat",
+          "download": "Stáhnout",
+          "deleteConfirm": "Smazat soubor „{{name}}\"?",
+          "uploadedBy": "od {{name}}",
+          "uploadedByAgent": "od agenta"
         },
-        "common": {
-            "noWorkspace": "Žádný pracovní prostor",
-            "description": "Popis",
-            "name": "Název",
-            "email": "E-mail",
-            "password": "Heslo",
-            "language": "Jazyk",
-            "empty": "Zatím tu nic není.",
-            "required": "Povinné",
-            "loading": "Načítání…",
-            "edit": "Upravit",
-            "delete": "Smazat",
-            "save": "Uložit",
-            "cancel": "Zrušit",
-            "add": "Přidat"
+        "panels": {
+          "details": "Detaily",
+          "tabs": "Taby",
+          "progress": "Pokrok",
+          "links": "Odkazy"
         },
-        "markdownEditor": {
-            "edit": "Editor",
-            "preview": "Náhled",
-            "nothingToPreview": "Není co zobrazit."
-        },
-        "nav": {
-            "primary": "Hlavní",
-            "projects": "Projekty",
-            "tasks": "Úkoly",
-            "agents": "Agenti",
-            "workspaces": "Pracovní prostory",
-            "admin": "Správa",
-            "signOut": "Odhlásit se",
-            "settings": "Nastavení",
-            "newWorkspace": "+ Nový pracovní prostor",
-            "manageWorkspaces": "Spravovat pracovní prostory",
-            "aiPalette": "Otevřít paletu příkazů agenta",
-            "openUserMenu": "Otevřít uživatelské menu"
-        },
-        "agent": {
-            "agent": "agent",
-            "createdBy": "Vytvořeno agentem",
-            "viaMcp": "přes MCP"
-        },
-        "agents": {
-            "title": "Aktivita agentů",
-            "subtitle": "Živý audit log napříč pracovním prostorem.",
-            "show": "Zobrazit:",
-            "empty": "Zatím žádná aktivita.",
-            "placeholder": "Bez dat",
-            "kpi": {
-                "events": "Události · 24 h",
-                "eventsSub": "Za posledních 24 hodin",
-                "activeAgents": "Aktivní agenti",
-                "noAgentsConnected": "Žádní agenti připojeni",
-                "tasksCreated": "Vytvořené úkoly",
-                "tasksCreatedSub": "Za posledních 24 h",
-                "tasksClosed": "Uzavřené úkoly",
-                "tasksClosedSub": "Sledováno přes TaskMoved"
-            },
-            "chips": {
-                "all": "Vše",
-                "humans": "Lidé",
-                "agents": "Agenti",
-                "statusChanges": "Změny stavu"
-            },
-            "verb": {
-                "ProjectCreated": "vytvořil(a) projekt",
-                "ProjectUpdated": "upravil(a) projekt",
-                "ProjectDeleted": "smazal(a) projekt",
-                "WorkflowUpdated": "upravil(a) workflow",
-                "StatusCreated": "přidal(a) stav",
-                "StatusUpdated": "upravil(a) stav",
-                "StatusDeleted": "smazal(a) stav",
-                "StatusMoved": "přesunul(a) stav",
-                "TaskCreated": "vytvořil(a) úkol",
-                "TaskUpdated": "upravil(a) úkol",
-                "TaskDeleted": "smazal(a) úkol",
-                "TaskMoved": "přesunul(a) úkol",
-                "TaskArchived": "archivoval(a) úkol",
-                "TaskUnarchived": "obnovil(a) úkol z archivu",
-                "MemberRoleChanged": "změnil(a) roli člena",
-                "OwnershipTransferred": "převedl(a) vlastnictví",
-                "AdminDeletedWorkspace": "(admin) smazal pracovní prostor",
-                "AdminDeletedUser": "(admin) smazal uživatele",
-                "AdminChangedSystemRole": "(admin) změnil systémovou roli",
-                "TaskFileAdded": "přidal(a) přílohu",
-                "TaskFileDeleted": "odebral(a) přílohu",
-                "UserSelfDeleted": "smazal(a) svůj účet"
-            },
-            "deletedAuthor": "Smazaný uživatel"
-        },
-        "tasks": {
-            "title": "Úkoly",
-            "subtitle": "{{count}} úkolů napříč všemi projekty",
-            "search": "Hledat podle názvu…",
-            "filterStatus": "Stav",
-            "onlyActive": "Pouze aktivní",
-            "clearFilters": "Vymazat filtry",
-            "noWorkflows": "Zatím žádné pracovní postupy.",
-            "empty": "Žádné úkoly neodpovídají filtrům.",
-            "col": {
-                "created": "Vytvořeno",
-                "name": "Název",
-                "status": "Stav"
-            },
-            "bulk": {
-                "selectedCount": "Vybráno: {{count}}",
-                "clear": "Zrušit výběr",
-                "toggleRow": "Přepnout výběr úkolu",
-                "toggleAll": "Přepnout výběr všech úkolů na stránce",
-                "move": "Přesunout do…",
-                "addTag": "Přidat štítek…",
-                "removeTag": "Odebrat štítek…",
-                "delete": "Smazat",
-                "confirmDelete": "Smazat {{count}} úkol(y)? Tuto akci nelze vrátit.",
-                "partialSuccess": "{{succeeded}} aktualizováno, {{skipped}} přeskočeno.",
-                "showSkipped": "Zobrazit detail",
-                "hideSkipped": "Skrýt detail"
-            },
-            "archivedFilter": {
-                "label": "Filtr archivace",
-                "active": "Aktivní úkoly",
-                "archived": "Jen archivované",
-                "all": "Vše (vč. archivu)"
-            },
-            "archivedBadge": "Archivováno"
-        },
-        "savedViews": {
-            "picker": "Pohledy",
-            "noViews": "Zatím žádné uložené pohledy.",
-            "saveAs": "Uložit aktuální filtry jako pohled…",
-            "nameLabel": "Název pohledu",
-            "save": "Uložit",
-            "setDefault": "Nastavit jako výchozí",
-            "delete": "Smazat pohled",
-            "confirmDelete": "Smazat pohled „{{name}}“?"
-        },
-        "pagination": {
-            "showing": "Zobrazeno {{from}}–{{to}} z {{total}}",
-            "none": "Nic k zobrazení",
-            "prev": "Předchozí stránka",
-            "next": "Další stránka",
-            "perPage": "Na stránku"
-        },
-        "auth": {
-            "asideOverline": "MCP-native",
-            "asideHeadline": "Vaše kanban nástěnka, kterou řídí agenti.",
-            "asideBody": "Kytario je multi-tenantní task manager postavený tak, aby AI agenti byli hlavními aktéry. Připojte jakéhokoliv MCP klienta a nechte ho úkoly plánovat, vytvářet i uzavírat společně s týmem.",
-            "asideSnippetLabel": "MCP endpoint",
-            "login": {
-                "title": "Přihlášení",
-                "subtitle": "k vašemu pracovnímu prostoru",
-                "submit": "Přihlásit se",
-                "submitting": "Přihlašuji…",
-                "noAccount": "Nemáte účet?",
-                "signUp": "Registrovat se",
-                "forgotPassword": "Zapomněli jste heslo?",
-                "or": "nebo"
-            },
-            "signUp": {
-                "title": "Vytvořit účet",
-                "subtitle": "Začněte spravovat své projekty.",
-                "submit": "Registrovat se",
-                "submitting": "Vytvářím účet…",
-                "hasAccount": "Už máte účet?",
-                "logIn": "Přihlásit se"
-            },
-            "forgotPassword": {
-                "title": "Zapomněli jste heslo?",
-                "subtitle": "Zadejte svůj e-mail a pošleme vám odkaz pro obnovení.",
-                "submit": "Odeslat odkaz",
-                "submitting": "Odesílám…",
-                "sent": "Pokud k tomuto e-mailu existuje účet, odkaz pro obnovení je na cestě. Zkontrolujte si schránku.",
-                "backToLogin": "Zpět na přihlášení"
-            },
-            "resetPassword": {
-                "title": "Nastavit nové heslo",
-                "subtitle": "Zvolte si nové heslo a obnovte přístup k účtu.",
-                "newPassword": "Nové heslo",
-                "confirmPassword": "Potvrdit nové heslo",
-                "submit": "Aktualizovat heslo",
-                "submitting": "Aktualizuji…",
-                "invalidToken": "Tento odkaz pro obnovení chybí nebo už není platný.",
-                "requestNew": "Vyžádat nový odkaz",
-                "backToLogin": "Zpět na přihlášení"
-            },
-            "verifyEmail": {
-                "title": "Ověření e-mailu",
-                "verifying": "Ověřujeme vaši e-mailovou adresu…",
-                "success": "E-mail je ověřen. Vítejte!",
-                "invalid": "Tento ověřovací odkaz chybí, vypršel nebo už byl použit.",
-                "requestNew": "Vyžádat nový ověřovací e-mail",
-                "backToApp": "Zpět do aplikace",
-                "backToLogin": "Zpět na přihlášení"
-            },
-            "errors": {
-                "invalidCredentials": "Neplatný e-mail nebo heslo.",
-                "passwordPolicy": "Heslo musí mít alespoň 8 znaků a obsahovat velké písmeno, malé písmeno a číslici.",
-                "passwordMismatch": "Hesla se neshodují."
-            },
-            "oauth": {
-                "loginTitle": "Přihlaste se a autorizujte",
-                "loginSubtitle": "{{clientName}} se chce připojit k vašemu pracovnímu prostoru.",
-                "loginAndAuthorize": "Přihlásit a autorizovat",
-                "signingIn": "Přihlašuji…",
-                "consentTitle": "Povolit přístup",
-                "consentSubtitle": "Povolit aplikaci {{clientName}} připojení k vašemu pracovnímu prostoru?",
-                "authorize": "Autorizovat",
-                "authorizing": "Autorizuji…",
-                "errorTitle": "Nelze autorizovat",
-                "invalidRequest": "Neplatné parametry OAuth požadavku.",
-                "unknownClient": "Neznámá aplikace."
-            }
-        },
-        "projects": {
-            "title": "Projekty",
-            "new": "Nový projekt",
-            "empty": "Zatím žádné projekty.",
-            "openBoard": "Otevřít tabuli",
-            "workflow": "Pracovní postup",
-            "history": "Historie",
-            "deleteConfirm": "Smazat projekt „{{name}}\"? Odstraní se i všechny jeho úkoly a historie.",
-            "deleted": "Projekt smazán.",
-            "created": "Projekt vytvořen.",
-            "updated": "Projekt aktualizován.",
-            "edit": "Upravit projekt",
-            "namePlaceholder": "Název projektu",
-            "descriptionPlaceholder": "Volitelný popis"
-        },
-        "board": {
-            "addTask": "+ Přidat úkol",
-            "newTask": "Nový úkol",
-            "viewBoard": "Nástěnka",
-            "viewWorkflow": "Workflow",
-            "viewEvents": "Události",
-            "breadcrumb": "Projekty",
-            "filter": "Filtr",
-            "noTasks": "Žádné úkoly v tomto sloupci.",
-            "taskCreated": "Úkol vytvořen.",
-            "taskUpdated": "Úkol upraven.",
-            "taskDeleted": "Úkol smazán.",
-            "deleteTaskConfirm": "Smazat úkol „{{name}}\"?",
-            "drawer": {
-                "newTask": "Nový úkol",
-                "editTask": "Upravit úkol",
-                "close": "Zavřít",
-                "preview": "Náhled",
-                "edit": "Editor",
-                "saveChanges": "Uložit změny",
-                "archive": "Archivovat",
-                "unarchive": "Obnovit z archivu",
-                "archived": "Úkol archivován",
-                "unarchived": "Úkol obnoven z archivu",
-                "titlePlaceholder": "Název úkolu",
-                "descriptionPlaceholder": "Podporuje Markdown…",
-                "nothingToPreview": "Není co zobrazit.",
-                "status": "Stav",
-                "files": {
-                    "title": "Přílohy",
-                    "upload": "Nahrát soubor",
-                    "uploading": "Nahrávání…",
-                    "uploaded": "Soubor nahrán.",
-                    "empty": "Žádné přílohy.",
-                    "saveFirst": "Pro přidání příloh nejprve uložte úkol.",
-                    "delete": "Smazat",
-                    "download": "Stáhnout",
-                    "deleteConfirm": "Smazat soubor „{{name}}\"?",
-                    "uploadedBy": "od {{name}}",
-                    "uploadedByAgent": "od agenta"
-                }
-            }
-        },
-        "workflow": {
-            "title": "Pracovní postup",
-            "addStatus": "+ Přidat stav",
-            "deleteStatusConfirm": "Smazat stav „{{name}}\"? Úkoly v tomto stavu zůstanou bez stavu.",
-            "lastStatusError": "Nelze smazat poslední stav.",
-            "namePlaceholder": "Název stavu",
-            "namePrompt": "Název stavu?",
-            "newStatusDefault": "Nový",
-            "statusAdded": "Stav přidán.",
-            "statusDeleted": "Stav smazán.",
-            "backToBoard": "← Zpět na tabuli",
-            "hint": "Tip: stav přesunete tažením rukojetí. Každý postup by měl mít jeden Začátek a alespoň jedno Dokončení.",
-            "dragHandle": "Přetáhněte pro změnu pořadí",
-            "type": {
-                "Start": "Začátek",
-                "Normal": "Průběh",
-                "Finish": "Dokončení"
-            }
-        },
-        "events": {
-            "title": "Historie",
-            "empty": "Zatím žádná aktivita.",
-            "types": {
-                "ProjectCreated": "vytvořil(a) projekt",
-                "ProjectUpdated": "upravil(a) projekt",
-                "ProjectDeleted": "smazal(a) projekt",
-                "WorkflowUpdated": "upravil(a) pracovní postup",
-                "StatusCreated": "přidal(a) stav „{{name}}\"",
-                "StatusUpdated": "upravil(a) stav",
-                "StatusDeleted": "smazal(a) stav",
-                "StatusMoved": "změnil(a) pořadí stavů",
-                "TaskCreated": "vytvořil(a) úkol „{{name}}\"",
-                "TaskUpdated": "upravil(a) úkol „{{name}}\"",
-                "TaskDeleted": "smazal(a) úkol „{{name}}\"",
-                "TaskMoved": "přesunul(a) „{{name}}\" z {{from}} → {{to}}",
-                "TaskArchived": "archivoval(a) úkol „{{name}}\"",
-                "TaskUnarchived": "obnovil(a) úkol „{{name}}\" z archivu",
-                "TaskFileAdded": "přidal(a) přílohu „{{filename}}\"",
-                "TaskFileDeleted": "odebral(a) přílohu „{{filename}}\""
-            },
-            "deletedAuthor": "Smazaný uživatel",
-            "timeAgo": {
-                "seconds": "před {{n}}s",
-                "minutes": "před {{n}}m",
-                "hours": "před {{n}}h"
-            }
-        },
-        "notifications": {
-            "section": "Oznámení",
-            "bell": "Oznámení",
-            "empty": "Vše přečteno.",
-            "markAllAsRead": "Označit vše",
-            "dismiss": "Zavřít",
-            "message": {
-                "TaskMoved": "{{actor}} přesunul(a) {{task}} do {{status}}"
-            }
-        },
-        "taskWatchers": {
-            "watch": "Sledovat",
-            "watching": "Sleduji",
-            "watchHint": "Dostávat oznámení o komentářích, přesunech a termínech tohoto úkolu",
-            "unwatchHint": "Přestat dostávat oznámení o tomto úkolu"
-        },
-        "workspaces": {
-            "title": "Pracovní prostory",
-            "createPrompt": "Název nového pracovního prostoru:",
-            "renamePrompt": "Název pracovního prostoru:",
-            "created": "Pracovní prostor „{{name}}\" byl vytvořen.",
-            "renamed": "Pracovní prostor přejmenován.",
-            "deleteConfirm": "Smazat pracovní prostor „{{name}}\"? Tato akce je nevratná.",
-            "deleted": "Pracovní prostor smazán.",
-            "current": "Aktivní",
-            "members": "Členové",
-            "noMembers": "Žádní členové.",
-            "inviteHeading": "Pozvat člena",
-            "invitePlaceholder": "jmeno@example.com",
-            "sendInvitation": "Odeslat pozvánku",
-            "invitationSent": "Pozvánka odeslána na {{email}}.",
-            "pendingInvitations": "Čekající pozvánky",
-            "cancelInvitationConfirm": "Zrušit pozvánku pro {{email}}?",
-            "removeMemberConfirm": "Odebrat {{name}} z „{{workspace}}\"?",
-            "memberRemoved": "Člen odebrán.",
-            "selectWorkspace": "Vyberte pracovní prostor.",
-            "accepted": "Přijato",
-            "transferOwnership": "Předat vlastnictví",
-            "transferOwnershipConfirm": "Předat vlastnictví „{{workspace}}\" uživateli {{name}}? Z vás se stane Admin.",
-            "ownershipTransferred": "Vlastnictví předáno.",
-            "roleChanged": "Role aktualizována.",
-            "tabs": {
-                "general": "Obecné",
-                "members": "Členové",
-                "tags": "Štítky",
-                "mcp": "MCP a agenti"
-            },
-            "general": {
-                "renameTitle": "Název pracovního prostoru",
-                "renameDescription": "Přejmenujte tento pracovní prostor. Název vidí všichni členové.",
-                "deleteTitle": "Smazat pracovní prostor",
-                "deleteDescription": "Trvale smaže tento pracovní prostor včetně všech projektů a úkolů. Tato akce je nevratná."
-            },
-            "mcp": {
-                "heading": "MCP klienti",
-                "empty": "Pro tento pracovní prostor zatím není autorizován žádný MCP klient.",
-                "firstSeen": "První přihlášení",
-                "lastUsed": "Naposledy použito",
-                "activeTokens": "aktivních tokenů",
-                "totalAuthorizations": "Celkem autorizací",
-                "revoke": "Odebrat přístup",
-                "revokeConfirm": "Odebrat přístup klientovi „{{name}}“? Všechny jeho tokeny okamžitě přestanou fungovat a klient se bude muset znovu autorizovat.",
-                "revoked": "Přístup klienta byl odebrán."
-            },
-            "role": {
-                "Owner": "Vlastník",
-                "Admin": "Admin",
-                "Member": "Člen"
-            }
-        },
-        "admin": {
-            "title": "Správa",
-            "users": {
-                "title": "Uživatelé",
-                "email": "E-mail",
-                "name": "Jméno",
-                "systemRole": "Systémová role",
-                "workspaces": "Pracovní prostory",
-                "owned": "Vlastněné",
-                "searchPlaceholder": "Hledat podle jména nebo e-mailu",
-                "promote": "Povýšit na admina",
-                "demote": "Snížit na uživatele",
-                "roleUpdated": "Systémová role aktualizována.",
-                "deleteConfirm": "Smazat uživatele {{email}}? Tato akce je nevratná.",
-                "deleted": "Uživatel smazán.",
-                "cannotDeleteSelf": "Nemůžete zde smazat vlastní účet.",
-                "empty": "Žádní uživatelé.",
-                "systemRole.SystemAdmin": "Systémový admin",
-                "systemRole.User": "Uživatel"
-            },
-            "workspaces": {
-                "title": "Pracovní prostory",
-                "name": "Název",
-                "owner": "Vlastník",
-                "ownerLabel": "Vlastník",
-                "members": "Členů",
-                "searchPlaceholder": "Hledat podle názvu nebo vlastníka",
-                "renamePrompt": "Nový název pracovního prostoru:",
-                "renamed": "Pracovní prostor přejmenován.",
-                "deleteConfirm": "Smazat pracovní prostor „{{name}}\"? Všechny projekty a úkoly budou ztraceny.",
-                "deleted": "Pracovní prostor smazán.",
-                "transferOwnershipConfirm": "Učinit uživatele {{name}} vlastníkem „{{workspace}}\"?",
-                "ownershipTransferred": "Vlastnictví předáno.",
-                "removeMemberConfirm": "Odebrat {{name}} z „{{workspace}}\"?",
-                "empty": "Žádné pracovní prostory."
-            }
-        },
-        "invitation": {
-            "heading": "Pozvánka do pracovního prostoru",
-            "alreadyAccepted": "Tato pozvánka už byla přijata.",
-            "invitedAs": "{{inviter}} vás pozval(a) do {{workspace}} jako {{role}}.",
-            "sentTo": "Pozvánka je zaslána na {{email}}.",
-            "accept": "Přijmout pozvánku",
-            "loginPrompt": "Přihlaste se nebo si vytvořte účet s touto e-mailovou adresou.",
-            "missingToken": "Chybí token pozvánky.",
-            "notFound": "Pozvánka nebyla nalezena nebo už byla použita.",
-            "joined": "Připojeno k „{{workspace}}\"."
-        },
-        "verifyBanner": {
-            "message": "Ověřte prosím svou e-mailovou adresu, abyste mohli zvát kolegy a využívat všechny funkce.",
-            "resend": "Znovu odeslat ověřovací e-mail",
-            "resending": "Odesílám…",
-            "resent": "Ověřovací e-mail byl odeslán. Zkontrolujte si schránku.",
-            "alreadyVerified": "Ověřeno — obnovit"
-        },
-        "settings": {
-            "title": "Nastavení",
-            "subtitle": "Spravujte svůj účet.",
-            "language": "Jazyk",
-            "languageEn": "English",
-            "languageCs": "Čeština",
-            "languageUpdated": "Jazyk byl změněn.",
-            "theme": "Motiv",
-            "themeSystem": "Podle systému",
-            "themeLight": "Světlý",
-            "themeDark": "Tmavý",
-            "changePassword": {
-                "title": "Změna hesla",
-                "description": "Použijte silné heslo s malými i velkými písmeny a alespoň jednou číslicí.",
-                "currentPassword": "Současné heslo",
-                "newPassword": "Nové heslo",
-                "confirmPassword": "Potvrdit nové heslo",
-                "submit": "Změnit heslo",
-                "submitting": "Aktualizuji…",
-                "success": "Heslo bylo změněno."
-            },
-            "dangerZone": {
-                "title": "Nebezpečná zóna",
-                "subtitle": "Exportujte svá data nebo trvale smažte svůj účet.",
-                "exportTitle": "Exportovat moje data",
-                "exportDescription": "Stáhněte JSON soubor s vaším profilem, členstvími v pracovních prostorech, odeslanými pozvánkami a obsahem, který jste vytvořili (události, komentáře, soubory, vazby).",
-                "exportButton": "Stáhnout JSON",
-                "exporting": "Připravuji…",
-                "deleteTitle": "Smazat účet",
-                "deleteDescription": "Trvale smaže váš účet a všechna data, která jsou s ním spojena. Pracovní prostory, které sami vlastníte, musí být nejprve převedeny nebo smazány.",
-                "deleteButton": "Smazat účet",
-                "deleting": "Mažu…",
-                "deleteConfirm": "Tato akce trvale smaže váš účet. Opravdu chcete pokračovat?"
-            }
-        },
-        "tags": {
-            "title": "Štítky",
-            "description": "Štítky v rámci workspace, které lze připojit ke kterémukoli úkolu. Každý štítek má název a barvu.",
-            "addTag": "Přidat štítek",
-            "editTag": "Upravit štítek",
-            "name": "Název štítku",
-            "namePlaceholder": "např. bug",
-            "color": "Barva",
-            "preview": "náhled",
-            "empty": "Zatím žádné štítky.",
-            "tagCreated": "Štítek vytvořen.",
-            "tagUpdated": "Štítek upraven.",
-            "tagDeleted": "Štítek smazán.",
-            "deleteConfirm": "Smazat štítek „{{name}}“? Odstraní se ze všech úkolů, které jej používají.",
-            "noPermission": "Spravovat štítky mohou pouze vlastník a admin."
-        },
-        "taskTags": {
-            "heading": "Štítky",
-            "add": "Přidat štítek",
-            "empty": "Bez štítků.",
-            "remove": "Odebrat",
-            "filterTitle": "Filtrovat podle štítku",
-            "noTagsAvailable": "Žádné další štítky k přidání."
-        },
-        "onboarding": {
-            "shell": {
-                "gettingStarted": "Začínáme",
-                "signOut": "Odhlásit se",
-                "signedInAs": "Přihlášen jako",
-                "workspaceLabel": "Nastavit workspace",
-                "tipTitle": "Proč workflow?",
-                "tipBody": "Každý projekt má jeden workflow — uspořádané stavy, kterými úkol prochází. Přejmenovat nebo přidat sloupce můžete kdykoli později.",
-                "stepCounter": "Krok {{step}} z {{total}}",
-                "skip": "Přeskočit",
-                "back": "Zpět",
-                "continue": "Pokračovat",
-                "openWorkspace": "Otevřít workspace"
-            },
-            "steps": {
-                "step1": {
-                    "label": "Projekt a workflow",
-                    "hint": "Kde žijí úkoly"
-                },
-                "step2": {
-                    "label": "Pozvat kolegy",
-                    "hint": "Přiveďte tým"
-                },
-                "step3": {
-                    "label": "Připojit agenty",
-                    "hint": "Volitelné · MCP"
-                }
-            },
-            "step1": {
-                "overline": "Krok 01",
-                "title": "Vytvořte první projekt",
-                "lead": "Projekt sdružuje související úkoly. Vyberte název a zvolte workflow, kterým bude tým úkoly posouvat.",
-                "nameLabel": "Název projektu",
-                "namePlaceholder": "Přepis backendu",
-                "descriptionLabel": "Popis",
-                "descriptionPlaceholder": "Volitelný kontext pro tým.",
-                "optional": "volitelné",
-                "workflowTitle": "Workflow",
-                "workflowSub": "Stavy, kterými úkoly procházejí. Vyberte šablonu — později ji můžete upravit.",
-                "errorCreate": "Projekt se nepodařilo vytvořit. Zkuste to znovu.",
-                "templates": {
-                    "kanban": {
-                        "name": "Kanban",
-                        "sub": "Klasický 4-stavový tok"
-                    },
-                    "engineering": {
-                        "name": "Engineering",
-                        "sub": "Backlog → Spec → Build → Ship"
-                    },
-                    "simple": {
-                        "name": "Jednoduchý",
-                        "sub": "Jen otevřené / zavřené"
-                    },
-                    "blank": {
-                        "name": "Začít prázdné",
-                        "sub": "Vlastní sloupce"
-                    }
-                }
-            },
-            "step2": {
-                "overline": "Krok 02",
-                "title": "Pozvěte kolegy",
-                "lead": "Dostanou e-mail s odkazem pro vstup do vašeho workspace. Přidejte jich kolik chcete — role můžete kdykoli upravit.",
-                "emailPlaceholder": "kolega@example.com",
-                "addAnother": "Přidat dalšího",
-                "removeRow": "Odebrat řádek",
-                "skipInvites": "Přeskočit pozvánky",
-                "errorNoWorkspace": "Žádný aktivní workspace. Obnovte stránku a zkuste znovu.",
-                "errorSomeFailed": "{{count}} pozvánek se nepodařilo odeslat."
-            },
-            "step3": {
-                "overline": "Krok 03",
-                "title": "Hotovo",
-                "lead": "Workspace i první projekt jsou připraveny. Zbývá volitelný krok: připojte agenta kompatibilního s MCP, aby Claude nebo Cursor mohli úkoly posouvat za vás.",
-                "summaryWorkspace": "Workspace",
-                "summaryProject": "Projekt",
-                "summaryInvites": "Pozvánek",
-                "mcpServerTitle": "MCP server",
-                "mcpServerSub": "Nasměrujte agenta na tuto URL.",
-                "serverUrl": "URL serveru",
-                "claudeTitle": "Claude Desktop",
-                "claudeSub": "Přidejte tento záznam do ~/Library/Application Support/Claude/claude_desktop_config.json.",
-                "cursorTitle": "Cursor",
-                "cursorSub": "Přidejte tento záznam do .cursor/mcp.json ve svém workspace.",
-                "copy": "Kopírovat",
-                "copied": "Zkopírováno.",
-                "copyFailed": "Kopírování se nezdařilo. Vyberte text ručně."
-            }
+        "guitar": {
+          "heading": "Kytara",
+          "tuning": "Ladění",
+          "tuningPlaceholder": "např. Drop D, EADGBE",
+          "capo": "Kapodastr (pražec)",
+          "targetTempo": "Cílové tempo (BPM)",
+          "difficulty": "Obtížnost",
+          "difficultyNone": "—",
+          "difficulties": {
+            "Beginner": "Začátečník",
+            "Intermediate": "Pokročilý",
+            "Advanced": "Expert"
+          }
         }
+      },
+      "card": {
+        "capo": "Kapo"
+      }
+    },
+    "workflow": {
+      "title": "Pracovní postup",
+      "addStatus": "+ Přidat stav",
+      "deleteStatusConfirm": "Smazat stav „{{name}}\"? Úkoly v tomto stavu zůstanou bez stavu.",
+      "lastStatusError": "Nelze smazat poslední stav.",
+      "namePlaceholder": "Název stavu",
+      "namePrompt": "Název stavu?",
+      "newStatusDefault": "Nový",
+      "statusAdded": "Stav přidán.",
+      "statusDeleted": "Stav smazán.",
+      "backToBoard": "← Zpět na tabuli",
+      "hint": "Tip: stav přesunete tažením rukojetí. Každý postup by měl mít jeden Začátek a alespoň jedno Dokončení.",
+      "dragHandle": "Přetáhněte pro změnu pořadí",
+      "type": {
+        "Start": "Začátek",
+        "Normal": "Průběh",
+        "Finish": "Dokončení"
+      }
+    },
+    "events": {
+      "title": "Historie",
+      "empty": "Zatím žádná aktivita.",
+      "types": {
+        "CourseCreated": "vytvořil(a) projekt",
+        "CourseUpdated": "upravil(a) projekt",
+        "CourseDeleted": "smazal(a) projekt",
+        "WorkflowUpdated": "upravil(a) pracovní postup",
+        "StatusCreated": "přidal(a) stav „{{name}}\"",
+        "StatusUpdated": "upravil(a) stav",
+        "StatusDeleted": "smazal(a) stav",
+        "StatusMoved": "změnil(a) pořadí stavů",
+        "LectureCreated": "vytvořil(a) úkol „{{name}}\"",
+        "LectureUpdated": "upravil(a) úkol „{{name}}\"",
+        "LectureDeleted": "smazal(a) úkol „{{name}}\"",
+        "LectureMoved": "přesunul(a) „{{name}}\" z {{from}} → {{to}}",
+        "LectureArchived": "archivoval(a) úkol „{{name}}\"",
+        "LectureUnarchived": "obnovil(a) úkol „{{name}}\" z archivu",
+        "LectureFileAdded": "přidal(a) přílohu „{{filename}}\"",
+        "LectureFileDeleted": "odebral(a) přílohu „{{filename}}\""
+      },
+      "deletedAuthor": "Smazaný uživatel",
+      "timeAgo": {
+        "seconds": "před {{n}}s",
+        "minutes": "před {{n}}m",
+        "hours": "před {{n}}h"
+      }
+    },
+    "notifications": {
+      "section": "Oznámení",
+      "bell": "Oznámení",
+      "empty": "Vše přečteno.",
+      "markAllAsRead": "Označit vše",
+      "dismiss": "Zavřít",
+      "message": {
+        "LectureMoved": "{{actor}} přesunul(a) {{lecture}} do {{status}}"
+      }
+    },
+    "lectureWatchers": {
+      "watch": "Sledovat",
+      "watching": "Sleduji",
+      "watchHint": "Dostávat oznámení o komentářích, přesunech a termínech tohoto úkolu",
+      "unwatchHint": "Přestat dostávat oznámení o tomto úkolu"
+    },
+    "workspaces": {
+      "title": "Pracovní prostory",
+      "createPrompt": "Název nového pracovního prostoru:",
+      "renamePrompt": "Název pracovního prostoru:",
+      "created": "Pracovní prostor „{{name}}\" byl vytvořen.",
+      "renamed": "Pracovní prostor přejmenován.",
+      "deleteConfirm": "Smazat pracovní prostor „{{name}}\"? Tato akce je nevratná.",
+      "deleted": "Pracovní prostor smazán.",
+      "current": "Aktivní",
+      "members": "Členové",
+      "noMembers": "Žádní členové.",
+      "inviteHeading": "Pozvat člena",
+      "invitePlaceholder": "jmeno@example.com",
+      "sendInvitation": "Odeslat pozvánku",
+      "invitationSent": "Pozvánka odeslána na {{email}}.",
+      "pendingInvitations": "Čekající pozvánky",
+      "cancelInvitationConfirm": "Zrušit pozvánku pro {{email}}?",
+      "removeMemberConfirm": "Odebrat {{name}} z „{{workspace}}\"?",
+      "memberRemoved": "Člen odebrán.",
+      "selectWorkspace": "Vyberte pracovní prostor.",
+      "accepted": "Přijato",
+      "transferOwnership": "Předat vlastnictví",
+      "transferOwnershipConfirm": "Předat vlastnictví „{{workspace}}\" uživateli {{name}}? Z vás se stane Admin.",
+      "ownershipTransferred": "Vlastnictví předáno.",
+      "roleChanged": "Role aktualizována.",
+      "tabs": {
+        "general": "Obecné",
+        "members": "Členové",
+        "tags": "Štítky",
+        "mcp": "MCP a agenti"
+      },
+      "general": {
+        "renameTitle": "Název pracovního prostoru",
+        "renameDescription": "Přejmenujte tento pracovní prostor. Název vidí všichni členové.",
+        "deleteTitle": "Smazat pracovní prostor",
+        "deleteDescription": "Trvale smaže tento pracovní prostor včetně všech projektů a úkolů. Tato akce je nevratná."
+      },
+      "mcp": {
+        "heading": "MCP klienti",
+        "empty": "Pro tento pracovní prostor zatím není autorizován žádný MCP klient.",
+        "firstSeen": "První přihlášení",
+        "lastUsed": "Naposledy použito",
+        "activeTokens": "aktivních tokenů",
+        "totalAuthorizations": "Celkem autorizací",
+        "revoke": "Odebrat přístup",
+        "revokeConfirm": "Odebrat přístup klientovi „{{name}}“? Všechny jeho tokeny okamžitě přestanou fungovat a klient se bude muset znovu autorizovat.",
+        "revoked": "Přístup klienta byl odebrán."
+      },
+      "role": {
+        "Owner": "Vlastník",
+        "Admin": "Admin",
+        "Member": "Člen"
+      }
+    },
+    "admin": {
+      "title": "Správa",
+      "users": {
+        "title": "Uživatelé",
+        "email": "E-mail",
+        "name": "Jméno",
+        "systemRole": "Systémová role",
+        "workspaces": "Pracovní prostory",
+        "owned": "Vlastněné",
+        "searchPlaceholder": "Hledat podle jména nebo e-mailu",
+        "promote": "Povýšit na admina",
+        "demote": "Snížit na uživatele",
+        "roleUpdated": "Systémová role aktualizována.",
+        "deleteConfirm": "Smazat uživatele {{email}}? Tato akce je nevratná.",
+        "deleted": "Uživatel smazán.",
+        "cannotDeleteSelf": "Nemůžete zde smazat vlastní účet.",
+        "empty": "Žádní uživatelé.",
+        "systemRole.SystemAdmin": "Systémový admin",
+        "systemRole.User": "Uživatel"
+      },
+      "workspaces": {
+        "title": "Pracovní prostory",
+        "name": "Název",
+        "owner": "Vlastník",
+        "ownerLabel": "Vlastník",
+        "members": "Členů",
+        "searchPlaceholder": "Hledat podle názvu nebo vlastníka",
+        "renamePrompt": "Nový název pracovního prostoru:",
+        "renamed": "Pracovní prostor přejmenován.",
+        "deleteConfirm": "Smazat pracovní prostor „{{name}}\"? Všechny projekty a úkoly budou ztraceny.",
+        "deleted": "Pracovní prostor smazán.",
+        "transferOwnershipConfirm": "Učinit uživatele {{name}} vlastníkem „{{workspace}}\"?",
+        "ownershipTransferred": "Vlastnictví předáno.",
+        "removeMemberConfirm": "Odebrat {{name}} z „{{workspace}}\"?",
+        "empty": "Žádné pracovní prostory."
+      }
+    },
+    "invitation": {
+      "heading": "Pozvánka do pracovního prostoru",
+      "alreadyAccepted": "Tato pozvánka už byla přijata.",
+      "invitedAs": "{{inviter}} vás pozval(a) do {{workspace}} jako {{role}}.",
+      "sentTo": "Pozvánka je zaslána na {{email}}.",
+      "accept": "Přijmout pozvánku",
+      "loginPrompt": "Přihlaste se nebo si vytvořte účet s touto e-mailovou adresou.",
+      "missingToken": "Chybí token pozvánky.",
+      "notFound": "Pozvánka nebyla nalezena nebo už byla použita.",
+      "joined": "Připojeno k „{{workspace}}\"."
+    },
+    "verifyBanner": {
+      "message": "Ověřte prosím svou e-mailovou adresu, abyste mohli zvát kolegy a využívat všechny funkce.",
+      "resend": "Znovu odeslat ověřovací e-mail",
+      "resending": "Odesílám…",
+      "resent": "Ověřovací e-mail byl odeslán. Zkontrolujte si schránku.",
+      "alreadyVerified": "Ověřeno — obnovit"
+    },
+    "settings": {
+      "title": "Nastavení",
+      "subtitle": "Spravujte svůj účet.",
+      "language": "Jazyk",
+      "languageEn": "English",
+      "languageCs": "Čeština",
+      "languageUpdated": "Jazyk byl změněn.",
+      "theme": "Motiv",
+      "themeSystem": "Podle systému",
+      "themeLight": "Světlý",
+      "themeDark": "Tmavý",
+      "changePassword": {
+        "title": "Změna hesla",
+        "description": "Použijte silné heslo s malými i velkými písmeny a alespoň jednou číslicí.",
+        "currentPassword": "Současné heslo",
+        "newPassword": "Nové heslo",
+        "confirmPassword": "Potvrdit nové heslo",
+        "submit": "Změnit heslo",
+        "submitting": "Aktualizuji…",
+        "success": "Heslo bylo změněno."
+      },
+      "dangerZone": {
+        "title": "Nebezpečná zóna",
+        "subtitle": "Exportujte svá data nebo trvale smažte svůj účet.",
+        "exportTitle": "Exportovat moje data",
+        "exportDescription": "Stáhněte JSON soubor s vaším profilem, členstvími v pracovních prostorech, odeslanými pozvánkami a obsahem, který jste vytvořili (události, komentáře, soubory, vazby).",
+        "exportButton": "Stáhnout JSON",
+        "exporting": "Připravuji…",
+        "deleteTitle": "Smazat účet",
+        "deleteDescription": "Trvale smaže váš účet a všechna data, která jsou s ním spojena. Pracovní prostory, které sami vlastníte, musí být nejprve převedeny nebo smazány.",
+        "deleteButton": "Smazat účet",
+        "deleting": "Mažu…",
+        "deleteConfirm": "Tato akce trvale smaže váš účet. Opravdu chcete pokračovat?"
+      }
+    },
+    "tags": {
+      "title": "Štítky",
+      "description": "Štítky v rámci workspace, které lze připojit ke kterémukoli úkolu. Každý štítek má název a barvu.",
+      "addTag": "Přidat štítek",
+      "editTag": "Upravit štítek",
+      "name": "Název štítku",
+      "namePlaceholder": "např. bug",
+      "color": "Barva",
+      "preview": "náhled",
+      "empty": "Zatím žádné štítky.",
+      "tagCreated": "Štítek vytvořen.",
+      "tagUpdated": "Štítek upraven.",
+      "tagDeleted": "Štítek smazán.",
+      "deleteConfirm": "Smazat štítek „{{name}}“? Odstraní se ze všech úkolů, které jej používají.",
+      "noPermission": "Spravovat štítky mohou pouze vlastník a admin."
+    },
+    "lectureTags": {
+      "heading": "Štítky",
+      "add": "Přidat štítek",
+      "empty": "Bez štítků.",
+      "remove": "Odebrat",
+      "filterTitle": "Filtrovat podle štítku",
+      "noTagsAvailable": "Žádné další štítky k přidání."
+    },
+    "onboarding": {
+      "shell": {
+        "gettingStarted": "Začínáme",
+        "signOut": "Odhlásit se",
+        "signedInAs": "Přihlášen jako",
+        "workspaceLabel": "Nastavit workspace",
+        "tipTitle": "Proč workflow?",
+        "tipBody": "Každý projekt má jeden workflow — uspořádané stavy, kterými úkol prochází. Přejmenovat nebo přidat sloupce můžete kdykoli později.",
+        "stepCounter": "Krok {{step}} z {{total}}",
+        "skip": "Přeskočit",
+        "back": "Zpět",
+        "continue": "Pokračovat",
+        "openWorkspace": "Otevřít workspace"
+      },
+      "steps": {
+        "step1": {
+          "label": "Projekt a workflow",
+          "hint": "Kde žijí úkoly"
+        },
+        "step2": {
+          "label": "Pozvat kolegy",
+          "hint": "Přiveďte tým"
+        },
+        "step3": {
+          "label": "Připojit agenty",
+          "hint": "Volitelné · MCP"
+        }
+      },
+      "step1": {
+        "overline": "Krok 01",
+        "title": "Vytvořte první projekt",
+        "lead": "Projekt sdružuje související úkoly. Vyberte název a zvolte workflow, kterým bude tým úkoly posouvat.",
+        "nameLabel": "Název projektu",
+        "namePlaceholder": "Přepis backendu",
+        "descriptionLabel": "Popis",
+        "descriptionPlaceholder": "Volitelný kontext pro tým.",
+        "optional": "volitelné",
+        "workflowTitle": "Workflow",
+        "workflowSub": "Stavy, kterými úkoly procházejí. Vyberte šablonu — později ji můžete upravit.",
+        "errorCreate": "Projekt se nepodařilo vytvořit. Zkuste to znovu.",
+        "templates": {
+          "kanban": {
+            "name": "Kanban",
+            "sub": "Klasický 4-stavový tok"
+          },
+          "engineering": {
+            "name": "Engineering",
+            "sub": "Backlog → Spec → Build → Ship"
+          },
+          "simple": {
+            "name": "Jednoduchý",
+            "sub": "Jen otevřené / zavřené"
+          },
+          "blank": {
+            "name": "Začít prázdné",
+            "sub": "Vlastní sloupce"
+          }
+        }
+      },
+      "step2": {
+        "overline": "Krok 02",
+        "title": "Pozvěte kolegy",
+        "lead": "Dostanou e-mail s odkazem pro vstup do vašeho workspace. Přidejte jich kolik chcete — role můžete kdykoli upravit.",
+        "emailPlaceholder": "kolega@example.com",
+        "addAnother": "Přidat dalšího",
+        "removeRow": "Odebrat řádek",
+        "skipInvites": "Přeskočit pozvánky",
+        "errorNoWorkspace": "Žádný aktivní workspace. Obnovte stránku a zkuste znovu.",
+        "errorSomeFailed": "{{count}} pozvánek se nepodařilo odeslat."
+      },
+      "step3": {
+        "overline": "Krok 03",
+        "title": "Hotovo",
+        "lead": "Workspace i první projekt jsou připraveny. Zbývá volitelný krok: připojte agenta kompatibilního s MCP, aby Claude nebo Cursor mohli úkoly posouvat za vás.",
+        "summaryWorkspace": "Workspace",
+        "summaryCourse": "Projekt",
+        "summaryInvites": "Pozvánek",
+        "mcpServerTitle": "MCP server",
+        "mcpServerSub": "Nasměrujte agenta na tuto URL.",
+        "serverUrl": "URL serveru",
+        "claudeTitle": "Claude Desktop",
+        "claudeSub": "Přidejte tento záznam do ~/Library/Application Support/Claude/claude_desktop_config.json.",
+        "cursorTitle": "Cursor",
+        "cursorSub": "Přidejte tento záznam do .cursor/mcp.json ve svém workspace.",
+        "copy": "Kopírovat",
+        "copied": "Zkopírováno.",
+        "copyFailed": "Kopírování se nezdařilo. Vyberte text ručně."
+      }
+    },
+    "tabs": {
+      "new": "Nový tab",
+      "import": "Importovat .gp",
+      "importing": "Importuji…",
+      "imported": "Tab importován.",
+      "importedBadge": "Importováno ze souboru Guitar Pro",
+      "empty": "Zatím žádné taby. Vytvořte nový nebo importujte .gp soubor.",
+      "deleteConfirm": "Smazat tab „{{name}}\"?",
+      "viewer": {
+        "error": "Tento tab se nepodařilo vykreslit."
+      },
+      "editor": {
+        "nameLabel": "Název",
+        "alphaTexLabel": "alphaTex",
+        "alphaTexPlaceholder": "\\title \"Moje písnička\" . 3.3.4 | 4.3.4",
+        "validationFailed": "Validace alphaTex selhala:",
+        "lineCol": "řádek {{line}}:{{col}}",
+        "validateAndPreview": "Ověřit a zobrazit",
+        "preview": "Náhled"
+      },
+      "meta": {
+        "tuning": "Ladění",
+        "tempo": "Tempo",
+        "tracks": "Stopy"
+      }
+    },
+    "progress": {
+      "totalSessions": "Lekcí",
+      "totalMinutes": "Minut",
+      "bpmTrend": "Vývoj BPM",
+      "date": "Datum",
+      "bpm": "Dosažené BPM",
+      "minutes": "Minuty",
+      "note": "Poznámka",
+      "logSession": "Zaznamenat",
+      "timeline": "Historie",
+      "empty": "Zatím žádný záznam cvičení.",
+      "deleteConfirm": "Smazat tento záznam cvičení?",
+      "minShort": "min"
+    },
+    "links": {
+      "urlPlaceholder": "https://…",
+      "labelPlaceholder": "Popisek (nepovinné)",
+      "timestampPlaceholder": "Začátek (s)",
+      "add": "Přidat",
+      "empty": "Zatím žádné odkazy.",
+      "deleteConfirm": "Smazat tento odkaz?"
     }
+  }
 }

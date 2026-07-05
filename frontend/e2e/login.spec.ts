@@ -9,14 +9,14 @@ import {readFixtureCredentials} from './support/credentials';
 test.use({storageState: {cookies: [], origins: []}});
 
 test.describe('Login', () => {
-    test('valid credentials land the user on /projects', async ({page}) => {
+    test('valid credentials land the user on /courses', async ({page}) => {
         const {email, password} = readFixtureCredentials();
         const login = new LoginPage(page);
 
         await login.goto();
         await login.login(email, password);
 
-        await expect(page).toHaveURL(/\/projects/, {timeout: 15_000});
+        await expect(page).toHaveURL(/\/courses/, {timeout: 15_000});
         await expect(page.locator('.topbar')).toBeVisible();
     });
 
@@ -29,11 +29,11 @@ test.describe('Login', () => {
         // failure flows handle UX themselves). The user-visible signal is that we
         // stay on /login instead of being redirected into the app.
         await login.expectRedirectedToLogin();
-        await expect(page).not.toHaveURL(/\/projects/, {timeout: 3_000});
+        await expect(page).not.toHaveURL(/\/courses/, {timeout: 3_000});
     });
 
     test('accessing a protected route while logged out redirects to /login', async ({page}) => {
-        await page.goto('projects');
+        await page.goto('courses');
         await expect(page).toHaveURL(/\/login/, {timeout: 5_000});
     });
 });

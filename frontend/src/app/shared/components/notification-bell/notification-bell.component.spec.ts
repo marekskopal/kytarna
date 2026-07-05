@@ -10,12 +10,12 @@ const list: NotificationList = {
     notifications: [
         {
             id: 1,
-            type: 'TaskMoved',
-            taskId: 42,
-            projectId: 7,
+            type: 'LectureMoved',
+            lectureId: 42,
+            courseId: 7,
             actorId: 9,
             actorName: 'Carol',
-            data: {taskCode: 'UK-1', taskName: 'Ship it', statusName: 'Done'},
+            data: {lectureCode: 'UK-1', lectureName: 'Ship it', statusName: 'Done'},
             read: false,
             createdAt: '2026-06-22T10:00:00+00:00',
         },

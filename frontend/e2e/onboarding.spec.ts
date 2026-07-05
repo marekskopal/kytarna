@@ -6,7 +6,7 @@ import {SignUpPage} from './pages/sign-up.page';
 test.use({storageState: {cookies: [], origins: []}});
 
 test.describe('Onboarding wizard', () => {
-    test('sign-up routes into onboarding, project step advances to invites, skip lands at /projects', async ({page}) => {
+    test('sign-up routes into onboarding, course step advances to invites, skip lands at /courses', async ({page}) => {
         const signUp = new SignUpPage(page);
         const onboarding = new OnboardingPage(page);
 
@@ -18,15 +18,15 @@ test.describe('Onboarding wizard', () => {
         await signUp.signUp(name, email, 'Test1234!');
         await onboarding.expectStep(1);
 
-        await onboarding.fillProjectName(`Demo ${stamp}`);
+        await onboarding.fillCourseName(`Demo ${stamp}`);
         await onboarding.continueStep();
         await onboarding.expectStep(2);
 
         await onboarding.skip();
-        await expect(page).toHaveURL(/\/projects/, {timeout: 15_000});
+        await expect(page).toHaveURL(/\/courses/, {timeout: 15_000});
     });
 
-    test('completed onboarding is sticky — revisiting /onboarding redirects to /projects', async ({page}) => {
+    test('completed onboarding is sticky — revisiting /onboarding redirects to /courses', async ({page}) => {
         const signUp = new SignUpPage(page);
         const onboarding = new OnboardingPage(page);
 
@@ -38,9 +38,9 @@ test.describe('Onboarding wizard', () => {
         await signUp.signUp(name, email, 'Test1234!');
         await onboarding.expectStep(1);
         await onboarding.skip();
-        await expect(page).toHaveURL(/\/projects/, {timeout: 15_000});
+        await expect(page).toHaveURL(/\/courses/, {timeout: 15_000});
 
         await page.goto('onboarding/step-1');
-        await expect(page).toHaveURL(/\/projects/, {timeout: 15_000});
+        await expect(page).toHaveURL(/\/courses/, {timeout: 15_000});
     });
 });

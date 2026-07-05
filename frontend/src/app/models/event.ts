@@ -1,8 +1,8 @@
 export type EventType =
-    | 'ProjectCreated' | 'ProjectUpdated' | 'ProjectDeleted'
+    | 'CourseCreated' | 'CourseUpdated' | 'CourseDeleted'
     | 'WorkflowUpdated'
     | 'StatusCreated' | 'StatusUpdated' | 'StatusDeleted' | 'StatusMoved'
-    | 'TaskCreated' | 'TaskUpdated' | 'TaskDeleted' | 'TaskMoved' | 'TaskArchived' | 'TaskUnarchived'
+    | 'LectureCreated' | 'LectureUpdated' | 'LectureDeleted' | 'LectureMoved' | 'LectureArchived' | 'LectureUnarchived'
     | 'MemberRoleChanged' | 'OwnershipTransferred'
     | 'AdminDeletedWorkspace' | 'AdminDeletedUser' | 'AdminChangedSystemRole'
     | 'UserSelfDeleted';
@@ -12,8 +12,8 @@ export type ActorType = 'Human' | 'Agent';
 export interface AuditEvent {
     id: number;
     authorName: string | null;
-    taskId: number | null;
-    taskCode: string | null;
+    lectureId: number | null;
+    lectureCode: string | null;
     type: EventType;
     metadata: Record<string, unknown>;
     actorType: ActorType;
@@ -24,8 +24,8 @@ export interface AuditEvent {
 
 export interface WorkspaceAgentStats {
     eventsLast24h: number;
-    tasksCreatedLast24h: number;
-    tasksClosedLast24h: number;
+    lecturesCreatedLast24h: number;
+    lecturesClosedLast24h: number;
     activeAgents: number;
     activeAgentNames: string[];
 }

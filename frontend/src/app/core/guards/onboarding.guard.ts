@@ -10,7 +10,7 @@ export class OnboardingGuard {
     public async canActivate(): Promise<boolean> {
         const user = this.currentUserService.currentUser() ?? (await this.currentUserService.load());
         if (user.onboardingCompletedAt !== null) {
-            this.router.navigate(['/projects']);
+            this.router.navigate(['/courses']);
             return false;
         }
         return true;

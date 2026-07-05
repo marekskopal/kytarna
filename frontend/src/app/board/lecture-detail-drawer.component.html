@@ -1,0 +1,300 @@
+<div
+    class="drawer-backdrop"
+    role="button"
+    tabindex="0"
+    [attr.aria-label]="'app.board.drawer.close' | translate"
+    (click)="onCancel()"
+    (keydown.escape)="onCancel()"
+></div>
+<aside class="drawer" [formGroup]="form">
+    <header class="drawer-header">
+        @if (lecture(); as t) {
+            <span class="drawer-id uk-mono">{{ t.code }}</span>
+            <span class="drawer-divider" aria-hidden="true"></span>
+        } @else {
+            <span class="drawer-id uk-mono">{{ 'app.board.drawer.newLecture' | translate }}</span>
+            <span class="drawer-divider" aria-hidden="true"></span>
+        }
+        <label class="drawer-status">
+            <span class="drawer-status-dot" [style.background]="currentStatusColor()"></span>
+            <select formControlName="statusId" class="drawer-status-select" [attr.aria-label]="'app.board.drawer.status' | translate">
+                @for (s of statuses(); track s.id) {
+                    <option [value]="s.id">{{ s.name }}</option>
+                }
+            </select>
+        </label>
+        <span class="drawer-spacer"></span>
+        @if (lecture()) {
+            <button
+                type="button"
+                class="btn btn-sm drawer-watch"
+                [class.btn-ghost]="!watching()"
+                [class.btn-secondary]="watching()"
+                (click)="toggleWatch()"
+                [disabled]="watchToggling()"
+                [attr.aria-pressed]="watching()"
+                [attr.title]="(watching() ? 'app.lectureWatchers.unwatchHint' : 'app.lectureWatchers.watchHint') | translate"
+            >
+                <svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true">
+                    <path d="M1 8s2.6-4.5 7-4.5S15 8 15 8s-2.6 4.5-7 4.5S1 8 1 8z" fill="none" stroke="currentColor" stroke-width="1.3" />
+                    <circle cx="8" cy="8" r="1.8" fill="none" stroke="currentColor" stroke-width="1.3" />
+                </svg>
+                {{ (watching() ? 'app.lectureWatchers.watching' : 'app.lectureWatchers.watch') | translate }}
+                @if (watchers().length > 0) {
+                    <span class="drawer-watch-count">{{ watchers().length }}</span>
+                }
+            </button>
+        }
+        <button
+            type="button"
+            class="btn btn-ghost btn-icon btn-sm"
+            (click)="onCancel()"
+            [attr.aria-label]="'app.board.drawer.close' | translate"
+        >
+            <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M3 3l10 10M13 3L3 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+            </svg>
+        </button>
+    </header>
+
+    @if (lecture()) {
+        <nav class="drawer-panels" role="tablist">
+            <button type="button" class="drawer-panel-tab" [class.drawer-panel-tab--active]="panel() === 'details'" (click)="setPanel('details')">
+                {{ 'app.board.drawer.panels.details' | translate }}
+            </button>
+            <button type="button" class="drawer-panel-tab" [class.drawer-panel-tab--active]="panel() === 'tabs'" (click)="setPanel('tabs')">
+                {{ 'app.board.drawer.panels.tabs' | translate }}
+            </button>
+            <button type="button" class="drawer-panel-tab" [class.drawer-panel-tab--active]="panel() === 'progress'" (click)="setPanel('progress')">
+                {{ 'app.board.drawer.panels.progress' | translate }}
+            </button>
+            <button type="button" class="drawer-panel-tab" [class.drawer-panel-tab--active]="panel() === 'links'" (click)="setPanel('links')">
+                {{ 'app.board.drawer.panels.links' | translate }}
+            </button>
+        </nav>
+    }
+
+    <form class="drawer-body" [class.is-hidden]="panel() !== 'details'" (ngSubmit)="onSubmit()">
+        <input
+            id="lecture-name"
+            type="text"
+            formControlName="name"
+            class="drawer-title-input"
+            [placeholder]="'app.board.drawer.titlePlaceholder' | translate"
+        />
+
+        <section class="drawer-section">
+            <div class="uk-overline">{{ 'app.board.drawer.guitar.heading' | translate }}</div>
+            <div class="guitar-fields">
+                <label class="field guitar-field">
+                    <span class="field-label">{{ 'app.board.drawer.guitar.tuning' | translate }}</span>
+                    <input type="text" class="input" formControlName="tuning" autocomplete="off" [placeholder]="'app.board.drawer.guitar.tuningPlaceholder' | translate" />
+                </label>
+                <label class="field guitar-field">
+                    <span class="field-label">{{ 'app.board.drawer.guitar.capo' | translate }}</span>
+                    <input type="number" class="input" formControlName="capo" min="0" inputmode="numeric" />
+                </label>
+                <label class="field guitar-field">
+                    <span class="field-label">{{ 'app.board.drawer.guitar.targetTempo' | translate }}</span>
+                    <input type="number" class="input" formControlName="targetTempoBpm" min="0" inputmode="numeric" />
+                </label>
+                <label class="field guitar-field">
+                    <span class="field-label">{{ 'app.board.drawer.guitar.difficulty' | translate }}</span>
+                    <select class="select" formControlName="difficulty">
+                        <option value="">{{ 'app.board.drawer.guitar.difficultyNone' | translate }}</option>
+                        @for (d of difficulties; track d) {
+                            <option [value]="d">{{ 'app.board.drawer.guitar.difficulties.' + d | translate }}</option>
+                        }
+                    </select>
+                </label>
+            </div>
+        </section>
+
+        <section class="drawer-section">
+            <div class="drawer-section-head">
+                <span class="uk-overline">{{ 'app.lectureTags.heading' | translate }}</span>
+                @if (workspaceTags().length > 0) {
+                    <button type="button" class="btn btn-ghost btn-sm" (click)="toggleTagPicker()">
+                        {{ 'app.lectureTags.add' | translate }}
+                    </button>
+                }
+            </div>
+            <div class="tag-chip-row">
+                @for (tag of selectedTags(); track tag.id) {
+                    <span
+                        class="tag-chip tag-chip--removable"
+                        [style.background]="tag.color"
+                        [style.color]="tagForeground(tag.color)"
+                    >
+                        <span>{{ tag.name }}</span>
+                        <button
+                            type="button"
+                            class="tag-chip-remove"
+                            (click)="removeTagFromLecture(tag)"
+                            [attr.aria-label]="'app.lectureTags.remove' | translate"
+                        >×</button>
+                    </span>
+                } @empty {
+                    <span class="text-subtle">{{ 'app.lectureTags.empty' | translate }}</span>
+                }
+            </div>
+            @if (tagPickerOpen()) {
+                <div class="tag-picker">
+                    @if (availableTags().length === 0) {
+                        <span class="text-subtle">{{ 'app.lectureTags.noTagsAvailable' | translate }}</span>
+                    } @else {
+                        @for (tag of availableTags(); track tag.id) {
+                            <button
+                                type="button"
+                                class="tag-chip tag-chip--button"
+                                [style.background]="tag.color"
+                                [style.color]="tagForeground(tag.color)"
+                                (click)="addTagToLecture(tag)"
+                            >{{ tag.name }}</button>
+                        }
+                    }
+                </div>
+            }
+        </section>
+
+        <section class="drawer-section">
+            <div class="drawer-section-head">
+                <span class="uk-overline">{{ 'app.board.drawer.files.title' | translate }}</span>
+                @if (files().length > 0) {
+                    <span class="section-count">{{ files().length }}</span>
+                }
+                @if (lecture()) {
+                    <label class="btn btn-ghost btn-sm file-upload-trigger" [class.is-disabled]="uploading()">
+                        @if (uploading()) {
+                            {{ 'app.board.drawer.files.uploading' | translate }}
+                        } @else {
+                            {{ 'app.board.drawer.files.upload' | translate }}
+                        }
+                        <input type="file" class="file-upload-input" (change)="onFileSelected($event)" [disabled]="uploading()" />
+                    </label>
+                }
+            </div>
+            @if (!lecture()) {
+                <p class="text-subtle file-empty">{{ 'app.board.drawer.files.saveFirst' | translate }}</p>
+            } @else if (files().length === 0) {
+                <p class="text-subtle file-empty">{{ 'app.board.drawer.files.empty' | translate }}</p>
+            } @else {
+                <ul class="file-list">
+                    @for (file of files(); track file.id) {
+                        @let chip = fileTypeChip(file.filename);
+                        <li class="file-item">
+                            <span
+                                class="file-type-chip"
+                                [style.background]="chip.bg"
+                                [style.color]="chip.fg"
+                                aria-hidden="true"
+                            >{{ chip.tag }}</span>
+                            <div class="file-body">
+                                <button type="button" class="file-name" (click)="onDownloadFile(file)" [title]="file.filename">
+                                    {{ file.filename }}
+                                </button>
+                                <div class="file-meta-row">
+                                    @if (file.uploadedByAgent) {
+                                        <span class="uk-badge uk-badge--ai file-agent-badge">
+                                            <svg width="9" height="9" viewBox="0 0 16 16" aria-hidden="true">
+                                                <path
+                                                    d="M8 2v3M8 11v3M2 8h3M11 8h3M3.8 3.8l2 2M10.2 10.2l2 2M3.8 12.2l2-2M10.2 5.8l2-2"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    stroke-width="1.4"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                />
+                                            </svg>
+                                            {{ 'app.agent.agent' | translate }}
+                                        </span>
+                                    }
+                                    @if (file.uploadedByAgent) {
+                                        <span class="file-meta">{{ 'app.board.drawer.files.uploadedByAgent' | translate }}</span>
+                                    } @else if (file.uploadedByUserName) {
+                                        <span class="file-meta">{{ 'app.board.drawer.files.uploadedBy' | translate:{name: file.uploadedByUserName} }}</span>
+                                    }
+                                </div>
+                            </div>
+                            <span class="file-meta file-size">{{ formatFileSize(file.size) }}</span>
+                            <button
+                                type="button"
+                                class="btn btn-ghost btn-icon btn-sm"
+                                (click)="onDownloadFile(file)"
+                                [attr.aria-label]="'app.board.drawer.files.download' | translate"
+                            >
+                                <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
+                                    <path d="M8 3v8M5 8l3 3 3-3M3 12.5a1.5 1.5 0 0 0 1.5 1.5h7A1.5 1.5 0 0 0 13 12.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </button>
+                            <button
+                                type="button"
+                                class="btn btn-danger-ghost btn-icon btn-sm"
+                                (click)="onDeleteFile(file)"
+                                [attr.aria-label]="'app.board.drawer.files.delete' | translate"
+                            >
+                                <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
+                                    <path d="M3 3l10 10M13 3L3 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                                </svg>
+                            </button>
+                        </li>
+                    }
+                </ul>
+            }
+        </section>
+
+        <section class="drawer-section">
+            <div class="uk-overline">{{ 'app.common.description' | translate }}</div>
+            <uk-markdown-editor
+                formControlName="description"
+                inputId="lecture-description"
+                [rows]="8"
+                [initialTab]="descriptionInitialTab()"
+                [placeholder]="'app.board.drawer.descriptionPlaceholder' | translate"
+            />
+        </section>
+    </form>
+
+    @if (lecture(); as l) {
+        @if (panel() === 'tabs') {
+            <div class="drawer-body drawer-panel-body">
+                <uk-lecture-tabs [lectureId]="l.id" />
+            </div>
+        } @else if (panel() === 'progress') {
+            <div class="drawer-body drawer-panel-body">
+                <uk-lecture-progress [lectureId]="l.id" />
+            </div>
+        } @else if (panel() === 'links') {
+            <div class="drawer-body drawer-panel-body">
+                <uk-lecture-links [lectureId]="l.id" />
+            </div>
+        }
+    }
+
+    <footer class="drawer-footer">
+        @if (lecture()) {
+            <div class="drawer-footer-actions">
+                <button type="button" class="btn btn-danger-ghost btn-sm" (click)="onDelete()">
+                    {{ 'app.actions.delete' | translate }}
+                </button>
+                @if (isArchived()) {
+                    <button type="button" class="btn btn-ghost btn-sm" [disabled]="archiving()" (click)="onUnarchive()">
+                        {{ (archiving() ? 'app.actions.loading' : 'app.board.drawer.unarchive') | translate }}
+                    </button>
+                } @else {
+                    <button type="button" class="btn btn-ghost btn-sm" [disabled]="archiving()" (click)="onArchive()">
+                        {{ (archiving() ? 'app.actions.loading' : 'app.board.drawer.archive') | translate }}
+                    </button>
+                }
+            </div>
+        } @else {
+            <span></span>
+        }
+        <div class="drawer-footer-actions">
+            <button type="button" class="btn btn-ghost btn-sm" (click)="onCancel()">{{ 'app.actions.cancel' | translate }}</button>
+            <button type="button" class="btn btn-primary btn-sm" [disabled]="form.invalid || saving()" (click)="onSubmit()">
+                {{ (saving() ? 'app.actions.loading' : 'app.board.drawer.saveChanges') | translate }}
+            </button>
+        </div>
+    </footer>
+</aside>

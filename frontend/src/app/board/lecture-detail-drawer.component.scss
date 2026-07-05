@@ -1,0 +1,416 @@
+@use 'variables' as *;
+
+.drawer-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: $z-overlay;
+    background: $color-backdrop;
+    cursor: pointer;
+}
+
+.drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: $z-drawer;
+    width: 100%;
+    max-width: $drawer-width;
+    background: $color-surface;
+    border-left: 1px solid $color-border;
+    box-shadow: $shadow-lg;
+    display: flex;
+    flex-direction: column;
+}
+
+// ─── Header (48 px) ─────────────────────────────────────────
+.drawer-header {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    height: $header-height;
+    padding: 0 $space-5;
+    border-bottom: 1px solid $color-border;
+    flex-shrink: 0;
+}
+
+.drawer-id {
+    color: $color-text-subtle;
+    font-size: $font-size-12;
+    letter-spacing: 0.02em;
+}
+
+.drawer-divider {
+    width: 1px;
+    height: 18px;
+    background: $color-border;
+}
+
+.drawer-status {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    padding: 0 $space-3;
+    height: $h-sm;
+    border: 1px solid $color-border-strong;
+    border-radius: $radius-sm;
+    background: $color-surface;
+    cursor: pointer;
+    transition: border-color 80ms ease, box-shadow 80ms ease;
+
+    &:hover { border-color: $color-border-focus; }
+    &:focus-within {
+        border-color: $color-border-focus;
+        box-shadow: $ring;
+    }
+}
+
+.drawer-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.drawer-status-select {
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
+    border: 0;
+    padding: 0 16px 0 0;
+    font: inherit;
+    font-size: $font-size-13;
+    color: $color-text;
+    cursor: pointer;
+    outline: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'><path fill='none' stroke='%2352525b' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round' d='M3 4.5l3 3 3-3'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right center;
+}
+
+.drawer-spacer {
+    flex: 1;
+}
+
+// ─── Body ───────────────────────────────────────────────────
+.drawer-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: $space-7 $space-6;
+    display: flex;
+    flex-direction: column;
+    gap: $space-7;
+}
+
+// Inline-editable title — no border, just type.
+.drawer-title-input {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: $color-text;
+    font-family: inherit;
+    font-size: $font-size-20;
+    font-weight: 600;
+    letter-spacing: $tracking-tight;
+    line-height: 1.3;
+
+    &:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+    &::placeholder {
+        color: $color-text-faint;
+    }
+}
+
+.drawer-section {
+    display: flex;
+    flex-direction: column;
+    gap: $space-3;
+}
+
+.drawer-section-head {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+
+    & > :last-child:not(.section-count):not(.uk-overline) {
+        margin-left: auto;
+    }
+}
+
+.section-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 16px;
+    padding: 0 5px;
+    border-radius: 8px;
+    background: $color-surface-muted;
+    color: $color-text-subtle;
+    font-size: $font-size-11;
+    font-weight: 500;
+    line-height: 1;
+}
+
+// ─── Footer (48 px) ─────────────────────────────────────────
+.drawer-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: $header-height;
+    padding: 0 $space-5;
+    border-top: 1px solid $color-border;
+    flex-shrink: 0;
+}
+
+.drawer-footer-actions {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+}
+
+// ─── Attachments ────────────────────────────────────────────
+.file-upload-trigger {
+    position: relative;
+    cursor: pointer;
+
+    &.is-disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+}
+
+.file-upload-input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: inherit;
+}
+
+.file-empty {
+    font-size: $font-size-12;
+}
+
+.file-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
+}
+
+.file-item {
+    display: grid;
+    grid-template-columns: 28px 1fr auto auto auto;
+    align-items: center;
+    gap: $space-3;
+    padding: $space-2 $space-3;
+    border: 1px solid $color-border;
+    border-radius: $radius-sm;
+    background: $color-surface;
+    font-size: $font-size-13;
+
+    &:hover {
+        border-color: $color-border-strong;
+    }
+}
+
+.file-type-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: $radius-sm;
+    font-family: $font-mono;
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+}
+
+.file-body {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.file-name {
+    background: transparent;
+    border: 0;
+    padding: 0;
+    text-align: left;
+    color: $color-text;
+    font: inherit;
+    font-weight: 500;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.file-meta-row {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    margin-top: 1px;
+}
+
+.file-agent-badge {
+    height: 14px;
+    padding: 0 5px;
+    font-size: 10px;
+    gap: 3px;
+}
+
+.file-meta {
+    color: $color-text-subtle;
+    font-size: $font-size-12;
+    white-space: nowrap;
+}
+
+.file-size {
+    font-size: $font-size-11;
+}
+
+.tag-chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-1;
+    align-items: center;
+}
+
+.tag-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-1;
+    height: 20px;
+    padding: 0 $space-2;
+    border-radius: $radius-xs;
+    background: $color-surface-muted;
+    color: $color-text;
+    font-size: $font-size-11;
+    font-weight: 500;
+    white-space: nowrap;
+
+    &--removable {
+        padding-right: 2px;
+    }
+
+    &--button {
+        border: 0;
+        cursor: pointer;
+        font: inherit;
+    }
+}
+
+.tag-chip-remove {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    padding: 0;
+    border-radius: $radius-xs;
+    font-size: 14px;
+
+    &:hover {
+        background: $color-surface-deep;
+    }
+}
+
+.tag-picker {
+    margin-top: $space-2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-1;
+    padding: $space-2;
+    border: 1px solid $color-border;
+    border-radius: $radius-sm;
+    background: $color-surface;
+}
+
+.drawer-watch-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    border-radius: $radius-pill;
+    background: $color-surface-deep;
+    color: $color-text-muted;
+    font-size: $font-size-10;
+    font-weight: 600;
+    line-height: 16px;
+}
+
+
+// ── Guitar-domain additions (phase 2) ──────────────────────
+.drawer-panels {
+    display: flex;
+    gap: 4px;
+    padding: 0 20px;
+    border-bottom: 1px solid var(--uk-color-border, #e4e4e7);
+}
+
+.drawer-panel-tab {
+    appearance: none;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 10px 8px;
+    font: inherit;
+    font-size: 13px;
+    color: var(--uk-color-text-subtle, #71717a);
+    cursor: pointer;
+}
+
+.drawer-panel-tab--active {
+    color: var(--uk-color-accent, #5e6ad2);
+    border-bottom-color: var(--uk-color-accent, #5e6ad2);
+    font-weight: 600;
+}
+
+.drawer-body.is-hidden {
+    display: none;
+}
+
+.drawer-panel-body {
+    overflow-y: auto;
+}
+
+.guitar-fields {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.guitar-field {
+    flex: 1 1 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.guitar-field .field-label {
+    font-size: 12px;
+    color: var(--uk-color-text-subtle, #71717a);
+}

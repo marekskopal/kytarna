@@ -8,8 +8,8 @@ import {firstValueFrom} from 'rxjs';
 export class WorkflowService {
     private readonly http = inject(HttpClient);
 
-    public getWorkflow(projectId: number): Promise<Workflow> {
-        return firstValueFrom(this.http.get<Workflow>(`${environment.apiUrl}/projects/${projectId}/workflow`));
+    public getWorkflow(courseId: number): Promise<Workflow> {
+        return firstValueFrom(this.http.get<Workflow>(`${environment.apiUrl}/courses/${courseId}/workflow`));
     }
 
     public getWorkflows(): Promise<WorkflowWithStatuses[]> {

@@ -1,0 +1,60 @@
+<div class="lecture-tabs">
+    <div class="lecture-tabs-bar">
+        <div class="lecture-tabs-list" role="tablist">
+            @for (tab of tabs(); track tab.id) {
+                <button
+                    type="button"
+                    class="lecture-tab-chip"
+                    [class.lecture-tab-chip--active]="tab.id === selectedTabId() && mode() !== 'create'"
+                    (click)="select(tab)"
+                >
+                    {{ tab.name }}
+                    @if (tab.sourceType === 'imported_gp') {
+                        <span class="lecture-tab-badge" [attr.title]="'app.tabs.importedBadge' | translate">GP</span>
+                    }
+                </button>
+            }
+        </div>
+        <div class="lecture-tabs-actions">
+            <button type="button" class="btn btn-ghost btn-sm" (click)="startCreate()">
+                {{ 'app.tabs.new' | translate }}
+            </button>
+            <label class="btn btn-ghost btn-sm file-upload-trigger" [class.is-disabled]="importing()">
+                {{ (importing() ? 'app.tabs.importing' : 'app.tabs.import') | translate }}
+                <input type="file" class="file-upload-input" accept=".gp,.gp3,.gp4,.gp5,.gpx,.gp7" (change)="onImportSelected($event)" [disabled]="importing()" />
+            </label>
+        </div>
+    </div>
+
+    @if (mode() === 'create') {
+        <uk-tab-editor [lectureId]="lectureId()" [tab]="null" (saved)="onSaved($event)" (cancelled)="cancelEdit()" />
+    } @else if (loading()) {
+        <p class="text-subtle">{{ 'app.actions.loading' | translate }}</p>
+    } @else if (tabs().length === 0) {
+        <p class="text-subtle">{{ 'app.tabs.empty' | translate }}</p>
+    } @else if (selectedTab(); as tab) {
+        @if (mode() === 'edit') {
+            <uk-tab-editor [lectureId]="lectureId()" [tab]="tab" (saved)="onSaved($event)" (cancelled)="cancelEdit()" />
+        } @else {
+            <div class="lecture-tab-meta">
+                @if (tab.tuning) {
+                    <span class="uk-badge">{{ 'app.tabs.meta.tuning' | translate }}: {{ tab.tuning }}</span>
+                }
+                @if (tab.tempo !== null) {
+                    <span class="uk-badge">{{ 'app.tabs.meta.tempo' | translate }}: {{ tab.tempo }}</span>
+                }
+                @if (tab.trackCount !== null) {
+                    <span class="uk-badge">{{ 'app.tabs.meta.tracks' | translate }}: {{ tab.trackCount }}</span>
+                }
+                <span class="lecture-tab-meta-spacer"></span>
+                <button type="button" class="btn btn-ghost btn-sm" (click)="startEdit()">
+                    {{ 'app.actions.edit' | translate }}
+                </button>
+                <button type="button" class="btn btn-danger-ghost btn-sm" (click)="onDelete()">
+                    {{ 'app.actions.delete' | translate }}
+                </button>
+            </div>
+            <uk-tab-viewer [alphaTex]="tab.alphatexContent" />
+        }
+    }
+</div>

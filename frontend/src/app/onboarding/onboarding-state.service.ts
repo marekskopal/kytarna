@@ -34,13 +34,13 @@ export const WORKFLOW_TEMPLATES: Record<WorkflowTemplate, TemplateColumn[]> = {
 
 @Injectable({providedIn: 'root'})
 export class OnboardingStateService {
-    public readonly projectId = signal<number | null>(null);
-    public readonly projectName = signal<string>('');
+    public readonly courseId = signal<number | null>(null);
+    public readonly courseName = signal<string>('');
     public readonly invitesSent = signal<number>(0);
 
     public reset(): void {
-        this.projectId.set(null);
-        this.projectName.set('');
+        this.courseId.set(null);
+        this.courseName.set('');
         this.invitesSent.set(0);
     }
 }

@@ -1,24 +1,24 @@
 import {expect, test} from '@playwright/test';
 
-import {AddEditProjectPage} from './pages/add-edit-project.page';
-import {ProjectsPage} from './pages/projects.page';
+import {AddEditCoursePage} from './pages/add-edit-course.page';
+import {CoursesPage} from './pages/courses.page';
 import {WorkflowPage} from './pages/workflow.page';
 
 test.describe('Workflow status CRUD', () => {
     test('add, rename, recolour, and delete a workflow status', async ({page}) => {
-        const projects = new ProjectsPage(page);
-        const projectForm = new AddEditProjectPage(page);
+        const courses = new CoursesPage(page);
+        const courseForm = new AddEditCoursePage(page);
         const workflow = new WorkflowPage(page);
 
         const stamp = Date.now();
-        const projectName = `Workflow CRUD ${stamp}`;
+        const courseName = `Workflow CRUD ${stamp}`;
 
-        // Seed a project so we have a workflow to mutate.
-        await projects.goto();
-        await projects.gotoNew();
-        await projectForm.fillName(projectName);
-        await projectForm.submit();
-        await projects.openWorkflow(projectName);
+        // Seed a course so we have a workflow to mutate.
+        await courses.goto();
+        await courses.gotoNew();
+        await courseForm.fillName(courseName);
+        await courseForm.submit();
+        await courses.openWorkflow(courseName);
         await workflow.expectVisible();
 
         const baselineCount = await workflow.statusCount();
@@ -42,8 +42,8 @@ test.describe('Workflow status CRUD', () => {
         await workflow.deleteStatusAt(baselineCount);
         expect(await workflow.statusCount()).toBe(baselineCount);
 
-        // Cleanup: delete project
-        await projects.goto();
-        await projects.deleteProject(projectName);
+        // Cleanup: delete course
+        await courses.goto();
+        await courses.deleteCourse(courseName);
     });
 });

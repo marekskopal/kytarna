@@ -8,9 +8,9 @@ import {firstValueFrom} from 'rxjs';
 export class EventService {
     private readonly http = inject(HttpClient);
 
-    public getEvents(projectId: number, limit = 100, offset = 0): Promise<AuditEvent[]> {
+    public getEvents(courseId: number, limit = 100, offset = 0): Promise<AuditEvent[]> {
         return firstValueFrom(
-            this.http.get<AuditEvent[]>(`${environment.apiUrl}/projects/${projectId}/events`, {params: {limit, offset}}),
+            this.http.get<AuditEvent[]>(`${environment.apiUrl}/courses/${courseId}/events`, {params: {limit, offset}}),
         );
     }
 

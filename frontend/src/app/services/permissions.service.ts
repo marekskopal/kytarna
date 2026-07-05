@@ -30,7 +30,7 @@ export class PermissionsService {
         return role === 'Owner' || role === 'Admin';
     }
 
-    public canManageProjects(members: WorkspaceMember[] | null | undefined): boolean {
+    public canManageCourses(members: WorkspaceMember[] | null | undefined): boolean {
         if (this.isSystemAdmin()) return true;
         const role = this.roleForCurrentUser(members);
         return role === 'Owner' || role === 'Admin';

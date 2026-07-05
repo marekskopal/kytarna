@@ -9,12 +9,12 @@ import {NotificationService} from './notification.service';
 function makeNotification(overrides: Partial<Notification> = {}): Notification {
     return {
         id: 1,
-        type: 'TaskMoved',
-        taskId: 42,
-        projectId: 7,
+        type: 'LectureMoved',
+        lectureId: 42,
+        courseId: 7,
         actorId: 9,
         actorName: 'Owner',
-        data: {taskCode: 'UK-1', taskName: 'Task'},
+        data: {lectureCode: 'UK-1', lectureName: 'Lecture'},
         read: false,
         createdAt: '2026-06-22T10:00:00+00:00',
         ...overrides,

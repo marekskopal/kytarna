@@ -52,10 +52,10 @@
                             }
                             <span class="notif-body">
                                 <span class="notif-message">{{
-                                    messageKey(n.type) | translate: {actor: n.actorName ?? '', task: n.data.taskCode ?? '', status: n.data.statusName ?? ''}
+                                    messageKey(n.type) | translate: {actor: n.actorName ?? '', lecture: n.data.lectureCode ?? '', status: n.data.statusName ?? ''}
                                 }}</span>
-                                @if (n.data.taskName) {
-                                    <span class="notif-task">{{ n.data.taskName }}</span>
+                                @if (n.data.lectureName) {
+                                    <span class="notif-lecture">{{ n.data.lectureName }}</span>
                                 }
                                 <time class="notif-time" [attr.datetime]="n.createdAt">{{ formatRelative(n.createdAt) }}</time>
                             </span>

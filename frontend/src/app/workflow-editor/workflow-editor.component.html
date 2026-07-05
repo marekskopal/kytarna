@@ -2,9 +2,9 @@
     <div class="page-header">
         <div>
             <h1 class="page-title">{{ 'app.workflow.title' | translate }}</h1>
-            <p class="page-subtitle">{{ board.project.name }} · {{ board.workflow.name }}</p>
+            <p class="page-subtitle">{{ board.course.name }} · {{ board.workflow.name }}</p>
         </div>
-        <a [routerLink]="['/projects', board.project.id, 'board']" class="muted-link">{{ 'app.workflow.backToBoard' | translate }}</a>
+        <a [routerLink]="['/courses', board.course.id, 'board']" class="muted-link">{{ 'app.workflow.backToBoard' | translate }}</a>
     </div>
 
     <div class="status-card">

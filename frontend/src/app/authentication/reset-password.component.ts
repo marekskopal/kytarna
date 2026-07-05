@@ -45,7 +45,7 @@ export class ResetPasswordComponent implements OnInit {
         this.saving.set(true);
         try {
             await this.auth.confirmPasswordReset(token, this.form.value.password!);
-            await this.router.navigateByUrl('/projects');
+            await this.router.navigateByUrl('/courses');
         } catch {
             // error interceptor
         } finally {

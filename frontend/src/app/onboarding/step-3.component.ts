@@ -70,7 +70,7 @@ export class OnboardingStep3Component {
         this.finishing.set(true);
         try {
             await this.onboardingService.complete();
-            await this.router.navigateByUrl('/projects');
+            await this.router.navigateByUrl('/courses');
         } finally {
             this.finishing.set(false);
         }

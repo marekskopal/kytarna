@@ -9,7 +9,7 @@ export class GuestGuard {
 
     public canActivate(): boolean {
         if (this.authService.isLoggedIn()) {
-            this.router.navigate(['/projects']);
+            this.router.navigate(['/courses']);
             return false;
         }
         return true;

@@ -1,0 +1,49 @@
+<div class="lecture-links">
+    <form class="links-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="links-form-row">
+            <input type="url" class="input links-url" formControlName="url" [placeholder]="'app.links.urlPlaceholder' | translate" autocomplete="off" />
+            <input type="text" class="input links-label" formControlName="label" [placeholder]="'app.links.labelPlaceholder' | translate" autocomplete="off" />
+            <input type="number" class="input links-ts" formControlName="timestampSeconds" min="0" inputmode="numeric" [placeholder]="'app.links.timestampPlaceholder' | translate" />
+            <button type="submit" class="btn btn-primary btn-sm" [disabled]="form.invalid || saving()">
+                {{ (saving() ? 'app.actions.loading' : 'app.links.add') | translate }}
+            </button>
+        </div>
+    </form>
+
+    @if (loading()) {
+        <p class="text-subtle">{{ 'app.actions.loading' | translate }}</p>
+    } @else if (links().length === 0) {
+        <p class="text-subtle">{{ 'app.links.empty' | translate }}</p>
+    } @else {
+        <ul class="links-list">
+            @for (link of links(); track link.id) {
+                <li class="links-item" [class.links-item--youtube]="link.kind === 'youtube'">
+                    <span class="links-icon" aria-hidden="true">
+                        @if (link.kind === 'youtube') {
+                            <svg width="16" height="16" viewBox="0 0 16 16"><path d="M6 4.5l5 3.5-5 3.5z" fill="currentColor" /></svg>
+                        } @else {
+                            <svg width="14" height="14" viewBox="0 0 16 16"><path d="M6.5 9.5l3-3M7 4h4a2 2 0 0 1 0 4H9M9 12H5a2 2 0 0 1 0-4h2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" /></svg>
+                        }
+                    </span>
+                    <a class="links-anchor" [href]="outboundUrl(link)" target="_blank" rel="noopener noreferrer">
+                        {{ link.label || link.url }}
+                    </a>
+                    @if (link.kind === 'youtube' && link.timestampSeconds !== null && link.timestampSeconds > 0) {
+                        <span class="links-ts-badge uk-mono">@{{ formatTimestamp(link.timestampSeconds) }}</span>
+                    }
+                    <span class="links-item-spacer"></span>
+                    <button
+                        type="button"
+                        class="btn btn-danger-ghost btn-icon btn-sm"
+                        (click)="onDelete(link)"
+                        [attr.aria-label]="'app.actions.delete' | translate"
+                    >
+                        <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
+                            <path d="M3 3l10 10M13 3L3 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                        </svg>
+                    </button>
+                </li>
+            }
+        </ul>
+    }
+</div>

@@ -9,7 +9,7 @@ import {
 } from '@app/onboarding/onboarding-state.service';
 import {AlertService} from '@app/services/alert.service';
 import {BoardService} from '@app/services/board.service';
-import {ProjectService} from '@app/services/project.service';
+import {CourseService} from '@app/services/course.service';
 import {StatusService} from '@app/services/status.service';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
@@ -29,7 +29,7 @@ interface WorkflowOption {
 export class OnboardingStep1Component {
     private readonly fb = inject(FormBuilder);
     private readonly router = inject(Router);
-    private readonly projectService = inject(ProjectService);
+    private readonly courseService = inject(CourseService);
     private readonly boardService = inject(BoardService);
     private readonly statusService = inject(StatusService);
     private readonly state = inject(OnboardingStateService);
@@ -47,7 +47,7 @@ export class OnboardingStep1Component {
     ];
 
     protected readonly form = this.fb.nonNullable.group({
-        name: [this.state.projectName(), Validators.required],
+        name: [this.state.courseName(), Validators.required],
         description: [''],
     });
 
@@ -63,13 +63,13 @@ export class OnboardingStep1Component {
         const name = this.form.value.name!.trim();
         const description = this.form.value.description?.trim() ?? '';
         try {
-            const project = await this.projectService.createProject(name, description === '' ? null : description);
-            this.state.projectId.set(project.id);
-            this.state.projectName.set(project.name);
+            const course = await this.courseService.createCourse(name, description === '' ? null : description);
+            this.state.courseId.set(course.id);
+            this.state.courseName.set(course.name);
 
             const template = this.selectedTemplate();
             if (template !== 'kanban') {
-                await this.applyTemplate(project.id, WORKFLOW_TEMPLATES[template]);
+                await this.applyTemplate(course.id, WORKFLOW_TEMPLATES[template]);
             }
 
             await this.router.navigateByUrl('/onboarding/step-2');
@@ -80,8 +80,8 @@ export class OnboardingStep1Component {
         }
     }
 
-    private async applyTemplate(projectId: number, columns: TemplateColumn[]): Promise<void> {
-        const board = await this.boardService.getBoard(projectId);
+    private async applyTemplate(courseId: number, columns: TemplateColumn[]): Promise<void> {
+        const board = await this.boardService.getBoard(courseId);
         const workflowId = board.workflow.id;
 
         for (const status of board.statuses) {

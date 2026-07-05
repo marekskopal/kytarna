@@ -43,7 +43,7 @@ describe('AuthGuard', () => {
 
     it('returns true and does not redirect when the user is logged in', () => {
         const {guard, router} = setup(true);
-        const {route, state} = snapshot('/projects');
+        const {route, state} = snapshot('/courses');
 
         expect(guard.canActivate(route, state)).toBe(true);
         expect(router.navigate).not.toHaveBeenCalled();
@@ -51,10 +51,10 @@ describe('AuthGuard', () => {
 
     it('returns false and redirects to /login with returnUrl when logged out', () => {
         const {guard, router} = setup(false);
-        const {route, state} = snapshot('/projects/42/board');
+        const {route, state} = snapshot('/courses/42/board');
 
         expect(guard.canActivate(route, state)).toBe(false);
         expect(router.navigate).toHaveBeenCalledTimes(1);
-        expect(router.navigate).toHaveBeenCalledWith(['/login'], {queryParams: {returnUrl: '/projects/42/board'}});
+        expect(router.navigate).toHaveBeenCalledWith(['/login'], {queryParams: {returnUrl: '/courses/42/board'}});
     });
 });

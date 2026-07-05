@@ -1,4 +1,4 @@
-import {ArchivedFilter, OrderDirection, TaskOrderBy} from '@app/models/task';
+import {ArchivedFilter, LectureOrderBy,OrderDirection} from '@app/models/lecture';
 
 export interface SavedViewFilters {
     q?: string;
@@ -6,7 +6,7 @@ export interface SavedViewFilters {
     tagIds?: number[];
     onlyActive?: boolean;
     archived?: ArchivedFilter;
-    orderBy?: TaskOrderBy;
+    orderBy?: LectureOrderBy;
     orderDirection?: OrderDirection;
     pageSize?: number;
 }

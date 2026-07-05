@@ -15,7 +15,7 @@
                     <p class="auth-success">{{ 'app.auth.verifyEmail.success' | translate }}</p>
                     <p class="auth-footer">
                         @if (isLoggedIn()) {
-                            <a routerLink="/projects" class="btn-link">{{ 'app.auth.verifyEmail.backToApp' | translate }}</a>
+                            <a routerLink="/courses" class="btn-link">{{ 'app.auth.verifyEmail.backToApp' | translate }}</a>
                         } @else {
                             <a routerLink="/login" class="btn-link">{{ 'app.auth.verifyEmail.backToLogin' | translate }}</a>
                         }

@@ -1,0 +1,25 @@
+<div class="form-page">
+    <h1 class="page-title">{{ (id() === null ? 'app.courses.new' : 'app.courses.edit') | translate }}</h1>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-stack">
+        <div class="field">
+            <label for="course-name" class="field-label">{{ 'app.common.name' | translate }}</label>
+            <input id="course-name" type="text" formControlName="name" class="input" />
+        </div>
+        <div class="field">
+            <label for="course-description" class="field-label">{{ 'app.common.description' | translate }}</label>
+            <uk-markdown-editor
+                formControlName="description"
+                inputId="course-description"
+                [rows]="6"
+            />
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary" [disabled]="form.invalid || saving()">
+                {{ (saving() ? 'app.actions.loading' : 'app.actions.save') | translate }}
+            </button>
+            <a routerLink="/courses" class="muted-link">{{ 'app.actions.cancel' | translate }}</a>
+        </div>
+    </form>
+
+</div>

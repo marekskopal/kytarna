@@ -1,0 +1,46 @@
+<div class="page-header">
+    <div>
+        <h1 class="page-title">{{ 'app.courses.title' | translate }}</h1>
+    </div>
+    @if (canManageCourses()) {
+        <a routerLink="/courses/new" class="btn btn-primary">{{ 'app.courses.new' | translate }}</a>
+    }
+</div>
+
+@if (loading()) {
+    <p class="text-muted">{{ 'app.actions.loading' | translate }}</p>
+} @else if (courses().length === 0) {
+    <div class="empty-state">
+        <p>{{ 'app.courses.empty' | translate }}</p>
+        @if (canManageCourses()) {
+            <a routerLink="/courses/new" class="btn-link">{{ 'app.courses.new' | translate }} →</a>
+        }
+    </div>
+} @else {
+    <ul class="course-grid">
+        @for (course of courses(); track course.id) {
+            <li class="course-card">
+                <div class="course-card-head">
+                    <a [routerLink]="['/courses', course.id, 'board']" class="course-name">{{ course.name }}</a>
+                    @if (canManageCourses()) {
+                        <div class="course-actions">
+                            <a [routerLink]="['/courses', course.id, 'edit']" class="muted-link">{{ 'app.actions.edit' | translate }}</a>
+                            <span class="separator">·</span>
+                            <button type="button" class="btn-danger-link course-delete" (click)="onDelete(course)">{{ 'app.actions.delete' | translate }}</button>
+                        </div>
+                    }
+                </div>
+                @if (course.description) {
+                    <p class="course-description">{{ course.description }}</p>
+                }
+                <div class="course-links">
+                    <a [routerLink]="['/courses', course.id, 'board']" class="btn-link">{{ 'app.courses.openBoard' | translate }}</a>
+                    @if (canManageCourses()) {
+                        <a [routerLink]="['/courses', course.id, 'workflow']" class="muted-link">{{ 'app.courses.workflow' | translate }}</a>
+                    }
+                    <a [routerLink]="['/courses', course.id, 'events']" class="muted-link">{{ 'app.courses.history' | translate }}</a>
+                </div>
+            </li>
+        }
+    </ul>
+}

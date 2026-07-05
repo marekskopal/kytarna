@@ -18,7 +18,7 @@ async function selectTheme(page: import('@playwright/test').Page, label: string)
 test.describe('Theme toggle', () => {
     test('dark mode flips data-theme, persists across reload, and Light removes it', async ({page}) => {
         const layout = new LayoutPage(page);
-        await page.goto('projects');
+        await page.goto('courses');
         await layout.expectVisible();
 
         // Force a known starting state.

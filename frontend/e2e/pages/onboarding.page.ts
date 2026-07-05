@@ -7,7 +7,7 @@ export class OnboardingPage {
         await expect(this.page).toHaveURL(new RegExp(`/onboarding/step-${step}`), {timeout: 15_000});
     }
 
-    public async fillProjectName(name: string): Promise<void> {
+    public async fillCourseName(name: string): Promise<void> {
         await this.page.fill('#ob-name', name);
     }
 

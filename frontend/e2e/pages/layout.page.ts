@@ -21,7 +21,7 @@ export class LayoutPage {
         await this.page.locator('.workspace-switcher .menu')
             .getByRole('menuitem', {name: workspaceName, exact: true})
             .click();
-        await expect(this.page).toHaveURL(/\/projects/);
+        await expect(this.page).toHaveURL(/\/courses/);
         await expect(this.page.locator('.workspace-chip .workspace-name')).toHaveText(workspaceName);
     }
 
@@ -36,9 +36,9 @@ export class LayoutPage {
         await expect(this.page.locator('.workspace-chip .workspace-name')).toHaveText(name, {timeout: 10_000});
     }
 
-    public async gotoProjects(): Promise<void> {
-        await this.page.locator('.nav').getByRole('link', {name: 'Projects', exact: true}).click();
-        await expect(this.page).toHaveURL(/\/projects$/);
+    public async gotoCourses(): Promise<void> {
+        await this.page.locator('.nav').getByRole('link', {name: 'Courses', exact: true}).click();
+        await expect(this.page).toHaveURL(/\/courses$/);
     }
 
     public async gotoWorkspaces(): Promise<void> {

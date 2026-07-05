@@ -6,7 +6,7 @@ import {WorkspacesPage} from './pages/workspaces.page';
 test.describe('Workspace switching', () => {
     test('user creates a second workspace and the topbar switcher moves between them', async ({page}) => {
         const layout = new LayoutPage(page);
-        await page.goto('projects');
+        await page.goto('courses');
         await layout.expectVisible();
         const original = await layout.currentWorkspaceName();
 

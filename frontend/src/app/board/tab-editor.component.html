@@ -1,0 +1,52 @@
+<form class="tab-editor" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="field">
+        <label class="field-label" for="tab-name">{{ 'app.tabs.editor.nameLabel' | translate }}</label>
+        <input id="tab-name" type="text" class="input" formControlName="name" autocomplete="off" />
+    </div>
+
+    <div class="field">
+        <label class="field-label" for="tab-alphatex">{{ 'app.tabs.editor.alphaTexLabel' | translate }}</label>
+        <textarea
+            id="tab-alphatex"
+            class="input tab-alphatex"
+            formControlName="alphaTex"
+            rows="8"
+            spellcheck="false"
+            [placeholder]="'app.tabs.editor.alphaTexPlaceholder' | translate"
+        ></textarea>
+    </div>
+
+    @if (errors().length > 0) {
+        <div class="tab-errors" role="alert">
+            <div class="tab-errors-title">{{ 'app.tabs.editor.validationFailed' | translate }}</div>
+            <ul class="tab-errors-list">
+                @for (error of errors(); track $index) {
+                    <li class="tab-error">
+                        @if (error.line !== null) {
+                            <span class="tab-error-loc uk-mono">
+                                {{ 'app.tabs.editor.lineCol' | translate: {line: error.line, col: error.col ?? 0} }}
+                            </span>
+                        }
+                        <span class="tab-error-msg">{{ error.message }}</span>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+
+    <div class="tab-editor-actions">
+        <button type="button" class="btn btn-ghost btn-sm" (click)="onCancel()">
+            {{ 'app.actions.cancel' | translate }}
+        </button>
+        <button type="submit" class="btn btn-primary btn-sm" [disabled]="form.invalid || saving()">
+            {{ (saving() ? 'app.actions.loading' : 'app.tabs.editor.validateAndPreview') | translate }}
+        </button>
+    </div>
+</form>
+
+@if (previewTex(); as tex) {
+    <div class="tab-editor-preview">
+        <div class="uk-overline">{{ 'app.tabs.editor.preview' | translate }}</div>
+        <uk-tab-viewer [alphaTex]="tex" />
+    </div>
+}

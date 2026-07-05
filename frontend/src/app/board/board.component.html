@@ -4,22 +4,22 @@
     <header class="board-header">
         <div class="board-header-titles">
             <nav class="board-breadcrumb" aria-label="Breadcrumb">
-                <a routerLink="/projects">{{ 'app.board.breadcrumb' | translate }}</a>
+                <a routerLink="/courses">{{ 'app.board.breadcrumb' | translate }}</a>
                 <svg class="board-breadcrumb-arrow" width="10" height="10" viewBox="0 0 16 16" aria-hidden="true">
                     <path d="M6 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
-                <span>{{ board.project.name }}</span>
+                <span>{{ board.course.name }}</span>
             </nav>
-            <h1 class="uk-h2 board-title">{{ board.project.name }}</h1>
+            <h1 class="uk-h2 board-title">{{ board.course.name }}</h1>
         </div>
         <div class="board-header-actions">
             <div class="board-views" role="tablist">
                 <a class="board-views-tab board-views-tab--active" aria-current="page">{{ 'app.board.viewBoard' | translate }}</a>
-                <a class="board-views-tab" [routerLink]="['/projects', board.project.id, 'workflow']">{{ 'app.board.viewWorkflow' | translate }}</a>
-                <a class="board-views-tab" [routerLink]="['/projects', board.project.id, 'events']">{{ 'app.board.viewEvents' | translate }}</a>
+                <a class="board-views-tab" [routerLink]="['/courses', board.course.id, 'workflow']">{{ 'app.board.viewWorkflow' | translate }}</a>
+                <a class="board-views-tab" [routerLink]="['/courses', board.course.id, 'events']">{{ 'app.board.viewEvents' | translate }}</a>
             </div>
             <button type="button" class="btn btn-primary btn-sm" (click)="openCreate(board.statuses[0])">
-                {{ 'app.board.newTask' | translate }}
+                {{ 'app.board.newLecture' | translate }}
             </button>
         </div>
     </header>
@@ -31,13 +31,13 @@
                     <div class="column-title">
                         <span class="column-dot" [style.background]="col.status.color"></span>
                         <h3>{{ col.status.name }}</h3>
-                        <span class="column-count">{{ col.tasks.length }}</span>
+                        <span class="column-count">{{ col.lectures.length }}</span>
                     </div>
                     <button
                         type="button"
                         class="btn btn-ghost btn-icon btn-xs"
                         (click)="openCreate(col.status)"
-                        [attr.aria-label]="'app.board.addTask' | translate"
+                        [attr.aria-label]="'app.board.addLecture' | translate"
                     >
                         <svg width="11" height="11" viewBox="0 0 16 16" aria-hidden="true">
                             <path d="M8 3v10M3 8h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
@@ -47,26 +47,26 @@
 
                 <div
                     cdkDropList
-                    [cdkDropListData]="col.tasks"
-                    class="column-tasks"
+                    [cdkDropListData]="col.lectures"
+                    class="column-lectures"
                     (cdkDropListDropped)="onDrop($event, col.status)"
                 >
-                    @for (task of col.tasks; track task.id) {
+                    @for (lecture of col.lectures; track lecture.id) {
                         <div
                             cdkDrag
                             role="button"
                             tabindex="0"
-                            (click)="openEdit(task)"
-                            (keydown.enter)="openEdit(task)"
-                            (keydown.space)="openEdit(task)"
+                            (click)="openEdit(lecture)"
+                            (keydown.enter)="openEdit(lecture)"
+                            (keydown.space)="openEdit(lecture)"
                         >
-                            <uk-task-card [task]="task" [workspaceTags]="workspaceTags()" />
+                            <uk-lecture-card [lecture]="lecture" [workspaceTags]="workspaceTags()" />
                         </div>
                     }
                 </div>
 
                 <button type="button" class="column-add-ghost" (click)="openCreate(col.status)">
-                    {{ 'app.board.addTask' | translate }}
+                    {{ 'app.board.addLecture' | translate }}
                 </button>
             </div>
         }
@@ -74,14 +74,14 @@
 }
 
 @if (drawerOpen()) {
-    <uk-task-detail-drawer
-        [task]="editingTask()"
+    <uk-lecture-detail-drawer
+        [lecture]="editingLecture()"
         [statuses]="board()?.statuses ?? []"
-        [projectId]="projectId()!"
+        [courseId]="courseId()!"
         [defaultStatusId]="defaultStatusId()"
         [workspaceTags]="workspaceTags()"
-        (saved)="onTaskSaved($event)"
-        (deleted)="onTaskDeleted($event)"
+        (saved)="onLectureSaved($event)"
+        (deleted)="onLectureDeleted($event)"
         (cancelled)="closeDrawer()"
     />
 }

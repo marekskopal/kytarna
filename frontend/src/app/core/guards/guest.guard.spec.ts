@@ -41,11 +41,11 @@ describe('GuestGuard', () => {
         expect(router.navigate).not.toHaveBeenCalled();
     });
 
-    it('returns false and redirects to /projects when the user is logged in', () => {
+    it('returns false and redirects to /courses when the user is logged in', () => {
         const {guard, router} = setup(true);
 
         expect(guard.canActivate()).toBe(false);
         expect(router.navigate).toHaveBeenCalledTimes(1);
-        expect(router.navigate).toHaveBeenCalledWith(['/projects']);
+        expect(router.navigate).toHaveBeenCalledWith(['/courses']);
     });
 });
