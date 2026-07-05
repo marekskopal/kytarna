@@ -1,88 +1,91 @@
-// Kytario design tokens — light, dense, indigo accent (+ dark theme).
-// Theme-aware tokens are exposed as CSS custom properties on :root and
-// :root[data-theme="dark"]. SCSS $color-* / $shadow-* / $ring variables
-// alias those so existing component SCSS picks up the theme switch
-// automatically. Non-color tokens (spacing, radii, type, heights, layout,
-// z-index) are SCSS-only — they do not change between themes.
+// Kytario design tokens — warm "woodshed" palette: cream paper, terracotta
+// accent, gold + olive support (+ dark theme). Theme-aware tokens are exposed
+// as CSS custom properties on :root and :root[data-theme="dark"]. SCSS
+// $color-* / $shadow-* / $ring variables alias those so existing component SCSS
+// picks up the theme switch automatically. Non-color tokens (spacing, radii,
+// type, heights, layout, z-index) are SCSS-only — they do not change between
+// themes.
 
 // ─── CSS custom properties (light, default) ───────────────────────────
 :root {
     color-scheme: light;
 
-    // Surfaces
-    --color-bg:              #fafafa;
-    --color-surface:         #ffffff;
-    --color-surface-muted:   #f4f4f5;
-    --color-surface-deep:    #ebebed;
-    --color-surface-hover:   #f7f7f8;
+    // Surfaces (warm cream paper)
+    --color-bg:              #f1eadd;
+    --color-surface:         #fcf9f3;
+    --color-surface-muted:   #f5efe4;
+    --color-surface-deep:    #e7ddcc;
+    --color-surface-hover:   #f3ece0;
 
     // Borders
-    --color-border:          #e7e7ea;
-    --color-border-strong:   #d4d4d8;
-    --color-border-hover:    #b8b8be;
-    --color-border-focus:    #5e6ad2;
+    --color-border:          #e6dcc9;
+    --color-border-strong:   #d8ccb4;
+    --color-border-hover:    #c9bda2;
+    --color-border-focus:    #c2410c;
 
-    // Text
-    --color-text:            #18181b;
-    --color-text-muted:      #52525b;
-    --color-text-subtle:     #8a8a92;
-    --color-text-faint:      #b4b4ba;
+    // Text (warm ink)
+    --color-text:            #231d15;
+    --color-text-muted:      #5a4f3f;
+    --color-text-subtle:     #948976;
+    --color-text-faint:      #b9ad96;
     --color-text-inverse:    #ffffff;
 
-    // Accent · Indigo
-    --color-accent:          #5e6ad2;
-    --color-accent-hover:    #4f5bbf;
-    --color-accent-active:   #424ea8;
-    --color-accent-soft:     #eef0fb;
+    // Accent · Terracotta
+    --color-accent:          #c2410c;
+    --color-accent-hover:    #a8360a;
+    --color-accent-active:   #8f2e08;
+    --color-accent-soft:     #f6e5da;
     --color-accent-fg:       #ffffff;
 
-    // Semantic
-    --color-success:         #16794a;
-    --color-success-soft:    #e6f5ee;
-    --color-success-border:  #b6e1c8;
+    // Semantic — success = olive (Mastered)
+    --color-success:         #5c6b37;
+    --color-success-soft:    #e7ead9;
+    --color-success-border:  #cdd2ad;
 
-    --color-warn:            #a35c00;
-    --color-warn-soft:       #fbf2dd;
-    --color-warn-border:     #f1d795;
+    // warn = gold (also the "agent" hue)
+    --color-warn:            #9b7327;
+    --color-warn-soft:       #f3ebda;
+    --color-warn-border:     #e0cfa0;
 
     --color-danger:          #b42318;
-    --color-danger-soft:     #fdecea;
-    --color-danger-border:   #f4b8b0;
+    --color-danger-soft:     #f7e2dc;
+    --color-danger-border:   #ecc4b8;
 
-    --color-info:            #1e58b6;
-    --color-info-soft:       #e6efff;
-    --color-info-border:     #b6cff7;
+    --color-info:            #4a6d8a;
+    --color-info-soft:       #e7edf1;
+    --color-info-border:     #c3d2dd;
 
-    --color-ai:              #6f4ed3;
-    --color-ai-soft:         #f0ebfb;
-    --color-ai-border:       #d4c5f3;
+    // ai / agent-created = gold
+    --color-ai:              #9b7327;
+    --color-ai-soft:         #f3ebda;
+    --color-ai-border:       #e0cfa0;
 
-    // Workflow status dots
-    --color-status-todo:     #94a3a8;
-    --color-status-doing:    #c98a14;
-    --color-status-review:   #4a8fd6;
-    --color-status-done:     #16794a;
+    // Workflow status dots — To Learn / Learning / Mastered
+    --color-status-todo:     #948976;
+    --color-status-doing:    #c2410c;
+    --color-status-review:   #4a6d8a;
+    --color-status-done:     #5c6b37;
     --color-status-blocked:  #b42318;
 
-    // Priority chip pairs
-    --prio-low-bg:           #f1f1f3;
-    --prio-low-fg:           #52525b;
-    --prio-med-bg:           #fbf2dd;
-    --prio-med-fg:           #a35c00;
-    --prio-high-bg:          #fdecea;
+    // Priority chip pairs (feature retired; kept warm for any stragglers)
+    --prio-low-bg:           #f5efe4;
+    --prio-low-fg:           #5a4f3f;
+    --prio-med-bg:           #f3ebda;
+    --prio-med-fg:           #9b7327;
+    --prio-high-bg:          #f7e2dc;
     --prio-high-fg:          #b42318;
-    --prio-urgent-bg:        #18181b;
+    --prio-urgent-bg:        #231d15;
     --prio-urgent-fg:        #ffffff;
 
     // Backdrop dim (drawers, modals)
-    --color-backdrop:        rgba(24, 24, 27, 0.32);
+    --color-backdrop:        rgba(35, 29, 21, 0.34);
 
-    // Shadows + focus ring
-    --shadow-xs: 0 1px 0 rgba(24, 24, 27, 0.04);
-    --shadow-sm: 0 1px 2px rgba(24, 24, 27, 0.06), 0 1px 1px rgba(24, 24, 27, 0.04);
-    --shadow-md: 0 6px 16px -4px rgba(24, 24, 27, 0.10), 0 2px 4px rgba(24, 24, 27, 0.05);
-    --shadow-lg: 0 16px 40px -8px rgba(24, 24, 27, 0.14), 0 4px 8px rgba(24, 24, 27, 0.06);
-    --ring:        0 0 0 3px rgba(94, 106, 210, 0.20);
+    // Shadows + focus ring (warm brown)
+    --shadow-xs: 0 1px 0 rgba(70, 50, 22, 0.05);
+    --shadow-sm: 0 1px 2px rgba(70, 50, 22, 0.08), 0 1px 1px rgba(70, 50, 22, 0.05);
+    --shadow-md: 0 6px 16px -4px rgba(70, 50, 22, 0.12), 0 2px 4px rgba(70, 50, 22, 0.07);
+    --shadow-lg: 0 16px 40px -8px rgba(70, 50, 22, 0.16), 0 4px 8px rgba(70, 50, 22, 0.08);
+    --ring:        0 0 0 3px rgba(194, 65, 12, 0.20);
     --ring-danger: 0 0 0 3px rgba(180, 35, 24, 0.18);
 }
 
@@ -90,72 +93,72 @@
 :root[data-theme="dark"] {
     color-scheme: dark;
 
-    --color-bg:              #0a0a0c;
-    --color-surface:         #161619;
-    --color-surface-muted:   #1f1f23;
-    --color-surface-deep:    #27272b;
-    --color-surface-hover:   #1b1b1e;
+    --color-bg:              #161109;
+    --color-surface:         #211a11;
+    --color-surface-muted:   #2a2117;
+    --color-surface-deep:    #0f0c07;
+    --color-surface-hover:   #2a2117;
 
-    --color-border:          #2a2a2e;
-    --color-border-strong:   #3a3a40;
-    --color-border-hover:    #4d4d54;
-    --color-border-focus:    #7c87e0;
+    --color-border:          #33291b;
+    --color-border-strong:   #40331f;
+    --color-border-hover:    #504028;
+    --color-border-focus:    #e8703a;
 
-    --color-text:            #fafafa;
-    --color-text-muted:      #a1a1a8;
-    --color-text-subtle:     #71717a;
-    --color-text-faint:      #52525b;
-    --color-text-inverse:    #18181b;
+    --color-text:            #f2ebdc;
+    --color-text-muted:      #cabfab;
+    --color-text-subtle:     #9a8f7c;
+    --color-text-faint:      #6f6553;
+    --color-text-inverse:    #161109;
 
-    --color-accent:          #7c87e0;
-    --color-accent-hover:    #6b76d6;
-    --color-accent-active:   #5a64c4;
-    --color-accent-soft:     #1e2150;
+    --color-accent:          #e8703a;
+    --color-accent-hover:    #f0895a;
+    --color-accent-active:   #d15f2c;
+    --color-accent-soft:     #3a2415;
     --color-accent-fg:       #ffffff;
 
-    --color-success:         #22c55e;
-    --color-success-soft:    #0f3a25;
-    --color-success-border:  #1d6840;
+    --color-success:         #93a659;
+    --color-success-soft:    #242a14;
+    --color-success-border:  #3f4a24;
 
-    --color-warn:            #fbbf24;
-    --color-warn-soft:       #2d2107;
-    --color-warn-border:     #5a4310;
+    --color-warn:            #d3a552;
+    --color-warn-soft:       #2e2410;
+    --color-warn-border:     #4a3a1c;
 
-    --color-danger:          #f87171;
-    --color-danger-soft:     #2a0f0f;
-    --color-danger-border:   #5a1f1f;
+    --color-danger:          #f2836b;
+    --color-danger-soft:     #331512;
+    --color-danger-border:   #5a281c;
 
-    --color-info:            #60a5fa;
-    --color-info-soft:       #0f1a35;
-    --color-info-border:     #1d3a6e;
+    --color-info:            #7fa8c9;
+    --color-info-soft:       #142430;
+    --color-info-border:     #2a4155;
 
-    --color-ai:              #a78bfa;
-    --color-ai-soft:         #1c1530;
-    --color-ai-border:       #3a2c5e;
+    --color-ai:              #d3a552;
+    --color-ai-soft:         #2e2410;
+    --color-ai-border:       #4a3a1c;
 
-    --color-status-todo:     #71717a;
-    --color-status-doing:    #fbbf24;
-    --color-status-review:   #60a5fa;
-    --color-status-done:     #22c55e;
-    --color-status-blocked:  #f87171;
+    --color-status-todo:     #9a8f7c;
+    --color-status-doing:    #e8703a;
+    --color-status-review:   #7fa8c9;
+    --color-status-done:     #93a659;
+    --color-status-blocked:  #f2836b;
 
-    --prio-low-bg:           #1f1f23;
-    --prio-low-fg:           #a1a1a8;
-    --prio-med-bg:           #2d2107;
-    --prio-med-fg:           #fbbf24;
-    --prio-high-bg:          #2a0f0f;
-    --prio-high-fg:          #f87171;
-    --prio-urgent-bg:        #fafafa;
-    --prio-urgent-fg:        #18181b;
+    --prio-low-bg:           #2a2117;
+    --prio-low-fg:           #cabfab;
+    --prio-med-bg:           #2e2410;
+    --prio-med-fg:           #d3a552;
+    --prio-high-bg:          #331512;
+    --prio-high-fg:          #f2836b;
+    --prio-urgent-bg:        #f2ebdc;
+    --prio-urgent-fg:        #161109;
 
-    --color-backdrop:        rgba(0, 0, 0, 0.55);
+    --color-backdrop:        rgba(0, 0, 0, 0.6);
 
     --shadow-xs: 0 1px 0 rgba(0, 0, 0, 0.4);
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5), 0 1px 1px rgba(0, 0, 0, 0.3);
     --shadow-md: 0 6px 16px -4px rgba(0, 0, 0, 0.55), 0 2px 4px rgba(0, 0, 0, 0.35);
     --shadow-lg: 0 16px 40px -8px rgba(0, 0, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.4);
-    --ring:        0 0 0 3px rgba(124, 135, 224, 0.30);
-    --ring-danger: 0 0 0 3px rgba(248, 113, 113, 0.30);
+    --ring:        0 0 0 3px rgba(232, 112, 58, 0.30);
+    --ring-danger: 0 0 0 3px rgba(242, 131, 107, 0.30);
 }
 
 // ─── SCSS aliases over CSS vars ───────────────────────────────────────
@@ -254,17 +257,19 @@ $space-10: 40px;
 $space-11: 56px;
 $space-12: 72px;
 
-// ─── Radii ────────────────────────────────────────────────
-$radius-xs:   3px;   // chips
-$radius-sm:   5px;   // buttons, inputs
-$radius-md:   7px;   // cards, alerts
-$radius-lg:   10px;  // big panels
-$radius-xl:   14px;  // hero / modal
+// ─── Radii (soft, warm) ───────────────────────────────────
+$radius-xs:   6px;   // chips
+$radius-sm:   8px;   // buttons, inputs
+$radius-md:   10px;  // cards, alerts
+$radius-lg:   13px;  // big panels
+$radius-xl:   16px;  // hero / modal
 $radius-pill: 999px;
 
 // ─── Type ─────────────────────────────────────────────────
-$font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-$font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+// Display serif for headings/hero, Hanken Grotesk for UI, Space Mono for data.
+$font-display: 'Instrument Serif', 'Hanken Grotesk', Georgia, 'Times New Roman', serif;
+$font-sans: 'Hanken Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+$font-mono: 'Space Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
 $font-size-10: 10px;
 $font-size-11: 11px;

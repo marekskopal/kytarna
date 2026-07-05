@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:#e9e0d0;font-family:'Hanken Grotesk',sans-serif;-webkit-font-smoothing:antialiased}
+  ::selection{background:rgba(194,65,12,0.22)}
+  ::-webkit-scrollbar{width:10px;height:10px}
+  ::-webkit-scrollbar-thumb{background:rgba(120,100,70,0.28);border-radius:20px;border:3px solid transparent;background-clip:padding-box}
+  nav::-webkit-scrollbar{height:0}
+  textarea{font-family:'Space Mono',monospace}
+  @keyframes kyRise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  @keyframes kyFade{from{opacity:0}to{opacity:1}}
+  @keyframes kyGlow{0%,100%{opacity:.5}50%{opacity:1}}
+</style>
+</helmet>
+<div ref="{{ rootRef }}" style="--bg:#f1eadd;--bg2:#e7ddcc;--surface:#fcf9f3;--surface2:#f5efe4;--ink:#231d15;--ink2:#5a4f3f;--mut:#948976;--line:#e6dcc9;--line2:#d8ccb4;--accent:#c2410c;--accent2:#a8360a;--acsoft:rgba(194,65,12,0.10);--gold:#9b7327;--goldsoft:rgba(155,115,39,0.12);--green:#5c6b37;--greensoft:rgba(92,107,55,0.14);--shadow:rgba(70,50,22,0.10);--shadow2:rgba(70,50,22,0.16);background:var(--bg);color:var(--ink);min-height:100vh;display:flex;flex-direction:column;font-size:15px;line-height:1.5;transition:background .5s ease,color .5s ease">
+
+  <!-- ===================== TOP HEADER ===================== -->
+  <header style="position:sticky;top:0;z-index:20;background:var(--bg2);border-bottom:1px solid var(--line2);display:flex;align-items:center;gap:18px;padding:0 26px;height:64px;transition:background .5s ease">
+    <button onClick="{{ goLibrary }}" style="display:flex;align-items:center;gap:11px;background:none;border:none;cursor:pointer;padding:0;flex:0 0 auto">
+      <div style="width:30px;height:30px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px var(--acsoft)">
+        <div style="width:11px;height:11px;border:2px solid #fff;border-radius:2px;transform:rotate(45deg)"></div>
+      </div>
+      <div style="font-family:'Instrument Serif',serif;font-size:24px;line-height:1;letter-spacing:.2px;color:var(--ink)">Kytario</div>
+    </button>
+    <div style="width:1px;height:26px;background:var(--line2);flex:0 0 auto"></div>
+    <nav style="display:flex;align-items:center;gap:4px;flex:1;min-width:0;overflow-x:auto">
+      <button onClick="{{ goLibrary }}" style="{{ navLib }}">
+        <span style="width:7px;height:7px;border-radius:2px;background:var(--accent);transform:rotate(45deg);flex:0 0 auto"></span>
+        <span style="white-space:nowrap">Library</span>
+      </button>
+      <sc-for list="{{ courses }}" as="c" hint-placeholder-count="4">
+        <button onClick="{{ c._open }}" style="{{ c._navStyle }}">
+          <span style="width:7px;height:7px;border-radius:50%;background:{{ c._dot }};flex:0 0 auto"></span>
+          <span style="white-space:nowrap">{{ c.name }}</span>
+        </button>
+      </sc-for>
+    </nav>
+    <div style="display:flex;align-items:center;gap:11px;flex:0 0 auto">
+      <div style="display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 12px;color:var(--mut)">
+        <span style="width:13px;height:13px;border:2px solid var(--mut);border-radius:50%;position:relative;flex:0 0 auto"><span style="position:absolute;width:5px;height:2px;background:var(--mut);bottom:-3px;right:-3px;transform:rotate(45deg);border-radius:2px"></span></span>
+        <span style="font-size:13px">Search…</span>
+      </div>
+      <button onClick="{{ toggleDark }}" title="Toggle theme" style="width:36px;height:36px;flex:0 0 auto;border:1px solid var(--line2);background:var(--surface);border-radius:9px;color:var(--ink2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px">{{ themeIcon }}</button>
+      <div title="You · practicing daily" style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--accent));flex:0 0 auto"></div>
+    </div>
+  </header>
+
+  <!-- ===================== MAIN ===================== -->
+  <main style="flex:1;min-width:0">
+
+    <!-- ============ LIBRARY VIEW ============ -->
+    <sc-if value="{{ isLibrary }}" hint-placeholder-val="{{ true }}">
+    <div style="max-width:1080px;margin:0 auto;padding:40px 48px 80px 48px;animation:kyFade .5s ease">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:6px">
+        <div>
+          <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mut);margin-bottom:8px">Workspace</div>
+          <h1 style="font-family:'Instrument Serif',serif;font-weight:400;font-size:52px;line-height:1;margin:0">My Woodshed</h1>
+        </div>
+      </div>
+      <p style="color:var(--ink2);max-width:560px;margin:14px 0 0">A private library and practice journal. Four courses, one guitar, and a slowly climbing tempo.</p>
+
+      <!-- Working on -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin:44px 0 16px">
+        <h2 style="font-family:'Instrument Serif',serif;font-weight:400;font-size:26px;margin:0;font-style:italic">What I'm working on</h2>
+        <span style="font-family:'Space Mono',monospace;font-size:12px;color:var(--mut)">{{ workingCount }} in progress</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px">
+        <sc-for list="{{ working }}" as="w" hint-placeholder-count="3">
+          <button onClick="{{ w._open }}" style="text-align:left;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 2px 10px var(--shadow);display:flex;flex-direction:column;gap:14px;position:relative;transition:transform .18s ease,box-shadow .18s ease" style-hover="text-align:left;cursor:pointer;background:var(--surface);border:1px solid var(--line2);border-radius:16px;padding:20px;box-shadow:0 8px 22px var(--shadow2);display:flex;flex-direction:column;gap:14px;position:relative;transform:translateY(-3px)">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+              <span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:var(--mut)">{{ w.courseName }}</span>
+              <sc-if value="{{ w.agent }}" hint-placeholder-val="{{ true }}"><span title="Created by an agent" style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;border:1px solid var(--line2);background:var(--surface2)"><span style="width:6px;height:6px;background:var(--gold);transform:rotate(45deg)"></span></span></sc-if>
+            </div>
+            <div style="font-family:'Instrument Serif',serif;font-size:23px;line-height:1.1">{{ w.name }}</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px">
+              <span style="font-family:'Space Mono',monospace;font-size:11px;color:var(--ink2);background:var(--surface2);border:1px solid var(--line);border-radius:6px;padding:3px 8px">{{ w.tuningShort }}</span>
+              <span style="font-family:'Space Mono',monospace;font-size:11px;color:{{ w._diffColor }};background:var(--surface2);border:1px solid var(--line);border-radius:6px;padding:3px 8px">{{ w.difficulty }}</span>
+            </div>
+            <div>
+              <div style="display:flex;align-items:center;justify-content:space-between;font-family:'Space Mono',monospace;font-size:11px;color:var(--mut);margin-bottom:6px">
+                <span>{{ w.bpm }} → {{ w.target }} BPM</span>
+                <span>{{ w._pct }}%</span>
+              </div>
+              <div style="height:6px;border-radius:20px;background:var(--bg2);overflow:hidden">
+                <div style="height:100%;width:{{ w._pct }}%;background:linear-gradient(90deg,var(--gold),var(--accent));border-radius:20px"></div>
+              </div>
+            </div>
+          </button>
+        </sc-for>
+      </div>
+
+      <!-- Courses -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin:48px 0 16px">
+        <h2 style="font-family:'Instrument Serif',serif;font-weight:400;font-size:26px;margin:0;font-style:italic">Courses</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px">
+        <sc-for list="{{ courses }}" as="c" hint-placeholder-count="4">
+          <button onClick="{{ c._open }}" style="text-align:left;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 2px 10px var(--shadow);display:flex;flex-direction:column;gap:16px;transition:transform .18s ease,box-shadow .18s ease" style-hover="text-align:left;cursor:pointer;background:var(--surface);border:1px solid var(--line2);border-radius:16px;padding:20px;box-shadow:0 8px 22px var(--shadow2);display:flex;flex-direction:column;gap:16px;transform:translateY(-3px)">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+              <div style="font-family:'Instrument Serif',serif;font-size:22px;line-height:1.12">{{ c.name }}</div>
+              <div style="position:relative;width:42px;height:42px;flex:0 0 auto">
+                <svg width="42" height="42" viewBox="0 0 42 42" style="transform:rotate(-90deg)">
+                  <circle cx="21" cy="21" r="18" fill="none" stroke="var(--line2)" stroke-width="4"></circle>
+                  <circle cx="21" cy="21" r="18" fill="none" stroke="{{ c._dot }}" stroke-width="4" stroke-linecap="round" stroke-dasharray="{{ c._dash }}"></circle>
+                </svg>
+                <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700">{{ c._ring }}%</div>
+              </div>
+            </div>
+            <p style="margin:0;color:var(--ink2);font-size:13.5px;line-height:1.45">{{ c.desc }}</p>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:2px;padding-top:14px;border-top:1px solid var(--line)">
+              <div style="display:flex;gap:6px;flex-wrap:wrap">
+                <sc-for list="{{ c.tags }}" as="t" hint-placeholder-count="2"><span style="font-family:'Space Mono',monospace;font-size:10.5px;color:var(--mut)">#{{ t }}</span></sc-for>
+              </div>
+              <span style="font-family:'Space Mono',monospace;font-size:11px;color:var(--mut)">{{ c._total }} lectures</span>
+            </div>
+          </button>
+        </sc-for>
+      </div>
+
+      <!-- Recently mastered -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin:48px 0 16px">
+        <h2 style="font-family:'Instrument Serif',serif;font-weight:400;font-size:26px;margin:0;font-style:italic">Recently mastered</h2>
+        <span style="font-family:'Space Mono',monospace;font-size:12px;color:var(--green)">◆ {{ masteredTotal }} total</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden">
+        <sc-for list="{{ mastered }}" as="m" hint-placeholder-count="3">
+          <button onClick="{{ m._open }}" style="text-align:left;cursor:pointer;display:flex;align-items:center;gap:16px;background:var(--surface);border:none;padding:15px 20px;font-family:inherit;color:inherit">
+            <span style="width:26px;height:26px;border-radius:50%;background:var(--greensoft);border:1px solid var(--green);display:flex;align-items:center;justify-content:center;flex:0 0 auto"><span style="width:9px;height:5px;border-left:2px solid var(--green);border-bottom:2px solid var(--green);transform:rotate(-45deg);margin-top:-2px"></span></span>
+            <div style="flex:1;min-width:0">
+              <div style="font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ m.name }}</div>
+              <div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--mut)">{{ m.courseName }}</div>
+            </div>
+            <span style="font-family:'Space Mono',monospace;font-size:11px;color:var(--ink2);background:var(--surface2);border:1px solid var(--line);border-radius:6px;padding:3px 8px">{{ m.tuningShort }}</span>
+            <span style="font-family:'Space Mono',monospace;font-size:12px;color:var(--green);flex:0 0 auto">{{ m.bpm }} BPM</span>
+          </button>
+        </sc-for>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ============ COURSE VIEW ============ -->
+    <sc-if value="{{ isCourse }}" hint-placeholder-val="{{ true }}">
+    <div style="max-width:1120px;margin:0 auto;padding:32px 48px 80px;animation:kyFade .45s ease">
+      <button onClick="{{ goLibrary }}" style="display:inline-flex;align-items:center;gap:8px;background:none;border:none;cursor:pointer;color:var(--mut);font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.5px;padding:0;margin-bottom:20px">
+        <span style="width:7px;height:7px;border-left:2px solid var(--mut);border-bottom:2px solid var(--mut);transform:rotate(45deg)"></span>
+        My Woodshed
+      </button>
+      <!-- course header -->
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:28px;flex-wrap:wrap;margin-bottom:8px">
+        <div style="min-width:0;max-width:640px">
+          <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mut);margin-bottom:8px">Course</div>
+          <h1 style="font-family:'Instrument Serif',serif;font-weight:400;font-size:46px;line-height:1.02;margin:0 0 12px">{{ course.name }}</h1>
+          <p style="margin:0 0 14px;color:var(--ink2);font-size:16px;line-height:1.6">{{ course.desc }}</p>
+          <div style="display:flex;gap:7px;flex-wrap:wrap">
+            <sc-for list="{{ course.tags }}" as="t" hint-placeholder-count="2"><span style="font-family:'Space Mono',monospace;font-size:11px;color:var(--ink2);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:4px 9px">#{{ t }}</span></sc-for>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:20px;flex:0 0 auto">
+          <div style="position:relative;width:76px;height:76px;flex:0 0 auto">
+            <svg width="76" height="76" viewBox="0 0 76 76" style="transform:rotate(-90deg)">
+              <circle cx="38" cy="38" r="33" fill="none" stroke="var(--line2)" stroke-width="6"></circle>
+              <circle cx="38" cy="38" r="33" fill="none" stroke="{{ course._dot }}" stroke-width="6" stroke-linecap="round" stroke-dasharray="{{ course._dashLg }}"></circle>
+            </svg>
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center"><span style="font-family:'Instrument Serif',serif;font-size:22px;line-height:1">{{ course._ring }}%</span><span style="font-family:'Space Mono',monospace;font-size:9px;color:var(--mut)">MASTERED</span></div>
+          </div>
+          <div style="font-family:'Space Mono',monospace;font-size:12px;color:var(--mut);line-height:1.9;flex:0 0 auto">
+            <div style="white-space:nowrap">{{ course._total }} lectures</div>
+            <div style="white-space:nowrap;color:var(--green)">{{ course._masteredN }} mastered</div>
+            <div style="white-space:nowrap;color:var(--accent)">{{ course._learningN }} learning</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- lecture board -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin-top:34px;align-items:start">
+        <sc-for list="{{ board }}" as="col" hint-placeholder-count="3">
+          <div style="min-width:0">
+            <div style="display:flex;align-items:center;gap:9px;padding:0 4px 14px">
+              <span style="width:9px;height:9px;border-radius:50%;background:{{ col.dot }};flex:0 0 auto"></span>
+              <span style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--ink);font-weight:700">{{ col.label }}</span>
+              <span style="font-family:'Space Mono',monospace;font-size:12px;color:var(--mut)">{{ col.count }}</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <sc-for list="{{ col.items }}" as="lc" hint-placeholder-count="2">
+                <button onClick="{{ lc._open }}" style="text-align:left;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:0 2px 8px var(--shadow);display:flex;flex-direction:column;gap:11px;transition:transform .16s ease,box-shadow .16s ease" style-hover="text-align:left;cursor:pointer;background:var(--surface);border:1px solid var(--line2);border-radius:14px;padding:16px;box-shadow:0 8px 20px var(--shadow2);display:flex;flex-direction:column;gap:11px;transform:translateY(-2px)">
+                  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
+                    <div style="font-family:'Instrument Serif',serif;font-size:19px;line-height:1.12">{{ lc.name }}</div>
+                    <sc-if value="{{ lc.agent }}" hint-placeholder-val="{{ true }}"><span title="Created by an agent" style="flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;border:1px solid var(--line2);background:var(--surface2)"><span style="width:6px;height:6px;background:var(--gold);transform:rotate(45deg)"></span></span></sc-if>
+                  </div>
+                  <div style="display:flex;flex-wrap:wrap;gap:6px">
+                    <span style="font-family:'Space Mono',monospace;font-size:10.5px;color:{{ lc._diffColor }};background:var(--surface2);border:1px solid var(--line);border-radius:6px;padding:3px 7px">{{ lc.difficulty }}</span>
+                    <span style="font-family:'Space Mono',monospace;font-size:10.5px;color:var(--ink2);background:var(--surface2);border:1px solid var(--line);border-radius:6px;padding:3px 7px">{{ lc.tuningShort }}</span>
+                  </div>
+                  <div style="display:flex;gap:6px;flex-wrap:wrap">
+                    <sc-for list="{{ lc._tags }}" as="t" hint-placeholder-count="2"><span style="font-family:'Space Mono',monospace;font-size:10px;color:var(--mut)">#{{ t }}</span></sc-for>
+                  </div>
+                  <sc-if value="{{ lc._hasProgress }}" hint-placeholder-val="{{ true }}">
+                    <div style="margin-top:1px">
+                      <div style="display:flex;align-items:center;justify-content:space-between;font-family:'Space Mono',monospace;font-size:10.5px;color:var(--mut);margin-bottom:5px"><span>{{ lc.bpm }} → {{ lc.target }} BPM</span><span>{{ lc._pct }}%</span></div>
+                      <div style="height:5px;border-radius:20px;background:var(--bg2);overflow:hidden"><div style="height:100%;width:{{ lc._pct }}%;background:linear-gradient(90deg,var(--gold),var(--accent));border-radius:20px"></div></div>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ lc._mastered }}" hint-placeholder-val="{{ true }}">
+                    <div style="display:flex;align-items:center;gap:7px;font-family:'Space Mono',monospace;font-size:11px;color:var(--green);margin-top:1px"><span style="width:8px;height:5px;border-left:2px solid var(--green);border-bottom:2px solid var(--green);transform:rotate(-45deg);margin-top:-2px"></span>Mastered at {{ lc.bpm }} BPM</div>
+                  </sc-if>
+                </button>
+              </sc-for>
+              <button style="font-family:'Space Mono',monospace;font-size:12px;color:var(--mut);background:none;border:1px dashed var(--line2);border-radius:12px;padding:12px;cursor:pointer;text-align:center">+ lecture</button>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ============ LECTURE VIEW ============ -->
+    <sc-if value="{{ isLecture }}" hint-placeholder-val="{{ true }}">
+    <div style="animation:kyFade .45s ease">
+      <!-- header band -->
+      <div style="background:var(--bg2);border-bottom:1px solid var(--line2);padding:22px 48px 0;transition:background .5s ease">
+        <div style="max-width:1000px;margin:0 auto">
+          <button onClick="{{ goCourse }}" style="display:inline-flex;align-items:center;gap:8px;background:none;border:none;cursor:pointer;color:var(--mut);font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.5px;padding:0;margin-bottom:18px">
+            <span style="width:7px;height:7px;border-left:2px solid var(--mut);border-bottom:2px solid var(--mut);transform:rotate(45deg)"></span>
+            {{ course.name }}
+          </button>
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap">
+            <div style="min-width:0">
+              <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px">
+                <span style="{{ lecPillStyle }}"><span style="{{ lecDotStyle }}"></span>{{ lecStatusLabel }}</span>
+                <sc-if value="{{ lecAgent }}" hint-placeholder-val="{{ true }}"><span title="Created by an agent, verified by you" style="display:inline-flex;align-items:center;gap:7px;font-family:'Space Mono',monospace;font-size:11px;color:var(--gold);background:var(--goldsoft);border:1px solid rgba(155,115,39,0.22);border-radius:20px;padding:4px 11px"><span style="width:7px;height:7px;background:var(--gold);transform:rotate(45deg)"></span>Agent-created</span></sc-if>
+              </div>
+              <h1 style="font-family:'Instrument Serif',serif;font-weight:400;font-size:46px;line-height:1.02;margin:0">{{ lec.name }}</h1>
+            </div>
+            <div style="text-align:right;flex:0 0 auto">
+              <div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--mut);margin-bottom:4px">CURRENT · TARGET</div>
+              <div style="font-family:'Instrument Serif',serif;font-size:40px;line-height:1;color:var(--accent)">{{ hdrBpm }}<span style="color:var(--mut);font-size:24px"> / {{ hdrTarget }}</span></div>
+              <div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--mut);margin-top:3px">BPM</div>
+            </div>
+          </div>
+          <!-- metadata chips -->
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin:22px 0 0">
+            <div style="display:flex;align-items:center;gap:9px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 13px">
+              <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--mut)">Tuning</span>
+              <span style="font-family:'Space Mono',monospace;font-size:13px;font-weight:700">{{ lec.tuningShort }}</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:9px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 13px">
+              <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--mut)">Capo</span>
+              <span style="font-family:'Space Mono',monospace;font-size:13px;font-weight:700">{{ lec.capo }}</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:9px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 13px">
+              <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--mut)">Target</span>
+              <span style="font-family:'Space Mono',monospace;font-size:13px;font-weight:700">{{ lec.target }} BPM</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:9px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 13px">
+              <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--mut)">Difficulty</span>
+              <span style="font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:{{ lecDiffColor }}">{{ lec.difficulty }}</span>
+            </div>
+          </div>
+          <!-- segmented -->
+          <div style="display:flex;gap:2px;margin-top:24px">
+            <button onClick="{{ secDetails }}" style="{{ seg.details }}">Details</button>
+            <button onClick="{{ secTabs }}" style="{{ seg.tabs }}">Tabs</button>
+            <button onClick="{{ secProgress }}" style="{{ seg.progress }}">Progress</button>
+            <button onClick="{{ secLinks }}" style="{{ seg.links }}">Links</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- section body -->
+      <div style="max-width:1000px;margin:0 auto;padding:34px 48px 90px">
+
+        <!-- DETAILS -->
+        <sc-if value="{{ onDetails }}" hint-placeholder-val="{{ true }}">
+        <div style="display:grid;grid-template-columns:1fr 300px;gap:34px;animation:kyRise .4s ease">
+          <div>
+            <h3 style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mut);margin:0 0 14px">Description</h3>
+            <div style="font-size:16px;line-height:1.7;color:var(--ink2)">
+              <p style="margin:0 0 14px"><strong style="color:var(--ink)">A rolling 12-bar shuffle in the key of E</strong> — the backbone groove for half the blues canon. The whole thing lives in the low strings with a swung eighth-note feel.</p>
+              <p style="margin:0 0 14px">Focus areas while learning:</p>
+              <ul style="margin:0 0 14px;padding-left:20px">
+                <li style="margin-bottom:6px">Keep the <strong style="color:var(--ink)">right-hand palm mute</strong> consistent through the whole bar.</li>
+                <li style="margin-bottom:6px">The reach from the open chord to the 4th-fret “walk-up” is the hard part — isolate it.</li>
+                <li>Nail the <strong style="color:var(--ink)">turnaround in bars 11–12</strong> before pushing tempo.</li>
+              </ul>
+              <p style="margin:0">Goal: play it clean and relaxed at <strong style="color:var(--ink)">120 BPM</strong> with a real swing feel, not a stiff straight-eighth version.</p>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:22px">
+            <div>
+              <h3 style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mut);margin:0 0 12px">Status</h3>
+              <div style="display:flex;flex-direction:column;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:11px;overflow:hidden">
+                <button onClick="{{ setLearn }}" style="{{ st.learn }}"><span style="width:8px;height:8px;border-radius:50%;background:var(--mut);flex:0 0 auto"></span>To Learn</button>
+                <button onClick="{{ setLearning }}" style="{{ st.learning }}"><span style="width:8px;height:8px;border-radius:50%;background:var(--accent);flex:0 0 auto"></span>Learning</button>
+                <button onClick="{{ setMastered }}" style="{{ st.mastered }}"><span style="width:8px;height:8px;border-radius:50%;background:var(--green);flex:0 0 auto"></span>Mastered</button>
+              </div>
+            </div>
+            <div>
+              <h3 style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mut);margin:0 0 12px">Tags</h3>
+              <div style="display:flex;flex-wrap:wrap;gap:8px">
+                <sc-for list="{{ tags }}" as="t" hint-placeholder-count="4"><span style="font-family:'Space Mono',monospace;font-size:12px;color:var(--ink2);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:5px 10px">#{{ t }}</span></sc-for>
+                <span style="font-family:'Space Mono',monospace;font-size:12px;color:var(--mut);border:1px dashed var(--line2);border-radius:8px;padding:5px 10px;cursor:pointer">+ add</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        </sc-if>
+
+        <!-- TABS -->
+        <sc-if value="{{ onTabs }}" hint-placeholder-val="{{ true }}">
+        <div style="animation:kyRise .4s ease">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:18px">
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <sc-for list="{{ tabList }}" as="tb" hint-placeholder-count="3">
+                <button onClick="{{ tb._sel }}" style="{{ tb._style }}">{{ tb.name }}</button>
+              </sc-for>
+              <button style="font-family:'Space Mono',monospace;font-size:12px;color:var(--mut);background:none;border:1px dashed var(--line2);border-radius:9px;padding:8px 12px;cursor:pointer">+ tab</button>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <button style="display:inline-flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:12px;color:var(--ink2);background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:8px 13px;cursor:pointer"><span style="width:11px;height:11px;border:1.5px solid var(--ink2);border-radius:2px;position:relative"><span style="position:absolute;left:2px;top:4px;width:5px;height:2px;background:var(--ink2)"></span></span>Import .gp</button>
+              <div style="display:flex;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:9px;overflow:hidden">
+                <button onClick="{{ modeReadFn }}" style="{{ mode.read }}">Read</button>
+                <button onClick="{{ modeEditFn }}" style="{{ mode.edit }}">Edit</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- READ -->
+          <sc-if value="{{ isRead }}" hint-placeholder-val="{{ true }}">
+          <div style="background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:0 2px 12px var(--shadow);overflow:hidden">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 18px;border-bottom:1px solid var(--line);background:var(--surface2)">
+              <div style="font-family:'Instrument Serif',serif;font-size:19px">{{ tabName }}</div>
+              <div style="display:flex;align-items:center;gap:14px;font-family:'Space Mono',monospace;font-size:11px;color:var(--mut)">
+                <span>♩ = 120</span><span>4/4</span><span>Tuning: E A D G B E</span>
+              </div>
+            </div>
+            <div style="padding:26px 26px 30px;background:#fffdf8">
+              <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1px;color:#b9ad96;margin-bottom:16px">RENDERED BY ALPHATAB — INTERACTIVE NOTATION</div>
+              {{ tabStaff }}
+              <div style="display:flex;align-items:center;gap:16px;margin-top:22px;padding-top:16px;border-top:1px dashed #e8e0cf">
+                <button style="width:40px;height:40px;border-radius:50%;background:var(--accent);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px var(--acsoft)"><span style="width:0;height:0;border-left:11px solid #fff;border-top:7px solid transparent;border-bottom:7px solid transparent;margin-left:3px"></span></button>
+                <div style="flex:1;height:5px;border-radius:20px;background:#ece3d0;overflow:hidden"><div style="width:34%;height:100%;background:var(--accent);border-radius:20px"></div></div>
+                <span style="font-family:'Space Mono',monospace;font-size:11px;color:#8a7f6a">0:12 / 0:36</span>
+                <span style="font-family:'Space Mono',monospace;font-size:11px;color:var(--accent);border:1px solid rgba(194,65,12,0.3);border-radius:6px;padding:3px 8px">75% speed</span>
+              </div>
+            </div>
+          </div>
+          </sc-if>
+
+          <!-- EDIT -->
+          <sc-if value="{{ isEdit }}" hint-placeholder-val="{{ true }}">
+          <div style="background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:0 2px 12px var(--shadow);overflow:hidden">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-bottom:1px solid var(--line);background:var(--surface2)">
+              <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--mut)">alphaTex source — {{ tabName }}</div>
+              <button style="font-family:'Space Mono',monospace;font-size:12px;color:#fff;background:var(--accent);border:none;border-radius:8px;padding:7px 15px;cursor:pointer">Save & render</button>
+            </div>
+            <textarea value="{{ alphaTex }}" onInput="{{ onTex }}" spellcheck="false" style="width:100%;min-height:230px;resize:vertical;border:none;outline:none;padding:20px 22px;font-family:'Space Mono',monospace;font-size:13.5px;line-height:1.7;color:var(--ink);background:#fffdf8"></textarea>
+            <!-- validation: soft, non-alarming -->
+            <div style="display:flex;align-items:flex-start;gap:12px;padding:13px 18px;border-top:1px solid var(--line);background:var(--goldsoft)">
+              <span style="width:20px;height:20px;border-radius:50%;background:var(--surface);border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;flex:0 0 auto;margin-top:1px">!</span>
+              <div style="flex:1">
+                <div style="font-size:13.5px;color:var(--ink);font-weight:600;margin-bottom:2px">One thing to fix before this renders</div>
+                <div style="font-family:'Space Mono',monospace;font-size:12.5px;color:var(--ink2)"><span style="color:var(--gold);font-weight:700">Line 4, Col 12</span> · unexpected “)” — a beat group looks unclosed. Add the missing duration after the fret.</div>
+              </div>
+              <span style="font-family:'Space Mono',monospace;font-size:11px;color:var(--gold);white-space:nowrap;margin-top:2px">1 issue</span>
+            </div>
+          </div>
+          </sc-if>
+        </div>
+        </sc-if>
+
+        <!-- PROGRESS -->
+        <sc-if value="{{ onProgress }}" hint-placeholder-val="{{ true }}">
+        <div style="display:grid;grid-template-columns:1fr 320px;gap:34px;align-items:start;animation:kyRise .4s ease">
+          <div>
+            <!-- summary + sparkline -->
+            <div style="background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:0 2px 12px var(--shadow);padding:22px 24px;margin-bottom:22px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+                <h3 style="font-family:'Instrument Serif',serif;font-weight:400;font-size:22px;margin:0;font-style:italic">Tempo is climbing</h3>
+                <span style="font-family:'Space Mono',monospace;font-size:12px;color:var(--green)">+{{ bpmGain }} BPM in 3 weeks</span>
+              </div>
+              <div style="display:flex;gap:28px;margin:6px 0 18px">
+                <div><div style="font-family:'Instrument Serif',serif;font-size:32px;line-height:1;color:var(--accent)">{{ curBpm }}</div><div style="font-family:'Space Mono',monospace;font-size:10.5px;color:var(--mut);margin-top:3px">CURRENT BPM</div></div>
+                <div><div style="font-family:'Instrument Serif',serif;font-size:32px;line-height:1">{{ sessionCount }}</div><div style="font-family:'Space Mono',monospace;font-size:10.5px;color:var(--mut);margin-top:3px">SESSIONS</div></div>
+                <div><div style="font-family:'Instrument Serif',serif;font-size:32px;line-height:1">{{ totalMin }}</div><div style="font-family:'Space Mono',monospace;font-size:10.5px;color:var(--mut);margin-top:3px">MINUTES</div></div>
+              </div>
+              {{ sparkline }}
+            </div>
+            <!-- timeline -->
+            <h3 style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mut);margin:0 0 14px">Practice log</h3>
+            <div style="position:relative;padding-left:26px">
+              <div style="position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:var(--line2)"></div>
+              <sc-for list="{{ timeline }}" as="e" hint-placeholder-count="5">
+                <div style="position:relative;margin-bottom:18px">
+                  <span style="position:absolute;left:-26px;top:4px;width:12px;height:12px;border-radius:50%;background:{{ e._color }};border:2px solid var(--surface);box-shadow:0 0 0 1px {{ e._color }}"></span>
+                  <div style="background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px">
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:5px">
+                      <span style="font-weight:600;font-size:14px">{{ e.date }}</span>
+                      <span style="display:flex;gap:10px;font-family:'Space Mono',monospace;font-size:12px"><span style="color:var(--accent)">{{ e.bpm }} BPM</span><span style="color:var(--mut)">{{ e.min }} min</span></span>
+                    </div>
+                    <div style="font-size:13.5px;color:var(--ink2);line-height:1.5">{{ e.note }}</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <!-- log form -->
+          <div style="position:sticky;top:88px;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:0 2px 12px var(--shadow);padding:22px">
+            <h3 style="font-family:'Instrument Serif',serif;font-weight:400;font-size:22px;margin:0 0 4px;font-style:italic">Log a session</h3>
+            <p style="margin:0 0 18px;font-size:13px;color:var(--mut)">How did today go?</p>
+            <div style="display:flex;gap:12px;margin-bottom:14px">
+              <label style="flex:1"><span style="display:block;font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:var(--mut);margin-bottom:6px">BPM reached</span><input value="{{ fBpm }}" onInput="{{ onBpm }}" inputmode="numeric" placeholder="116" style="width:100%;font-family:'Space Mono',monospace;font-size:15px;color:var(--ink);background:var(--surface2);border:1px solid var(--line2);border-radius:9px;padding:10px 12px;outline:none"></label>
+              <label style="flex:1"><span style="display:block;font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:var(--mut);margin-bottom:6px">Minutes</span><input value="{{ fMin }}" onInput="{{ onMin }}" inputmode="numeric" placeholder="30" style="width:100%;font-family:'Space Mono',monospace;font-size:15px;color:var(--ink);background:var(--surface2);border:1px solid var(--line2);border-radius:9px;padding:10px 12px;outline:none"></label>
+            </div>
+            <label style="display:block;margin-bottom:16px"><span style="display:block;font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:var(--mut);margin-bottom:6px">Note</span><textarea value="{{ fNote }}" onInput="{{ onNote }}" placeholder="What clicked, what to work on next…" style="width:100%;min-height:78px;resize:vertical;font-family:'Hanken Grotesk',sans-serif;font-size:14px;color:var(--ink);background:var(--surface2);border:1px solid var(--line2);border-radius:9px;padding:10px 12px;outline:none;line-height:1.5"></textarea></label>
+            <button onClick="{{ logSession }}" style="width:100%;font-family:'Hanken Grotesk',sans-serif;font-size:15px;font-weight:700;color:#fff;background:var(--accent);border:none;border-radius:10px;padding:13px;cursor:pointer;box-shadow:0 3px 10px var(--acsoft)">Save session</button>
+          </div>
+        </div>
+        </sc-if>
+
+        <!-- LINKS -->
+        <sc-if value="{{ onLinks }}" hint-placeholder-val="{{ true }}">
+        <div style="animation:kyRise .4s ease">
+          <h3 style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mut);margin:0 0 16px">Lessons & references</h3>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px">
+            <sc-for list="{{ links }}" as="l" hint-placeholder-count="4">
+              <a href="#" onClick="{{ l._noop }}" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:15px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:15px;box-shadow:0 2px 8px var(--shadow);transition:transform .16s ease,box-shadow .16s ease" style-hover="text-decoration:none;color:inherit;display:flex;align-items:center;gap:15px;background:var(--surface);border:1px solid var(--line2);border-radius:14px;padding:15px;box-shadow:0 8px 18px var(--shadow2);transform:translateY(-2px)">
+                <span style="width:52px;height:52px;border-radius:11px;background:{{ l._bg }};display:flex;align-items:center;justify-content:center;flex:0 0 auto;position:relative">{{ l._glyph }}</span>
+                <div style="flex:1;min-width:0">
+                  <div style="font-weight:600;font-size:14.5px;line-height:1.3;margin-bottom:4px">{{ l.title }}</div>
+                  <div style="display:flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:11px;color:var(--mut)">
+                    <span>{{ l.meta }}</span>
+                    <sc-if value="{{ l.agent }}" hint-placeholder-val="{{ true }}"><span title="Added by an agent" style="display:inline-flex;width:14px;height:14px;border-radius:50%;border:1px solid var(--line2);align-items:center;justify-content:center"><span style="width:5px;height:5px;background:var(--gold);transform:rotate(45deg)"></span></span></sc-if>
+                  </div>
+                </div>
+                <span style="width:7px;height:7px;border-top:2px solid var(--mut);border-right:2px solid var(--mut);transform:rotate(45deg);flex:0 0 auto"></span>
+              </a>
+            </sc-for>
+          </div>
+        </div>
+        </sc-if>
+
+      </div>
+    </div>
+    </sc-if>
+
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:760}}">
+class Component extends DCLogic {
+  state = {
+    view: 'library',
+    courseId: null,
+    currentLecture: null,
+    section: 'details',
+    activeTab: 0,
+    tabMode: 'read',
+    dark: false,
+    status: 'learning',
+    fBpm: '', fMin: '', fNote: '',
+    alphaTex: '\\title "Delta Shuffle in E"\n\\tempo 120\n.\n:8 (0.6 0.4) (0.6 0.4) | 2.6 :8 (0.6 0.4)) |\n:8 4.6 4.4 2.6 0.6 | r.4 :8 3.6 2.6 |',
+    sessions: [
+      { date: 'Jun 2',  bpm: 80,  min: 25, note: 'First pass — clean but slow. Fingering the E7 shuffle stretch.' },
+      { date: 'Jun 6',  bpm: 88,  min: 30, note: 'Shuffle feel starting to lock in with the metronome.' },
+      { date: 'Jun 11', bpm: 96,  min: 20, note: 'Turnaround in bars 11–12 still sloppy. Isolated it for the whole session.' },
+      { date: 'Jun 15', bpm: 104, min: 35, note: 'Past 100! Right-hand palm muting is much cleaner now.' },
+      { date: 'Jun 20', bpm: 112, min: 40, note: 'Almost at target. Ran it top to bottom six times.' },
+    ],
+  };
+
+  THEMES = {
+    light: { '--bg':'#f1eadd','--bg2':'#e7ddcc','--surface':'#fcf9f3','--surface2':'#f5efe4','--ink':'#231d15','--ink2':'#5a4f3f','--mut':'#948976','--line':'#e6dcc9','--line2':'#d8ccb4','--accent':'#c2410c','--accent2':'#a8360a','--acsoft':'rgba(194,65,12,0.10)','--gold':'#9b7327','--goldsoft':'rgba(155,115,39,0.12)','--green':'#5c6b37','--greensoft':'rgba(92,107,55,0.14)','--shadow':'rgba(70,50,22,0.10)','--shadow2':'rgba(70,50,22,0.16)' },
+    dark: { '--bg':'#161109','--bg2':'#0f0c07','--surface':'#211a11','--surface2':'#2a2117','--ink':'#f2ebdc','--ink2':'#cabfab','--mut':'#9a8f7c','--line':'#33291b','--line2':'#40331f','--accent':'#e8703a','--accent2':'#f0895a','--acsoft':'rgba(232,112,58,0.14)','--gold':'#d3a552','--goldsoft':'rgba(211,165,82,0.14)','--green':'#93a659','--greensoft':'rgba(147,166,89,0.16)','--shadow':'rgba(0,0,0,0.35)','--shadow2':'rgba(0,0,0,0.5)' },
+  };
+
+  courses = [
+    { id:'blues', name:'Blues Fundamentals', tags:['blues','shuffle'], dot:'#c2410c', desc:'12-bar forms, shuffle feel, and the turnarounds that tie them together.', lectures:[
+      { name:'Delta Shuffle in E', status:'learning', difficulty:'Intermediate', tuningShort:'E A D G B E', capo:'None', target:120, bpm:112, tags:['shuffle','blues','rhythm','right-hand'], agent:true },
+      { name:'E7 Turnaround', status:'learning', difficulty:'Intermediate', tuningShort:'E A D G B E', capo:'None', target:100, bpm:84, tags:['turnaround','blues'], agent:true },
+      { name:'Quick-Change Shuffle', status:'tolearn', difficulty:'Intermediate', tuningShort:'E A D G B E', capo:'None', target:110, bpm:0, tags:['shuffle'] },
+      { name:'Blues Scale Warm-up', status:'tolearn', difficulty:'Beginner', tuningShort:'E A D G B E', capo:'None', target:140, bpm:0, tags:['scales'] },
+      { name:'Slow Blues in C', status:'tolearn', difficulty:'Advanced', tuningShort:'E A D G B E', capo:'None', target:70, bpm:0, tags:['slow-blues','expressive'] },
+      { name:'12-Bar Blues in A', status:'mastered', difficulty:'Beginner', tuningShort:'E A D G B E', capo:'None', target:130, bpm:130, tags:['12-bar'] },
+      { name:'Boogie Bassline', status:'mastered', difficulty:'Beginner', tuningShort:'E A D G B E', capo:'None', target:120, bpm:120, tags:['boogie'] },
+      { name:'Muddy Waters Groove', status:'mastered', difficulty:'Intermediate', tuningShort:'E A D G B E', capo:'None', target:96, bpm:96, tags:['groove'] },
+    ]},
+    { id:'finger', name:'Fingerstyle Foundations', tags:['fingerstyle'], dot:'#9b7327', desc:'Travis picking, independence drills, and the thumb that never stops.', lectures:[
+      { name:'Travis Picking Drill', status:'learning', difficulty:'Beginner', tuningShort:'E A D G B E', capo:'None', target:90, bpm:70, tags:['fingerstyle','thumb'] },
+      { name:'Thumb Independence', status:'tolearn', difficulty:'Beginner', tuningShort:'E A D G B E', capo:'None', target:80, bpm:0, tags:['fingerstyle'] },
+      { name:'Alternating Bass Study', status:'tolearn', difficulty:'Intermediate', tuningShort:'E A D G B E', capo:'None', target:100, bpm:0, tags:['fingerstyle'] },
+      { name:'Pinch Harmonics', status:'tolearn', difficulty:'Advanced', tuningShort:'E A D G B E', capo:'None', target:90, bpm:0, tags:['technique'] },
+      { name:'Für Elise — Fingerstyle', status:'tolearn', difficulty:'Advanced', tuningShort:'E A D G B E', capo:'None', target:100, bpm:0, tags:['classical'] },
+      { name:'Dust in the Wind — Intro', status:'mastered', difficulty:'Intermediate', tuningShort:'E A D G B E', capo:'None', target:108, bpm:108, tags:['repertoire'] },
+    ]},
+    { id:'theory', name:'Fretboard & Theory', tags:['theory','caged'], dot:'#5c6b37', desc:'CAGED, intervals, and finally seeing the whole neck at once.', lectures:[
+      { name:'CAGED — C Shape', status:'learning', difficulty:'Intermediate', tuningShort:'E A D G B E', capo:'None', target:80, bpm:60, tags:['caged','theory'] },
+      { name:'Fretboard Note Names', status:'learning', difficulty:'Beginner', tuningShort:'E A D G B E', capo:'None', target:90, bpm:64, tags:['theory'] },
+      { name:'CAGED — A Shape', status:'tolearn', difficulty:'Intermediate', tuningShort:'E A D G B E', capo:'None', target:80, bpm:0, tags:['caged'] },
+      { name:'Modes — Dorian', status:'tolearn', difficulty:'Advanced', tuningShort:'E A D G B E', capo:'None', target:100, bpm:0, tags:['modes'] },
+      { name:'Triad Inversions', status:'tolearn', difficulty:'Intermediate', tuningShort:'E A D G B E', capo:'None', target:90, bpm:0, tags:['triads'] },
+      { name:'Arpeggio Sweeps', status:'tolearn', difficulty:'Advanced', tuningShort:'E A D G B E', capo:'None', target:120, bpm:0, tags:['technique'] },
+      { name:'Minor Pentatonic — Box 1', status:'mastered', difficulty:'Beginner', tuningShort:'E A D G B E', capo:'None', target:140, bpm:140, tags:['pentatonic'] },
+      { name:'Major Scale — 3 Notes/String', status:'mastered', difficulty:'Intermediate', tuningShort:'E A D G B E', capo:'None', target:120, bpm:120, tags:['scales'] },
+      { name:'Intervals on Two Strings', status:'mastered', difficulty:'Beginner', tuningShort:'E A D G B E', capo:'None', target:100, bpm:100, tags:['intervals'] },
+      { name:'Circle of Fifths Drill', status:'mastered', difficulty:'Beginner', tuningShort:'E A D G B E', capo:'None', target:90, bpm:90, tags:['theory'] },
+    ]},
+    { id:'songs', name:'Songs I Love', tags:['repertoire'], dot:'#7c5a2e', desc:'Full arrangements worth learning end to end.', lectures:[
+      { name:'Blackbird', status:'learning', difficulty:'Intermediate', tuningShort:'E A D G B E', capo:'None', target:96, bpm:78, tags:['fingerstyle','repertoire'], agent:true },
+      { name:'Hotel California — Intro', status:'tolearn', difficulty:'Advanced', tuningShort:'E A D G B E', capo:'7th fret', target:110, bpm:0, tags:['repertoire'] },
+      { name:'Stand By Me', status:'tolearn', difficulty:'Beginner', tuningShort:'E A D G B E', capo:'None', target:110, bpm:0, tags:['repertoire'] },
+      { name:'Wish You Were Here — Intro', status:'mastered', difficulty:'Intermediate', tuningShort:'E A D G B E', capo:'None', target:120, bpm:120, tags:['repertoire'] },
+      { name:'Wonderwall', status:'mastered', difficulty:'Beginner', tuningShort:'E A D G B E', capo:'2nd fret', target:100, bpm:100, tags:['repertoire'] },
+    ]},
+  ];
+
+  tabList = [ { name:'Main riff' }, { name:'Turnaround (11–12)' }, { name:'Solo idea' } ];
+
+  linksData = [
+    { title:'Delta Blues Shuffle — Complete Lesson', meta:'YouTube · Justin Guitar · 12:04', kind:'yt' },
+    { title:'How to Get the Shuffle Feel Right', meta:'YouTube · Texas Blues Alley · 4:30', kind:'yt' },
+    { title:'E7 Turnaround Variations', meta:'YouTube · Active Melody · 8:15', kind:'yt', agent:true },
+    { title:'Robert Johnson — recording notes', meta:'Reference · PDF', kind:'ref' },
+  ];
+
+  STATUS = {
+    tolearn:  { label:'To Learn', color:'var(--mut)',    bg:'var(--surface2)',  border:'var(--line2)',                glow:false, dot:'var(--mut)' },
+    learning: { label:'Learning',  color:'var(--accent)', bg:'var(--acsoft)',    border:'rgba(194,65,12,0.22)',        glow:true,  dot:'var(--accent)' },
+    mastered: { label:'Mastered',  color:'var(--green)',  bg:'var(--greensoft)', border:'rgba(92,107,55,0.28)',        glow:false, dot:'var(--green)' },
+  };
+
+  diffColor(d){ return d==='Advanced' ? 'var(--accent)' : d==='Intermediate' ? 'var(--gold)' : 'var(--green)'; }
+
+  toggleDark = () => {
+    const dark = !this.state.dark;
+    const vars = this.THEMES[dark ? 'dark' : 'light'];
+    if (this._root) Object.entries(vars).forEach(([k,v]) => this._root.style.setProperty(k, v));
+    this.setState({ dark });
+  };
+
+  openCourse = (id) => this.setState({ view:'course', courseId:id });
+  openLecture = (lec, courseId) => this.setState({ view:'lecture', courseId, currentLecture:lec, section:'details', status:lec.status, activeTab:0, tabMode:'read' });
+
+  navBtn(active){
+    const base = 'display:flex;align-items:center;gap:8px;border:none;border-radius:9px;padding:8px 13px;cursor:pointer;font-size:13.5px;font-weight:600;font-family:inherit;white-space:nowrap;flex:0 0 auto;';
+    return base + (active
+      ? 'background:var(--surface);color:var(--ink);box-shadow:0 1px 3px var(--shadow);'
+      : 'background:transparent;color:var(--ink2);');
+  }
+  segBtn(active){
+    const base = 'font-family:inherit;font-size:14px;font-weight:600;border:none;background:none;cursor:pointer;padding:11px 18px;border-radius:10px 10px 0 0;position:relative;';
+    return base + (active ? 'color:var(--accent);box-shadow:inset 0 -2px 0 var(--accent);' : 'color:var(--mut);box-shadow:inset 0 -2px 0 transparent;');
+  }
+  statusBtn(active){
+    const base = 'width:100%;text-align:left;display:flex;align-items:center;gap:10px;border:none;padding:11px 14px;cursor:pointer;font-size:14px;font-family:inherit;font-weight:600;';
+    return base + (active ? 'background:var(--surface2);color:var(--ink);' : 'background:var(--surface);color:var(--ink2);');
+  }
+  tabSelBtn(active){
+    const base = 'font-family:"Space Mono",monospace;font-size:12px;border-radius:9px;padding:8px 13px;cursor:pointer;';
+    return base + (active ? 'background:var(--accent);color:#fff;border:1px solid var(--accent);' : 'background:var(--surface);color:var(--ink2);border:1px solid var(--line);');
+  }
+  segToggle(active){
+    const base = 'font-family:inherit;font-size:13px;font-weight:600;border:none;padding:8px 15px;cursor:pointer;';
+    return base + (active ? 'background:var(--accent);color:#fff;' : 'background:var(--surface);color:var(--ink2);');
+  }
+
+  buildStaff(){
+    const R = React.createElement;
+    const strings = ['e','B','G','D','A','E'];
+    const rows = [
+      ['','','0','','2','','4','','',''],
+      ['','','','','','','','','',''],
+      ['','','1','','','','','1','',''],
+      ['2','','','','','','2','','',''],
+      ['','2','','','','2','','','',''],
+      ['0','','','4','','','','','0',''],
+    ];
+    const rowEls = strings.map((s, si) => R('div', { key: si, style:{ display:'flex', alignItems:'center', height:'26px', position:'relative' } }, [
+      R('span', { key:'lbl', style:{ width:'16px', fontFamily:'Space Mono, monospace', fontSize:'11px', color:'#b9ad96', flex:'0 0 auto' } }, s),
+      R('div', { key:'ln', style:{ flex:1, height:'1px', background:'#d8cdb6', position:'relative', display:'flex', alignItems:'center' } },
+        rows[si].map((n, ci) => R('span', { key:ci, style:{ position:'absolute', left:(6 + ci*10)+'%', transform:'translate(-50%,-50%)', fontFamily:'Space Mono, monospace', fontSize:'13px', fontWeight:700, color: n ? '#231d15' : 'transparent', background: n ? '#fffdf8' : 'transparent', padding: n ? '0 3px' : 0 } }, n || '·'))
+      ),
+    ]));
+    return R('div', { style:{ position:'relative' } }, [
+      R('div', { key:'staff' }, rowEls),
+      R('div', { key:'bars', style:{ position:'absolute', top:0, bottom:0, left:'16px', right:0, pointerEvents:'none' } },
+        [30, 63].map((p,i) => R('div', { key:i, style:{ position:'absolute', left:p+'%', top:'2px', bottom:'2px', width:'1px', background:'#c9bda2' } }))
+      ),
+    ]);
+  }
+
+  buildSparkline(){
+    const R = React.createElement;
+    const data = this.state.sessions;
+    const H = 120, pad = 8;
+    const target = 120, min = 70, max = 125;
+    const x = i => pad + (i/(data.length-1)) * (100 - pad*2);
+    const y = v => (H - 18) - ((v - min)/(max - min)) * (H - 34);
+    const pts = data.map((d,i) => [x(i), y(d.bpm)]);
+    const line = pts.map(p => p.join(',')).join(' ');
+    const area = 'M' + pts.map(p=>p.join(',')).join(' L') + ` L${x(data.length-1)},${H-18} L${x(0)},${H-18} Z`;
+    const targetY = y(target);
+    return R('svg', { viewBox:`0 0 100 ${H}`, preserveAspectRatio:'none', style:{ width:'100%', height:'132px', overflow:'visible' } }, [
+      R('defs', { key:'d' }, R('linearGradient', { id:'kysp', x1:0, y1:0, x2:0, y2:1 }, [
+        R('stop', { key:0, offset:'0%', stopColor:'var(--accent)', stopOpacity:0.22 }),
+        R('stop', { key:1, offset:'100%', stopColor:'var(--accent)', stopOpacity:0 }),
+      ])),
+      R('line', { key:'tl', x1:0, y1:targetY, x2:100, y2:targetY, stroke:'var(--green)', strokeWidth:0.6, strokeDasharray:'2 2', vectorEffect:'non-scaling-stroke' }),
+      R('text', { key:'tt', x:1, y:targetY-3, fontSize:6, fill:'var(--green)', fontFamily:'Space Mono, monospace' }, 'target 120'),
+      R('path', { key:'ar', d:area, fill:'url(#kysp)' }),
+      R('polyline', { key:'ln', points:line, fill:'none', stroke:'var(--accent)', strokeWidth:2, strokeLinejoin:'round', strokeLinecap:'round', vectorEffect:'non-scaling-stroke' }),
+      ...pts.map((p,i) => R('circle', { key:'c'+i, cx:p[0], cy:p[1], r: i===pts.length-1 ? 3 : 2, fill: i===pts.length-1 ? 'var(--accent)' : 'var(--surface)', stroke:'var(--accent)', strokeWidth:1.4, vectorEffect:'non-scaling-stroke' })),
+    ]);
+  }
+
+  linkGlyph(kind){
+    const R = React.createElement;
+    if (kind === 'yt') return R('span', { style:{ width:0, height:0, borderLeft:'12px solid #fff', borderTop:'8px solid transparent', borderBottom:'8px solid transparent', marginLeft:'3px' } });
+    return R('span', { style:{ fontFamily:'Space Mono, monospace', fontSize:'11px', fontWeight:700, color:'#fff' } }, 'PDF');
+  }
+
+  logSession = () => {
+    const bpm = parseInt(this.state.fBpm, 10);
+    const min = parseInt(this.state.fMin, 10);
+    if (!bpm && !min && !this.state.fNote.trim()) return;
+    const d = new Date();
+    const date = d.toLocaleDateString('en-US', { month:'short', day:'numeric' });
+    const entry = { date, bpm: bpm || this.state.sessions[this.state.sessions.length-1].bpm, min: min || 0, note: this.state.fNote.trim() || 'Logged a session.' };
+    this.setState({ sessions: [...this.state.sessions, entry], fBpm:'', fMin:'', fNote:'' });
+  };
+
+  courseStats(c){
+    const total = c.lectures.length;
+    const masteredN = c.lectures.filter(l => l.status==='mastered').length;
+    const learningN = c.lectures.filter(l => l.status==='learning').length;
+    const ring = Math.round((masteredN/total)*100);
+    return { total, masteredN, learningN, ring };
+  }
+
+  renderVals() {
+    const s = this.state;
+
+    const allLecs = [];
+    this.courses.forEach(c => c.lectures.forEach(l => allLecs.push({ ...l, courseName:c.name, courseId:c.id })));
+    const working = allLecs.filter(l => l.status==='learning').slice(0,4);
+    const masteredAll = allLecs.filter(l => l.status==='mastered');
+
+    const curCourse = this.courses.find(c => c.id===s.courseId) || this.courses[0];
+    const lec = s.currentLecture || this.courses[0].lectures[0];
+    const cs = this.courseStats(curCourse);
+    const sm = this.STATUS[s.status] || this.STATUS.learning;
+
+    const sessions = s.sessions;
+    const curBpm = sessions[sessions.length-1].bpm;
+    const totalMin = sessions.reduce((a,e) => a + (e.min||0), 0);
+
+    return {
+      rootRef: (el) => { this._root = el; },
+      themeIcon: s.dark ? '☀' : '☾',
+      toggleDark: this.toggleDark,
+
+      isLibrary: s.view === 'library',
+      isCourse: s.view === 'course',
+      isLecture: s.view === 'lecture',
+      goLibrary: () => this.setState({ view:'library' }),
+      goCourse: () => this.setState({ view:'course' }),
+
+      navLib: this.navBtn(s.view === 'library'),
+
+      courses: this.courses.map(c => {
+        const st = this.courseStats(c);
+        return { ...c, _open: () => this.openCourse(c.id), _navStyle: this.navBtn(s.view!=='library' && s.courseId===c.id),
+          _total: st.total, _ring: st.ring, _dot: c.dot, _dash: `${st.ring * 1.131} 200` };
+      }),
+
+      working: working.map(w => ({ ...w, _open: () => this.openLecture(w, w.courseId), _diffColor: this.diffColor(w.difficulty), _pct: Math.round((w.bpm/w.target)*100) })),
+      workingCount: working.length,
+      mastered: masteredAll.slice(0,5).map(m => ({ ...m, _open: () => this.openLecture(m, m.courseId) })),
+      masteredTotal: masteredAll.length,
+
+      // course view
+      course: { ...curCourse, _dot: curCourse.dot, _ring: cs.ring, _total: cs.total, _masteredN: cs.masteredN, _learningN: cs.learningN, _dashLg: `${(cs.ring/100)*207.3} 300` },
+      board: ['tolearn','learning','mastered'].map(key => ({
+        key, label: this.STATUS[key].label, dot: this.STATUS[key].dot,
+        count: curCourse.lectures.filter(l => l.status===key).length,
+        items: curCourse.lectures.filter(l => l.status===key).map(l => ({
+          ...l, _open: () => this.openLecture(l, curCourse.id), _diffColor: this.diffColor(l.difficulty),
+          _tags: (l.tags||[]).slice(0,3), _pct: l.target ? Math.round((l.bpm/l.target)*100) : 0,
+          _hasProgress: l.status==='learning' && l.bpm>0, _mastered: l.status==='mastered',
+        })),
+      })),
+
+      // lecture header (dynamic)
+      lec,
+      lecAgent: !!lec.agent,
+      lecDiffColor: this.diffColor(lec.difficulty),
+      hdrBpm: lec.bpm > 0 ? lec.bpm : '—',
+      hdrTarget: lec.target,
+      lecStatusLabel: sm.label,
+      lecPillStyle: `display:inline-flex;align-items:center;gap:7px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:${sm.color};background:${sm.bg};border:1px solid ${sm.border};border-radius:20px;padding:4px 11px`,
+      lecDotStyle: `width:6px;height:6px;border-radius:50%;background:${sm.color};` + (sm.glow ? 'animation:kyGlow 2s ease infinite' : ''),
+
+      // segmented
+      seg: {
+        details: this.segBtn(s.section==='details'),
+        tabs: this.segBtn(s.section==='tabs'),
+        progress: this.segBtn(s.section==='progress'),
+        links: this.segBtn(s.section==='links'),
+      },
+      secDetails: () => this.setState({ section:'details' }),
+      secTabs: () => this.setState({ section:'tabs' }),
+      secProgress: () => this.setState({ section:'progress' }),
+      secLinks: () => this.setState({ section:'links' }),
+      onDetails: s.section==='details',
+      onTabs: s.section==='tabs',
+      onProgress: s.section==='progress',
+      onLinks: s.section==='links',
+
+      // details
+      tags: lec.tags || [],
+      st: {
+        learn: this.statusBtn(s.status==='tolearn'),
+        learning: this.statusBtn(s.status==='learning'),
+        mastered: this.statusBtn(s.status==='mastered'),
+      },
+      setLearn: () => this.setState({ status:'tolearn' }),
+      setLearning: () => this.setState({ status:'learning' }),
+      setMastered: () => this.setState({ status:'mastered' }),
+
+      // tabs
+      tabList: this.tabList.map((t,i) => ({ ...t, _sel: () => this.setState({ activeTab:i }), _style: this.tabSelBtn(s.activeTab===i) })),
+      tabName: this.tabList[s.activeTab].name,
+      mode: { read: this.segToggle(s.tabMode==='read'), edit: this.segToggle(s.tabMode==='edit') },
+      modeReadFn: () => this.setState({ tabMode:'read' }),
+      modeEditFn: () => this.setState({ tabMode:'edit' }),
+      isRead: s.tabMode==='read',
+      isEdit: s.tabMode==='edit',
+      tabStaff: this.buildStaff(),
+      alphaTex: s.alphaTex,
+      onTex: (e) => this.setState({ alphaTex: e.target.value }),
+
+      // progress
+      sparkline: this.buildSparkline(),
+      bpmGain: curBpm - sessions[0].bpm,
+      sessionCount: sessions.length,
+      totalMin, curBpm,
+      timeline: sessions.slice().reverse().map((e,i) => ({ ...e, _color: i===0 ? 'var(--accent)' : 'var(--line2)' })),
+      fBpm: s.fBpm, fMin: s.fMin, fNote: s.fNote,
+      onBpm: (e) => this.setState({ fBpm: e.target.value }),
+      onMin: (e) => this.setState({ fMin: e.target.value }),
+      onNote: (e) => this.setState({ fNote: e.target.value }),
+      logSession: this.logSession,
+
+      // links
+      links: this.linksData.map(l => ({ ...l, _noop: (e) => e.preventDefault(), _bg: l.kind==='yt' ? '#c2410c' : 'var(--gold)', _glyph: this.linkGlyph(l.kind) })),
+    };
+  }
+}
+</script>
+</body>
+</html>
