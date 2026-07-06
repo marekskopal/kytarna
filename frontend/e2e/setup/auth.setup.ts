@@ -26,7 +26,10 @@ setup('sign up the shared fixture user', async ({page}) => {
     await signUp.goto();
     await signUp.signUp(name, email, E2E_PASSWORD);
     await signUp.expectLandedAtOnboarding();
-    await onboarding.skip();
+    // Create a workspace (Teacher path) rather than skipping — content specs (courses,
+    // lectures) need a workspace to create things in, and it gives the workspace-switching
+    // spec a real starting workspace. Creating a workspace completes onboarding.
+    await onboarding.createWorkspaceAsTeacher(`E2E Workspace ${runId}`);
     await signUp.expectLandedInsideApp();
 
     await page.context().storageState({path: STORAGE_STATE_PATH});

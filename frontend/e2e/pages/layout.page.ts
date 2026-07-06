@@ -37,7 +37,8 @@ export class LayoutPage {
     }
 
     public async gotoCourses(): Promise<void> {
-        await this.page.locator('.nav').getByRole('link', {name: 'Courses', exact: true}).click();
+        // The Library nav item routes to /courses.
+        await this.page.locator('.nav').getByRole('link', {name: 'Library', exact: true}).click();
         await expect(this.page).toHaveURL(/\/courses$/);
     }
 

@@ -6,7 +6,7 @@ import {SignUpPage} from './pages/sign-up.page';
 test.use({storageState: {cookies: [], origins: []}});
 
 test.describe('Onboarding wizard', () => {
-    test('sign-up routes into onboarding, course step advances to invites, skip lands at /courses', async ({page}) => {
+    test('sign-up routes into onboarding; creating a workspace as Teacher lands at /courses', async ({page}) => {
         const signUp = new SignUpPage(page);
         const onboarding = new OnboardingPage(page);
 
@@ -18,11 +18,8 @@ test.describe('Onboarding wizard', () => {
         await signUp.signUp(name, email, 'Test1234!');
         await onboarding.expectStep(1);
 
-        await onboarding.fillCourseName(`Demo ${stamp}`);
-        await onboarding.continueStep();
-        await onboarding.expectStep(2);
-
-        await onboarding.skip();
+        // Teacher path: name a workspace and create it. This completes onboarding.
+        await onboarding.createWorkspaceAsTeacher(`Demo Workspace ${stamp}`);
         await expect(page).toHaveURL(/\/courses/, {timeout: 15_000});
     });
 

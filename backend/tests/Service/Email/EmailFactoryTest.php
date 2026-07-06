@@ -39,7 +39,7 @@ final class EmailFactoryTest extends TestCase
 		$html = $email->getHtmlBody();
 		self::assertIsString($html);
 		self::assertStringContainsString('raw-token-123', $html);
-		self::assertStringContainsString('https://app.kytarna.example/app/invitations/accept?token=raw-token-123', $html);
+		self::assertStringContainsString('https://app.kytarna.example/invitations/accept?token=raw-token-123', $html);
 	}
 
 	public function testPasswordResetEmailIncludesUrlAndToken(): void
@@ -61,7 +61,7 @@ final class EmailFactoryTest extends TestCase
 		$html = $email->getHtmlBody();
 		self::assertIsString($html);
 		self::assertStringContainsString('reset-token', $html);
-		self::assertStringContainsString('/app/reset-password?token=reset-token', $html);
+		self::assertStringContainsString('/reset-password?token=reset-token', $html);
 	}
 
 	public function testEmailVerificationEmailIncludesUrlAndToken(): void
@@ -83,6 +83,6 @@ final class EmailFactoryTest extends TestCase
 		$html = $email->getHtmlBody();
 		self::assertIsString($html);
 		self::assertStringContainsString('verify-token', $html);
-		self::assertStringContainsString('/app/verify-email?token=verify-token', $html);
+		self::assertStringContainsString('/verify-email?token=verify-token', $html);
 	}
 }

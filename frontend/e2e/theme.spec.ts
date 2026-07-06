@@ -30,9 +30,12 @@ test.describe('Theme toggle', () => {
         await expect.poll(async () => page.evaluate(() => document.documentElement.getAttribute('data-theme')))
             .toBe('dark');
 
-        // The topbar surface should resolve to the dark palette (#161619).
-        const topbarBg = await page.locator('.topbar').evaluate((el) => getComputedStyle(el).backgroundColor);
-        expect(topbarBg).toBe('rgb(22, 22, 25)');
+        // The topbar surface should resolve to the dark palette (--color-surface-deep = #0f0c07).
+        // Poll rather than read once: .topbar has a 0.4s background transition, so an
+        // immediate read catches an interpolated mid-transition colour.
+        await expect.poll(
+            async () => page.locator('.topbar').evaluate((el) => getComputedStyle(el).backgroundColor),
+        ).toBe('rgb(15, 12, 7)');
 
         // Reload — the inline pre-bootstrap script should keep dark applied (no light flash).
         await page.reload();

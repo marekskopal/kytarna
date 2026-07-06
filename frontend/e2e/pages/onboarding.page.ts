@@ -7,12 +7,26 @@ export class OnboardingPage {
         await expect(this.page).toHaveURL(new RegExp(`/onboarding/step-${step}`), {timeout: 15_000});
     }
 
-    public async fillCourseName(name: string): Promise<void> {
-        await this.page.fill('#ob-name', name);
+    // Step 1 offers two paths: create your own workspace (Teacher) or join one (Student).
+    public async chooseTeacher(): Promise<void> {
+        await this.page.locator('.onboarding-tile').filter({hasText: 'Create my workspace'}).click();
+        await expect(this.page.locator('#ob-ws-name')).toBeVisible();
     }
 
-    public async continueStep(): Promise<void> {
-        await this.page.getByRole('button', {name: 'Continue'}).click();
+    public async fillWorkspaceName(name: string): Promise<void> {
+        await this.page.fill('#ob-ws-name', name);
+    }
+
+    public async submitCreateWorkspace(): Promise<void> {
+        await this.page.getByRole('button', {name: 'Create workspace', exact: true}).click();
+    }
+
+    // Convenience: run the whole Teacher path. Creating a workspace completes onboarding
+    // and lands the user at /courses.
+    public async createWorkspaceAsTeacher(name: string): Promise<void> {
+        await this.chooseTeacher();
+        await this.fillWorkspaceName(name);
+        await this.submitCreateWorkspace();
     }
 
     public async skip(): Promise<void> {
