@@ -178,7 +178,9 @@ services:
             - backend
         ports:
             # Admin console — loopback only; reach it on a server via an SSH tunnel.
-            - "127.0.0.1:9001:9001"
+            # Host port 9101 (not 9001) to avoid colliding with the sibling
+            # ukolio-minio container that already owns 9001 on this shared host.
+            - "127.0.0.1:9101:9001"
         volumes:
             - kytario_minio:/data
         profiles:
