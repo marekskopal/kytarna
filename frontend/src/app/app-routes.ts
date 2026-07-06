@@ -85,6 +85,14 @@ export const appRoutes: Routes = [
                 loadComponent: () => import('@app/board/board.component').then((m) => m.BoardComponent),
             },
             {
+                path: 'courses/:id/lectures/new',
+                loadComponent: () => import('@app/board/lecture-page.component').then((m) => m.LecturePageComponent),
+            },
+            {
+                path: 'courses/:id/lectures/:lectureId',
+                loadComponent: () => import('@app/board/lecture-page.component').then((m) => m.LecturePageComponent),
+            },
+            {
                 path: 'courses/:id/workflow',
                 loadComponent: () => import('@app/workflow-editor/workflow-editor.component').then((m) => m.WorkflowEditorComponent),
             },

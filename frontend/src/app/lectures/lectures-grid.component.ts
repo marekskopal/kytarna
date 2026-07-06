@@ -2,13 +2,11 @@ import {ChangeDetectionStrategy, Component, computed, effect, ElementRef, HostLi
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
-import {LectureDetailDrawerComponent} from '@app/board/lecture-detail-drawer.component';
-import {ArchivedFilter, Difficulty, Lecture, LectureListItem, LectureOrderBy,OrderDirection} from '@app/models/lecture';
+import {ArchivedFilter, Difficulty, LectureListItem, LectureOrderBy,OrderDirection} from '@app/models/lecture';
 import {SavedView, SavedViewFilters} from '@app/models/saved-view';
 import {Status} from '@app/models/status';
 import {Tag} from '@app/models/tag';
 import {WorkflowWithStatuses} from '@app/models/workflow';
-import {BoardService} from '@app/services/board.service';
 import {CurrentUserService} from '@app/services/current-user.service';
 import {BulkOp, BulkResult, LectureService} from '@app/services/lecture.service';
 import {SavedViewService} from '@app/services/saved-view.service';
@@ -19,12 +17,6 @@ import {pickReadableForeground} from '@app/shared/color-contrast';
 import {PaginationComponent} from '@app/shared/components/pagination/pagination.component';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {debounceTime, distinctUntilChanged} from 'rxjs';
-
-interface DrawerContext {
-    lecture: Lecture;
-    statuses: Status[];
-    courseId: number;
-}
 
 interface QueryParams {
     limit: number;
@@ -42,7 +34,7 @@ interface QueryParams {
     selector: 'uk-lectures-grid',
     standalone: true,
     imports: [
-        ReactiveFormsModule, PaginationComponent, LectureDetailDrawerComponent, TranslatePipe,
+        ReactiveFormsModule, PaginationComponent, TranslatePipe,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './lectures-grid.component.html',
@@ -51,7 +43,6 @@ interface QueryParams {
 export class LecturesGridComponent implements OnInit {
     private readonly lectureService = inject(LectureService);
     private readonly workflowService = inject(WorkflowService);
-    private readonly boardService = inject(BoardService);
     private readonly tagService = inject(TagService);
     private readonly workspaceService = inject(WorkspaceService);
     private readonly currentUserService = inject(CurrentUserService);
@@ -90,8 +81,6 @@ export class LecturesGridComponent implements OnInit {
         if (id === null) return null;
         return this.views().find((v) => v.id === id)?.name ?? null;
     });
-
-    protected readonly drawer = signal<DrawerContext | null>(null);
 
     // Bulk-selection state. Kept as a plain Set for cheap membership tests; signal value is the set ref.
     protected readonly selectedIds = signal<Set<number>>(new Set());
@@ -149,7 +138,7 @@ export class LecturesGridComponent implements OnInit {
         void this.openFromQueryParam();
     }
 
-    /** Opens the detail drawer when navigated to with `?open=CODE` (e.g. from the notification bell). */
+    /** Resolves `?open=CODE` (e.g. from the notification bell) to the lecture's routed page. */
     private async openFromQueryParam(): Promise<void> {
         const code = this.route.snapshot.queryParamMap.get('open');
         if (code === null || code === '') {
@@ -157,8 +146,7 @@ export class LecturesGridComponent implements OnInit {
         }
         try {
             const lecture = await this.lectureService.getLecture(code);
-            const board = await this.boardService.getBoard(lecture.courseId);
-            this.drawer.set({lecture, statuses: board.statuses, courseId: lecture.courseId});
+            await this.router.navigate(['courses', lecture.courseId, 'lectures', lecture.id]);
         } catch {
             // lecture may have been deleted; ignore
         }
@@ -726,14 +714,6 @@ export class LecturesGridComponent implements OnInit {
             const result = await this.lectureService.bulkUpdate(ids, op, payload);
             this.lastBulkResult.set(result);
 
-            // If the drawer is open on a deleted lecture, close it.
-            if (op === 'delete') {
-                const drawerLectureId = this.drawer()?.lecture.id;
-                if (drawerLectureId !== undefined && result.succeeded.includes(drawerLectureId)) {
-                    this.closeDrawer();
-                }
-            }
-
             // Remove succeeded-and-now-gone ids from selection optimistically; fetchLectures will prune the rest.
             if (op === 'delete') {
                 const next = new Set(this.selectedIds());
@@ -772,40 +752,10 @@ export class LecturesGridComponent implements OnInit {
         }
     }
 
-    // ─── Drawer + rows ─────────────────────────────────────────
+    // ─── Rows ──────────────────────────────────────────────────
 
-    protected async onRowClick(row: LectureListItem): Promise<void> {
-        await this.openLectureById(row.id, row.courseId);
-    }
-
-    private async openLectureById(lectureId: number, courseId: number): Promise<void> {
-        try {
-            const [lecture, board] = await Promise.all([
-                this.lectureService.getLecture(lectureId),
-                this.boardService.getBoard(courseId),
-            ]);
-            this.drawer.set({
-                lecture,
-                statuses: board.statuses,
-                courseId,
-            });
-        } catch {
-            // error interceptor will surface failure
-        }
-    }
-
-    protected closeDrawer(): void {
-        this.drawer.set(null);
-    }
-
-    protected onLectureSaved(): void {
-        this.closeDrawer();
-        void this.fetchLectures(this.queryParams());
-    }
-
-    protected onLectureDeleted(): void {
-        this.closeDrawer();
-        void this.fetchLectures(this.queryParams());
+    protected onRowClick(row: LectureListItem): void {
+        void this.router.navigate(['courses', row.courseId, 'lectures', row.id]);
     }
 
     protected formatCreated(iso: string): string {

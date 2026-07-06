@@ -92,16 +92,3 @@
         }
     </div>
 }
-
-@if (drawerOpen()) {
-    <uk-lecture-detail-drawer
-        [lecture]="editingLecture()"
-        [statuses]="board()?.statuses ?? []"
-        [courseId]="courseId()!"
-        [defaultStatusId]="defaultStatusId()"
-        [workspaceTags]="workspaceTags()"
-        (saved)="onLectureSaved($event)"
-        (deleted)="onLectureDeleted($event)"
-        (cancelled)="closeDrawer()"
-    />
-}

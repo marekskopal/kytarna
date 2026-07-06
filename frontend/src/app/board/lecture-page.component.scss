@@ -1,46 +1,46 @@
 @use 'variables' as *;
 @use 'mixins' as *;
 
-.drawer-backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: $z-overlay;
-    background: $color-backdrop;
-    cursor: pointer;
+// The routed page breaks out of the layout's .content padding ($space-8 $space-6)
+// so the hero band and the full-width Tabs panel can span edge to edge.
+:host {
+    display: block;
 }
 
-.drawer {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    z-index: $z-drawer;
-    width: 100%;
-    max-width: $drawer-width;
-    background: $color-surface;
-    border-left: 1px solid $color-border;
-    box-shadow: $shadow-lg;
+.lecture-page {
+    margin: (-$space-8) (-$space-6);
     display: flex;
     flex-direction: column;
+    min-height: 100%;
 }
 
-.drawer-spacer {
-    flex: 1;
-}
+// Horizontal padding for centered + full-bleed sections (never flush to the edge).
+$page-side: $space-10;
+$page-side-mobile: $space-6;
+$page-max: 1000px;
 
-// ═══ Header band ════════════════════════════════════════════
+// ═══ Header band (full-bleed) ═══════════════════════════════
 .lecture-hero {
     flex-shrink: 0;
-    padding: $space-5 $space-7 0;
     background: $color-surface-deep;
     border-bottom: 1px solid $color-border-strong;
+    padding: $space-7 $page-side 0;
+}
+
+.hero-inner {
+    max-width: $page-max;
+    margin: 0 auto;
 }
 
 .hero-topbar {
     display: flex;
     align-items: center;
     gap: $space-3;
-    margin-bottom: $space-4;
+    margin-bottom: $space-6;
+}
+
+.hero-spacer {
+    flex: 1;
 }
 
 .hero-back {
@@ -255,29 +255,31 @@
     }
 }
 
-// ═══ Body ═══════════════════════════════════════════════════
-.drawer-body {
-    flex: 1;
-    overflow-y: auto;
-    padding: $space-8 $space-7;
-    display: flex;
-    flex-direction: column;
-    gap: $space-7;
+// ═══ Section body — width rule ══════════════════════════════
+// Details / Progress / Links sit in a centered container; Tabs spans full width.
+.page-section {
+    padding: $space-9 $page-side $space-11;
 }
 
-.drawer-body.is-hidden {
+.page-section--contained {
+    max-width: $page-max;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.page-section--full {
+    width: 100%;
+}
+
+.page-section.is-hidden {
     display: none;
-}
-
-.drawer-panel-body {
-    overflow-y: auto;
 }
 
 // Two-column details: description/files left, guitar/status/tags right.
 .details-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: $space-8;
+    gap: $space-9;
 }
 
 .details-main,
@@ -288,9 +290,9 @@
     min-width: 0;
 }
 
-@media (min-width: 620px) {
+@media (min-width: 720px) {
     .details-grid {
-        grid-template-columns: minmax(0, 1fr) 200px;
+        grid-template-columns: minmax(0, 1fr) 280px;
     }
 }
 
@@ -389,18 +391,26 @@
     flex-shrink: 0;
 }
 
-// ═══ Footer ═════════════════════════════════════════════════
-.drawer-footer {
+// ═══ Footer (full-bleed band, contained actions) ════════════
+.page-footer {
+    border-top: 1px solid $color-border;
+    flex-shrink: 0;
+    margin-top: auto;
+}
+
+.page-footer-inner {
+    max-width: $page-max;
+    margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: $header-height;
-    padding: 0 $space-7;
-    border-top: 1px solid $color-border;
-    flex-shrink: 0;
+    min-height: $header-height;
+    padding: $space-4 $page-side;
+    gap: $space-4;
+    flex-wrap: wrap;
 }
 
-.drawer-footer-actions {
+.page-footer-actions {
     display: flex;
     align-items: center;
     gap: $space-3;
@@ -596,7 +606,7 @@
     background: $color-surface;
 }
 
-.drawer-watch-count {
+.hero-watch-count {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -609,4 +619,39 @@
     font-size: $font-size-10;
     font-weight: 600;
     line-height: 16px;
+}
+
+// ═══ Mobile (~380px): stack hero, chips, and two-column panels ═
+@media (max-width: 640px) {
+    .lecture-hero {
+        padding-left: $page-side-mobile;
+        padding-right: $page-side-mobile;
+    }
+
+    .page-section {
+        padding-left: $page-side-mobile;
+        padding-right: $page-side-mobile;
+    }
+
+    .page-footer-inner {
+        padding-left: $page-side-mobile;
+        padding-right: $page-side-mobile;
+    }
+
+    .hero-main {
+        flex-direction: column;
+        gap: $space-4;
+    }
+
+    .hero-bpm {
+        text-align: left;
+    }
+
+    .hero-chips {
+        gap: $space-2;
+    }
+
+    .hero-nav {
+        overflow-x: auto;
+    }
 }

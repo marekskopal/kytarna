@@ -275,6 +275,7 @@
       "drawer": {
         "newLecture": "New lecture",
         "editLecture": "Edit lecture",
+        "backToBoard": "Back to board",
         "close": "Close",
         "preview": "Preview",
         "edit": "Edit",

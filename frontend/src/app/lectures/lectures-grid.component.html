@@ -429,15 +429,3 @@
     (pageChange)="onPageChange($event)"
     (pageSizeChange)="onPageSizeChange($event)"
 />
-
-@if (drawer(); as ctx) {
-    <uk-lecture-detail-drawer
-        [lecture]="ctx.lecture"
-        [statuses]="ctx.statuses"
-        [courseId]="ctx.courseId"
-        [workspaceTags]="workspaceTags()"
-        (saved)="onLectureSaved()"
-        (deleted)="onLectureDeleted()"
-        (cancelled)="closeDrawer()"
-    />
-}

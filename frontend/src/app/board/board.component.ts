@@ -1,8 +1,7 @@
 import {CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {ChangeDetectionStrategy, Component, computed, inject, OnInit, signal} from '@angular/core';
-import {ActivatedRoute, RouterLink} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {LectureCardComponent} from '@app/board/lecture-card.component';
-import {LectureDetailDrawerComponent} from '@app/board/lecture-detail-drawer.component';
 import {Board} from '@app/models/board';
 import {Lecture} from '@app/models/lecture';
 import {Status, StatusType} from '@app/models/status';
@@ -22,13 +21,14 @@ interface Column {
 @Component({
     selector: 'uk-board',
     standalone: true,
-    imports: [CdkDropListGroup, CdkDropList, CdkDrag, RouterLink, LectureCardComponent, LectureDetailDrawerComponent, TranslatePipe],
+    imports: [CdkDropListGroup, CdkDropList, CdkDrag, RouterLink, LectureCardComponent, TranslatePipe],
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './board.component.html',
     styleUrl: './board.component.scss',
 })
 export class BoardComponent implements OnInit {
     private readonly route = inject(ActivatedRoute);
+    private readonly router = inject(Router);
     private readonly boardService = inject(BoardService);
     private readonly lectureService = inject(LectureService);
     private readonly tagService = inject(TagService);
@@ -39,10 +39,6 @@ export class BoardComponent implements OnInit {
     protected readonly board = signal<Board | null>(null);
     protected readonly courseId = signal<number | null>(null);
     protected readonly workspaceTags = signal<Tag[]>([]);
-
-    protected readonly drawerOpen = signal(false);
-    protected readonly editingLecture = signal<Lecture | null>(null);
-    protected readonly defaultStatusId = signal<number | null>(null);
 
     protected readonly columns = computed<Column[]>(() => {
         const board = this.board();
@@ -115,14 +111,8 @@ export class BoardComponent implements OnInit {
         if (openLectureParam !== null) {
             const openId = Number(openLectureParam);
             if (Number.isFinite(openId) && openId > 0) {
-                try {
-                    const lecture = await this.lectureService.getLecture(openId);
-                    this.editingLecture.set(lecture);
-                    this.defaultStatusId.set(null);
-                    this.drawerOpen.set(true);
-                } catch {
-                    // lecture may have been deleted; ignore
-                }
+                // Legacy deep link: redirect to the routed lecture page.
+                void this.router.navigate(['courses', id, 'lectures', openId], {replaceUrl: true});
             }
         }
     }
@@ -185,29 +175,13 @@ export class BoardComponent implements OnInit {
     }
 
     protected openCreate(status: Status): void {
-        this.editingLecture.set(null);
-        this.defaultStatusId.set(status.id);
-        this.drawerOpen.set(true);
+        void this.router.navigate(
+            ['courses', this.courseId(), 'lectures', 'new'],
+            {queryParams: {status: status.id}},
+        );
     }
 
     protected openEdit(lecture: Lecture): void {
-        this.editingLecture.set(lecture);
-        this.defaultStatusId.set(null);
-        this.drawerOpen.set(true);
-    }
-
-    protected closeDrawer(): void {
-        this.drawerOpen.set(false);
-        this.editingLecture.set(null);
-    }
-
-    protected onLectureSaved(_lecture: Lecture): void {
-        this.closeDrawer();
-        void this.loadBoard();
-    }
-
-    protected onLectureDeleted(_id: number): void {
-        this.closeDrawer();
-        void this.loadBoard();
+        void this.router.navigate(['courses', this.courseId(), 'lectures', lecture.id]);
     }
 }

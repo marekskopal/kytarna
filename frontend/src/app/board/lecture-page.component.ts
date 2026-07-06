@@ -1,14 +1,19 @@
-import {ChangeDetectionStrategy, Component, computed, inject, input, OnInit, output, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, inject, OnInit, signal} from '@angular/core';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Difficulty, Lecture} from '@app/models/lecture';
 import {LectureFile} from '@app/models/lecture-file';
 import {LectureWatcher} from '@app/models/lecture-watcher';
 import {Status} from '@app/models/status';
 import {Tag} from '@app/models/tag';
 import {AlertService} from '@app/services/alert.service';
+import {BoardService} from '@app/services/board.service';
+import {CurrentUserService} from '@app/services/current-user.service';
 import {LectureService} from '@app/services/lecture.service';
 import {LectureWatcherService} from '@app/services/lecture-watcher.service';
+import {TagService} from '@app/services/tag.service';
+import {WorkspaceService} from '@app/services/workspace.service';
 import {pickReadableForeground} from '@app/shared/color-contrast';
 import {MarkdownEditorComponent} from '@app/shared/components/markdown-editor/markdown-editor.component';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
@@ -17,7 +22,7 @@ import {LectureLinksComponent} from './lecture-links.component';
 import {LectureProgressComponent} from './lecture-progress.component';
 import {LectureTabsComponent} from './lecture-tabs.component';
 
-type DrawerPanel = 'details' | 'tabs' | 'progress' | 'links';
+type LecturePanel = 'details' | 'tabs' | 'progress' | 'links';
 const DIFFICULTIES: Difficulty[] = ['Beginner', 'Intermediate', 'Advanced'];
 
 interface FileTypeChip {
@@ -53,7 +58,7 @@ const FILE_TYPE_MAP: Record<string, FileTypeChip> = {
 const FILE_TYPE_FALLBACK: FileTypeChip = {tag: 'FILE', fg: '#52525b', bg: '#f4f4f5'};
 
 @Component({
-    selector: 'uk-lecture-detail-drawer',
+    selector: 'uk-lecture-page',
     standalone: true,
     imports: [
         ReactiveFormsModule,
@@ -64,25 +69,34 @@ const FILE_TYPE_FALLBACK: FileTypeChip = {tag: 'FILE', fg: '#52525b', bg: '#f4f4
         LectureLinksComponent,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    templateUrl: './lecture-detail-drawer.component.html',
-    styleUrl: './lecture-detail-drawer.component.scss',
+    templateUrl: './lecture-page.component.html',
+    styleUrl: './lecture-page.component.scss',
 })
-export class LectureDetailDrawerComponent implements OnInit {
-    public readonly lecture = input<Lecture | null>(null);
-    public readonly statuses = input.required<Status[]>();
-    public readonly courseId = input.required<number>();
-    public readonly defaultStatusId = input<number | null>(null);
-    public readonly workspaceTags = input<Tag[]>([]);
-
-    public readonly saved = output<Lecture>();
-    public readonly deleted = output<number>();
-    public readonly cancelled = output<void>();
-
+export class LecturePageComponent implements OnInit {
+    private readonly route = inject(ActivatedRoute);
+    private readonly router = inject(Router);
     private readonly fb = inject(FormBuilder);
     private readonly lectureService = inject(LectureService);
+    private readonly boardService = inject(BoardService);
+    private readonly tagService = inject(TagService);
+    private readonly workspaceService = inject(WorkspaceService);
+    private readonly currentUserService = inject(CurrentUserService);
     private readonly lectureWatcherService = inject(LectureWatcherService);
     private readonly alertService = inject(AlertService);
     private readonly translate = inject(TranslateService);
+
+    /** The lecture being viewed/edited. `null` while loading or in CREATE mode. */
+    protected readonly lecture = signal<Lecture | null>(null);
+    protected readonly statuses = signal<Status[]>([]);
+    protected readonly courseId = signal<number>(0);
+    protected readonly courseName = signal<string>('');
+    protected readonly defaultStatusId = signal<number | null>(null);
+    protected readonly workspaceTags = signal<Tag[]>([]);
+
+    /** True once route data has resolved; CREATE mode is `true` immediately (no lecture to fetch). */
+    protected readonly loaded = signal(false);
+    /** CREATE mode = the route has no `:lectureId`. */
+    protected readonly isCreate = signal(false);
 
     protected readonly saving = signal(false);
     protected readonly archiving = signal(false);
@@ -122,9 +136,9 @@ export class LectureDetailDrawerComponent implements OnInit {
     });
 
     protected readonly difficulties = DIFFICULTIES;
-    protected readonly panel = signal<DrawerPanel>('details');
+    protected readonly panel = signal<LecturePanel>('details');
 
-    protected setPanel(panel: DrawerPanel): void {
+    protected setPanel(panel: LecturePanel): void {
         this.panel.set(panel);
     }
 
@@ -184,24 +198,33 @@ export class LectureDetailDrawerComponent implements OnInit {
         this.form.controls.statusId.setValue(id);
     }
 
-    public ngOnInit(): void {
-        const existing = this.lecture();
-        if (existing) {
-            this.form.patchValue({
-                name: existing.name,
-                description: existing.description ?? '',
-                statusId: existing.statusId,
-                tuning: existing.tuning ?? '',
-                capo: existing.capo,
-                targetTempoBpm: existing.targetTempoBpm,
-                difficulty: existing.difficulty ?? '',
-            });
-            this.statusId.set(existing.statusId);
-            this.selectedTagIds.set([...(existing.tagIds ?? [])]);
-            void this.loadFiles(existing.id);
-            void this.loadWatchers(existing.id);
+    public async ngOnInit(): Promise<void> {
+        const courseId = Number(this.route.snapshot.paramMap.get('id'));
+        this.courseId.set(courseId);
+
+        await Promise.all([
+            this.loadStatuses(courseId),
+            this.loadWorkspaceTags(),
+        ]);
+
+        const lectureIdParam = this.route.snapshot.paramMap.get('lectureId');
+        if (lectureIdParam !== null && lectureIdParam !== '') {
+            try {
+                const existing = await this.lectureService.getLecture(Number(lectureIdParam));
+                this.applyLecture(existing);
+            } catch {
+                // lecture may have been deleted — bounce back to the board
+                await this.navigateToBoard();
+                return;
+            }
         } else {
-            const fallbackStatusId = this.defaultStatusId() ?? this.statuses()[0]?.id ?? 0;
+            this.isCreate.set(true);
+            const statusParam = this.route.snapshot.queryParamMap.get('status');
+            const parsed = statusParam !== null ? Number(statusParam) : NaN;
+            const fallbackStatusId = Number.isFinite(parsed) && parsed > 0
+                ? parsed
+                : this.statuses()[0]?.id ?? 0;
+            this.defaultStatusId.set(Number.isFinite(parsed) && parsed > 0 ? parsed : null);
             this.form.patchValue({statusId: fallbackStatusId});
             this.statusId.set(fallbackStatusId);
         }
@@ -209,6 +232,61 @@ export class LectureDetailDrawerComponent implements OnInit {
         this.form.controls.statusId.valueChanges.subscribe((value) => {
             this.statusId.set(Number(value));
         });
+
+        this.loaded.set(true);
+    }
+
+    /** Hydrate the form + related state from a fetched/saved lecture. */
+    private applyLecture(existing: Lecture): void {
+        this.lecture.set(existing);
+        this.isCreate.set(false);
+        this.form.patchValue({
+            name: existing.name,
+            description: existing.description ?? '',
+            statusId: existing.statusId,
+            tuning: existing.tuning ?? '',
+            capo: existing.capo,
+            targetTempoBpm: existing.targetTempoBpm,
+            difficulty: existing.difficulty ?? '',
+        });
+        this.statusId.set(existing.statusId);
+        this.selectedTagIds.set([...(existing.tagIds ?? [])]);
+        void this.loadFiles(existing.id);
+        void this.loadWatchers(existing.id);
+    }
+
+    private async loadStatuses(courseId: number): Promise<void> {
+        try {
+            const board = await this.boardService.getBoard(courseId);
+            this.statuses.set(board.statuses);
+            this.courseName.set(board.course.name);
+        } catch {
+            this.statuses.set([]);
+        }
+    }
+
+    private async loadWorkspaceTags(): Promise<void> {
+        let workspaceId = this.workspaceService.currentWorkspaceId();
+        if (workspaceId === null) {
+            try {
+                workspaceId = (await this.currentUserService.load()).currentWorkspaceId;
+            } catch {
+                workspaceId = null;
+            }
+        }
+        if (workspaceId === null) {
+            this.workspaceTags.set([]);
+            return;
+        }
+        try {
+            this.workspaceTags.set(await this.tagService.loadWorkspaceTags(workspaceId));
+        } catch {
+            this.workspaceTags.set([]);
+        }
+    }
+
+    private navigateToBoard(): Promise<boolean> {
+        return this.router.navigate(['courses', this.courseId(), 'board']);
     }
 
     protected async onSubmit(): Promise<void> {
@@ -229,13 +307,16 @@ export class LectureDetailDrawerComponent implements OnInit {
         };
         try {
             const existing = this.lecture();
-            const saved = existing
-                ? await this.lectureService.updateLecture(existing.id, payload)
-                : await this.lectureService.createLecture(this.courseId(), payload);
-            this.alertService.success(
-                await this.translate.instant(existing ? 'app.board.lectureUpdated' : 'app.board.lectureCreated') as string,
-            );
-            this.saved.emit(saved);
+            if (existing) {
+                const saved = await this.lectureService.updateLecture(existing.id, payload);
+                this.alertService.success(await this.translate.instant('app.board.lectureUpdated') as string);
+                this.applyLecture(saved);
+            } else {
+                const created = await this.lectureService.createLecture(this.courseId(), payload);
+                this.alertService.success(await this.translate.instant('app.board.lectureCreated') as string);
+                // Land on the freshly-created lecture's full page.
+                await this.router.navigate(['courses', this.courseId(), 'lectures', created.id]);
+            }
         } catch {
             // error interceptor
         } finally {
@@ -255,14 +336,14 @@ export class LectureDetailDrawerComponent implements OnInit {
         try {
             await this.lectureService.deleteLecture(existing.id);
             this.alertService.success(await this.translate.instant('app.board.lectureDeleted') as string);
-            this.deleted.emit(existing.id);
+            await this.navigateToBoard();
         } catch {
             // error interceptor
         }
     }
 
     protected onCancel(): void {
-        this.cancelled.emit();
+        void this.navigateToBoard();
     }
 
     protected async onArchive(): Promise<void> {
@@ -274,7 +355,7 @@ export class LectureDetailDrawerComponent implements OnInit {
         try {
             const updated = await this.lectureService.archiveLecture(existing.id);
             this.alertService.success(await this.translate.instant('app.board.drawer.archived') as string);
-            this.saved.emit(updated);
+            this.lecture.set(updated);
         } catch {
             // error interceptor
         } finally {
@@ -291,7 +372,7 @@ export class LectureDetailDrawerComponent implements OnInit {
         try {
             const updated = await this.lectureService.unarchiveLecture(existing.id);
             this.alertService.success(await this.translate.instant('app.board.drawer.unarchived') as string);
-            this.saved.emit(updated);
+            this.lecture.set(updated);
         } catch {
             // error interceptor
         } finally {

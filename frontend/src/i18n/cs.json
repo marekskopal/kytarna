@@ -275,6 +275,7 @@
       "drawer": {
         "newLecture": "Nová lekce",
         "editLecture": "Upravit lekci",
+        "backToBoard": "Zpět na tabuli",
         "close": "Zavřít",
         "preview": "Náhled",
         "edit": "Editor",

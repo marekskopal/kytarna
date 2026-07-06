@@ -1,28 +1,36 @@
 import {provideZonelessChangeDetection} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Lecture} from '@app/models/lecture';
 import {Status} from '@app/models/status';
 import {AlertService} from '@app/services/alert.service';
+import {BoardService} from '@app/services/board.service';
+import {CurrentUserService} from '@app/services/current-user.service';
 import {LectureService} from '@app/services/lecture.service';
 import {LectureWatcherService} from '@app/services/lecture-watcher.service';
+import {TagService} from '@app/services/tag.service';
+import {WorkspaceService} from '@app/services/workspace.service';
 import {TranslateService} from '@ngx-translate/core';
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 
-import {LectureDetailDrawerComponent} from './lecture-detail-drawer.component';
+import {LecturePageComponent} from './lecture-page.component';
 
-interface DrawerInternals {
+interface PageInternals {
     onSubmit: () => Promise<void>;
     onDelete: () => Promise<void>;
     onCancel: () => void;
     onArchive: () => Promise<void>;
+    form: {patchValue: (v: Record<string, unknown>) => void; getRawValue: () => {name: string}};
+    isArchived: () => boolean;
 }
 
-function internals(component: LectureDetailDrawerComponent): DrawerInternals {
-    return component as unknown as DrawerInternals;
+function internals(component: LecturePageComponent): PageInternals {
+    return component as unknown as PageInternals;
 }
 
 interface ServiceStubs {
     lectureService: {
+        getLecture: ReturnType<typeof vi.fn>;
         updateLecture: ReturnType<typeof vi.fn>;
         createLecture: ReturnType<typeof vi.fn>;
         deleteLecture: ReturnType<typeof vi.fn>;
@@ -30,6 +38,7 @@ interface ServiceStubs {
         unarchiveLecture: ReturnType<typeof vi.fn>;
         listLectureFiles: ReturnType<typeof vi.fn>;
     };
+    router: {navigate: ReturnType<typeof vi.fn>};
 }
 
 const STATUS_TODO: Status = {id: 10, workflowId: 1, name: 'To Do', color: '#888', position: 1, type: 'Start'};
@@ -54,13 +63,19 @@ function makeLecture(overrides: Partial<Lecture> = {}): Lecture {
     };
 }
 
-function createFixture(options: {lecture: Lecture | null}): {
-    fixture: ComponentFixture<LectureDetailDrawerComponent>;
-    component: LectureDetailDrawerComponent;
+/**
+ * Builds the component with a mock ActivatedRoute. When `lecture` is provided the route
+ * exposes a `:lectureId` param (VIEW/EDIT); otherwise it is the CREATE route (`.../new`).
+ */
+async function createFixture(options: {lecture: Lecture | null}): Promise<{
+    fixture: ComponentFixture<LecturePageComponent>;
+    component: LecturePageComponent;
     stubs: ServiceStubs;
-} {
+}> {
+    const lecture = options.lecture;
     const stubs: ServiceStubs = {
         lectureService: {
+            getLecture: vi.fn().mockResolvedValue(lecture),
             updateLecture: vi.fn(),
             createLecture: vi.fn(),
             deleteLecture: vi.fn().mockResolvedValue(undefined),
@@ -68,12 +83,38 @@ function createFixture(options: {lecture: Lecture | null}): {
             unarchiveLecture: vi.fn(),
             listLectureFiles: vi.fn().mockResolvedValue([]),
         },
+        router: {navigate: vi.fn().mockResolvedValue(true)},
+    };
+
+    const paramMap = new Map<string, string>([['id', '1']]);
+    if (lecture !== null) {
+        paramMap.set('lectureId', String(lecture.id));
+    }
+    const queryParamMap = new Map<string, string>();
+
+    const activatedRoute = {
+        snapshot: {
+            paramMap: {get: (k: string): string | null => paramMap.get(k) ?? null},
+            queryParamMap: {get: (k: string): string | null => queryParamMap.get(k) ?? null},
+        },
     };
 
     TestBed.configureTestingModule({
         providers: [
             provideZonelessChangeDetection(),
+            {provide: ActivatedRoute, useValue: activatedRoute},
+            {provide: Router, useValue: stubs.router},
             {provide: LectureService, useValue: stubs.lectureService},
+            {provide: BoardService, useValue: {
+                getBoard: vi.fn().mockResolvedValue({
+                    course: {id: 1, name: 'Course One'},
+                    statuses: [STATUS_TODO, STATUS_DOING],
+                    lectures: [],
+                }),
+            }},
+            {provide: TagService, useValue: {loadWorkspaceTags: vi.fn().mockResolvedValue([])}},
+            {provide: WorkspaceService, useValue: {currentWorkspaceId: (): number => 1}},
+            {provide: CurrentUserService, useValue: {load: vi.fn().mockResolvedValue({currentWorkspaceId: 1})}},
             {provide: LectureWatcherService, useValue: {
                 list: vi.fn().mockResolvedValue({watchers: [], watching: false}),
                 watch: vi.fn().mockResolvedValue({watchers: [], watching: true}),
@@ -91,15 +132,12 @@ function createFixture(options: {lecture: Lecture | null}): {
         ],
     });
 
-    const fixture = TestBed.createComponent(LectureDetailDrawerComponent);
-    fixture.componentRef.setInput('lecture', options.lecture);
-    fixture.componentRef.setInput('statuses', [STATUS_TODO, STATUS_DOING]);
-    fixture.componentRef.setInput('courseId', 1);
-    fixture.componentInstance.ngOnInit();
+    const fixture = TestBed.createComponent(LecturePageComponent);
+    await fixture.componentInstance.ngOnInit();
     return {fixture, component: fixture.componentInstance, stubs};
 }
 
-describe('LectureDetailDrawerComponent', () => {
+describe('LecturePageComponent', () => {
     beforeEach(() => {
         TestBed.resetTestingModule();
     });
@@ -108,24 +146,19 @@ describe('LectureDetailDrawerComponent', () => {
         vi.restoreAllMocks();
     });
 
-    it('onCancel emits the cancelled output', () => {
-        const {component} = createFixture({lecture: makeLecture()});
-        const cancelled = vi.fn();
-        component.cancelled.subscribe(() => cancelled());
+    it('onCancel navigates back to the course board', async () => {
+        const {component, stubs} = await createFixture({lecture: makeLecture()});
 
         internals(component).onCancel();
 
-        expect(cancelled).toHaveBeenCalledTimes(1);
+        expect(stubs.router.navigate).toHaveBeenCalledWith(['courses', 1, 'board']);
     });
 
-    it('onSubmit on an existing lecture calls updateLecture and emits saved with the result', async () => {
+    it('onSubmit on an existing lecture calls updateLecture and applies the result', async () => {
         const original = makeLecture();
         const updated = {...original, name: 'Existing lecture (edited)'};
-        const {component, stubs} = createFixture({lecture: original});
+        const {component, stubs} = await createFixture({lecture: original});
         stubs.lectureService.updateLecture.mockResolvedValue(updated);
-
-        const saved: Lecture[] = [];
-        component.saved.subscribe((lecture) => saved.push(lecture));
 
         await internals(component).onSubmit();
 
@@ -134,65 +167,55 @@ describe('LectureDetailDrawerComponent', () => {
             name: original.name,
             statusId: original.statusId,
         }));
-        expect(saved).toEqual([updated]);
+        expect(internals(component).form.getRawValue().name).toBe(updated.name);
     });
 
-    it('onSubmit on a new lecture calls createLecture and emits saved with the result', async () => {
+    it('onSubmit on a new lecture calls createLecture and navigates to its page', async () => {
         const created = makeLecture({id: 99, name: 'Brand new'});
-        const {component, stubs} = createFixture({lecture: null});
+        const {component, stubs} = await createFixture({lecture: null});
         stubs.lectureService.createLecture.mockResolvedValue(created);
-        component.form.patchValue({name: 'Brand new'});
-
-        const saved: Lecture[] = [];
-        component.saved.subscribe((lecture) => saved.push(lecture));
+        internals(component).form.patchValue({name: 'Brand new'});
 
         await internals(component).onSubmit();
 
         expect(stubs.lectureService.createLecture).toHaveBeenCalledTimes(1);
         expect(stubs.lectureService.updateLecture).not.toHaveBeenCalled();
-        expect(saved).toEqual([created]);
+        expect(stubs.router.navigate).toHaveBeenCalledWith(['courses', 1, 'lectures', created.id]);
     });
 
-    it('onDelete asks for confirmation, deletes, and emits the deleted lecture id', async () => {
+    it('onDelete asks for confirmation, deletes, and navigates back to the board', async () => {
         const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(true);
         const original = makeLecture({id: 77});
-        const {component, stubs} = createFixture({lecture: original});
-
-        const deleted: number[] = [];
-        component.deleted.subscribe((id) => deleted.push(id));
+        const {component, stubs} = await createFixture({lecture: original});
+        stubs.router.navigate.mockClear();
 
         await internals(component).onDelete();
 
         expect(confirmSpy).toHaveBeenCalledTimes(1);
         expect(stubs.lectureService.deleteLecture).toHaveBeenCalledWith(77);
-        expect(deleted).toEqual([77]);
+        expect(stubs.router.navigate).toHaveBeenCalledWith(['courses', 1, 'board']);
     });
 
-    it('onDelete does not emit when the confirmation dialog is cancelled', async () => {
+    it('onDelete does not delete when the confirmation dialog is cancelled', async () => {
         vi.spyOn(window, 'confirm').mockReturnValue(false);
-        const {component, stubs} = createFixture({lecture: makeLecture()});
-
-        const deleted: number[] = [];
-        component.deleted.subscribe((id) => deleted.push(id));
+        const {component, stubs} = await createFixture({lecture: makeLecture()});
+        stubs.router.navigate.mockClear();
 
         await internals(component).onDelete();
 
         expect(stubs.lectureService.deleteLecture).not.toHaveBeenCalled();
-        expect(deleted).toEqual([]);
+        expect(stubs.router.navigate).not.toHaveBeenCalled();
     });
 
-    it('onArchive archives the lecture and emits saved with the result', async () => {
+    it('onArchive archives the lecture and reflects the result', async () => {
         const original = makeLecture();
         const archived = {...original, archivedAt: '2026-02-01T00:00:00Z'};
-        const {component, stubs} = createFixture({lecture: original});
+        const {component, stubs} = await createFixture({lecture: original});
         stubs.lectureService.archiveLecture.mockResolvedValue(archived);
-
-        const saved: Lecture[] = [];
-        component.saved.subscribe((lecture) => saved.push(lecture));
 
         await internals(component).onArchive();
 
         expect(stubs.lectureService.archiveLecture).toHaveBeenCalledWith(original.id);
-        expect(saved).toEqual([archived]);
+        expect(internals(component).isArchived()).toBe(true);
     });
 });

@@ -1,135 +1,119 @@
-<div
-    class="drawer-backdrop"
-    role="button"
-    tabindex="0"
-    [attr.aria-label]="'app.board.drawer.close' | translate"
-    (click)="onCancel()"
-    (keydown.escape)="onCancel()"
-></div>
-<aside class="drawer" [formGroup]="form">
-    <!-- ─── Header band ─────────────────────────────────────── -->
+<div class="lecture-page" [formGroup]="form">
+    <!-- ─── Header band (full-bleed) ────────────────────────── -->
     <header class="lecture-hero">
-        <div class="hero-topbar">
-            <button type="button" class="hero-back" (click)="onCancel()" [attr.aria-label]="'app.board.drawer.close' | translate">
-                <span class="hero-back-glyph" aria-hidden="true"></span>
-                @if (lecture(); as t) {
-                    <span class="uk-mono">{{ t.code }}</span>
-                } @else {
-                    <span class="uk-mono">{{ 'app.board.drawer.newLecture' | translate }}</span>
-                }
-            </button>
-            <span class="drawer-spacer"></span>
-            @if (lecture()) {
-                <button
-                    type="button"
-                    class="btn btn-sm hero-watch"
-                    [class.btn-ghost]="!watching()"
-                    [class.btn-secondary]="watching()"
-                    (click)="toggleWatch()"
-                    [disabled]="watchToggling()"
-                    [attr.aria-pressed]="watching()"
-                    [attr.title]="(watching() ? 'app.lectureWatchers.unwatchHint' : 'app.lectureWatchers.watchHint') | translate"
-                >
-                    <svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true">
-                        <path d="M1 8s2.6-4.5 7-4.5S15 8 15 8s-2.6 4.5-7 4.5S1 8 1 8z" fill="none" stroke="currentColor" stroke-width="1.3" />
-                        <circle cx="8" cy="8" r="1.8" fill="none" stroke="currentColor" stroke-width="1.3" />
-                    </svg>
-                    {{ (watching() ? 'app.lectureWatchers.watching' : 'app.lectureWatchers.watch') | translate }}
-                    @if (watchers().length > 0) {
-                        <span class="drawer-watch-count">{{ watchers().length }}</span>
+        <div class="hero-inner">
+            <div class="hero-topbar">
+                <button type="button" class="hero-back" (click)="onCancel()" [attr.aria-label]="'app.board.drawer.backToBoard' | translate">
+                    <span class="hero-back-glyph" aria-hidden="true"></span>
+                    @if (courseName(); as name) {
+                        <span class="uk-mono">{{ name }}</span>
+                    } @else {
+                        <span class="uk-mono">{{ 'app.board.breadcrumb' | translate }}</span>
                     }
                 </button>
-            }
-            <button
-                type="button"
-                class="btn btn-ghost btn-icon btn-sm"
-                (click)="onCancel()"
-                [attr.aria-label]="'app.board.drawer.close' | translate"
-            >
-                <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
-                    <path d="M3 3l10 10M13 3L3 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
-                </svg>
-            </button>
-        </div>
-
-        <div class="hero-main">
-            <div class="hero-lead">
-                <div class="hero-badges">
-                    @if (lecture(); as l) {
-                        <span class="hero-status-pill" [style.color]="currentStatusColor()">
-                            <span
-                                class="hero-status-dot"
-                                [class.hero-status-dot--glow]="currentStatusIsActive()"
-                                [style.background]="currentStatusColor()"
-                            ></span>
-                            {{ currentStatus()?.name }}
-                        </span>
-                        @if (l.createdByAgent) {
-                            <span class="hero-agent-badge" [attr.title]="'app.agent.createdBy' | translate">
-                                <span class="hero-agent-glyph" aria-hidden="true"></span>
-                                {{ 'app.agent.createdBy' | translate }}
-                            </span>
+                <span class="hero-spacer"></span>
+                @if (lecture()) {
+                    <button
+                        type="button"
+                        class="btn btn-sm hero-watch"
+                        [class.btn-ghost]="!watching()"
+                        [class.btn-secondary]="watching()"
+                        (click)="toggleWatch()"
+                        [disabled]="watchToggling()"
+                        [attr.aria-pressed]="watching()"
+                        [attr.title]="(watching() ? 'app.lectureWatchers.unwatchHint' : 'app.lectureWatchers.watchHint') | translate"
+                    >
+                        <svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true">
+                            <path d="M1 8s2.6-4.5 7-4.5S15 8 15 8s-2.6 4.5-7 4.5S1 8 1 8z" fill="none" stroke="currentColor" stroke-width="1.3" />
+                            <circle cx="8" cy="8" r="1.8" fill="none" stroke="currentColor" stroke-width="1.3" />
+                        </svg>
+                        {{ (watching() ? 'app.lectureWatchers.watching' : 'app.lectureWatchers.watch') | translate }}
+                        @if (watchers().length > 0) {
+                            <span class="hero-watch-count">{{ watchers().length }}</span>
                         }
-                    }
-                </div>
-                <input
-                    id="lecture-name"
-                    type="text"
-                    formControlName="name"
-                    class="hero-title-input"
-                    [placeholder]="'app.board.drawer.titlePlaceholder' | translate"
-                />
+                    </button>
+                }
             </div>
-            @if (lecture()) {
-                <div class="hero-bpm">
-                    <div class="hero-bpm-caption uk-mono">{{ 'app.board.drawer.guitar.currentTarget' | translate }}</div>
-                    <div class="hero-bpm-value">
-                        {{ currentBpmDisplay }}<span class="hero-bpm-sep"> / {{ targetDisplay() }}</span>
+
+            <div class="hero-main">
+                <div class="hero-lead">
+                    <div class="hero-badges">
+                        @if (lecture(); as l) {
+                            <span class="hero-status-pill" [style.color]="currentStatusColor()">
+                                <span
+                                    class="hero-status-dot"
+                                    [class.hero-status-dot--glow]="currentStatusIsActive()"
+                                    [style.background]="currentStatusColor()"
+                                ></span>
+                                {{ currentStatus()?.name }}
+                            </span>
+                            @if (l.createdByAgent) {
+                                <span class="hero-agent-badge" [attr.title]="'app.agent.createdBy' | translate">
+                                    <span class="hero-agent-glyph" aria-hidden="true"></span>
+                                    {{ 'app.agent.createdBy' | translate }}
+                                </span>
+                            }
+                        }
                     </div>
-                    <div class="hero-bpm-unit uk-mono">BPM</div>
+                    <input
+                        id="lecture-name"
+                        type="text"
+                        formControlName="name"
+                        class="hero-title-input"
+                        [placeholder]="'app.board.drawer.titlePlaceholder' | translate"
+                    />
                 </div>
+                @if (lecture()) {
+                    <div class="hero-bpm">
+                        <div class="hero-bpm-caption uk-mono">{{ 'app.board.drawer.guitar.currentTarget' | translate }}</div>
+                        <div class="hero-bpm-value">
+                            {{ currentBpmDisplay }}<span class="hero-bpm-sep"> / {{ targetDisplay() }}</span>
+                        </div>
+                        <div class="hero-bpm-unit uk-mono">BPM</div>
+                    </div>
+                }
+            </div>
+
+            @if (lecture()) {
+                <div class="hero-chips">
+                    <div class="hero-chip">
+                        <span class="hero-chip-label uk-mono">{{ 'app.board.drawer.guitar.tuning' | translate }}</span>
+                        <span class="hero-chip-value uk-mono">{{ tuningDisplay() }}</span>
+                    </div>
+                    <div class="hero-chip">
+                        <span class="hero-chip-label uk-mono">{{ 'app.board.drawer.guitar.capo' | translate }}</span>
+                        <span class="hero-chip-value uk-mono">{{ capoDisplay() }}</span>
+                    </div>
+                    <div class="hero-chip">
+                        <span class="hero-chip-label uk-mono">{{ 'app.board.drawer.guitar.targetTempo' | translate }}</span>
+                        <span class="hero-chip-value uk-mono">{{ targetDisplay() }}</span>
+                    </div>
+                    <div class="hero-chip">
+                        <span class="hero-chip-label uk-mono">{{ 'app.board.drawer.guitar.difficulty' | translate }}</span>
+                        <span class="hero-chip-value uk-mono" [style.color]="difficultyColor()">{{ difficultyDisplay() }}</span>
+                    </div>
+                </div>
+
+                <nav class="hero-nav" role="tablist">
+                    <button type="button" class="hero-nav-tab" role="tab" [attr.aria-selected]="panel() === 'details'" [class.hero-nav-tab--active]="panel() === 'details'" (click)="setPanel('details')">
+                        {{ 'app.board.drawer.panels.details' | translate }}
+                    </button>
+                    <button type="button" class="hero-nav-tab" role="tab" [attr.aria-selected]="panel() === 'tabs'" [class.hero-nav-tab--active]="panel() === 'tabs'" (click)="setPanel('tabs')">
+                        {{ 'app.board.drawer.panels.tabs' | translate }}
+                    </button>
+                    <button type="button" class="hero-nav-tab" role="tab" [attr.aria-selected]="panel() === 'progress'" [class.hero-nav-tab--active]="panel() === 'progress'" (click)="setPanel('progress')">
+                        {{ 'app.board.drawer.panels.progress' | translate }}
+                    </button>
+                    <button type="button" class="hero-nav-tab" role="tab" [attr.aria-selected]="panel() === 'links'" [class.hero-nav-tab--active]="panel() === 'links'" (click)="setPanel('links')">
+                        {{ 'app.board.drawer.panels.links' | translate }}
+                    </button>
+                </nav>
             }
         </div>
-
-        @if (lecture()) {
-            <div class="hero-chips">
-                <div class="hero-chip">
-                    <span class="hero-chip-label uk-mono">{{ 'app.board.drawer.guitar.tuning' | translate }}</span>
-                    <span class="hero-chip-value uk-mono">{{ tuningDisplay() }}</span>
-                </div>
-                <div class="hero-chip">
-                    <span class="hero-chip-label uk-mono">{{ 'app.board.drawer.guitar.capo' | translate }}</span>
-                    <span class="hero-chip-value uk-mono">{{ capoDisplay() }}</span>
-                </div>
-                <div class="hero-chip">
-                    <span class="hero-chip-label uk-mono">{{ 'app.board.drawer.guitar.targetTempo' | translate }}</span>
-                    <span class="hero-chip-value uk-mono">{{ targetDisplay() }}</span>
-                </div>
-                <div class="hero-chip">
-                    <span class="hero-chip-label uk-mono">{{ 'app.board.drawer.guitar.difficulty' | translate }}</span>
-                    <span class="hero-chip-value uk-mono" [style.color]="difficultyColor()">{{ difficultyDisplay() }}</span>
-                </div>
-            </div>
-
-            <nav class="hero-nav" role="tablist">
-                <button type="button" class="hero-nav-tab" [class.hero-nav-tab--active]="panel() === 'details'" (click)="setPanel('details')">
-                    {{ 'app.board.drawer.panels.details' | translate }}
-                </button>
-                <button type="button" class="hero-nav-tab" [class.hero-nav-tab--active]="panel() === 'tabs'" (click)="setPanel('tabs')">
-                    {{ 'app.board.drawer.panels.tabs' | translate }}
-                </button>
-                <button type="button" class="hero-nav-tab" [class.hero-nav-tab--active]="panel() === 'progress'" (click)="setPanel('progress')">
-                    {{ 'app.board.drawer.panels.progress' | translate }}
-                </button>
-                <button type="button" class="hero-nav-tab" [class.hero-nav-tab--active]="panel() === 'links'" (click)="setPanel('links')">
-                    {{ 'app.board.drawer.panels.links' | translate }}
-                </button>
-            </nav>
-        }
     </header>
 
-    <!-- ─── Details ─────────────────────────────────────────── -->
-    <form class="drawer-body" [class.is-hidden]="panel() !== 'details'" (ngSubmit)="onSubmit()">
+    <!-- ─── Details (centered container) ────────────────────── -->
+    <form class="page-section page-section--contained" [class.is-hidden]="panel() !== 'details'" (ngSubmit)="onSubmit()">
         <div class="details-grid">
             <div class="details-main">
                 <section class="drawer-section">
@@ -329,44 +313,46 @@
 
     @if (lecture(); as l) {
         @if (panel() === 'tabs') {
-            <div class="drawer-body drawer-panel-body">
+            <div class="page-section page-section--full">
                 <uk-lecture-tabs [lectureId]="l.id" />
             </div>
         } @else if (panel() === 'progress') {
-            <div class="drawer-body drawer-panel-body">
+            <div class="page-section page-section--contained">
                 <uk-lecture-progress [lectureId]="l.id" [targetBpm]="l.targetTempoBpm" />
             </div>
         } @else if (panel() === 'links') {
-            <div class="drawer-body drawer-panel-body">
+            <div class="page-section page-section--contained">
                 <uk-lecture-links [lectureId]="l.id" />
             </div>
         }
     }
 
-    <footer class="drawer-footer">
-        @if (lecture()) {
-            <div class="drawer-footer-actions">
-                <button type="button" class="btn btn-danger-ghost btn-sm" (click)="onDelete()">
-                    {{ 'app.actions.delete' | translate }}
+    <footer class="page-footer">
+        <div class="page-footer-inner">
+            @if (lecture()) {
+                <div class="page-footer-actions">
+                    <button type="button" class="btn btn-danger-ghost btn-sm" (click)="onDelete()">
+                        {{ 'app.actions.delete' | translate }}
+                    </button>
+                    @if (isArchived()) {
+                        <button type="button" class="btn btn-ghost btn-sm" [disabled]="archiving()" (click)="onUnarchive()">
+                            {{ (archiving() ? 'app.actions.loading' : 'app.board.drawer.unarchive') | translate }}
+                        </button>
+                    } @else {
+                        <button type="button" class="btn btn-ghost btn-sm" [disabled]="archiving()" (click)="onArchive()">
+                            {{ (archiving() ? 'app.actions.loading' : 'app.board.drawer.archive') | translate }}
+                        </button>
+                    }
+                </div>
+            } @else {
+                <span></span>
+            }
+            <div class="page-footer-actions">
+                <button type="button" class="btn btn-ghost btn-sm" (click)="onCancel()">{{ 'app.actions.cancel' | translate }}</button>
+                <button type="button" class="btn btn-primary btn-sm" [disabled]="form.invalid || saving()" (click)="onSubmit()">
+                    {{ (saving() ? 'app.actions.loading' : 'app.board.drawer.saveChanges') | translate }}
                 </button>
-                @if (isArchived()) {
-                    <button type="button" class="btn btn-ghost btn-sm" [disabled]="archiving()" (click)="onUnarchive()">
-                        {{ (archiving() ? 'app.actions.loading' : 'app.board.drawer.unarchive') | translate }}
-                    </button>
-                } @else {
-                    <button type="button" class="btn btn-ghost btn-sm" [disabled]="archiving()" (click)="onArchive()">
-                        {{ (archiving() ? 'app.actions.loading' : 'app.board.drawer.archive') | translate }}
-                    </button>
-                }
             </div>
-        } @else {
-            <span></span>
-        }
-        <div class="drawer-footer-actions">
-            <button type="button" class="btn btn-ghost btn-sm" (click)="onCancel()">{{ 'app.actions.cancel' | translate }}</button>
-            <button type="button" class="btn btn-primary btn-sm" [disabled]="form.invalid || saving()" (click)="onSubmit()">
-                {{ (saving() ? 'app.actions.loading' : 'app.board.drawer.saveChanges') | translate }}
-            </button>
         </div>
     </footer>
-</aside>
+</div>
