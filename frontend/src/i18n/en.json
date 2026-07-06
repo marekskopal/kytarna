@@ -1,6 +1,6 @@
 {
   "app": {
-    "brand": "Kytario",
+    "brand": "Kytarna",
     "actions": {
       "save": "Save",
       "cancel": "Cancel",
@@ -166,7 +166,7 @@
     "auth": {
       "asideOverline": "MCP-native",
       "asideHeadline": "Your kanban, run by agents.",
-      "asideBody": "Kytario is a multi-tenant lecture manager built for AI agents as the primary actor. Connect any MCP client and let it plan, create, and close lectures alongside the team.",
+      "asideBody": "Kytarna is a multi-tenant lecture manager built for AI agents as the primary actor. Connect any MCP client and let it plan, create, and close lectures alongside the team.",
       "asideSnippetLabel": "MCP endpoint",
       "login": {
         "title": "Sign in",

@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\Service\Auth;
+namespace Kytarna\Tests\Service\Auth;
 
 use ArrayIterator;
 use DateTimeImmutable;
 use Iterator;
-use Kytario\Model\Entity\Enum\LocaleEnum;
-use Kytario\Model\Entity\Enum\SystemRoleEnum;
-use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Entity\Workspace;
-use Kytario\Model\Entity\WorkspaceUser;
-use Kytario\Service\Auth\PermissionChecker;
-use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Kytarna\Model\Entity\Enum\LocaleEnum;
+use Kytarna\Model\Entity\Enum\SystemRoleEnum;
+use Kytarna\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Entity\Workspace;
+use Kytarna\Model\Entity\WorkspaceUser;
+use Kytarna\Service\Auth\PermissionChecker;
+use Kytarna\Service\Provider\WorkspaceProviderInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 

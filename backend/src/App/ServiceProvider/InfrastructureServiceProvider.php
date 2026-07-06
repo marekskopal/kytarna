@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Kytario\App\ServiceProvider;
+namespace Kytarna\App\ServiceProvider;
 
 use AsyncAws\S3\S3Client;
 use Http\Discovery\Psr17FactoryDiscovery;
-use Kytario\Service\Cache\CacheFactory;
-use Kytario\Service\Cache\CacheFactoryInterface;
-use Kytario\Service\Cors\CorsPolicy;
-use Kytario\Service\Logger\Logger;
-use Kytario\Service\Queue\QueuePublisher;
-use Kytario\Service\Storage\FileStorageInterface;
-use Kytario\Service\Storage\S3Config;
-use Kytario\Service\Storage\S3FileStorage;
-use Kytario\Service\Tab\TabServiceClient;
-use Kytario\Service\Tab\TabServiceClientInterface;
+use Kytarna\Service\Cache\CacheFactory;
+use Kytarna\Service\Cache\CacheFactoryInterface;
+use Kytarna\Service\Cors\CorsPolicy;
+use Kytarna\Service\Logger\Logger;
+use Kytarna\Service\Queue\QueuePublisher;
+use Kytarna\Service\Storage\FileStorageInterface;
+use Kytarna\Service\Storage\S3Config;
+use Kytarna\Service\Storage\S3FileStorage;
+use Kytarna\Service\Tab\TabServiceClient;
+use Kytarna\Service\Tab\TabServiceClientInterface;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use Predis\Client;
 use Predis\ClientInterface;

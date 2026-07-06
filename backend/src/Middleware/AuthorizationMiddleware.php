@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Middleware;
+namespace Kytarna\Middleware;
 
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use Kytario\Middleware\Exception\NotAuthorizedException;
-use Kytario\Route\Routes;
-use Kytario\Service\Authentication\AuthenticationServiceInterface;
-use Kytario\Service\Provider\UserProviderInterface;
+use Kytarna\Middleware\Exception\NotAuthorizedException;
+use Kytarna\Route\Routes;
+use Kytarna\Service\Authentication\AuthenticationServiceInterface;
+use Kytarna\Service\Provider\UserProviderInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;

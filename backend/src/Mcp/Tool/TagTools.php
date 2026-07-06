@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Mcp\Tool;
+namespace Kytarna\Mcp\Tool;
 
-use Kytario\Mcp\Dto\McpLectureDto;
-use Kytario\Mcp\Dto\McpTagDto;
-use Kytario\Mcp\Dto\McpTagListDto;
-use Kytario\Mcp\McpUserContextInterface;
-use Kytario\Model\Entity\Enum\EventTypeEnum;
-use Kytario\Model\Entity\Lecture;
-use Kytario\Model\Entity\Tag;
-use Kytario\Model\Entity\Workspace;
-use Kytario\Service\Auth\PermissionCheckerInterface;
-use Kytario\Service\Provider\EventProviderInterface;
-use Kytario\Service\Provider\LectureProviderInterface;
-use Kytario\Service\Provider\LectureTagProviderInterface;
-use Kytario\Service\Provider\TagProviderInterface;
-use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Kytarna\Mcp\Dto\McpLectureDto;
+use Kytarna\Mcp\Dto\McpTagDto;
+use Kytarna\Mcp\Dto\McpTagListDto;
+use Kytarna\Mcp\McpUserContextInterface;
+use Kytarna\Model\Entity\Enum\EventTypeEnum;
+use Kytarna\Model\Entity\Lecture;
+use Kytarna\Model\Entity\Tag;
+use Kytarna\Model\Entity\Workspace;
+use Kytarna\Service\Auth\PermissionCheckerInterface;
+use Kytarna\Service\Provider\EventProviderInterface;
+use Kytarna\Service\Provider\LectureProviderInterface;
+use Kytarna\Service\Provider\LectureTagProviderInterface;
+use Kytarna\Service\Provider\TagProviderInterface;
+use Kytarna\Service\Provider\WorkspaceProviderInterface;
 use Mcp\Capability\Attribute\McpTool;
 use RuntimeException;
 

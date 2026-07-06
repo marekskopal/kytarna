@@ -3,7 +3,7 @@
     "version": 1,
     "newProjectRoot": "projects",
     "projects": {
-        "kytario": {
+        "kytarna": {
             "projectType": "application",
             "schematics": {
                 "@schematics/angular:component": {
@@ -19,7 +19,7 @@
                 "build": {
                     "builder": "@angular/build:application",
                     "options": {
-                        "outputPath": "dist/kytario",
+                        "outputPath": "dist/kytarna",
                         "index": "src/index.html",
                         "browser": "src/main.ts",
                         "polyfills": ["zone.js"],
@@ -58,8 +58,8 @@
                 "serve": {
                     "builder": "@angular/build:dev-server",
                     "configurations": {
-                        "production": {"buildTarget": "kytario:build:production"},
-                        "development": {"buildTarget": "kytario:build:development"}
+                        "production": {"buildTarget": "kytarna:build:production"},
+                        "development": {"buildTarget": "kytarna:build:development"}
                     },
                     "defaultConfiguration": "development"
                 },

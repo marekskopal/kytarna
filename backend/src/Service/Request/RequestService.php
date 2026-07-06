@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Request;
+namespace Kytarna\Service\Request;
 
 use ErrorException;
-use Kytario\Dto\ArrayFactoryInterface;
-use Kytario\Middleware\AuthorizationMiddleware;
-use Kytario\Model\Entity\User;
+use Kytarna\Dto\ArrayFactoryInterface;
+use Kytarna\Middleware\AuthorizationMiddleware;
+use Kytarna\Model\Entity\User;
 use Nette\Utils\Json;
 use Nette\Utils\JsonException;
 use Psr\Http\Message\ServerRequestInterface;

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\OAuth;
+namespace Kytarna\OAuth;
 
-use Kytario\Route\Routes;
+use Kytarna\Route\Routes;
 use Psr\Http\Message\ServerRequestInterface;
 use const PHP_URL_HOST;
 

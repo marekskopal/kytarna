@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\PhpStan;
+namespace Kytarna\PhpStan;
 
 use MarekSkopal\ORM\Attribute\Column;
 use MarekSkopal\ORM\Attribute\ColumnEnum;

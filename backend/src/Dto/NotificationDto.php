@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Dto;
+namespace Kytarna\Dto;
 
-use Kytario\Model\Entity\Notification;
+use Kytarna\Model\Entity\Notification;
 use const DATE_ATOM;
 
 final readonly class NotificationDto

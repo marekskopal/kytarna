@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Dto;
+namespace Kytarna\Dto;
 
 /** @implements ArrayFactoryInterface<array{name: string}> */
 final readonly class WorkspaceCreateDto implements ArrayFactoryInterface

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Dto;
+namespace Kytarna\Dto;
 
 use DateTimeImmutable;
 

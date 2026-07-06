@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Tab\Exception;
+namespace Kytarna\Service\Tab\Exception;
 
-use Kytario\Service\Tab\Dto\TabValidationError;
+use Kytarna\Service\Tab\Dto\TabValidationError;
 use RuntimeException;
 
 /**

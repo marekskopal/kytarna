@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Authentication;
+namespace Kytarna\Service\Authentication;
 
 final readonly class RateLimitConfig
 {

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Model\Entity;
+namespace Kytarna\Model\Entity;
 
-use Kytario\Model\Repository\LectureWatcherRepository;
+use Kytarna\Model\Repository\LectureWatcherRepository;
 use MarekSkopal\ORM\Attribute\Entity;
 use MarekSkopal\ORM\Attribute\ManyToOne;
 

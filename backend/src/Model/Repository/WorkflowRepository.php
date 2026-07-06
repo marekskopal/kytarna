@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Model\Repository;
+namespace Kytarna\Model\Repository;
 
 use Iterator;
-use Kytario\Model\Entity\Workflow;
+use Kytarna\Model\Entity\Workflow;
 use MarekSkopal\ORM\Repository\AbstractRepository;
 
 /** @extends AbstractRepository<Workflow> */

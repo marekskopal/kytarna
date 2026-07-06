@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Mcp\Dto;
+namespace Kytarna\Mcp\Dto;
 
-use Kytario\Model\Entity\Course;
+use Kytarna\Model\Entity\Course;
 
 final readonly class McpCourseDto
 {

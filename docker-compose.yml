@@ -1,4 +1,4 @@
-name: kytario
+name: kytarna
 
 services:
     proxy:
@@ -144,7 +144,7 @@ services:
         networks:
             - backend
         volumes:
-            - kytario_data:/var/lib/mysql
+            - kytarna_data:/var/lib/mysql
         profiles:
             - dev
 
@@ -182,7 +182,7 @@ services:
             # ukolio-minio container that already owns 9001 on this shared host.
             - "127.0.0.1:9101:9001"
         volumes:
-            - kytario_minio:/data
+            - kytarna_minio:/data
         profiles:
             - dev
 
@@ -207,7 +207,7 @@ services:
         networks:
             - backend
         volumes:
-            - kytario_redis:/data
+            - kytarna_redis:/data
 
     rabbitmq:
         image: rabbitmq:4.3.2-alpine
@@ -224,7 +224,7 @@ services:
         networks:
             - backend
         volumes:
-            - kytario_rabbitmq:/var/lib/rabbitmq
+            - kytarna_rabbitmq:/var/lib/rabbitmq
 
     mariadb-backup-aws:
         image: marekskopal/mariadb-backup-aws:0.2.0
@@ -244,16 +244,16 @@ services:
 
 networks:
     frontend:
-        name: kytario_frontend
+        name: kytarna_frontend
     backend:
-        name: kytario_backend
+        name: kytarna_backend
 
 volumes:
-    kytario_data:
-        name: kytario_data
-    kytario_minio:
-        name: kytario_minio
-    kytario_redis:
-        name: kytario_redis
-    kytario_rabbitmq:
-        name: kytario_rabbitmq
+    kytarna_data:
+        name: kytarna_data
+    kytarna_minio:
+        name: kytarna_minio
+    kytarna_redis:
+        name: kytarna_redis
+    kytarna_rabbitmq:
+        name: kytarna_rabbitmq

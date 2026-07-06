@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider;
+namespace Kytarna\Service\Provider;
 
 use DateTimeImmutable;
 use Iterator;
-use Kytario\Model\Entity\Course;
-use Kytario\Model\Entity\Enum\StatusTypeEnum;
-use Kytario\Model\Entity\Workflow;
-use Kytario\Model\Entity\Workspace;
-use Kytario\Model\Repository\WorkflowRepository;
+use Kytarna\Model\Entity\Course;
+use Kytarna\Model\Entity\Enum\StatusTypeEnum;
+use Kytarna\Model\Entity\Workflow;
+use Kytarna\Model\Entity\Workspace;
+use Kytarna\Model\Repository\WorkflowRepository;
 
 final readonly class WorkflowProvider implements WorkflowProviderInterface
 {

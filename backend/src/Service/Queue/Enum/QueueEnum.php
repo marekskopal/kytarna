@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Queue\Enum;
+namespace Kytarna\Service\Queue\Enum;
 
 enum QueueEnum: string
 {

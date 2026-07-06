@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Model\Entity;
+namespace Kytarna\Model\Entity;
 
 use DateTimeImmutable;
-use Kytario\Model\Entity\Enum\NotificationTypeEnum;
-use Kytario\Model\Repository\NotificationRepository;
+use Kytarna\Model\Entity\Enum\NotificationTypeEnum;
+use Kytarna\Model\Repository\NotificationRepository;
 use MarekSkopal\ORM\Attribute\Column;
 use MarekSkopal\ORM\Attribute\ColumnEnum;
 use MarekSkopal\ORM\Attribute\Entity;

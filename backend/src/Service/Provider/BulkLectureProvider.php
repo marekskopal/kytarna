@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider;
+namespace Kytarna\Service\Provider;
 
-use Kytario\Model\Entity\Enum\EventTypeEnum;
-use Kytario\Model\Entity\Lecture;
-use Kytario\Model\Entity\Status;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Entity\Workspace;
-use Kytario\Model\Repository\LectureRepository;
-use Kytario\Service\Provider\Enum\BulkOpEnum;
+use Kytarna\Model\Entity\Enum\EventTypeEnum;
+use Kytarna\Model\Entity\Lecture;
+use Kytarna\Model\Entity\Status;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Entity\Workspace;
+use Kytarna\Model\Repository\LectureRepository;
+use Kytarna\Service\Provider\Enum\BulkOpEnum;
 use RuntimeException;
 
 final readonly class BulkLectureProvider implements BulkLectureProviderInterface

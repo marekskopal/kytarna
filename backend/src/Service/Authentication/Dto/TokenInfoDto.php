@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Authentication\Dto;
+namespace Kytarna\Service\Authentication\Dto;
 
 final readonly class TokenInfoDto
 {

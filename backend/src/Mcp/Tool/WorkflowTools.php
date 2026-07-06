@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Mcp\Tool;
+namespace Kytarna\Mcp\Tool;
 
-use Kytario\Mcp\Dto\McpStatusDto;
-use Kytario\Mcp\Dto\McpStatusListDto;
-use Kytario\Mcp\McpUserContextInterface;
-use Kytario\Model\Entity\Enum\StatusTypeEnum;
-use Kytario\Model\Entity\Status;
-use Kytario\Model\Entity\Workflow;
-use Kytario\Service\Auth\PermissionCheckerInterface;
-use Kytario\Service\Provider\CourseProviderInterface;
-use Kytario\Service\Provider\StatusProviderInterface;
-use Kytario\Service\Provider\WorkflowProviderInterface;
-use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Kytarna\Mcp\Dto\McpStatusDto;
+use Kytarna\Mcp\Dto\McpStatusListDto;
+use Kytarna\Mcp\McpUserContextInterface;
+use Kytarna\Model\Entity\Enum\StatusTypeEnum;
+use Kytarna\Model\Entity\Status;
+use Kytarna\Model\Entity\Workflow;
+use Kytarna\Service\Auth\PermissionCheckerInterface;
+use Kytarna\Service\Provider\CourseProviderInterface;
+use Kytarna\Service\Provider\StatusProviderInterface;
+use Kytarna\Service\Provider\WorkflowProviderInterface;
+use Kytarna\Service\Provider\WorkspaceProviderInterface;
 use Mcp\Capability\Attribute\McpTool;
 use RuntimeException;
 

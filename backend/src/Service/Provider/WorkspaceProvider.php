@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider;
+namespace Kytarna\Service\Provider;
 
 use DateTimeImmutable;
 use Iterator;
-use Kytario\Model\Entity\Enum\EventTypeEnum;
-use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Entity\Workspace;
-use Kytario\Model\Entity\WorkspaceUser;
-use Kytario\Model\Repository\UserRepository;
-use Kytario\Model\Repository\WorkspaceRepository;
-use Kytario\Model\Repository\WorkspaceUserRepository;
-use Kytario\Validator\TextFieldValidator;
+use Kytarna\Model\Entity\Enum\EventTypeEnum;
+use Kytarna\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Entity\Workspace;
+use Kytarna\Model\Entity\WorkspaceUser;
+use Kytarna\Model\Repository\UserRepository;
+use Kytarna\Model\Repository\WorkspaceRepository;
+use Kytarna\Model\Repository\WorkspaceUserRepository;
+use Kytarna\Validator\TextFieldValidator;
 use RuntimeException;
 
 final readonly class WorkspaceProvider implements WorkspaceProviderInterface

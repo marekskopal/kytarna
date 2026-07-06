@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Payload;
+namespace Kytarna\Service\Payload;
 
-use Kytario\Dto\ArrayFactoryInterface;
-use Kytario\Jobs\Message\ReceivedMessageInterface;
+use Kytarna\Dto\ArrayFactoryInterface;
+use Kytarna\Jobs\Message\ReceivedMessageInterface;
 
 interface PayloadServiceInterface
 {

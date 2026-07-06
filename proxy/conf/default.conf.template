@@ -70,7 +70,7 @@ server {
     }
 
     if ($host != "${PROXY_HOST}") {
-        return  301 $scheme://www.kytario.com$request_uri;
+        return  301 $scheme://www.kytarna.com$request_uri;
     }
 
     location = /api/authentication/login {

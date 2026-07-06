@@ -2,27 +2,27 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\Service\Notification;
+namespace Kytarna\Tests\Service\Notification;
 
 use DateTimeImmutable;
-use Kytario\Model\Entity\Course;
-use Kytario\Model\Entity\Enum\ActorTypeEnum;
-use Kytario\Model\Entity\Enum\EventTypeEnum;
-use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
-use Kytario\Model\Entity\Event;
-use Kytario\Model\Entity\Lecture;
-use Kytario\Model\Entity\Notification;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Entity\Workspace;
-use Kytario\Model\Repository\LectureRepository;
-use Kytario\Model\Repository\StatusRepository;
-use Kytario\Model\Repository\WorkflowRepository;
-use Kytario\Service\Notification\NotificationDispatcher;
-use Kytario\Service\Notification\NotificationDispatcherInterface;
-use Kytario\Service\Provider\LectureWatcherProviderInterface;
-use Kytario\Service\Provider\NotificationProviderInterface;
-use Kytario\Tests\Support\Fixture;
-use Kytario\Tests\Support\IntegrationTestCase;
+use Kytarna\Model\Entity\Course;
+use Kytarna\Model\Entity\Enum\ActorTypeEnum;
+use Kytarna\Model\Entity\Enum\EventTypeEnum;
+use Kytarna\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytarna\Model\Entity\Event;
+use Kytarna\Model\Entity\Lecture;
+use Kytarna\Model\Entity\Notification;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Entity\Workspace;
+use Kytarna\Model\Repository\LectureRepository;
+use Kytarna\Model\Repository\StatusRepository;
+use Kytarna\Model\Repository\WorkflowRepository;
+use Kytarna\Service\Notification\NotificationDispatcher;
+use Kytarna\Service\Notification\NotificationDispatcherInterface;
+use Kytarna\Service\Provider\LectureWatcherProviderInterface;
+use Kytarna\Service\Provider\NotificationProviderInterface;
+use Kytarna\Tests\Support\Fixture;
+use Kytarna\Tests\Support\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use const JSON_THROW_ON_ERROR;
 

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider;
+namespace Kytarna\Service\Provider;
 
 use DateTimeImmutable;
-use Kytario\Dto\PasswordResetQueueDto;
-use Kytario\Model\Entity\PasswordResetToken;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Repository\PasswordResetTokenRepository;
-use Kytario\Service\Authentication\RateLimitConfig;
-use Kytario\Service\Queue\Enum\QueueEnum;
-use Kytario\Service\Queue\QueuePublisher;
+use Kytarna\Dto\PasswordResetQueueDto;
+use Kytarna\Model\Entity\PasswordResetToken;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Repository\PasswordResetTokenRepository;
+use Kytarna\Service\Authentication\RateLimitConfig;
+use Kytarna\Service\Queue\Enum\QueueEnum;
+use Kytarna\Service\Queue\QueuePublisher;
 use RuntimeException;
 use SensitiveParameter;
 use const FILTER_VALIDATE_EMAIL;

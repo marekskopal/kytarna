@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\OAuth;
+namespace Kytarna\Tests\OAuth;
 
-use Kytario\OAuth\AuthorizationService;
-use Kytario\OAuth\AuthorizationServiceInterface;
-use Kytario\OAuth\ClientServiceInterface;
-use Kytario\Tests\Support\AppHarness;
-use Kytario\Tests\Support\Fixture;
-use Kytario\Tests\Support\IntegrationTestCase;
+use Kytarna\OAuth\AuthorizationService;
+use Kytarna\OAuth\AuthorizationServiceInterface;
+use Kytarna\OAuth\ClientServiceInterface;
+use Kytarna\Tests\Support\AppHarness;
+use Kytarna\Tests\Support\Fixture;
+use Kytarna\Tests\Support\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(AuthorizationService::class)]

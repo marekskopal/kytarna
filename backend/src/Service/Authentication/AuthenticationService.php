@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Authentication;
+namespace Kytarna\Service\Authentication;
 
 use Firebase\JWT\JWT;
-use Kytario\Dto\AuthenticationDto;
-use Kytario\Dto\CredentialsDto;
-use Kytario\Model\Entity\User;
-use Kytario\Service\Authentication\Exception\AuthenticationException;
-use Kytario\Service\Provider\UserProviderInterface;
+use Kytarna\Dto\AuthenticationDto;
+use Kytarna\Dto\CredentialsDto;
+use Kytarna\Model\Entity\User;
+use Kytarna\Service\Authentication\Exception\AuthenticationException;
+use Kytarna\Service\Provider\UserProviderInterface;
 
 final readonly class AuthenticationService implements AuthenticationServiceInterface
 {

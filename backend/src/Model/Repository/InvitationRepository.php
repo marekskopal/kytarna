@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Model\Repository;
+namespace Kytarna\Model\Repository;
 
 use DateTimeImmutable;
 use Iterator;
-use Kytario\Model\Entity\Invitation;
+use Kytarna\Model\Entity\Invitation;
 use MarekSkopal\ORM\Repository\AbstractRepository;
 
 /** @extends AbstractRepository<Invitation> */

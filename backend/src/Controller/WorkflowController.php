@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Controller;
+namespace Kytarna\Controller;
 
-use Kytario\Dto\WorkflowDto;
-use Kytario\Dto\WorkflowUpdateDto;
-use Kytario\Dto\WorkflowWithStatusesDto;
-use Kytario\Response\ErrorResponse;
-use Kytario\Response\NotAuthorizedResponse;
-use Kytario\Response\NotFoundResponse;
-use Kytario\Route\Routes;
-use Kytario\Service\Auth\PermissionCheckerInterface;
-use Kytario\Service\Provider\CourseProviderInterface;
-use Kytario\Service\Provider\StatusProviderInterface;
-use Kytario\Service\Provider\WorkflowProviderInterface;
-use Kytario\Service\Provider\WorkspaceProviderInterface;
-use Kytario\Service\Request\RequestServiceInterface;
+use Kytarna\Dto\WorkflowDto;
+use Kytarna\Dto\WorkflowUpdateDto;
+use Kytarna\Dto\WorkflowWithStatusesDto;
+use Kytarna\Response\ErrorResponse;
+use Kytarna\Response\NotAuthorizedResponse;
+use Kytarna\Response\NotFoundResponse;
+use Kytarna\Route\Routes;
+use Kytarna\Service\Auth\PermissionCheckerInterface;
+use Kytarna\Service\Provider\CourseProviderInterface;
+use Kytarna\Service\Provider\StatusProviderInterface;
+use Kytarna\Service\Provider\WorkflowProviderInterface;
+use Kytarna\Service\Provider\WorkspaceProviderInterface;
+use Kytarna\Service\Request\RequestServiceInterface;
 use Laminas\Diactoros\Response\JsonResponse;
 use MarekSkopal\Router\Attribute\RouteGet;
 use MarekSkopal\Router\Attribute\RoutePut;

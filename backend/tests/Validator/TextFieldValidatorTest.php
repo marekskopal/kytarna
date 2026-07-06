@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\Validator;
+namespace Kytarna\Tests\Validator;
 
-use Kytario\Validator\TextFieldValidator;
+use Kytarna\Validator\TextFieldValidator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;

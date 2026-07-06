@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Tab;
+namespace Kytarna\Service\Tab;
 
 use JsonException;
-use Kytario\Service\Tab\Dto\TabConversionResult;
-use Kytario\Service\Tab\Dto\TabMetadata;
-use Kytario\Service\Tab\Dto\TabValidationError;
-use Kytario\Service\Tab\Dto\TabValidationResult;
-use Kytario\Service\Tab\Exception\TabServiceException;
-use Kytario\Service\Tab\Exception\TabValidationException;
+use Kytarna\Service\Tab\Dto\TabConversionResult;
+use Kytarna\Service\Tab\Dto\TabMetadata;
+use Kytarna\Service\Tab\Dto\TabValidationError;
+use Kytarna\Service\Tab\Dto\TabValidationResult;
+use Kytarna\Service\Tab\Exception\TabServiceException;
+use Kytarna\Service\Tab\Exception\TabValidationException;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\Exception\ExceptionInterface as HttpClientExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;

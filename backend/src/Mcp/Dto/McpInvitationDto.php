@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Mcp\Dto;
+namespace Kytarna\Mcp\Dto;
 
-use Kytario\Model\Entity\Invitation;
+use Kytarna\Model\Entity\Invitation;
 use const DATE_ATOM;
 
 final readonly class McpInvitationDto

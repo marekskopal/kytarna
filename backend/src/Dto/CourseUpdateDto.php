@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Dto;
+namespace Kytarna\Dto;
 
 /** @implements ArrayFactoryInterface<array{name?: string, description?: ?string}> */
 final readonly class CourseUpdateDto implements ArrayFactoryInterface

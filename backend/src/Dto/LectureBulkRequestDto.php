@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Dto;
+namespace Kytarna\Dto;
 
-use Kytario\Service\Provider\Enum\BulkOpEnum;
+use Kytarna\Service\Provider\Enum\BulkOpEnum;
 use RuntimeException;
 
 /** @implements ArrayFactoryInterface<array<string, mixed>> */

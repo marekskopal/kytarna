@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Actor;
+namespace Kytarna\Service\Actor;
 
-use Kytario\Model\Entity\Enum\ActorTypeEnum;
+use Kytarna\Model\Entity\Enum\ActorTypeEnum;
 
 /**
  * Per-request scope flag for who initiated the current action.

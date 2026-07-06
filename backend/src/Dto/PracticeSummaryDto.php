@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Dto;
+namespace Kytarna\Dto;
 
-use Kytario\Service\Provider\Dto\PracticeSummary;
+use Kytarna\Service\Provider\Dto\PracticeSummary;
 
 final readonly class PracticeSummaryDto
 {

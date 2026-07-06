@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Model\Entity;
+namespace Kytarna\Model\Entity;
 
-use Kytario\Model\Entity\Enum\ActorTypeEnum;
-use Kytario\Model\Entity\Enum\EventTypeEnum;
-use Kytario\Model\Repository\EventRepository;
+use Kytarna\Model\Entity\Enum\ActorTypeEnum;
+use Kytarna\Model\Entity\Enum\EventTypeEnum;
+use Kytarna\Model\Repository\EventRepository;
 use MarekSkopal\ORM\Attribute\Column;
 use MarekSkopal\ORM\Attribute\ColumnEnum;
 use MarekSkopal\ORM\Attribute\Entity;

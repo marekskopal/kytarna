@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Authentication\Exception;
+namespace Kytarna\Service\Authentication\Exception;
 
 use RuntimeException;
 use Throwable;

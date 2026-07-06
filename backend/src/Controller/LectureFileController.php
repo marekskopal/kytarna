@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Controller;
+namespace Kytarna\Controller;
 
-use Kytario\Dto\LectureFileDto;
-use Kytario\Model\Entity\Lecture;
-use Kytario\Model\Entity\LectureFile;
-use Kytario\Model\Entity\User;
-use Kytario\Response\ErrorResponse;
-use Kytario\Response\NotFoundResponse;
-use Kytario\Response\OkResponse;
-use Kytario\Route\Routes;
-use Kytario\Service\Provider\LectureCodeResolverInterface;
-use Kytario\Service\Provider\LectureFileProviderInterface;
-use Kytario\Service\Request\RequestServiceInterface;
+use Kytarna\Dto\LectureFileDto;
+use Kytarna\Model\Entity\Lecture;
+use Kytarna\Model\Entity\LectureFile;
+use Kytarna\Model\Entity\User;
+use Kytarna\Response\ErrorResponse;
+use Kytarna\Response\NotFoundResponse;
+use Kytarna\Response\OkResponse;
+use Kytarna\Route\Routes;
+use Kytarna\Service\Provider\LectureCodeResolverInterface;
+use Kytarna\Service\Provider\LectureFileProviderInterface;
+use Kytarna\Service\Request\RequestServiceInterface;
 use Laminas\Diactoros\Response;
 use Laminas\Diactoros\Response\JsonResponse;
 use Laminas\Diactoros\Stream;

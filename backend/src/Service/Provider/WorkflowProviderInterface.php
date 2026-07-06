@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider;
+namespace Kytarna\Service\Provider;
 
 use Iterator;
-use Kytario\Model\Entity\Course;
-use Kytario\Model\Entity\Workflow;
-use Kytario\Model\Entity\Workspace;
+use Kytarna\Model\Entity\Course;
+use Kytarna\Model\Entity\Workflow;
+use Kytarna\Model\Entity\Workspace;
 
 interface WorkflowProviderInterface
 {

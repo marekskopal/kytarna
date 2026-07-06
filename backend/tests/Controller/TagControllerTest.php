@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\Controller;
+namespace Kytarna\Tests\Controller;
 
-use Kytario\Controller\TagController;
-use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
-use Kytario\Tests\Support\Fixture;
-use Kytario\Tests\Support\IntegrationTestCase;
+use Kytarna\Controller\TagController;
+use Kytarna\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytarna\Tests\Support\Fixture;
+use Kytarna\Tests\Support\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(TagController::class)]

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\App\Bootstrap;
+namespace Kytarna\App\Bootstrap;
 
-use Kytario\Service\Cors\CorsPolicy;
+use Kytarna\Service\Cors\CorsPolicy;
 use RuntimeException;
 
 final readonly class EnvironmentValidator
@@ -31,12 +31,12 @@ final readonly class EnvironmentValidator
 	];
 
 	private const array ProductionDefaultSecrets = [
-		'MYSQL_PASSWORD' => 'kytario',
-		'MYSQL_ROOT_PASSWORD' => 'kytario',
+		'MYSQL_PASSWORD' => 'kytarna',
+		'MYSQL_ROOT_PASSWORD' => 'kytarna',
 		'S3_ACCESS_KEY' => 'minioadmin',
 		'S3_SECRET_KEY' => 'minioadmin',
-		'REDIS_PASSWORD' => 'kytario',
-		'RABBITMQ_PASSWORD' => 'kytario',
+		'REDIS_PASSWORD' => 'kytarna',
+		'RABBITMQ_PASSWORD' => 'kytarna',
 	];
 
 	/** @param array<string, string> $env */

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\Middleware;
+namespace Kytarna\Tests\Middleware;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use Kytario\Middleware\AuthorizationMiddleware;
-use Kytario\Service\Authentication\AuthenticationServiceInterface;
-use Kytario\Service\Provider\UserProviderInterface;
-use Kytario\Tests\Support\Fixture;
-use Kytario\Tests\Support\IntegrationTestCase;
+use Kytarna\Middleware\AuthorizationMiddleware;
+use Kytarna\Service\Authentication\AuthenticationServiceInterface;
+use Kytarna\Service\Provider\UserProviderInterface;
+use Kytarna\Tests\Support\Fixture;
+use Kytarna\Tests\Support\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(AuthorizationMiddleware::class)]

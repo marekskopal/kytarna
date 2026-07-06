@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider;
+namespace Kytarna\Service\Provider;
 
 use DateTimeImmutable;
-use Kytario\Model\Entity\Enum\LocaleEnum;
-use Kytario\Model\Entity\Enum\ThemeEnum;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Repository\UserRepository;
+use Kytarna\Model\Entity\Enum\LocaleEnum;
+use Kytarna\Model\Entity\Enum\ThemeEnum;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Repository\UserRepository;
 use SensitiveParameter;
 use const PASSWORD_BCRYPT;
 

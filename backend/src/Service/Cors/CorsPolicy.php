@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Cors;
+namespace Kytarna\Service\Cors;
 
 final readonly class CorsPolicy
 {

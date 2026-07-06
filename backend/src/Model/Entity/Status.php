@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Model\Entity;
+namespace Kytarna\Model\Entity;
 
-use Kytario\Model\Entity\Enum\StatusTypeEnum;
-use Kytario\Model\Repository\StatusRepository;
+use Kytarna\Model\Entity\Enum\StatusTypeEnum;
+use Kytarna\Model\Repository\StatusRepository;
 use MarekSkopal\ORM\Attribute\Column;
 use MarekSkopal\ORM\Attribute\ColumnEnum;
 use MarekSkopal\ORM\Attribute\Entity;

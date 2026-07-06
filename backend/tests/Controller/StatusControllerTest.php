@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\Controller;
+namespace Kytarna\Tests\Controller;
 
-use Kytario\Controller\StatusController;
-use Kytario\Model\Repository\StatusRepository;
-use Kytario\Model\Repository\WorkflowRepository;
-use Kytario\Tests\Support\Fixture;
-use Kytario\Tests\Support\IntegrationTestCase;
+use Kytarna\Controller\StatusController;
+use Kytarna\Model\Repository\StatusRepository;
+use Kytarna\Model\Repository\WorkflowRepository;
+use Kytarna\Tests\Support\Fixture;
+use Kytarna\Tests\Support\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(StatusController::class)]

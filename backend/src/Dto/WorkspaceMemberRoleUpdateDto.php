@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Dto;
+namespace Kytarna\Dto;
 
 /** @implements ArrayFactoryInterface<array{role: string}> */
 final readonly class WorkspaceMemberRoleUpdateDto implements ArrayFactoryInterface

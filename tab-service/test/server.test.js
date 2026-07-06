@@ -5,8 +5,8 @@ import { createApp } from '../src/app.js';
 
 // A real riff: two bars of an E-minor pentatonic run, standard tuning, 96 bpm.
 const VALID_ALPHATEX = `
-\\title "Kytario Test Riff"
-\\artist "Kytario"
+\\title "Kytarna Test Riff"
+\\artist "Kytarna"
 \\album "Fixtures"
 \\tempo 96
 .
@@ -58,8 +58,8 @@ describe('tab-service', () => {
         const body = await res.json();
         assert.equal(body.valid, true);
         assert.deepEqual(body.metadata, {
-            title: 'Kytario Test Riff',
-            artist: 'Kytario',
+            title: 'Kytarna Test Riff',
+            artist: 'Kytarna',
             album: 'Fixtures',
             tempo: 96,
             trackCount: 1,
@@ -118,10 +118,10 @@ describe('tab-service', () => {
         assert.equal(res.status, 200);
         const body = await res.json();
         assert.equal(typeof body.alphaTex, 'string');
-        assert.match(body.alphaTex, /\\title "Kytario Test Riff"/);
+        assert.match(body.alphaTex, /\\title "Kytarna Test Riff"/);
         assert.match(body.alphaTex, /\\tuning \(E4 B3 G3 D3 A2 E2\)/);
-        assert.equal(body.metadata.title, 'Kytario Test Riff');
-        assert.equal(body.metadata.artist, 'Kytario');
+        assert.equal(body.metadata.title, 'Kytarna Test Riff');
+        assert.equal(body.metadata.artist, 'Kytarna');
         assert.equal(body.metadata.tempo, 96);
         assert.equal(body.metadata.trackCount, 1);
         assert.deepEqual(body.metadata.tracks[0].tuning, ['E4', 'B3', 'G3', 'D3', 'A2', 'E2']);
@@ -134,7 +134,7 @@ describe('tab-service', () => {
         });
         const revalidated = await revalidate.json();
         assert.equal(revalidated.valid, true);
-        assert.equal(revalidated.metadata.title, 'Kytario Test Riff');
+        assert.equal(revalidated.metadata.title, 'Kytarna Test Riff');
     });
 
     it('POST /convert rejects garbage bytes with 422', async () => {

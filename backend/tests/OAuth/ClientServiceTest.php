@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\OAuth;
+namespace Kytarna\Tests\OAuth;
 
-use Kytario\OAuth\ClientService;
-use Kytario\OAuth\ClientServiceInterface;
-use Kytario\Tests\Support\IntegrationTestCase;
+use Kytarna\OAuth\ClientService;
+use Kytarna\OAuth\ClientServiceInterface;
+use Kytarna\Tests\Support\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use RuntimeException;

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\Middleware;
+namespace Kytarna\Tests\Middleware;
 
-use Kytario\Middleware\CorsMiddleware;
-use Kytario\Service\Cors\CorsPolicy;
+use Kytarna\Middleware\CorsMiddleware;
+use Kytarna\Service\Cors\CorsPolicy;
 use Laminas\Diactoros\Response;
 use Laminas\Diactoros\Response\TextResponse;
 use Laminas\Diactoros\ServerRequest;

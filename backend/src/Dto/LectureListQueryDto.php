@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Dto;
+namespace Kytarna\Dto;
 
-use Kytario\Model\Repository\Enum\ArchivedFilterEnum;
-use Kytario\Model\Repository\Enum\LectureOrderByEnum;
-use Kytario\Model\Repository\Enum\OrderDirectionEnum;
+use Kytarna\Model\Repository\Enum\ArchivedFilterEnum;
+use Kytarna\Model\Repository\Enum\LectureOrderByEnum;
+use Kytarna\Model\Repository\Enum\OrderDirectionEnum;
 use RuntimeException;
 use const PHP_INT_MAX;
 

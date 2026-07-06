@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="frontend/src/assets/brand/logo-wordmark-inverse.svg" alt="Kytario" width="320" />
+  <img src="frontend/src/assets/brand/logo-wordmark-inverse.svg" alt="Kytarna" width="320" />
 </p>
 
 <p align="center">
@@ -14,12 +14,12 @@
 </p>
 
 <p align="center">
-  <a href="https://www.kytario.com">www.kytario.com</a> · MCP endpoint: <code>https://www.kytario.com/mcp</code>
+  <a href="https://www.kytarna.com">www.kytarna.com</a> · MCP endpoint: <code>https://www.kytarna.com/mcp</code>
 </p>
 
 ---
 
-## Why Kytario
+## Why Kytarna
 
 - **MCP-native.** Streamable HTTP transport, session persistence, tools auto-discovered from the backend.
 - **OAuth 2.1 + PKCE for agents.** No shared API keys, no copy-paste tokens — each agent has its own credential.
@@ -28,7 +28,7 @@
 - **Four views of your work.** The same tasks as a drag-and-drop Kanban board, a workspace-wide table with saved views, a calendar, or a timeline (Gantt-style, spanning start → due dates).
 - **Rich tasks.** Markdown descriptions, subtasks and typed relations, checklists, threaded comments with `@mentions`, watchers and an in-app notification inbox, reusable task templates, archiving, custom fields, custom priorities, tags, assignees, file attachments, and realtime updates over Mercure.
 - **Typo-tolerant search.** Meilisearch indexes task names, descriptions, comments, text custom-field values, and tags — exposed both on the web and as an MCP tool.
-- **Scriptable automations.** Per-workspace JavaScript that runs in a hardened V8 sandbox (`ext-v8js`) — on a schedule, on workspace events, or on demand — with a typed `kytario.*` host API, encrypted variables, and an in-app Monaco editor.
+- **Scriptable automations.** Per-workspace JavaScript that runs in a hardened V8 sandbox (`ext-v8js`) — on a schedule, on workspace events, or on demand — with a typed `kytarna.*` host API, encrypted variables, and an in-app Monaco editor.
 
 ## Stack
 
@@ -136,7 +136,7 @@ loop is wired (`request-password-reset` → `confirm-password-reset`). Setting
 
 ## Roles & permissions
 
-Authorization is centralized in `Kytario\Service\Auth\PermissionChecker`. Every
+Authorization is centralized in `Kytarna\Service\Auth\PermissionChecker`. Every
 mutating controller routes through it.
 
 - **SystemAdmin** — global; passes every `can*` check. Operates on workspaces
@@ -269,8 +269,8 @@ stays out of FrankenPHP and the main AMQP consumer.
 - **Triggers.** `Manual` (run button / API), `Scheduled` (5-field cron, ticked
   every minute by the backend container's built-in supercronic cron), or
   `Event` (subscribe to task events; the
-  payload is exposed as `kytario.context.event`).
-- **Host API.** A typed `kytario.*` global: `tasks` (list / get / create / update /
+  payload is exposed as `kytarna.context.event`).
+- **Host API.** A typed `kytarna.*` global: `tasks` (list / get / create / update /
   move / delete / setTags / addComment), `projects`, `workflow(projectId)`,
   `vars` (workspace key/value
   store; secrets encrypted at rest with AES-256-GCM and redacted from logs),
@@ -278,7 +278,7 @@ stays out of FrankenPHP and the main AMQP consumer.
 - **Per-run limits.** 5 s CPU, 64 MB memory, 20 `fetch` calls, 200 task-API
   calls, no filesystem. Every run records status, duration, logs, error, and
   fetch / task-API call counts in the run history.
-- **Editor.** In-app Monaco editor at `/settings/scripts` with `kytario.*`
+- **Editor.** In-app Monaco editor at `/settings/scripts` with `kytarna.*`
   autocomplete, an API reference panel, trigger config, and an output /
   problems / run-history console. Managing scripts requires workspace Admin
   (`canManageScripts`); the same surface is available to agents via `ScriptTools`.
@@ -389,7 +389,7 @@ php bin/console migration:run
   deprecation / phpunit / shipmonk / cognitive-complexity / unused-public
   rules. PHPCS uses the slevomat ruleset (tabs, single-line method signatures
   ≤ 140 chars). A custom PHPStan extension
-  (`Kytario\PhpStan\OrmReadWritePropertiesExtension`) marks `#[Column]` /
+  (`Kytarna\PhpStan\OrmReadWritePropertiesExtension`) marks `#[Column]` /
   `#[ManyToOne]` / `#[ColumnEnum]` properties as ORM-managed (always read,
   always written, always initialized).
 - **Frontend**: angular-eslint + `@typescript-eslint`, `simple-import-sort`,

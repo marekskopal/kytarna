@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Jobs\Message;
+namespace Kytarna\Jobs\Message;
 
 interface ReceivedMessageInterface
 {

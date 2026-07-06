@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider;
+namespace Kytarna\Service\Provider;
 
 use DateTimeImmutable;
-use Kytario\Dto\EmailVerificationQueueDto;
-use Kytario\Model\Entity\EmailVerificationToken;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Repository\EmailVerificationTokenRepository;
-use Kytario\Service\Queue\Enum\QueueEnum;
-use Kytario\Service\Queue\QueuePublisher;
+use Kytarna\Dto\EmailVerificationQueueDto;
+use Kytarna\Model\Entity\EmailVerificationToken;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Repository\EmailVerificationTokenRepository;
+use Kytarna\Service\Queue\Enum\QueueEnum;
+use Kytarna\Service\Queue\QueuePublisher;
 use RuntimeException;
 
 final readonly class EmailVerificationProvider implements EmailVerificationProviderInterface

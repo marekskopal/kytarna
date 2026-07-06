@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Storage;
+namespace Kytarna\Service\Storage;
 
 interface FileStorageInterface
 {

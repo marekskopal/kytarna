@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\Mcp;
+namespace Kytarna\Tests\Mcp;
 
-use Kytario\Mcp\McpUserContextInterface;
-use Kytario\Mcp\Tool\TabTools;
-use Kytario\Model\Entity\Lecture;
-use Kytario\Model\Repository\LectureFileRepository;
-use Kytario\Model\Repository\TabRepository;
-use Kytario\Service\Provider\LectureProviderInterface;
-use Kytario\Service\Provider\TabProvider;
-use Kytario\Service\Provider\WorkspaceProviderInterface;
-use Kytario\Service\Tab\Dto\TabConversionResult;
-use Kytario\Service\Tab\Dto\TabMetadata;
-use Kytario\Tests\Service\Provider\Fake\FakeLectureFileProvider;
-use Kytario\Tests\Support\FakeTabServiceClient;
-use Kytario\Tests\Support\Fixture;
-use Kytario\Tests\Support\IntegrationTestCase;
+use Kytarna\Mcp\McpUserContextInterface;
+use Kytarna\Mcp\Tool\TabTools;
+use Kytarna\Model\Entity\Lecture;
+use Kytarna\Model\Repository\LectureFileRepository;
+use Kytarna\Model\Repository\TabRepository;
+use Kytarna\Service\Provider\LectureProviderInterface;
+use Kytarna\Service\Provider\TabProvider;
+use Kytarna\Service\Provider\WorkspaceProviderInterface;
+use Kytarna\Service\Tab\Dto\TabConversionResult;
+use Kytarna\Service\Tab\Dto\TabMetadata;
+use Kytarna\Tests\Service\Provider\Fake\FakeLectureFileProvider;
+use Kytarna\Tests\Support\FakeTabServiceClient;
+use Kytarna\Tests\Support\Fixture;
+use Kytarna\Tests\Support\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(TabTools::class)]

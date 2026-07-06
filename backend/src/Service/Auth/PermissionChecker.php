@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Auth;
+namespace Kytarna\Service\Auth;
 
-use Kytario\Model\Entity\Enum\SystemRoleEnum;
-use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Entity\Workspace;
-use Kytario\Model\Entity\WorkspaceUser;
-use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Kytarna\Model\Entity\Enum\SystemRoleEnum;
+use Kytarna\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Entity\Workspace;
+use Kytarna\Model\Entity\WorkspaceUser;
+use Kytarna\Service\Provider\WorkspaceProviderInterface;
 
 final readonly class PermissionChecker implements PermissionCheckerInterface
 {

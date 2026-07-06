@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Dto;
+namespace Kytarna\Dto;
 
-use Kytario\Model\Entity\Enum\StatusTypeEnum;
+use Kytarna\Model\Entity\Enum\StatusTypeEnum;
 
 /** @implements ArrayFactoryInterface<array{name: string, color: string, type: string, position?: ?int}> */
 final readonly class StatusCreateDto implements ArrayFactoryInterface

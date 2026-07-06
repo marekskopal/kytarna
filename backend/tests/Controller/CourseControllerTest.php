@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\Controller;
+namespace Kytarna\Tests\Controller;
 
-use Kytario\Controller\CourseController;
-use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
-use Kytario\Model\Repository\StatusRepository;
-use Kytario\Model\Repository\UserRepository;
-use Kytario\Tests\Support\Fixture;
-use Kytario\Tests\Support\IntegrationTestCase;
+use Kytarna\Controller\CourseController;
+use Kytarna\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytarna\Model\Repository\StatusRepository;
+use Kytarna\Model\Repository\UserRepository;
+use Kytarna\Tests\Support\Fixture;
+use Kytarna\Tests\Support\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(CourseController::class)]

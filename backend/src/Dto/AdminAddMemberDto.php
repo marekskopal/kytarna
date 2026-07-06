@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Dto;
+namespace Kytarna\Dto;
 
 /** @implements ArrayFactoryInterface<array{userId: int, role?: string}> */
 final readonly class AdminAddMemberDto implements ArrayFactoryInterface

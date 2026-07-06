@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Middleware;
+namespace Kytarna\Middleware;
 
-use Kytario\Service\Cors\CorsPolicy;
+use Kytarna\Service\Cors\CorsPolicy;
 use Laminas\Diactoros\Response\EmptyResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

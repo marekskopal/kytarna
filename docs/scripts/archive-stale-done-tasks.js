@@ -16,7 +16,7 @@
 // is drained across consecutive daily runs (CALL_BUDGET below). Steady-state
 // runs archive only the few tasks that newly cross the 14-day line.
 
-var TARGET_PROJECTS = ['Kytario', 'FinGather'];
+var TARGET_PROJECTS = ['Kytarna', 'FinGather'];
 var MAX_AGE_DAYS = 14;
 var CALL_BUDGET = 180; // stay safely under the sandbox's 200 task-API calls/run
 
@@ -25,21 +25,21 @@ var calls = 0;
 var archived = 0;
 var deferred = 0;
 
-var projects = kytario.projects.list();
+var projects = kytarna.projects.list();
 calls++;
 
 TARGET_PROJECTS.forEach(function (name) {
     var project = findByName(projects, name);
     if (!project) {
-        kytario.log('Project not found, skipping: ' + name);
+        kytarna.log('Project not found, skipping: ' + name);
         return;
     }
 
-    var statuses = kytario.workflow(project.id).statuses();
+    var statuses = kytarna.workflow(project.id).statuses();
     calls++;
     var finishStatuses = statuses.filter(function (s) { return s.type === 'Finish'; });
     if (finishStatuses.length === 0) {
-        kytario.log('No Finish status in "' + name + '", skipping.');
+        kytarna.log('No Finish status in "' + name + '", skipping.');
         return;
     }
 
@@ -57,23 +57,23 @@ TARGET_PROJECTS.forEach(function (name) {
 
         var enteredAt = enteredStatusAt(task.id, task.statusId);
         if (enteredAt === null) {
-            kytario.log('No timestamp for ' + task.code + ', skipping.');
+            kytarna.log('No timestamp for ' + task.code + ', skipping.');
             continue;
         }
 
         if (enteredAt <= cutoff) {
-            kytario.tasks.archive(task.id);
+            kytarna.tasks.archive(task.id);
             calls++;
             archived++;
-            kytario.log('Archived ' + task.code + ' — ' + task.name + ' (' + name + ' / ' + task.statusName + ')');
+            kytarna.log('Archived ' + task.code + ' — ' + task.name + ' (' + name + ' / ' + task.statusName + ')');
         }
     }
 });
 
 if (deferred > 0) {
-    kytario.log('Reached the per-run call budget; ' + deferred + ' task(s) deferred to the next daily run.');
+    kytarna.log('Reached the per-run call budget; ' + deferred + ' task(s) deferred to the next daily run.');
 }
-kytario.log('Done. Archived ' + archived + ' task(s).');
+kytarna.log('Done. Archived ' + archived + ' task(s).');
 
 // Read every active task sitting in any of the given Finish statuses.
 function collectTasks(finishStatuses) {
@@ -85,7 +85,7 @@ function collectTasks(finishStatuses) {
         var offset = 0;
 
         while (calls < CALL_BUDGET) {
-            var page = kytario.tasks.list({
+            var page = kytarna.tasks.list({
                 statusIds: [status.id],
                 includeArchived: false,
                 limit: pageSize,
@@ -115,7 +115,7 @@ function collectTasks(finishStatuses) {
 
 // Epoch-ms when the task last entered `statusId`, or null if unknown.
 function enteredStatusAt(taskId, statusId) {
-    var moves = kytario.events.list({ taskId: taskId, type: 'TaskMoved', limit: 50 });
+    var moves = kytarna.events.list({ taskId: taskId, type: 'TaskMoved', limit: 50 });
     calls++;
     for (var i = 0; i < moves.length; i++) { // newest first
         var meta = moves[i].metadata;
@@ -125,7 +125,7 @@ function enteredStatusAt(taskId, statusId) {
     }
 
     // Never moved into this status via an event → created directly in it.
-    var created = kytario.events.list({ taskId: taskId, type: 'TaskCreated', limit: 1 });
+    var created = kytarna.events.list({ taskId: taskId, type: 'TaskCreated', limit: 1 });
     calls++;
     if (created.length > 0) {
         return new Date(created[0].createdAt).getTime();

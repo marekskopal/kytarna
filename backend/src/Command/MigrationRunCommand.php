@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Command;
+namespace Kytarna\Command;
 
-use Kytario\App\ApplicationFactory;
+use Kytarna\App\ApplicationFactory;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

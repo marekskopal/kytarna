@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider;
+namespace Kytarna\Service\Provider;
 
 use DateTimeImmutable;
-use Kytario\Model\Entity\Enum\TabSourceTypeEnum;
-use Kytario\Model\Entity\Lecture;
-use Kytario\Model\Entity\LectureFile;
-use Kytario\Model\Entity\Tab;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Repository\TabRepository;
-use Kytario\Service\Tab\Dto\TabConversionResult;
-use Kytario\Service\Tab\Dto\TabMetadata;
-use Kytario\Service\Tab\Exception\TabValidationException;
-use Kytario\Service\Tab\TabServiceClientInterface;
-use Kytario\Validator\TextFieldValidator;
+use Kytarna\Model\Entity\Enum\TabSourceTypeEnum;
+use Kytarna\Model\Entity\Lecture;
+use Kytarna\Model\Entity\LectureFile;
+use Kytarna\Model\Entity\Tab;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Repository\TabRepository;
+use Kytarna\Service\Tab\Dto\TabConversionResult;
+use Kytarna\Service\Tab\Dto\TabMetadata;
+use Kytarna\Service\Tab\Exception\TabValidationException;
+use Kytarna\Service\Tab\TabServiceClientInterface;
+use Kytarna\Validator\TextFieldValidator;
 
 final readonly class TabProvider implements TabProviderInterface
 {

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider;
+namespace Kytarna\Service\Provider;
 
-use Kytario\Model\Entity\EmailVerificationToken;
-use Kytario\Model\Entity\User;
+use Kytarna\Model\Entity\EmailVerificationToken;
+use Kytarna\Model\Entity\User;
 
 interface EmailVerificationProviderInterface
 {

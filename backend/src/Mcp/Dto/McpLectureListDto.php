@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Mcp\Dto;
+namespace Kytarna\Mcp\Dto;
 
 final readonly class McpLectureListDto
 {

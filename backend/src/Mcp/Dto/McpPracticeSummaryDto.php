@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Mcp\Dto;
+namespace Kytarna\Mcp\Dto;
 
-use Kytario\Service\Provider\Dto\PracticeSummary;
+use Kytarna\Service\Provider\Dto\PracticeSummary;
 
 final readonly class McpPracticeSummaryDto
 {

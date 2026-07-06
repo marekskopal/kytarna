@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Validator;
+namespace Kytarna\Validator;
 
 use RuntimeException;
 

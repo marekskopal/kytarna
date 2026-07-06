@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider;
+namespace Kytarna\Service\Provider;
 
 use DateTimeImmutable;
 use Iterator;
-use Kytario\Model\Entity\Course;
-use Kytario\Model\Entity\Enum\ActorTypeEnum;
-use Kytario\Model\Entity\Enum\EventTypeEnum;
-use Kytario\Model\Entity\Event;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Entity\Workspace;
-use Kytario\Model\Repository\EventRepository;
-use Kytario\Service\Actor\ActorContextInterface;
-use Kytario\Service\Notification\NotificationDispatcherInterface;
+use Kytarna\Model\Entity\Course;
+use Kytarna\Model\Entity\Enum\ActorTypeEnum;
+use Kytarna\Model\Entity\Enum\EventTypeEnum;
+use Kytarna\Model\Entity\Event;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Entity\Workspace;
+use Kytarna\Model\Repository\EventRepository;
+use Kytarna\Service\Actor\ActorContextInterface;
+use Kytarna\Service\Notification\NotificationDispatcherInterface;
 use const JSON_THROW_ON_ERROR;
 
 final readonly class EventProvider implements EventProviderInterface

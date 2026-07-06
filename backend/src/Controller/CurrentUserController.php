@@ -2,28 +2,28 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Controller;
+namespace Kytarna\Controller;
 
 use DateTimeImmutable;
-use Kytario\Dto\ChangePasswordDto;
-use Kytario\Dto\CurrentUserUpdateDto;
-use Kytario\Dto\UserDto;
-use Kytario\Model\Entity\Enum\LocaleEnum;
-use Kytario\Model\Entity\Enum\ThemeEnum;
-use Kytario\Model\Repository\UserRepository;
-use Kytario\Response\ConflictResponse;
-use Kytario\Response\ErrorResponse;
-use Kytario\Response\NotAuthorizedResponse;
-use Kytario\Response\OkResponse;
-use Kytario\Route\Routes;
-use Kytario\Service\Auth\CurrentUserDeletionServiceInterface;
-use Kytario\Service\Auth\SoleOwnerException;
-use Kytario\Service\Auth\UserDataExportServiceInterface;
-use Kytario\Service\Provider\EmailVerificationProviderInterface;
-use Kytario\Service\Provider\SavedViewProviderInterface;
-use Kytario\Service\Provider\UserProviderInterface;
-use Kytario\Service\Request\RequestServiceInterface;
-use Kytario\Validator\PasswordValidator;
+use Kytarna\Dto\ChangePasswordDto;
+use Kytarna\Dto\CurrentUserUpdateDto;
+use Kytarna\Dto\UserDto;
+use Kytarna\Model\Entity\Enum\LocaleEnum;
+use Kytarna\Model\Entity\Enum\ThemeEnum;
+use Kytarna\Model\Repository\UserRepository;
+use Kytarna\Response\ConflictResponse;
+use Kytarna\Response\ErrorResponse;
+use Kytarna\Response\NotAuthorizedResponse;
+use Kytarna\Response\OkResponse;
+use Kytarna\Route\Routes;
+use Kytarna\Service\Auth\CurrentUserDeletionServiceInterface;
+use Kytarna\Service\Auth\SoleOwnerException;
+use Kytarna\Service\Auth\UserDataExportServiceInterface;
+use Kytarna\Service\Provider\EmailVerificationProviderInterface;
+use Kytarna\Service\Provider\SavedViewProviderInterface;
+use Kytarna\Service\Provider\UserProviderInterface;
+use Kytarna\Service\Request\RequestServiceInterface;
+use Kytarna\Validator\PasswordValidator;
 use Laminas\Diactoros\Response\JsonResponse;
 use MarekSkopal\Router\Attribute\RouteDelete;
 use MarekSkopal\Router\Attribute\RouteGet;
@@ -175,7 +175,7 @@ final readonly class CurrentUserController
 
 		return (new JsonResponse($payload))->withHeader(
 			'Content-Disposition',
-			sprintf('attachment; filename="kytario-export-%d.json"', $user->id),
+			sprintf('attachment; filename="kytarna-export-%d.json"', $user->id),
 		);
 	}
 }

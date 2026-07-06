@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Model\Entity;
+namespace Kytarna\Model\Entity;
 
 use DateTimeImmutable;
-use Kytario\Model\Repository\PasswordResetTokenRepository;
+use Kytarna\Model\Repository\PasswordResetTokenRepository;
 use MarekSkopal\ORM\Attribute\Column;
 use MarekSkopal\ORM\Attribute\Entity;
 use MarekSkopal\ORM\Attribute\ManyToOne;

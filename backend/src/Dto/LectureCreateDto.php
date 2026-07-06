@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Dto;
+namespace Kytarna\Dto;
 
-use Kytario\Model\Entity\Enum\DifficultyEnum;
+use Kytarna\Model\Entity\Enum\DifficultyEnum;
 use RuntimeException;
 
 /**

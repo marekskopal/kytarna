@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\Service\Provider;
+namespace Kytarna\Tests\Service\Provider;
 
-use Kytario\Service\Provider\ProgressProvider;
-use Kytario\Service\Provider\ProgressProviderInterface;
-use Kytario\Tests\Support\Fixture;
-use Kytario\Tests\Support\IntegrationTestCase;
+use Kytarna\Service\Provider\ProgressProvider;
+use Kytarna\Service\Provider\ProgressProviderInterface;
+use Kytarna\Tests\Support\Fixture;
+use Kytarna\Tests\Support\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(ProgressProvider::class)]

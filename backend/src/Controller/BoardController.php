@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Controller;
+namespace Kytarna\Controller;
 
-use Kytario\Dto\BoardDto;
-use Kytario\Dto\CourseDto;
-use Kytario\Dto\LectureDto;
-use Kytario\Dto\StatusDto;
-use Kytario\Dto\WorkflowDto;
-use Kytario\Model\Entity\Lecture;
-use Kytario\Model\Entity\Status;
-use Kytario\Response\NotFoundResponse;
-use Kytario\Route\Routes;
-use Kytario\Service\Provider\CourseProviderInterface;
-use Kytario\Service\Provider\LectureProviderInterface;
-use Kytario\Service\Provider\LectureTagProviderInterface;
-use Kytario\Service\Provider\StatusProviderInterface;
-use Kytario\Service\Provider\WorkflowProviderInterface;
-use Kytario\Service\Provider\WorkspaceProviderInterface;
-use Kytario\Service\Request\RequestServiceInterface;
+use Kytarna\Dto\BoardDto;
+use Kytarna\Dto\CourseDto;
+use Kytarna\Dto\LectureDto;
+use Kytarna\Dto\StatusDto;
+use Kytarna\Dto\WorkflowDto;
+use Kytarna\Model\Entity\Lecture;
+use Kytarna\Model\Entity\Status;
+use Kytarna\Response\NotFoundResponse;
+use Kytarna\Route\Routes;
+use Kytarna\Service\Provider\CourseProviderInterface;
+use Kytarna\Service\Provider\LectureProviderInterface;
+use Kytarna\Service\Provider\LectureTagProviderInterface;
+use Kytarna\Service\Provider\StatusProviderInterface;
+use Kytarna\Service\Provider\WorkflowProviderInterface;
+use Kytarna\Service\Provider\WorkspaceProviderInterface;
+use Kytarna\Service\Request\RequestServiceInterface;
 use Laminas\Diactoros\Response\JsonResponse;
 use MarekSkopal\Router\Attribute\RouteGet;
 use Psr\Http\Message\ResponseInterface;

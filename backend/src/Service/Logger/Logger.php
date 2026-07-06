@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Logger;
+namespace Kytarna\Service\Logger;
 
 use Psr\Log\LoggerInterface;
 use Tracy\Bridges\Psr\TracyToPsrLoggerAdapter;

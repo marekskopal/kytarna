@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Dto;
+namespace Kytarna\Dto;
 
-use Kytario\Model\Entity\Status;
-use Kytario\Model\Entity\Workflow;
+use Kytarna\Model\Entity\Status;
+use Kytarna\Model\Entity\Workflow;
 
 final readonly class WorkflowWithStatusesDto
 {

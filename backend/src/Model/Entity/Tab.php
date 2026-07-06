@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Model\Entity;
+namespace Kytarna\Model\Entity;
 
-use Kytario\Model\Entity\Enum\TabSourceTypeEnum;
-use Kytario\Model\Repository\TabRepository;
+use Kytarna\Model\Entity\Enum\TabSourceTypeEnum;
+use Kytarna\Model\Repository\TabRepository;
 use MarekSkopal\ORM\Attribute\Column;
 use MarekSkopal\ORM\Attribute\ColumnEnum;
 use MarekSkopal\ORM\Attribute\Entity;

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Dto;
+namespace Kytarna\Dto;
 
-use Kytario\Model\Entity\Lecture;
+use Kytarna\Model\Entity\Lecture;
 use const DATE_ATOM;
 
 final readonly class LectureListItemDto

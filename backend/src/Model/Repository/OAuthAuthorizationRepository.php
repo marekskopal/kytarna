@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Model\Repository;
+namespace Kytarna\Model\Repository;
 
 use ArrayIterator;
 use Iterator;
-use Kytario\Model\Entity\OAuthAuthorization;
+use Kytarna\Model\Entity\OAuthAuthorization;
 use MarekSkopal\ORM\Repository\AbstractRepository;
 
 /** @extends AbstractRepository<OAuthAuthorization> */

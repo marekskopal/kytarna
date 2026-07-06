@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Validator;
+namespace Kytarna\Validator;
 
 final readonly class PasswordValidator
 {

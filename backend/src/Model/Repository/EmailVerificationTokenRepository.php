@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Model\Repository;
+namespace Kytarna\Model\Repository;
 
-use Kytario\Model\Entity\EmailVerificationToken;
+use Kytarna\Model\Entity\EmailVerificationToken;
 use MarekSkopal\ORM\Repository\AbstractRepository;
 
 /** @extends AbstractRepository<EmailVerificationToken> */

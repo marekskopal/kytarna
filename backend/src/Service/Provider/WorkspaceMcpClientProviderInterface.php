@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider;
+namespace Kytarna\Service\Provider;
 
-use Kytario\Dto\WorkspaceMcpClientDto;
-use Kytario\Model\Entity\Workspace;
+use Kytarna\Dto\WorkspaceMcpClientDto;
+use Kytarna\Model\Entity\Workspace;
 
 interface WorkspaceMcpClientProviderInterface
 {

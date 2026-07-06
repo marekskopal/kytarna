@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\Controller;
+namespace Kytarna\Tests\Controller;
 
 use DateTimeImmutable;
-use Kytario\Controller\InvitationController;
-use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
-use Kytario\Model\Entity\Invitation;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Entity\Workspace;
-use Kytario\Model\Repository\InvitationRepository;
-use Kytario\Tests\Support\Fixture;
-use Kytario\Tests\Support\IntegrationTestCase;
+use Kytarna\Controller\InvitationController;
+use Kytarna\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytarna\Model\Entity\Invitation;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Entity\Workspace;
+use Kytarna\Model\Repository\InvitationRepository;
+use Kytarna\Tests\Support\Fixture;
+use Kytarna\Tests\Support\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(InvitationController::class)]

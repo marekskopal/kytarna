@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Route\Strategy;
+namespace Kytarna\Route\Strategy;
 
-use Kytario\Middleware\Exception\NotAuthorizedException;
-use Kytario\Response\ErrorResponse;
+use Kytarna\Middleware\Exception\NotAuthorizedException;
+use Kytarna\Response\ErrorResponse;
 use League\Route\Route;
 use Override;
 use Psr\Http\Message\ResponseFactoryInterface;

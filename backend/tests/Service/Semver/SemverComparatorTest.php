@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\Service\Semver;
+namespace Kytarna\Tests\Service\Semver;
 
-use Kytario\Service\Semver\SemverComparator;
+use Kytarna\Service\Semver\SemverComparator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;

@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider;
+namespace Kytarna\Service\Provider;
 
 use DateTimeImmutable;
-use Kytario\Model\Entity\Enum\EventTypeEnum;
-use Kytario\Model\Entity\Lecture;
-use Kytario\Model\Entity\LectureFile;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Repository\LectureFileRepository;
-use Kytario\Service\Actor\ActorContextInterface;
-use Kytario\Service\Storage\FileStorageInterface;
-use Kytario\Service\Storage\S3Config;
+use Kytarna\Model\Entity\Enum\EventTypeEnum;
+use Kytarna\Model\Entity\Lecture;
+use Kytarna\Model\Entity\LectureFile;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Repository\LectureFileRepository;
+use Kytarna\Service\Actor\ActorContextInterface;
+use Kytarna\Service\Storage\FileStorageInterface;
+use Kytarna\Service\Storage\S3Config;
 use RuntimeException;
 
 final readonly class LectureFileProvider implements LectureFileProviderInterface

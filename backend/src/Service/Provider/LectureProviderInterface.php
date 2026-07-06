@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider;
+namespace Kytarna\Service\Provider;
 
 use Iterator;
-use Kytario\Model\Entity\Course;
-use Kytario\Model\Entity\Enum\DifficultyEnum;
-use Kytario\Model\Entity\Lecture;
-use Kytario\Model\Entity\Status;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Entity\Workspace;
-use Kytario\Model\Repository\Enum\ArchivedFilterEnum;
-use Kytario\Model\Repository\Enum\LectureOrderByEnum;
-use Kytario\Model\Repository\Enum\OrderDirectionEnum;
+use Kytarna\Model\Entity\Course;
+use Kytarna\Model\Entity\Enum\DifficultyEnum;
+use Kytarna\Model\Entity\Lecture;
+use Kytarna\Model\Entity\Status;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Entity\Workspace;
+use Kytarna\Model\Repository\Enum\ArchivedFilterEnum;
+use Kytarna\Model\Repository\Enum\LectureOrderByEnum;
+use Kytarna\Model\Repository\Enum\OrderDirectionEnum;
 
 interface LectureProviderInterface
 {

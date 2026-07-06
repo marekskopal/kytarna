@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Model\Repository;
+namespace Kytarna\Model\Repository;
 
 use Iterator;
-use Kytario\Model\Entity\LectureFile;
+use Kytarna\Model\Entity\LectureFile;
 use MarekSkopal\ORM\Repository\AbstractRepository;
 
 /** @extends AbstractRepository<LectureFile> */

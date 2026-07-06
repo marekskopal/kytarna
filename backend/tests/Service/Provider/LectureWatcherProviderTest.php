@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\Service\Provider;
+namespace Kytarna\Tests\Service\Provider;
 
-use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
-use Kytario\Model\Entity\Lecture;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Repository\LectureRepository;
-use Kytario\Model\Repository\StatusRepository;
-use Kytario\Model\Repository\WorkflowRepository;
-use Kytario\Service\Provider\LectureWatcherProvider;
-use Kytario\Service\Provider\LectureWatcherProviderInterface;
-use Kytario\Tests\Support\Fixture;
-use Kytario\Tests\Support\IntegrationTestCase;
+use Kytarna\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytarna\Model\Entity\Lecture;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Repository\LectureRepository;
+use Kytarna\Model\Repository\StatusRepository;
+use Kytarna\Model\Repository\WorkflowRepository;
+use Kytarna\Service\Provider\LectureWatcherProvider;
+use Kytarna\Service\Provider\LectureWatcherProviderInterface;
+use Kytarna\Tests\Support\Fixture;
+use Kytarna\Tests\Support\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(LectureWatcherProvider::class)]

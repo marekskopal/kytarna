@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Model\Repository;
+namespace Kytarna\Model\Repository;
 
 use EmptyIterator;
 use Iterator;
-use Kytario\Model\Entity\Enum\StatusTypeEnum;
-use Kytario\Model\Entity\Lecture;
-use Kytario\Model\Repository\Enum\ArchivedFilterEnum;
-use Kytario\Model\Repository\Enum\LectureOrderByEnum;
-use Kytario\Model\Repository\Enum\OrderDirectionEnum;
+use Kytarna\Model\Entity\Enum\StatusTypeEnum;
+use Kytarna\Model\Entity\Lecture;
+use Kytarna\Model\Repository\Enum\ArchivedFilterEnum;
+use Kytarna\Model\Repository\Enum\LectureOrderByEnum;
+use Kytarna\Model\Repository\Enum\OrderDirectionEnum;
 use MarekSkopal\ORM\Query\Expression\RawExpression;
 use MarekSkopal\ORM\Query\Select;
 use MarekSkopal\ORM\Repository\AbstractRepository;

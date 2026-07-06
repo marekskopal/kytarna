@@ -11,7 +11,7 @@ test.describe('Onboarding wizard', () => {
         const onboarding = new OnboardingPage(page);
 
         const stamp = Date.now();
-        const email = `onboarding-${stamp}@kytario.test`;
+        const email = `onboarding-${stamp}@kytarna.test`;
         const name = `Onboarding ${stamp}`;
 
         await signUp.goto();
@@ -31,7 +31,7 @@ test.describe('Onboarding wizard', () => {
         const onboarding = new OnboardingPage(page);
 
         const stamp = Date.now();
-        const email = `onboarding-sticky-${stamp}@kytario.test`;
+        const email = `onboarding-sticky-${stamp}@kytarna.test`;
         const name = `Sticky ${stamp}`;
 
         await signUp.goto();

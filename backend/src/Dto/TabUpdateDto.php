@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Dto;
+namespace Kytarna\Dto;
 
 /** @implements ArrayFactoryInterface<array{name: string, alphaTex: string}> */
 final readonly class TabUpdateDto implements ArrayFactoryInterface

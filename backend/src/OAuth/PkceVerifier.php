@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\OAuth;
+namespace Kytarna\OAuth;
 
 final readonly class PkceVerifier
 {

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider;
+namespace Kytarna\Service\Provider;
 
-use Kytario\Model\Entity\Workspace;
+use Kytarna\Model\Entity\Workspace;
 
 interface CoursePrefixGeneratorInterface
 {

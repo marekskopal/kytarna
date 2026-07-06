@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider;
+namespace Kytarna\Service\Provider;
 
 use DateTimeImmutable;
 use Iterator;
-use Kytario\Dto\InvitationQueueDto;
-use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
-use Kytario\Model\Entity\Invitation;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Entity\Workspace;
-use Kytario\Model\Repository\InvitationRepository;
-use Kytario\Service\Queue\Enum\QueueEnum;
-use Kytario\Service\Queue\QueuePublisher;
+use Kytarna\Dto\InvitationQueueDto;
+use Kytarna\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytarna\Model\Entity\Invitation;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Entity\Workspace;
+use Kytarna\Model\Repository\InvitationRepository;
+use Kytarna\Service\Queue\Enum\QueueEnum;
+use Kytarna\Service\Queue\QueuePublisher;
 use RuntimeException;
 use const FILTER_VALIDATE_EMAIL;
 

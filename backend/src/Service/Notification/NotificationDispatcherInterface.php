@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Notification;
+namespace Kytarna\Service\Notification;
 
-use Kytario\Model\Entity\Event;
+use Kytarna\Model\Entity\Event;
 
 interface NotificationDispatcherInterface
 {

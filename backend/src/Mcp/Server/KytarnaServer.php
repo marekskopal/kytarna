@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Mcp\Server;
+namespace Kytarna\Mcp\Server;
 
 use Mcp\Server;
 use Mcp\Server\Session\SessionStoreInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
-final readonly class KytarioServer
+final readonly class KytarnaServer
 {
 	public function __construct(private ContainerInterface $container, private LoggerInterface $logger)
 	{
@@ -24,7 +24,7 @@ final readonly class KytarioServer
 				basePath: dirname(__DIR__, 2),
 				scanDirs: ['Mcp/Tool'],
 			)
-			->setServerInfo(name: 'kytario', version: '1.0.0', description: 'Kytario MCP server — guitar courses and lectures')
+			->setServerInfo(name: 'kytarna', version: '1.0.0', description: 'Kytarna MCP server — guitar courses and lectures')
 			->setInstructions(
 				'This server manages the authenticated user\'s guitar learning content. '
 				. 'A workspace contains courses (e.g. "Fingerstyle Basics"), and each course contains lectures '

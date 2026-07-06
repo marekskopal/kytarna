@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\Support;
+namespace Kytarna\Tests\Support;
 
-use Kytario\App\Application;
-use Kytario\Model\Entity\User;
+use Kytarna\App\Application;
+use Kytarna\Model\Entity\User;
 use Laminas\Diactoros\ServerRequest;
 use Laminas\Diactoros\Stream;
 use Nette\Utils\Json;

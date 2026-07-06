@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Middleware\Exception;
+namespace Kytarna\Middleware\Exception;
 
 use Psr\Http\Message\RequestInterface;
 

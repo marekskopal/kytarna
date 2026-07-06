@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Model\Entity;
+namespace Kytarna\Model\Entity;
 
-use Kytario\Model\Entity\Enum\LectureLinkKindEnum;
-use Kytario\Model\Repository\LectureLinkRepository;
+use Kytarna\Model\Entity\Enum\LectureLinkKindEnum;
+use Kytarna\Model\Repository\LectureLinkRepository;
 use MarekSkopal\ORM\Attribute\Column;
 use MarekSkopal\ORM\Attribute\ColumnEnum;
 use MarekSkopal\ORM\Attribute\Entity;

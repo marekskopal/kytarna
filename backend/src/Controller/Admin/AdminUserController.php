@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Controller\Admin;
+namespace Kytarna\Controller\Admin;
 
-use Kytario\Dto\AdminUserDto;
-use Kytario\Dto\AdminUserUpdateDto;
-use Kytario\Model\Entity\Enum\SystemRoleEnum;
-use Kytario\Response\ConflictResponse;
-use Kytario\Response\NotAuthorizedResponse;
-use Kytario\Response\NotFoundResponse;
-use Kytario\Response\OkResponse;
-use Kytario\Route\Routes;
-use Kytario\Service\Auth\AdminServiceInterface;
-use Kytario\Service\Auth\PermissionCheckerInterface;
-use Kytario\Service\Provider\UserProviderInterface;
-use Kytario\Service\Request\RequestServiceInterface;
+use Kytarna\Dto\AdminUserDto;
+use Kytarna\Dto\AdminUserUpdateDto;
+use Kytarna\Model\Entity\Enum\SystemRoleEnum;
+use Kytarna\Response\ConflictResponse;
+use Kytarna\Response\NotAuthorizedResponse;
+use Kytarna\Response\NotFoundResponse;
+use Kytarna\Response\OkResponse;
+use Kytarna\Route\Routes;
+use Kytarna\Service\Auth\AdminServiceInterface;
+use Kytarna\Service\Auth\PermissionCheckerInterface;
+use Kytarna\Service\Provider\UserProviderInterface;
+use Kytarna\Service\Request\RequestServiceInterface;
 use Laminas\Diactoros\Response\JsonResponse;
 use MarekSkopal\Router\Attribute\RouteDelete;
 use MarekSkopal\Router\Attribute\RouteGet;

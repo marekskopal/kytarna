@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider;
+namespace Kytarna\Service\Provider;
 
 use DateTimeImmutable;
-use Kytario\Model\Entity\Enum\NotificationTypeEnum;
-use Kytario\Model\Entity\Notification;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Repository\NotificationRepository;
+use Kytarna\Model\Entity\Enum\NotificationTypeEnum;
+use Kytarna\Model\Entity\Notification;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Repository\NotificationRepository;
 use const JSON_THROW_ON_ERROR;
 
 final readonly class NotificationProvider implements NotificationProviderInterface

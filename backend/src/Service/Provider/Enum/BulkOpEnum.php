@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider\Enum;
+namespace Kytarna\Service\Provider\Enum;
 
 enum BulkOpEnum: string
 {

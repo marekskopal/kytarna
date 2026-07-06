@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Translator;
+namespace Kytarna\Service\Translator;
 
-use Kytario\Model\Entity\Enum\LocaleEnum;
+use Kytarna\Model\Entity\Enum\LocaleEnum;
 
 interface TranslatorServiceInterface
 {

@@ -2,79 +2,79 @@
 
 declare(strict_types=1);
 
-namespace Kytario\App\ServiceProvider;
+namespace Kytarna\App\ServiceProvider;
 
-use Kytario\Mcp\McpUserContext;
-use Kytario\Mcp\McpUserContextInterface;
-use Kytario\Mcp\Server\KytarioServer;
-use Kytario\OAuth\AuthorizationService;
-use Kytario\OAuth\AuthorizationServiceInterface;
-use Kytario\OAuth\ClientService;
-use Kytario\OAuth\ClientServiceInterface;
-use Kytario\Service\Actor\ActorContext;
-use Kytario\Service\Actor\ActorContextInterface;
-use Kytario\Service\Auth\AdminService;
-use Kytario\Service\Auth\AdminServiceInterface;
-use Kytario\Service\Auth\CurrentUserDeletionService;
-use Kytario\Service\Auth\CurrentUserDeletionServiceInterface;
-use Kytario\Service\Auth\PermissionChecker;
-use Kytario\Service\Auth\PermissionCheckerInterface;
-use Kytario\Service\Auth\UserDataExportService;
-use Kytario\Service\Auth\UserDataExportServiceInterface;
-use Kytario\Service\Notification\NotificationDispatcher;
-use Kytario\Service\Notification\NotificationDispatcherInterface;
-use Kytario\Service\Payload\PayloadService;
-use Kytario\Service\Payload\PayloadServiceInterface;
-use Kytario\Service\Provider\BulkLectureProvider;
-use Kytario\Service\Provider\BulkLectureProviderInterface;
-use Kytario\Service\Provider\CoursePrefixGenerator;
-use Kytario\Service\Provider\CoursePrefixGeneratorInterface;
-use Kytario\Service\Provider\CourseProvider;
-use Kytario\Service\Provider\CourseProviderInterface;
-use Kytario\Service\Provider\EmailVerificationProvider;
-use Kytario\Service\Provider\EmailVerificationProviderInterface;
-use Kytario\Service\Provider\EventProvider;
-use Kytario\Service\Provider\EventProviderInterface;
-use Kytario\Service\Provider\InvitationProvider;
-use Kytario\Service\Provider\InvitationProviderInterface;
-use Kytario\Service\Provider\LectureCodeResolver;
-use Kytario\Service\Provider\LectureCodeResolverInterface;
-use Kytario\Service\Provider\LectureFileProvider;
-use Kytario\Service\Provider\LectureFileProviderInterface;
-use Kytario\Service\Provider\LectureProvider;
-use Kytario\Service\Provider\LectureProviderInterface;
-use Kytario\Service\Provider\LectureTagProvider;
-use Kytario\Service\Provider\LectureTagProviderInterface;
-use Kytario\Service\Provider\LectureWatcherProvider;
-use Kytario\Service\Provider\LectureWatcherProviderInterface;
-use Kytario\Service\Provider\LinkProvider;
-use Kytario\Service\Provider\LinkProviderInterface;
-use Kytario\Service\Provider\NotificationProvider;
-use Kytario\Service\Provider\NotificationProviderInterface;
-use Kytario\Service\Provider\PasswordResetProvider;
-use Kytario\Service\Provider\PasswordResetProviderInterface;
-use Kytario\Service\Provider\ProgressProvider;
-use Kytario\Service\Provider\ProgressProviderInterface;
-use Kytario\Service\Provider\SavedViewProvider;
-use Kytario\Service\Provider\SavedViewProviderInterface;
-use Kytario\Service\Provider\StatusProvider;
-use Kytario\Service\Provider\StatusProviderInterface;
-use Kytario\Service\Provider\TabProvider;
-use Kytario\Service\Provider\TabProviderInterface;
-use Kytario\Service\Provider\TagProvider;
-use Kytario\Service\Provider\TagProviderInterface;
-use Kytario\Service\Provider\UserProvider;
-use Kytario\Service\Provider\UserProviderInterface;
-use Kytario\Service\Provider\WorkflowProvider;
-use Kytario\Service\Provider\WorkflowProviderInterface;
-use Kytario\Service\Provider\WorkspaceMcpClientProvider;
-use Kytario\Service\Provider\WorkspaceMcpClientProviderInterface;
-use Kytario\Service\Provider\WorkspaceProvider;
-use Kytario\Service\Provider\WorkspaceProviderInterface;
-use Kytario\Service\Request\RequestService;
-use Kytario\Service\Request\RequestServiceInterface;
-use Kytario\Service\Translator\TranslatorService;
-use Kytario\Service\Translator\TranslatorServiceInterface;
+use Kytarna\Mcp\McpUserContext;
+use Kytarna\Mcp\McpUserContextInterface;
+use Kytarna\Mcp\Server\KytarnaServer;
+use Kytarna\OAuth\AuthorizationService;
+use Kytarna\OAuth\AuthorizationServiceInterface;
+use Kytarna\OAuth\ClientService;
+use Kytarna\OAuth\ClientServiceInterface;
+use Kytarna\Service\Actor\ActorContext;
+use Kytarna\Service\Actor\ActorContextInterface;
+use Kytarna\Service\Auth\AdminService;
+use Kytarna\Service\Auth\AdminServiceInterface;
+use Kytarna\Service\Auth\CurrentUserDeletionService;
+use Kytarna\Service\Auth\CurrentUserDeletionServiceInterface;
+use Kytarna\Service\Auth\PermissionChecker;
+use Kytarna\Service\Auth\PermissionCheckerInterface;
+use Kytarna\Service\Auth\UserDataExportService;
+use Kytarna\Service\Auth\UserDataExportServiceInterface;
+use Kytarna\Service\Notification\NotificationDispatcher;
+use Kytarna\Service\Notification\NotificationDispatcherInterface;
+use Kytarna\Service\Payload\PayloadService;
+use Kytarna\Service\Payload\PayloadServiceInterface;
+use Kytarna\Service\Provider\BulkLectureProvider;
+use Kytarna\Service\Provider\BulkLectureProviderInterface;
+use Kytarna\Service\Provider\CoursePrefixGenerator;
+use Kytarna\Service\Provider\CoursePrefixGeneratorInterface;
+use Kytarna\Service\Provider\CourseProvider;
+use Kytarna\Service\Provider\CourseProviderInterface;
+use Kytarna\Service\Provider\EmailVerificationProvider;
+use Kytarna\Service\Provider\EmailVerificationProviderInterface;
+use Kytarna\Service\Provider\EventProvider;
+use Kytarna\Service\Provider\EventProviderInterface;
+use Kytarna\Service\Provider\InvitationProvider;
+use Kytarna\Service\Provider\InvitationProviderInterface;
+use Kytarna\Service\Provider\LectureCodeResolver;
+use Kytarna\Service\Provider\LectureCodeResolverInterface;
+use Kytarna\Service\Provider\LectureFileProvider;
+use Kytarna\Service\Provider\LectureFileProviderInterface;
+use Kytarna\Service\Provider\LectureProvider;
+use Kytarna\Service\Provider\LectureProviderInterface;
+use Kytarna\Service\Provider\LectureTagProvider;
+use Kytarna\Service\Provider\LectureTagProviderInterface;
+use Kytarna\Service\Provider\LectureWatcherProvider;
+use Kytarna\Service\Provider\LectureWatcherProviderInterface;
+use Kytarna\Service\Provider\LinkProvider;
+use Kytarna\Service\Provider\LinkProviderInterface;
+use Kytarna\Service\Provider\NotificationProvider;
+use Kytarna\Service\Provider\NotificationProviderInterface;
+use Kytarna\Service\Provider\PasswordResetProvider;
+use Kytarna\Service\Provider\PasswordResetProviderInterface;
+use Kytarna\Service\Provider\ProgressProvider;
+use Kytarna\Service\Provider\ProgressProviderInterface;
+use Kytarna\Service\Provider\SavedViewProvider;
+use Kytarna\Service\Provider\SavedViewProviderInterface;
+use Kytarna\Service\Provider\StatusProvider;
+use Kytarna\Service\Provider\StatusProviderInterface;
+use Kytarna\Service\Provider\TabProvider;
+use Kytarna\Service\Provider\TabProviderInterface;
+use Kytarna\Service\Provider\TagProvider;
+use Kytarna\Service\Provider\TagProviderInterface;
+use Kytarna\Service\Provider\UserProvider;
+use Kytarna\Service\Provider\UserProviderInterface;
+use Kytarna\Service\Provider\WorkflowProvider;
+use Kytarna\Service\Provider\WorkflowProviderInterface;
+use Kytarna\Service\Provider\WorkspaceMcpClientProvider;
+use Kytarna\Service\Provider\WorkspaceMcpClientProviderInterface;
+use Kytarna\Service\Provider\WorkspaceProvider;
+use Kytarna\Service\Provider\WorkspaceProviderInterface;
+use Kytarna\Service\Request\RequestService;
+use Kytarna\Service\Request\RequestServiceInterface;
+use Kytarna\Service\Translator\TranslatorService;
+use Kytarna\Service\Translator\TranslatorServiceInterface;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use Psr\Log\LoggerInterface;
 
@@ -111,7 +111,7 @@ final class DomainServiceProvider extends AbstractServiceProvider
 			EventProviderInterface::class,
 			McpUserContextInterface::class,
 			ActorContextInterface::class,
-			KytarioServer::class,
+			KytarnaServer::class,
 			ClientServiceInterface::class,
 			AuthorizationServiceInterface::class,
 			TranslatorServiceInterface::class,
@@ -157,10 +157,10 @@ final class DomainServiceProvider extends AbstractServiceProvider
 		$c->add(SavedViewProviderInterface::class, SavedViewProvider::class);
 		$c->add(McpUserContextInterface::class, McpUserContext::class);
 		$c->add(ActorContextInterface::class, ActorContext::class);
-		$c->add(KytarioServer::class, function () use ($c): KytarioServer {
+		$c->add(KytarnaServer::class, function () use ($c): KytarnaServer {
 			$logger = $c->get(LoggerInterface::class);
 			assert($logger instanceof LoggerInterface);
-			return new KytarioServer($c, $logger);
+			return new KytarnaServer($c, $logger);
 		});
 		$c->add(ClientServiceInterface::class, ClientService::class);
 		$c->add(AuthorizationServiceInterface::class, AuthorizationService::class);

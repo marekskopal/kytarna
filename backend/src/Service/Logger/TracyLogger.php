@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Logger;
+namespace Kytarna\Service\Logger;
 
 use ErrorException;
 use Tracy\Helpers;

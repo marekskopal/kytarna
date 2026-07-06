@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Mcp\Tool;
+namespace Kytarna\Mcp\Tool;
 
-use Kytario\Mcp\Dto\McpLectureDto;
-use Kytario\Mcp\Dto\McpLectureListDto;
-use Kytario\Mcp\McpUserContextInterface;
-use Kytario\Mcp\Tool\Helper\StatusResolver;
-use Kytario\Model\Entity\Course;
-use Kytario\Model\Entity\Enum\DifficultyEnum;
-use Kytario\Model\Entity\Enum\StatusTypeEnum;
-use Kytario\Model\Entity\Lecture;
-use Kytario\Model\Entity\Workspace;
-use Kytario\Service\Provider\BulkLectureProviderInterface;
-use Kytario\Service\Provider\CourseProviderInterface;
-use Kytario\Service\Provider\Enum\BulkOpEnum;
-use Kytario\Service\Provider\LectureCodeResolverInterface;
-use Kytario\Service\Provider\LectureProviderInterface;
-use Kytario\Service\Provider\LectureTagProviderInterface;
-use Kytario\Service\Provider\StatusProviderInterface;
-use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Kytarna\Mcp\Dto\McpLectureDto;
+use Kytarna\Mcp\Dto\McpLectureListDto;
+use Kytarna\Mcp\McpUserContextInterface;
+use Kytarna\Mcp\Tool\Helper\StatusResolver;
+use Kytarna\Model\Entity\Course;
+use Kytarna\Model\Entity\Enum\DifficultyEnum;
+use Kytarna\Model\Entity\Enum\StatusTypeEnum;
+use Kytarna\Model\Entity\Lecture;
+use Kytarna\Model\Entity\Workspace;
+use Kytarna\Service\Provider\BulkLectureProviderInterface;
+use Kytarna\Service\Provider\CourseProviderInterface;
+use Kytarna\Service\Provider\Enum\BulkOpEnum;
+use Kytarna\Service\Provider\LectureCodeResolverInterface;
+use Kytarna\Service\Provider\LectureProviderInterface;
+use Kytarna\Service\Provider\LectureTagProviderInterface;
+use Kytarna\Service\Provider\StatusProviderInterface;
+use Kytarna\Service\Provider\WorkspaceProviderInterface;
 use Mcp\Capability\Attribute\McpTool;
 use RuntimeException;
 

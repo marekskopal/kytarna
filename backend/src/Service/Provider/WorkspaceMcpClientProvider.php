@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider;
+namespace Kytarna\Service\Provider;
 
 use DateTimeImmutable;
-use Kytario\Dto\WorkspaceMcpClientDto;
-use Kytario\Model\Entity\OAuthAuthorization;
-use Kytario\Model\Entity\Workspace;
-use Kytario\Model\Repository\OAuthAuthorizationRepository;
-use Kytario\Model\Repository\OAuthClientRepository;
+use Kytarna\Dto\WorkspaceMcpClientDto;
+use Kytarna\Model\Entity\OAuthAuthorization;
+use Kytarna\Model\Entity\Workspace;
+use Kytarna\Model\Repository\OAuthAuthorizationRepository;
+use Kytarna\Model\Repository\OAuthClientRepository;
 use const DATE_ATOM;
 
 final readonly class WorkspaceMcpClientProvider implements WorkspaceMcpClientProviderInterface

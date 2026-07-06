@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Model\Repository;
+namespace Kytarna\Model\Repository;
 
 use Iterator;
-use Kytario\Model\Entity\Notification;
+use Kytarna\Model\Entity\Notification;
 use MarekSkopal\ORM\Query\Expression\RawExpression;
 use MarekSkopal\ORM\Repository\AbstractRepository;
 

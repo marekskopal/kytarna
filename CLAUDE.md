@@ -1,4 +1,4 @@
-# Kytario
+# Kytarna
 
 Minimalistic, multi-tenant project & task manager — work shown as a board,
 table, calendar, or timeline. AI agents (over MCP) and humans (over the web UI)
@@ -16,10 +16,10 @@ are equal first-class actors: both can plan, create, move, and close work.
 
 > This section lives on `main` only — do not copy it to the `public` branch.
 
-- `origin` → `git@github.com:marekskopal/kytario-web.git` — **private**. Holds the
+- `origin` → `git@github.com:marekskopal/kytarna-web.git` — **private**. Holds the
   full SaaS: the open-source core **plus** the private bits — `web/` (marketing
   site), the SaaS proxy, and anything not meant to be public.
-- `public` (remote) → `git@github.com:marekskopal/kytario.git` — the
+- `public` (remote) → `git@github.com:marekskopal/kytarna.git` — the
   **open-source** repo (`backend/`, `frontend/`, `proxy/`, docs).
 - `main` (branch, tracks `origin/main`) — the private SaaS branch. Deploys the
   app under `/app` with the marketing site at `/`; its proxy is a single
@@ -59,11 +59,11 @@ Inviting a member sends an email via Symfony Mailer (SMTP env:
 
 ## Roles & permissions
 
-Authorization is centralized in `Kytario\Service\Auth\PermissionChecker`
+Authorization is centralized in `Kytarna\Service\Auth\PermissionChecker`
 (interface + impl). Every mutating controller and the SystemAdmin endpoints
 route their decisions through it.
 
-- **SystemAdmin** (`User.systemRole`): global; passes every `can*` check. Operates on workspaces they don't belong to via dedicated `/api/admin/*` endpoints (see `Kytario\Controller\Admin\`) with a separate frontend at `/admin/users` and `/admin/workspaces`. Inside their own workspaces they act as a normal member of whatever role they hold.
+- **SystemAdmin** (`User.systemRole`): global; passes every `can*` check. Operates on workspaces they don't belong to via dedicated `/api/admin/*` endpoints (see `Kytarna\Controller\Admin\`) with a separate frontend at `/admin/users` and `/admin/workspaces`. Inside their own workspaces they act as a normal member of whatever role they hold.
 - **Owner** (workspace-scoped): one per workspace. Rename/delete workspace, manage all members, transfer ownership (sole way to assign a new Owner).
 - **Admin** (workspace-scoped): manage members (Member ↔ Admin), invite Members (cannot invite Admins or Owners), full CRUD on projects, workflows, statuses, tags, and tasks. Cannot remove or demote the Owner.
 - **Member** (workspace-scoped): full CRUD on tasks; read-only on projects, workflows, statuses, and tags.
@@ -80,7 +80,7 @@ admin UI for cross-workspace management.
 
 ## HTTP API surface
 
-All routes live in `Kytario\Route\Routes` (single enum). Highlights:
+All routes live in `Kytarna\Route\Routes` (single enum). Highlights:
 
 - `POST /api/authentication/{login,logout,sign-up,refresh-token}` — `logout` is an open route (web JWTs are stateless; it does not revoke them).
 - `GET/PATCH /api/current-user`
@@ -128,7 +128,7 @@ already cleanly parameterized (`task`, `statuses`, `projectId` inputs;
 
 ## i18n
 
-- Backend: `Kytario\Service\Translator\TranslatorService` loads `backend/translations/{en,cs}.json`. `EmailFactory` renders subject + section per `User.locale`; invitee's locale falls back to the inviter when they don't yet have an account.
+- Backend: `Kytarna\Service\Translator\TranslatorService` loads `backend/translations/{en,cs}.json`. `EmailFactory` renders subject + section per `User.locale`; invitee's locale falls back to the inviter when they don't yet have an account.
 - Frontend: `@ngx-translate/core` + `@ngx-translate/http-loader`. JSONs live in `frontend/src/i18n/{en,cs}.json`, served from `/i18n/` via `angular.json` assets. `LanguageService` initialises from `?lang=`, then localStorage, then `navigator.language`. `PATCH /api/current-user` syncs the user's choice to the backend so emails arrive in the right language. The topbar has a language switcher.
 
 ## Docker
@@ -184,7 +184,7 @@ make test-e2e-ui             # Playwright UI mode
 ```
 
 Backend tests boot the full `ApplicationFactory` container against a separate
-MariaDB database (`kytario_test`, auto-created by `tests/bootstrap.php`) and
+MariaDB database (`kytarna_test`, auto-created by `tests/bootstrap.php`) and
 truncate tables between tests via `IntegrationTestCase`. Test helpers live in
 `backend/tests/Support/` — `AppHarness` (per-suite singleton),
 `IntegrationTestCase` (HTTP dispatch + DB reset), and `Fixture` (deterministic
@@ -235,7 +235,7 @@ Backend uses PHPStan at `max` level (with `bleedingEdge.neon` +
 strict/deprecation/phpunit/shipmonk rules + cognitive-complexity +
 unused-public) and PHPCS with the slevomat ruleset (tabs, single-line method
 signatures ≤140 chars). Custom PHPStan extension
-`Kytario\PhpStan\OrmReadWritePropertiesExtension` marks
+`Kytarna\PhpStan\OrmReadWritePropertiesExtension` marks
 `Column`/`ManyToOne`/`ColumnEnum`-attributed properties as ORM-managed
 (always read, always written, always initialized).
 

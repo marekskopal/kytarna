@@ -6,9 +6,9 @@ declare(strict_types=1);
 require __DIR__ . '/../vendor/autoload.php';
 
 use Symfony\Component\Console\Application;
-use Kytario\Command\AdminCreateCommand;
-use Kytario\Command\MigrationGenerateCommand;
-use Kytario\Command\MigrationRunCommand;
+use Kytarna\Command\AdminCreateCommand;
+use Kytarna\Command\MigrationGenerateCommand;
+use Kytarna\Command\MigrationRunCommand;
 
 $application = new Application();
 

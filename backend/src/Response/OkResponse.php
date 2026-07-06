@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Response;
+namespace Kytarna\Response;
 
 use Laminas\Diactoros\Response\JsonResponse;
 

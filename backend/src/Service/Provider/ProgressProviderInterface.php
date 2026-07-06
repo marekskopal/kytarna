@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider;
+namespace Kytarna\Service\Provider;
 
 use DateTimeImmutable;
-use Kytario\Model\Entity\Course;
-use Kytario\Model\Entity\Lecture;
-use Kytario\Model\Entity\ProgressEntry;
-use Kytario\Model\Entity\User;
-use Kytario\Service\Provider\Dto\PracticeSummary;
+use Kytarna\Model\Entity\Course;
+use Kytarna\Model\Entity\Lecture;
+use Kytarna\Model\Entity\ProgressEntry;
+use Kytarna\Model\Entity\User;
+use Kytarna\Service\Provider\Dto\PracticeSummary;
 
 interface ProgressProviderInterface
 {

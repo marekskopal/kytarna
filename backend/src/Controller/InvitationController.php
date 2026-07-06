@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Controller;
+namespace Kytarna\Controller;
 
 use DateTimeImmutable;
-use Kytario\Dto\InvitationCreateDto;
-use Kytario\Dto\InvitationDto;
-use Kytario\Dto\InvitationTokenDto;
-use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
-use Kytario\Model\Repository\InvitationRepository;
-use Kytario\Response\ErrorResponse;
-use Kytario\Response\NotAuthorizedResponse;
-use Kytario\Response\NotFoundResponse;
-use Kytario\Response\OkResponse;
-use Kytario\Route\Routes;
-use Kytario\Service\Auth\PermissionCheckerInterface;
-use Kytario\Service\Authentication\RateLimitConfig;
-use Kytario\Service\Provider\InvitationProviderInterface;
-use Kytario\Service\Provider\WorkspaceProviderInterface;
-use Kytario\Service\Request\RequestServiceInterface;
+use Kytarna\Dto\InvitationCreateDto;
+use Kytarna\Dto\InvitationDto;
+use Kytarna\Dto\InvitationTokenDto;
+use Kytarna\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytarna\Model\Repository\InvitationRepository;
+use Kytarna\Response\ErrorResponse;
+use Kytarna\Response\NotAuthorizedResponse;
+use Kytarna\Response\NotFoundResponse;
+use Kytarna\Response\OkResponse;
+use Kytarna\Route\Routes;
+use Kytarna\Service\Auth\PermissionCheckerInterface;
+use Kytarna\Service\Authentication\RateLimitConfig;
+use Kytarna\Service\Provider\InvitationProviderInterface;
+use Kytarna\Service\Provider\WorkspaceProviderInterface;
+use Kytarna\Service\Request\RequestServiceInterface;
 use Laminas\Diactoros\Response\JsonResponse;
 use MarekSkopal\Router\Attribute\RouteDelete;
 use MarekSkopal\Router\Attribute\RouteGet;

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Controller;
+namespace Kytarna\Controller;
 
-use Kytario\Dto\NotificationDto;
-use Kytario\Dto\NotificationListDto;
-use Kytario\Model\Entity\Notification;
-use Kytario\Response\NotFoundResponse;
-use Kytario\Response\OkResponse;
-use Kytario\Route\Routes;
-use Kytario\Service\Provider\NotificationProviderInterface;
-use Kytario\Service\Request\RequestServiceInterface;
+use Kytarna\Dto\NotificationDto;
+use Kytarna\Dto\NotificationListDto;
+use Kytarna\Model\Entity\Notification;
+use Kytarna\Response\NotFoundResponse;
+use Kytarna\Response\OkResponse;
+use Kytarna\Route\Routes;
+use Kytarna\Service\Provider\NotificationProviderInterface;
+use Kytarna\Service\Request\RequestServiceInterface;
 use Laminas\Diactoros\Response\JsonResponse;
 use MarekSkopal\Router\Attribute\RouteDelete;
 use MarekSkopal\Router\Attribute\RouteGet;

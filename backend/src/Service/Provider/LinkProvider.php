@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider;
+namespace Kytarna\Service\Provider;
 
 use DateTimeImmutable;
-use Kytario\Model\Entity\Enum\LectureLinkKindEnum;
-use Kytario\Model\Entity\Lecture;
-use Kytario\Model\Entity\LectureLink;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Repository\LectureLinkRepository;
+use Kytarna\Model\Entity\Enum\LectureLinkKindEnum;
+use Kytarna\Model\Entity\Lecture;
+use Kytarna\Model\Entity\LectureLink;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Repository\LectureLinkRepository;
 use RuntimeException;
 
 final readonly class LinkProvider implements LinkProviderInterface

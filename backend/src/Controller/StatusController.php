@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Controller;
+namespace Kytarna\Controller;
 
-use Kytario\Dto\StatusCreateDto;
-use Kytario\Dto\StatusDto;
-use Kytario\Dto\StatusMoveDto;
-use Kytario\Dto\StatusUpdateDto;
-use Kytario\Model\Entity\Status;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Entity\Workflow;
-use Kytario\Response\ErrorResponse;
-use Kytario\Response\NotAuthorizedResponse;
-use Kytario\Response\NotFoundResponse;
-use Kytario\Response\OkResponse;
-use Kytario\Route\Routes;
-use Kytario\Service\Auth\PermissionCheckerInterface;
-use Kytario\Service\Provider\StatusProviderInterface;
-use Kytario\Service\Provider\WorkflowProviderInterface;
-use Kytario\Service\Request\RequestServiceInterface;
+use Kytarna\Dto\StatusCreateDto;
+use Kytarna\Dto\StatusDto;
+use Kytarna\Dto\StatusMoveDto;
+use Kytarna\Dto\StatusUpdateDto;
+use Kytarna\Model\Entity\Status;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Entity\Workflow;
+use Kytarna\Response\ErrorResponse;
+use Kytarna\Response\NotAuthorizedResponse;
+use Kytarna\Response\NotFoundResponse;
+use Kytarna\Response\OkResponse;
+use Kytarna\Route\Routes;
+use Kytarna\Service\Auth\PermissionCheckerInterface;
+use Kytarna\Service\Provider\StatusProviderInterface;
+use Kytarna\Service\Provider\WorkflowProviderInterface;
+use Kytarna\Service\Request\RequestServiceInterface;
 use Laminas\Diactoros\Response\JsonResponse;
 use MarekSkopal\Router\Attribute\RouteDelete;
 use MarekSkopal\Router\Attribute\RoutePost;

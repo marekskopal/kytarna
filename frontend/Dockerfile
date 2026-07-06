@@ -12,5 +12,5 @@ COPY ./angular.json ./tsconfig.json ./tsconfig.app.json ./
 RUN pnpm run build-prod
 
 FROM nginx:1.30.3-alpine AS runtime
-COPY --from=build /app/dist/kytario/browser /usr/share/nginx/html/app
+COPY --from=build /app/dist/kytarna/browser /usr/share/nginx/html/app
 COPY ./conf/default.conf /etc/nginx/conf.d/default.conf

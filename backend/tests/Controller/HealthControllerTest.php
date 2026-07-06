@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\Controller;
+namespace Kytarna\Tests\Controller;
 
-use Kytario\Controller\HealthController;
-use Kytario\Tests\Support\IntegrationTestCase;
+use Kytarna\Controller\HealthController;
+use Kytarna\Tests\Support\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(HealthController::class)]

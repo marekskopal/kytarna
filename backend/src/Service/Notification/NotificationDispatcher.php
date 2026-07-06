@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Notification;
+namespace Kytarna\Service\Notification;
 
-use Kytario\Model\Entity\Enum\ActorTypeEnum;
-use Kytario\Model\Entity\Enum\EventTypeEnum;
-use Kytario\Model\Entity\Enum\NotificationTypeEnum;
-use Kytario\Model\Entity\Event;
-use Kytario\Model\Entity\Lecture;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Repository\LectureRepository;
-use Kytario\Model\Repository\UserRepository;
-use Kytario\Service\Provider\LectureWatcherProviderInterface;
-use Kytario\Service\Provider\NotificationProviderInterface;
+use Kytarna\Model\Entity\Enum\ActorTypeEnum;
+use Kytarna\Model\Entity\Enum\EventTypeEnum;
+use Kytarna\Model\Entity\Enum\NotificationTypeEnum;
+use Kytarna\Model\Entity\Event;
+use Kytarna\Model\Entity\Lecture;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Repository\LectureRepository;
+use Kytarna\Model\Repository\UserRepository;
+use Kytarna\Service\Provider\LectureWatcherProviderInterface;
+use Kytarna\Service\Provider\NotificationProviderInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
 

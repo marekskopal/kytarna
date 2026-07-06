@@ -2,26 +2,26 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Controller;
+namespace Kytarna\Controller;
 
-use Kytario\Dto\WorkspaceCreateDto;
-use Kytario\Dto\WorkspaceDto;
-use Kytario\Dto\WorkspaceMemberDto;
-use Kytario\Dto\WorkspaceMemberRoleUpdateDto;
-use Kytario\Dto\WorkspaceTransferOwnershipDto;
-use Kytario\Dto\WorkspaceUpdateDto;
-use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
-use Kytario\Model\Entity\Workspace;
-use Kytario\Model\Entity\WorkspaceUser;
-use Kytario\Response\ErrorResponse;
-use Kytario\Response\NotAuthorizedResponse;
-use Kytario\Response\NotFoundResponse;
-use Kytario\Response\OkResponse;
-use Kytario\Route\Routes;
-use Kytario\Service\Auth\PermissionCheckerInterface;
-use Kytario\Service\Provider\WorkspaceMcpClientProviderInterface;
-use Kytario\Service\Provider\WorkspaceProviderInterface;
-use Kytario\Service\Request\RequestServiceInterface;
+use Kytarna\Dto\WorkspaceCreateDto;
+use Kytarna\Dto\WorkspaceDto;
+use Kytarna\Dto\WorkspaceMemberDto;
+use Kytarna\Dto\WorkspaceMemberRoleUpdateDto;
+use Kytarna\Dto\WorkspaceTransferOwnershipDto;
+use Kytarna\Dto\WorkspaceUpdateDto;
+use Kytarna\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytarna\Model\Entity\Workspace;
+use Kytarna\Model\Entity\WorkspaceUser;
+use Kytarna\Response\ErrorResponse;
+use Kytarna\Response\NotAuthorizedResponse;
+use Kytarna\Response\NotFoundResponse;
+use Kytarna\Response\OkResponse;
+use Kytarna\Route\Routes;
+use Kytarna\Service\Auth\PermissionCheckerInterface;
+use Kytarna\Service\Provider\WorkspaceMcpClientProviderInterface;
+use Kytarna\Service\Provider\WorkspaceProviderInterface;
+use Kytarna\Service\Request\RequestServiceInterface;
 use Laminas\Diactoros\Response\JsonResponse;
 use MarekSkopal\Router\Attribute\RouteDelete;
 use MarekSkopal\Router\Attribute\RouteGet;

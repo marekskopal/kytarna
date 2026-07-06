@@ -2,34 +2,34 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\Support;
+namespace Kytarna\Tests\Support;
 
 use DateTimeImmutable;
 use Firebase\JWT\JWT;
-use Kytario\Model\Entity\Course;
-use Kytario\Model\Entity\Enum\LocaleEnum;
-use Kytario\Model\Entity\Enum\StatusTypeEnum;
-use Kytario\Model\Entity\Enum\SystemRoleEnum;
-use Kytario\Model\Entity\Enum\TabSourceTypeEnum;
-use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
-use Kytario\Model\Entity\Lecture;
-use Kytario\Model\Entity\LectureLink;
-use Kytario\Model\Entity\ProgressEntry;
-use Kytario\Model\Entity\Status;
-use Kytario\Model\Entity\Tab;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Entity\Workspace;
-use Kytario\Model\Repository\StatusRepository;
-use Kytario\Model\Repository\TabRepository;
-use Kytario\Model\Repository\UserRepository;
-use Kytario\Model\Repository\WorkflowRepository;
-use Kytario\Service\Authentication\AuthenticationServiceInterface;
-use Kytario\Service\Provider\CourseProviderInterface;
-use Kytario\Service\Provider\LectureProviderInterface;
-use Kytario\Service\Provider\LinkProviderInterface;
-use Kytario\Service\Provider\ProgressProviderInterface;
-use Kytario\Service\Provider\UserProviderInterface;
-use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Kytarna\Model\Entity\Course;
+use Kytarna\Model\Entity\Enum\LocaleEnum;
+use Kytarna\Model\Entity\Enum\StatusTypeEnum;
+use Kytarna\Model\Entity\Enum\SystemRoleEnum;
+use Kytarna\Model\Entity\Enum\TabSourceTypeEnum;
+use Kytarna\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytarna\Model\Entity\Lecture;
+use Kytarna\Model\Entity\LectureLink;
+use Kytarna\Model\Entity\ProgressEntry;
+use Kytarna\Model\Entity\Status;
+use Kytarna\Model\Entity\Tab;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Entity\Workspace;
+use Kytarna\Model\Repository\StatusRepository;
+use Kytarna\Model\Repository\TabRepository;
+use Kytarna\Model\Repository\UserRepository;
+use Kytarna\Model\Repository\WorkflowRepository;
+use Kytarna\Service\Authentication\AuthenticationServiceInterface;
+use Kytarna\Service\Provider\CourseProviderInterface;
+use Kytarna\Service\Provider\LectureProviderInterface;
+use Kytarna\Service\Provider\LinkProviderInterface;
+use Kytarna\Service\Provider\ProgressProviderInterface;
+use Kytarna\Service\Provider\UserProviderInterface;
+use Kytarna\Service\Provider\WorkspaceProviderInterface;
 use RuntimeException;
 
 final class Fixture

@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\Controller;
+namespace Kytarna\Tests\Controller;
 
-use Kytario\Controller\CurrentUserController;
-use Kytario\Model\Entity\Enum\EventTypeEnum;
-use Kytario\Model\Entity\Enum\SystemRoleEnum;
-use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
-use Kytario\Model\Repository\EventRepository;
-use Kytario\Model\Repository\UserRepository;
-use Kytario\Tests\Support\AppHarness;
-use Kytario\Tests\Support\Fixture;
-use Kytario\Tests\Support\IntegrationTestCase;
+use Kytarna\Controller\CurrentUserController;
+use Kytarna\Model\Entity\Enum\EventTypeEnum;
+use Kytarna\Model\Entity\Enum\SystemRoleEnum;
+use Kytarna\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytarna\Model\Repository\EventRepository;
+use Kytarna\Model\Repository\UserRepository;
+use Kytarna\Tests\Support\AppHarness;
+use Kytarna\Tests\Support\Fixture;
+use Kytarna\Tests\Support\IntegrationTestCase;
 use PDO;
 use PHPUnit\Framework\Attributes\CoversClass;
 
@@ -258,7 +258,7 @@ final class CurrentUserControllerTest extends IntegrationTestCase
 
 		$disposition = $response->getHeaderLine('Content-Disposition');
 		self::assertStringContainsString('attachment', $disposition);
-		self::assertStringContainsString(sprintf('kytario-export-%d.json', $me->id), $disposition);
+		self::assertStringContainsString(sprintf('kytarna-export-%d.json', $me->id), $disposition);
 
 		$body = $this->jsonBody($response);
 		$userBlock = $body['user'];

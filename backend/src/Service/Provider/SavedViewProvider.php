@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider;
+namespace Kytarna\Service\Provider;
 
 use DateTimeImmutable;
 use Iterator;
-use Kytario\Model\Entity\SavedView;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Entity\Workspace;
-use Kytario\Model\Repository\SavedViewRepository;
-use Kytario\Model\Repository\UserRepository;
+use Kytarna\Model\Entity\SavedView;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Entity\Workspace;
+use Kytarna\Model\Repository\SavedViewRepository;
+use Kytarna\Model\Repository\UserRepository;
 use RuntimeException;
 use const JSON_THROW_ON_ERROR;
 

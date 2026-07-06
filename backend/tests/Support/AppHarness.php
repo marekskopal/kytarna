@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\Support;
+namespace Kytarna\Tests\Support;
 
-use Kytario\App\Application;
-use Kytario\App\ApplicationFactory;
-use Kytario\Service\Actor\ActorContextInterface;
+use Kytarna\App\Application;
+use Kytarna\App\ApplicationFactory;
+use Kytarna\Service\Actor\ActorContextInterface;
 use MarekSkopal\ORM\ORM;
 use PDO;
 use Psr\Container\ContainerInterface;

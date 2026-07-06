@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Mcp\Tool;
+namespace Kytarna\Mcp\Tool;
 
-use Kytario\Mcp\Dto\McpCourseDto;
-use Kytario\Mcp\Dto\McpCourseListDto;
-use Kytario\Mcp\McpUserContextInterface;
-use Kytario\Model\Entity\Workspace;
-use Kytario\Service\Provider\CourseProviderInterface;
-use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Kytarna\Mcp\Dto\McpCourseDto;
+use Kytarna\Mcp\Dto\McpCourseListDto;
+use Kytarna\Mcp\McpUserContextInterface;
+use Kytarna\Model\Entity\Workspace;
+use Kytarna\Service\Provider\CourseProviderInterface;
+use Kytarna\Service\Provider\WorkspaceProviderInterface;
 use Mcp\Capability\Attribute\McpTool;
 use RuntimeException;
 
@@ -118,7 +118,7 @@ final readonly class CourseTools
 	{
 		$workspace = $this->workspaceProvider->getCurrentWorkspace($this->userContext->getUser());
 		if ($workspace === null) {
-			throw new RuntimeException('No active workspace. Create one in the Kytario app first.');
+			throw new RuntimeException('No active workspace. Create one in the Kytarna app first.');
 		}
 
 		return $workspace;

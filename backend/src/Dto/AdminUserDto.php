@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Dto;
+namespace Kytarna\Dto;
 
-use Kytario\Model\Entity\User;
+use Kytarna\Model\Entity\User;
 
 final readonly class AdminUserDto
 {

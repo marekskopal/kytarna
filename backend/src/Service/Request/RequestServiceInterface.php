@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Request;
+namespace Kytarna\Service\Request;
 
-use Kytario\Dto\ArrayFactoryInterface;
-use Kytario\Model\Entity\User;
+use Kytarna\Dto\ArrayFactoryInterface;
+use Kytarna\Model\Entity\User;
 use Psr\Http\Message\ServerRequestInterface;
 
 interface RequestServiceInterface

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider;
+namespace Kytarna\Service\Provider;
 
 use DateTimeImmutable;
-use Kytario\Model\Entity\Lecture;
-use Kytario\Model\Entity\LectureTag;
-use Kytario\Model\Entity\Workspace;
-use Kytario\Model\Repository\LectureTagRepository;
-use Kytario\Model\Repository\TagRepository;
+use Kytarna\Model\Entity\Lecture;
+use Kytarna\Model\Entity\LectureTag;
+use Kytarna\Model\Entity\Workspace;
+use Kytarna\Model\Repository\LectureTagRepository;
+use Kytarna\Model\Repository\TagRepository;
 use RuntimeException;
 
 final readonly class LectureTagProvider implements LectureTagProviderInterface

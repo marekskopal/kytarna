@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Mcp\Session;
+namespace Kytarna\Mcp\Session;
 
 use Mcp\Server\Session\SessionStoreInterface;
 use Predis\ClientInterface;

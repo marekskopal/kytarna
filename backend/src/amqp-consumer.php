@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Kytario;
+namespace Kytarna;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Kytario\App\ApplicationFactory;
-use Kytario\Jobs\Handler\EmailVerificationHandler;
-use Kytario\Jobs\Handler\InvitationHandler;
-use Kytario\Jobs\Handler\JobHandler;
-use Kytario\Jobs\Handler\PasswordResetHandler;
-use Kytario\Jobs\Message\AmqpReceivedMessage;
-use Kytario\Service\Queue\Enum\QueueEnum;
+use Kytarna\App\ApplicationFactory;
+use Kytarna\Jobs\Handler\EmailVerificationHandler;
+use Kytarna\Jobs\Handler\InvitationHandler;
+use Kytarna\Jobs\Handler\JobHandler;
+use Kytarna\Jobs\Handler\PasswordResetHandler;
+use Kytarna\Jobs\Message\AmqpReceivedMessage;
+use Kytarna\Service\Queue\Enum\QueueEnum;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use Psr\Log\LoggerInterface;

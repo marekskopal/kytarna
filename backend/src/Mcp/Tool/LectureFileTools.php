@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Mcp\Tool;
+namespace Kytarna\Mcp\Tool;
 
-use Kytario\Mcp\Dto\McpLectureFileContentDto;
-use Kytario\Mcp\Dto\McpLectureFileDto;
-use Kytario\Mcp\Dto\McpLectureFileListDto;
-use Kytario\Mcp\McpUserContextInterface;
-use Kytario\Model\Entity\Lecture;
-use Kytario\Model\Entity\LectureFile;
-use Kytario\Service\Provider\LectureFileProviderInterface;
-use Kytario\Service\Provider\LectureProviderInterface;
-use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Kytarna\Mcp\Dto\McpLectureFileContentDto;
+use Kytarna\Mcp\Dto\McpLectureFileDto;
+use Kytarna\Mcp\Dto\McpLectureFileListDto;
+use Kytarna\Mcp\McpUserContextInterface;
+use Kytarna\Model\Entity\Lecture;
+use Kytarna\Model\Entity\LectureFile;
+use Kytarna\Service\Provider\LectureFileProviderInterface;
+use Kytarna\Service\Provider\LectureProviderInterface;
+use Kytarna\Service\Provider\WorkspaceProviderInterface;
 use Mcp\Capability\Attribute\McpTool;
 use RuntimeException;
 

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Mcp;
+namespace Kytarna\Mcp;
 
-use Kytario\Model\Entity\User;
+use Kytarna\Model\Entity\User;
 
 interface McpUserContextInterface
 {

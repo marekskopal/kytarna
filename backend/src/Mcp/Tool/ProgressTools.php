@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Mcp\Tool;
+namespace Kytarna\Mcp\Tool;
 
 use DateTimeImmutable;
-use Kytario\Dto\DateInput;
-use Kytario\Mcp\Dto\McpPracticeSummaryDto;
-use Kytario\Mcp\Dto\McpProgressEntryDto;
-use Kytario\Mcp\Dto\McpProgressEntryListDto;
-use Kytario\Mcp\McpUserContextInterface;
-use Kytario\Model\Entity\Course;
-use Kytario\Model\Entity\Lecture;
-use Kytario\Model\Entity\ProgressEntry;
-use Kytario\Service\Provider\CourseProviderInterface;
-use Kytario\Service\Provider\LectureProviderInterface;
-use Kytario\Service\Provider\ProgressProviderInterface;
-use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Kytarna\Dto\DateInput;
+use Kytarna\Mcp\Dto\McpPracticeSummaryDto;
+use Kytarna\Mcp\Dto\McpProgressEntryDto;
+use Kytarna\Mcp\Dto\McpProgressEntryListDto;
+use Kytarna\Mcp\McpUserContextInterface;
+use Kytarna\Model\Entity\Course;
+use Kytarna\Model\Entity\Lecture;
+use Kytarna\Model\Entity\ProgressEntry;
+use Kytarna\Service\Provider\CourseProviderInterface;
+use Kytarna\Service\Provider\LectureProviderInterface;
+use Kytarna\Service\Provider\ProgressProviderInterface;
+use Kytarna\Service\Provider\WorkspaceProviderInterface;
 use Mcp\Capability\Attribute\McpTool;
 use RuntimeException;
 

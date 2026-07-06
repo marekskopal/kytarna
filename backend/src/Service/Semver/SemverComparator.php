@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Semver;
+namespace Kytarna\Service\Semver;
 
 final class SemverComparator
 {

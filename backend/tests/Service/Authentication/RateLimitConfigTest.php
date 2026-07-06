@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\Service\Authentication;
+namespace Kytarna\Tests\Service\Authentication;
 
-use Kytario\Service\Authentication\RateLimitConfig;
+use Kytarna\Service\Authentication\RateLimitConfig;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Kytario\OAuth;
+namespace Kytarna\OAuth;
 
 use DateTimeImmutable;
-use Kytario\Model\Entity\OAuthClient;
-use Kytario\Model\Repository\OAuthClientRepository;
+use Kytarna\Model\Entity\OAuthClient;
+use Kytarna\Model\Repository\OAuthClientRepository;
 use MarekSkopal\ORM\Database\DatabaseInterface;
 use RuntimeException;
 use const JSON_THROW_ON_ERROR;

@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Mcp\Tool;
+namespace Kytarna\Mcp\Tool;
 
 use DateTimeImmutable;
-use Kytario\Mcp\Dto\McpInvitationDto;
-use Kytario\Mcp\Dto\McpMemberDto;
-use Kytario\Mcp\Dto\McpMemberListDto;
-use Kytario\Mcp\McpUserContextInterface;
-use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
-use Kytario\Model\Entity\Workspace;
-use Kytario\Model\Repository\InvitationRepository;
-use Kytario\Service\Auth\PermissionCheckerInterface;
-use Kytario\Service\Authentication\RateLimitConfig;
-use Kytario\Service\Provider\InvitationProviderInterface;
-use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Kytarna\Mcp\Dto\McpInvitationDto;
+use Kytarna\Mcp\Dto\McpMemberDto;
+use Kytarna\Mcp\Dto\McpMemberListDto;
+use Kytarna\Mcp\McpUserContextInterface;
+use Kytarna\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytarna\Model\Entity\Workspace;
+use Kytarna\Model\Repository\InvitationRepository;
+use Kytarna\Service\Auth\PermissionCheckerInterface;
+use Kytarna\Service\Authentication\RateLimitConfig;
+use Kytarna\Service\Provider\InvitationProviderInterface;
+use Kytarna\Service\Provider\WorkspaceProviderInterface;
 use Mcp\Capability\Attribute\McpTool;
 use RuntimeException;
 

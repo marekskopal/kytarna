@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Email;
+namespace Kytarna\Service\Email;
 
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\Transport;

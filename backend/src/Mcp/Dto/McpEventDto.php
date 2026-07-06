@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Mcp\Dto;
+namespace Kytarna\Mcp\Dto;
 
-use Kytario\Model\Entity\Event;
+use Kytarna\Model\Entity\Event;
 use const JSON_THROW_ON_ERROR;
 
 final readonly class McpEventDto

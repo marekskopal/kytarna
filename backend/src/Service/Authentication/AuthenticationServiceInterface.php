@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Authentication;
+namespace Kytarna\Service\Authentication;
 
-use Kytario\Dto\AuthenticationDto;
-use Kytario\Dto\CredentialsDto;
-use Kytario\Model\Entity\User;
+use Kytarna\Dto\AuthenticationDto;
+use Kytarna\Dto\CredentialsDto;
+use Kytarna\Model\Entity\User;
 
 interface AuthenticationServiceInterface
 {

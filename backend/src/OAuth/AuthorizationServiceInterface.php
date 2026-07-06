@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\OAuth;
+namespace Kytarna\OAuth;
 
-use Kytario\Model\Entity\OAuthAuthorization;
+use Kytarna\Model\Entity\OAuthAuthorization;
 
 interface AuthorizationServiceInterface
 {

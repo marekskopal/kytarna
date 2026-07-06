@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\Service\Email;
+namespace Kytarna\Tests\Service\Email;
 
-use Kytario\Model\Entity\Enum\LocaleEnum;
-use Kytario\Service\Email\EmailFactory;
-use Kytario\Service\Translator\TranslatorService;
+use Kytarna\Model\Entity\Enum\LocaleEnum;
+use Kytarna\Service\Email\EmailFactory;
+use Kytarna\Service\Translator\TranslatorService;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -15,9 +15,9 @@ final class EmailFactoryTest extends TestCase
 {
 	public function testInvitationEmailContainsTokenAcceptUrlAndIsLocalised(): void
 	{
-		putenv('PROXY_HOST=app.kytario.example');
+		putenv('PROXY_HOST=app.kytarna.example');
 		putenv('PROXY_PORT_SSL=443');
-		putenv('EMAIL_FROM=no-reply@kytario.example');
+		putenv('EMAIL_FROM=no-reply@kytarna.example');
 
 		$translator = new TranslatorService(__DIR__ . '/../../../translations');
 		$factory = new EmailFactory($translator);
@@ -30,7 +30,7 @@ final class EmailFactoryTest extends TestCase
 			locale: LocaleEnum::Cs,
 		);
 
-		self::assertSame('no-reply@kytario.example', $email->getFrom()[0]->getAddress());
+		self::assertSame('no-reply@kytarna.example', $email->getFrom()[0]->getAddress());
 		self::assertSame('invitee@example.com', $email->getTo()[0]->getAddress());
 		$subject = $email->getSubject();
 		self::assertIsString($subject);
@@ -39,14 +39,14 @@ final class EmailFactoryTest extends TestCase
 		$html = $email->getHtmlBody();
 		self::assertIsString($html);
 		self::assertStringContainsString('raw-token-123', $html);
-		self::assertStringContainsString('https://app.kytario.example/app/invitations/accept?token=raw-token-123', $html);
+		self::assertStringContainsString('https://app.kytarna.example/app/invitations/accept?token=raw-token-123', $html);
 	}
 
 	public function testPasswordResetEmailIncludesUrlAndToken(): void
 	{
-		putenv('PROXY_HOST=app.kytario.example');
+		putenv('PROXY_HOST=app.kytarna.example');
 		putenv('PROXY_PORT_SSL=443');
-		putenv('EMAIL_FROM=no-reply@kytario.example');
+		putenv('EMAIL_FROM=no-reply@kytarna.example');
 
 		$translator = new TranslatorService(__DIR__ . '/../../../translations');
 		$factory = new EmailFactory($translator);
@@ -66,9 +66,9 @@ final class EmailFactoryTest extends TestCase
 
 	public function testEmailVerificationEmailIncludesUrlAndToken(): void
 	{
-		putenv('PROXY_HOST=app.kytario.example');
+		putenv('PROXY_HOST=app.kytarna.example');
 		putenv('PROXY_PORT_SSL=443');
-		putenv('EMAIL_FROM=no-reply@kytario.example');
+		putenv('EMAIL_FROM=no-reply@kytarna.example');
 
 		$translator = new TranslatorService(__DIR__ . '/../../../translations');
 		$factory = new EmailFactory($translator);

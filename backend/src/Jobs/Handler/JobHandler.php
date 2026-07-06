@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Jobs\Handler;
+namespace Kytarna\Jobs\Handler;
 
-use Kytario\Jobs\Message\ReceivedMessageInterface;
+use Kytarna\Jobs\Message\ReceivedMessageInterface;
 
 interface JobHandler
 {

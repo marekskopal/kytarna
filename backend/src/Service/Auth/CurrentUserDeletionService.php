@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Auth;
+namespace Kytarna\Service\Auth;
 
-use Kytario\Model\Entity\Enum\EventTypeEnum;
-use Kytario\Model\Entity\Enum\SystemRoleEnum;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Repository\UserRepository;
-use Kytario\Model\Repository\WorkspaceUserRepository;
-use Kytario\Service\Provider\EventProviderInterface;
+use Kytarna\Model\Entity\Enum\EventTypeEnum;
+use Kytarna\Model\Entity\Enum\SystemRoleEnum;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Repository\UserRepository;
+use Kytarna\Model\Repository\WorkspaceUserRepository;
+use Kytarna\Service\Provider\EventProviderInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 

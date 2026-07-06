@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Dto;
+namespace Kytarna\Dto;
 
-use Kytario\Model\Entity\Workflow;
+use Kytarna\Model\Entity\Workflow;
 
 final readonly class WorkflowDto
 {

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\OAuth;
+namespace Kytarna\Tests\OAuth;
 
-use Kytario\OAuth\PkceVerifier;
+use Kytarna\OAuth\PkceVerifier;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 

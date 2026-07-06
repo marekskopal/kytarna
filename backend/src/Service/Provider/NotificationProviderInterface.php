@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider;
+namespace Kytarna\Service\Provider;
 
-use Kytario\Model\Entity\Enum\NotificationTypeEnum;
-use Kytario\Model\Entity\Notification;
-use Kytario\Model\Entity\User;
+use Kytarna\Model\Entity\Enum\NotificationTypeEnum;
+use Kytarna\Model\Entity\Notification;
+use Kytarna\Model\Entity\User;
 
 interface NotificationProviderInterface
 {

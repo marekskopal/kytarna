@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider;
+namespace Kytarna\Service\Provider;
 
-use Kytario\Model\Entity\Lecture;
-use Kytario\Model\Entity\LectureWatcher;
-use Kytario\Model\Entity\User;
+use Kytarna\Model\Entity\Lecture;
+use Kytarna\Model\Entity\LectureWatcher;
+use Kytarna\Model\Entity\User;
 
 interface LectureWatcherProviderInterface
 {

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider;
+namespace Kytarna\Service\Provider;
 
 use DateTimeImmutable;
-use Kytario\Model\Entity\Lecture;
-use Kytario\Model\Entity\LectureWatcher;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Repository\LectureWatcherRepository;
+use Kytarna\Model\Entity\Lecture;
+use Kytarna\Model\Entity\LectureWatcher;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Repository\LectureWatcherRepository;
 
 final readonly class LectureWatcherProvider implements LectureWatcherProviderInterface
 {

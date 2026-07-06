@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Dto;
+namespace Kytarna\Dto;
 
-use Kytario\Model\Entity\Tab;
+use Kytarna\Model\Entity\Tab;
 use const DATE_ATOM;
 
 final readonly class TabDto

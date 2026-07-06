@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Queue;
+namespace Kytarna\Service\Queue;
 
 use JsonException;
-use Kytario\Service\Queue\Enum\QueueEnum;
+use Kytarna\Service\Queue\Enum\QueueEnum;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Controller;
+namespace Kytarna\Controller;
 
-use Kytario\Mcp\McpUserContextInterface;
-use Kytario\Mcp\Server\KytarioServer;
-use Kytario\Mcp\Session\RedisSessionStore;
-use Kytario\OAuth\AuthorizationServiceInterface;
-use Kytario\OAuth\ClientServiceInterface;
-use Kytario\Response\ErrorResponse;
-use Kytario\Route\Routes;
-use Kytario\Service\Actor\ActorContextInterface;
+use Kytarna\Mcp\McpUserContextInterface;
+use Kytarna\Mcp\Server\KytarnaServer;
+use Kytarna\Mcp\Session\RedisSessionStore;
+use Kytarna\OAuth\AuthorizationServiceInterface;
+use Kytarna\OAuth\ClientServiceInterface;
+use Kytarna\Response\ErrorResponse;
+use Kytarna\Route\Routes;
+use Kytarna\Service\Actor\ActorContextInterface;
 use MarekSkopal\Router\Attribute\RouteDelete;
 use MarekSkopal\Router\Attribute\RouteGet;
 use MarekSkopal\Router\Attribute\RoutePost;
@@ -31,7 +31,7 @@ final readonly class McpController
 		private ClientServiceInterface $clientService,
 		private McpUserContextInterface $userContext,
 		private ActorContextInterface $actorContext,
-		private KytarioServer $server,
+		private KytarnaServer $server,
 		private ClientInterface $redis,
 	) {
 	}

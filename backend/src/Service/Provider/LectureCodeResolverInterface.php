@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider;
+namespace Kytarna\Service\Provider;
 
-use Kytario\Model\Entity\Lecture;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Entity\Workspace;
+use Kytarna\Model\Entity\Lecture;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Entity\Workspace;
 
 interface LectureCodeResolverInterface
 {

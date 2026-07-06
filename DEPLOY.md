@@ -1,4 +1,4 @@
-# Deploying Kytario
+# Deploying Kytarna
 
 ## First boot
 
@@ -23,16 +23,16 @@ docker compose exec -T backend php bin/console admin:create \
 Passwords must be at least 12 characters. Re-run the command later to add
 additional SystemAdmins; existing users are detected by email and rejected.
 
-## Upgrading from a build that seeded `admin@kytario.com`
+## Upgrading from a build that seeded `admin@kytarna.com`
 
-Earlier builds shipped a default SystemAdmin (`admin@kytario.com` / `admin`)
+Earlier builds shipped a default SystemAdmin (`admin@kytarna.com` / `admin`)
 that was created by the init migration. From `20260520_120000` onward, the
 init migration no longer seeds that user, and a follow-up migration
 invalidates the password on existing installs **if it is still the default**.
 
 After `make migrate`:
 
-1. The legacy `admin@kytario.com` account is still in the database but its
+1. The legacy `admin@kytarna.com` account is still in the database but its
    password is replaced with an unverifiable random string, so nothing can
    log in as it.
 2. Run `admin:create` to provision your real SystemAdmin (above).
@@ -68,10 +68,10 @@ Invitations, password-reset, and email-verification emails are published to
 RabbitMQ from the HTTP request and sent by a background worker, so SMTP
 latency / outages no longer block sign-up / invite flows.
 
-- **Publisher**: `Kytario\Service\Queue\QueuePublisher` (`php-amqplib`), injected
+- **Publisher**: `Kytarna\Service\Queue\QueuePublisher` (`php-amqplib`), injected
   into the three providers. Lazy-connects on first publish per worker.
 - **Queues**: `invitation`, `email-verification`, `password-reset` —
-  enumerated in `Kytario\Service\Queue\Enum\QueueEnum`. Messages are durable
+  enumerated in `Kytarna\Service\Queue\Enum\QueueEnum`. Messages are durable
   + persistent.
 - **Consumer**: `backend/src/amqp-consumer.php`, managed by supervisor inside
   the `backend` container alongside FrankenPHP (see
@@ -97,7 +97,7 @@ built-in cron below.
 
 - **Built-in cron.** The backend container runs `supercronic` under supervisor
   (`[program:cron]` in `backend/docker/supervisord.conf`, crontab at
-  `backend/docker/cron.d/kytario` → `/etc/cron.d/kytario`). No host cron is
+  `backend/docker/cron.d/kytarna` → `/etc/cron.d/kytarna`). No host cron is
   needed. It runs:
 
   ```cron
@@ -126,8 +126,8 @@ built-in cron below.
   - Restart just the worker (supervisord respawns it):
     `docker compose exec backend pkill -f script-worker.php`
 - **Outbound-fetch allowlist (optional hardening).** Set a workspace script
-  variable named `KYTARIO_FETCH_ALLOWLIST` to a comma/whitespace-separated list of
-  hosts (e.g. `hooks.slack.com, api.github.com`). When present, `kytario.fetch`
+  variable named `KYTARNA_FETCH_ALLOWLIST` to a comma/whitespace-separated list of
+  hosts (e.g. `hooks.slack.com, api.github.com`). When present, `kytarna.fetch`
   is restricted to those hosts (and their subdomains); when unset, any http(s)
   host is allowed.
 - **Resource limits per run** (fixed): 5 s CPU, 64 MB memory, 20 `fetch` calls,
@@ -137,9 +137,9 @@ built-in cron below.
 
 `/api/search` (and the `search_tasks` MCP tool) is backed by a Meilisearch
 sidecar. The `meilisearch` service in `docker-compose.yml` persists data to
-the `kytario_meilisearch` volume. Reindex is driven by the same RabbitMQ
+the `kytarna_meilisearch` volume. Reindex is driven by the same RabbitMQ
 worker as emails — every task mutation publishes a `search-reindex` message
-that `Kytario\Jobs\Handler\SearchReindexHandler` consumes.
+that `Kytarna\Jobs\Handler\SearchReindexHandler` consumes.
 
 After first deploy (and whenever the index settings change), populate the
 index with:

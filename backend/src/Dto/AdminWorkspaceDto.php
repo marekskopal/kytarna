@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Dto;
+namespace Kytarna\Dto;
 
-use Kytario\Model\Entity\Workspace;
+use Kytarna\Model\Entity\Workspace;
 use const DATE_ATOM;
 
 final readonly class AdminWorkspaceDto

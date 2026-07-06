@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Mcp\Tool;
+namespace Kytarna\Mcp\Tool;
 
-use Kytario\Mcp\Dto\McpEventDto;
-use Kytario\Mcp\Dto\McpEventListDto;
-use Kytario\Mcp\McpUserContextInterface;
-use Kytario\Model\Entity\Enum\EventTypeEnum;
-use Kytario\Model\Entity\Workspace;
-use Kytario\Service\Provider\EventProviderInterface;
-use Kytario\Service\Provider\LectureCodeResolverInterface;
-use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Kytarna\Mcp\Dto\McpEventDto;
+use Kytarna\Mcp\Dto\McpEventListDto;
+use Kytarna\Mcp\McpUserContextInterface;
+use Kytarna\Model\Entity\Enum\EventTypeEnum;
+use Kytarna\Model\Entity\Workspace;
+use Kytarna\Service\Provider\EventProviderInterface;
+use Kytarna\Service\Provider\LectureCodeResolverInterface;
+use Kytarna\Service\Provider\WorkspaceProviderInterface;
 use Mcp\Capability\Attribute\McpTool;
 use RuntimeException;
 
@@ -123,7 +123,7 @@ final readonly class EventTools
 	{
 		$workspace = $this->workspaceProvider->getCurrentWorkspace($this->userContext->getUser());
 		if ($workspace === null) {
-			throw new RuntimeException('No active workspace. Create one in the Kytario app first.');
+			throw new RuntimeException('No active workspace. Create one in the Kytarna app first.');
 		}
 
 		return $workspace;

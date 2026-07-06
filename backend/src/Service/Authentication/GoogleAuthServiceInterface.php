@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Authentication;
+namespace Kytarna\Service\Authentication;
 
-use Kytario\Service\Authentication\Dto\TokenInfoDto;
+use Kytarna\Service\Authentication\Dto\TokenInfoDto;
 
 interface GoogleAuthServiceInterface
 {

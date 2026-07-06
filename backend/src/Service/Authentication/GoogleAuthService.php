@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Authentication;
+namespace Kytarna\Service\Authentication;
 
 use JsonException;
-use Kytario\Service\Authentication\Dto\TokenInfoDto;
-use Kytario\Service\Authentication\Exception\GoogleAuthException;
+use Kytarna\Service\Authentication\Dto\TokenInfoDto;
+use Kytarna\Service\Authentication\Exception\GoogleAuthException;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\Exception\ExceptionInterface as HttpClientExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;

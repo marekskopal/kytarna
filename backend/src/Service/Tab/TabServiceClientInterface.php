@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Tab;
+namespace Kytarna\Service\Tab;
 
-use Kytario\Service\Tab\Dto\TabConversionResult;
-use Kytario\Service\Tab\Dto\TabValidationResult;
+use Kytarna\Service\Tab\Dto\TabConversionResult;
+use Kytarna\Service\Tab\Dto\TabValidationResult;
 
 interface TabServiceClientInterface
 {

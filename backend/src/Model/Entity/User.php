@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Model\Entity;
+namespace Kytarna\Model\Entity;
 
 use DateTimeImmutable;
-use Kytario\Model\Entity\Enum\LocaleEnum;
-use Kytario\Model\Entity\Enum\SystemRoleEnum;
-use Kytario\Model\Entity\Enum\ThemeEnum;
-use Kytario\Model\Repository\UserRepository;
+use Kytarna\Model\Entity\Enum\LocaleEnum;
+use Kytarna\Model\Entity\Enum\SystemRoleEnum;
+use Kytarna\Model\Entity\Enum\ThemeEnum;
+use Kytarna\Model\Repository\UserRepository;
 use MarekSkopal\ORM\Attribute\Column;
 use MarekSkopal\ORM\Attribute\ColumnEnum;
 use MarekSkopal\ORM\Attribute\Entity;

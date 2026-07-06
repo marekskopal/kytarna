@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Cache;
+namespace Kytarna\Service\Cache;
 
 use Contributte\Redis\Caching\RedisJournal;
 use Contributte\Redis\Caching\RedisStorage;

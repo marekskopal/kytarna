@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Jobs\Handler;
+namespace Kytarna\Jobs\Handler;
 
-use Kytario\Dto\PasswordResetQueueDto;
-use Kytario\Jobs\Message\ReceivedMessageInterface;
-use Kytario\Service\Email\EmailFactory;
-use Kytario\Service\Email\MailerFactory;
-use Kytario\Service\Payload\PayloadServiceInterface;
+use Kytarna\Dto\PasswordResetQueueDto;
+use Kytarna\Jobs\Message\ReceivedMessageInterface;
+use Kytarna\Service\Email\EmailFactory;
+use Kytarna\Service\Email\MailerFactory;
+use Kytarna\Service\Payload\PayloadServiceInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
 

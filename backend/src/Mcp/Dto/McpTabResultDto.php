@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Mcp\Dto;
+namespace Kytarna\Mcp\Dto;
 
-use Kytario\Service\Tab\Dto\TabValidationError;
-use Kytario\Service\Tab\Exception\TabValidationException;
+use Kytarna\Service\Tab\Dto\TabValidationError;
+use Kytarna\Service\Tab\Exception\TabValidationException;
 
 /**
  * Result of create_tab / update_tab / import_gp_file. On success `valid` is true and `tab` is set;

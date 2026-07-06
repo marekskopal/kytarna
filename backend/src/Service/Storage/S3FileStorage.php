@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Storage;
+namespace Kytarna\Service\Storage;
 
 use AsyncAws\S3\S3Client;
 use Psr\Log\LoggerInterface;

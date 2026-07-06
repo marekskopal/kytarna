@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Authentication;
+namespace Kytarna\Service\Authentication;
 
 use DateTimeImmutable;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Repository\UserRepository;
-use Kytario\Service\Authentication\Exception\AccountLockedException;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Repository\UserRepository;
+use Kytarna\Service\Authentication\Exception\AccountLockedException;
 
 final readonly class LoginAttemptService
 {

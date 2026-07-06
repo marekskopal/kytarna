@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Controller;
+namespace Kytarna\Controller;
 
-use Kytario\OAuth\AuthorizationServiceInterface;
-use Kytario\OAuth\ClientServiceInterface;
-use Kytario\OAuth\DiscoveryUrl;
-use Kytario\Response\ErrorResponse;
-use Kytario\Route\Routes;
-use Kytario\Service\Request\RequestServiceInterface;
+use Kytarna\OAuth\AuthorizationServiceInterface;
+use Kytarna\OAuth\ClientServiceInterface;
+use Kytarna\OAuth\DiscoveryUrl;
+use Kytarna\Response\ErrorResponse;
+use Kytarna\Route\Routes;
+use Kytarna\Service\Request\RequestServiceInterface;
 use Laminas\Diactoros\Response\JsonResponse;
 use MarekSkopal\Router\Attribute\RouteGet;
 use MarekSkopal\Router\Attribute\RoutePost;

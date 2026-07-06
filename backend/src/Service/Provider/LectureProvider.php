@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider;
+namespace Kytarna\Service\Provider;
 
 use DateTimeImmutable;
 use Iterator;
-use Kytario\Model\Entity\Course;
-use Kytario\Model\Entity\Enum\DifficultyEnum;
-use Kytario\Model\Entity\Enum\EventTypeEnum;
-use Kytario\Model\Entity\Lecture;
-use Kytario\Model\Entity\Status;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Entity\Workspace;
-use Kytario\Model\Repository\Enum\ArchivedFilterEnum;
-use Kytario\Model\Repository\Enum\LectureOrderByEnum;
-use Kytario\Model\Repository\Enum\OrderDirectionEnum;
-use Kytario\Model\Repository\LectureRepository;
-use Kytario\Model\Repository\LectureTagRepository;
-use Kytario\Service\Actor\ActorContextInterface;
-use Kytario\Validator\TextFieldValidator;
+use Kytarna\Model\Entity\Course;
+use Kytarna\Model\Entity\Enum\DifficultyEnum;
+use Kytarna\Model\Entity\Enum\EventTypeEnum;
+use Kytarna\Model\Entity\Lecture;
+use Kytarna\Model\Entity\Status;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Entity\Workspace;
+use Kytarna\Model\Repository\Enum\ArchivedFilterEnum;
+use Kytarna\Model\Repository\Enum\LectureOrderByEnum;
+use Kytarna\Model\Repository\Enum\OrderDirectionEnum;
+use Kytarna\Model\Repository\LectureRepository;
+use Kytarna\Model\Repository\LectureTagRepository;
+use Kytarna\Service\Actor\ActorContextInterface;
+use Kytarna\Validator\TextFieldValidator;
 
 final readonly class LectureProvider implements LectureProviderInterface
 {

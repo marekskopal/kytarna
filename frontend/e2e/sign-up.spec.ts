@@ -13,7 +13,7 @@ test.describe('Sign-up', () => {
         const layout = new LayoutPage(page);
 
         const stamp = Date.now();
-        const email = `signup-${stamp}@kytario.test`;
+        const email = `signup-${stamp}@kytarna.test`;
         const name = `Signup ${stamp}`;
 
         await signUp.goto();

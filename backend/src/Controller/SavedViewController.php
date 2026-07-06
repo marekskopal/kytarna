@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Controller;
+namespace Kytarna\Controller;
 
-use Kytario\Dto\SavedViewCreateDto;
-use Kytario\Dto\SavedViewDto;
-use Kytario\Dto\SavedViewUpdateDto;
-use Kytario\Model\Entity\SavedView;
-use Kytario\Response\ErrorResponse;
-use Kytario\Response\NotAuthorizedResponse;
-use Kytario\Response\NotFoundResponse;
-use Kytario\Response\OkResponse;
-use Kytario\Route\Routes;
-use Kytario\Service\Auth\PermissionCheckerInterface;
-use Kytario\Service\Provider\SavedViewProviderInterface;
-use Kytario\Service\Provider\WorkspaceProviderInterface;
-use Kytario\Service\Request\RequestServiceInterface;
+use Kytarna\Dto\SavedViewCreateDto;
+use Kytarna\Dto\SavedViewDto;
+use Kytarna\Dto\SavedViewUpdateDto;
+use Kytarna\Model\Entity\SavedView;
+use Kytarna\Response\ErrorResponse;
+use Kytarna\Response\NotAuthorizedResponse;
+use Kytarna\Response\NotFoundResponse;
+use Kytarna\Response\OkResponse;
+use Kytarna\Route\Routes;
+use Kytarna\Service\Auth\PermissionCheckerInterface;
+use Kytarna\Service\Provider\SavedViewProviderInterface;
+use Kytarna\Service\Provider\WorkspaceProviderInterface;
+use Kytarna\Service\Request\RequestServiceInterface;
 use Laminas\Diactoros\Response\JsonResponse;
 use MarekSkopal\Router\Attribute\RouteDelete;
 use MarekSkopal\Router\Attribute\RouteGet;

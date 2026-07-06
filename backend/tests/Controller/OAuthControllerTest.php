@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\Controller;
+namespace Kytarna\Tests\Controller;
 
 use DateTimeImmutable;
-use Kytario\Controller\OAuthController;
-use Kytario\Model\Repository\OAuthClientRepository;
-use Kytario\OAuth\ClientServiceInterface;
-use Kytario\Tests\Support\AppHarness;
-use Kytario\Tests\Support\Fixture;
-use Kytario\Tests\Support\IntegrationTestCase;
+use Kytarna\Controller\OAuthController;
+use Kytarna\Model\Repository\OAuthClientRepository;
+use Kytarna\OAuth\ClientServiceInterface;
+use Kytarna\Tests\Support\AppHarness;
+use Kytarna\Tests\Support\Fixture;
+use Kytarna\Tests\Support\IntegrationTestCase;
 use Laminas\Diactoros\ServerRequest;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Psr\Http\Message\ResponseInterface;

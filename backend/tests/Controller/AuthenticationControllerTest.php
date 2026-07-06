@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\Controller;
+namespace Kytarna\Tests\Controller;
 
 use DateTimeImmutable;
-use Kytario\Controller\AuthenticationController;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Repository\WorkspaceRepository;
-use Kytario\Service\Provider\PasswordResetProviderInterface;
-use Kytario\Tests\Support\AppHarness;
-use Kytario\Tests\Support\Fixture;
-use Kytario\Tests\Support\IntegrationTestCase;
+use Kytarna\Controller\AuthenticationController;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Repository\WorkspaceRepository;
+use Kytarna\Service\Provider\PasswordResetProviderInterface;
+use Kytarna\Tests\Support\AppHarness;
+use Kytarna\Tests\Support\Fixture;
+use Kytarna\Tests\Support\IntegrationTestCase;
 use Laminas\Diactoros\ServerRequest;
 use Laminas\Diactoros\Stream;
 use PHPUnit\Framework\Attributes\CoversClass;

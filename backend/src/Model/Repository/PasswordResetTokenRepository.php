@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Model\Repository;
+namespace Kytarna\Model\Repository;
 
 use DateTimeImmutable;
-use Kytario\Model\Entity\PasswordResetToken;
+use Kytarna\Model\Entity\PasswordResetToken;
 use MarekSkopal\ORM\Repository\AbstractRepository;
 
 /** @extends AbstractRepository<PasswordResetToken> */

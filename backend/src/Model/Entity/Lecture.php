@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Model\Entity;
+namespace Kytarna\Model\Entity;
 
 use DateTimeImmutable;
-use Kytario\Model\Entity\Enum\DifficultyEnum;
-use Kytario\Model\Repository\LectureRepository;
+use Kytarna\Model\Entity\Enum\DifficultyEnum;
+use Kytarna\Model\Repository\LectureRepository;
 use MarekSkopal\ORM\Attribute\Column;
 use MarekSkopal\ORM\Attribute\ColumnEnum;
 use MarekSkopal\ORM\Attribute\Entity;

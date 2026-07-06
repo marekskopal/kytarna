@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Controller;
+namespace Kytarna\Controller;
 
-use Kytario\Dto\LectureWatcherDto;
-use Kytario\Dto\LectureWatchersDto;
-use Kytario\Model\Entity\Lecture;
-use Kytario\Model\Entity\LectureWatcher;
-use Kytario\Model\Entity\User;
-use Kytario\Response\NotFoundResponse;
-use Kytario\Route\Routes;
-use Kytario\Service\Provider\LectureCodeResolverInterface;
-use Kytario\Service\Provider\LectureWatcherProviderInterface;
-use Kytario\Service\Request\RequestServiceInterface;
+use Kytarna\Dto\LectureWatcherDto;
+use Kytarna\Dto\LectureWatchersDto;
+use Kytarna\Model\Entity\Lecture;
+use Kytarna\Model\Entity\LectureWatcher;
+use Kytarna\Model\Entity\User;
+use Kytarna\Response\NotFoundResponse;
+use Kytarna\Route\Routes;
+use Kytarna\Service\Provider\LectureCodeResolverInterface;
+use Kytarna\Service\Provider\LectureWatcherProviderInterface;
+use Kytarna\Service\Request\RequestServiceInterface;
 use Laminas\Diactoros\Response\JsonResponse;
 use MarekSkopal\Router\Attribute\RouteDelete;
 use MarekSkopal\Router\Attribute\RouteGet;

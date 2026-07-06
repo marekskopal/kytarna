@@ -1,6 +1,6 @@
-# Kytario — MVP Design
+# Kytarna — MVP Design
 
-Kytario, a personal guitar-learning app: store lectures with tabs, ideas, and practice progress.
+Kytarna, a personal guitar-learning app: store lectures with tabs, ideas, and practice progress.
 Architecture is a copy of **ukolio** (`../ukolio`) with a reduced infra footprint and a
 guitar domain model. Every feature is exposed via MCP so agents can create and manage
 content.

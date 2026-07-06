@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\Mcp;
+namespace Kytarna\Tests\Mcp;
 
-use Kytario\Mcp\McpUserContextInterface;
-use Kytario\Mcp\Tool\MemberTools;
-use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
-use Kytario\Model\Entity\User;
-use Kytario\Service\Actor\ActorContextInterface;
-use Kytario\Service\Provider\WorkspaceProviderInterface;
-use Kytario\Tests\Support\AppHarness;
-use Kytario\Tests\Support\Fixture;
-use Kytario\Tests\Support\IntegrationTestCase;
+use Kytarna\Mcp\McpUserContextInterface;
+use Kytarna\Mcp\Tool\MemberTools;
+use Kytarna\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytarna\Model\Entity\User;
+use Kytarna\Service\Actor\ActorContextInterface;
+use Kytarna\Service\Provider\WorkspaceProviderInterface;
+use Kytarna\Tests\Support\AppHarness;
+use Kytarna\Tests\Support\Fixture;
+use Kytarna\Tests\Support\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use RuntimeException;
 

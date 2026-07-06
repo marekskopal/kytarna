@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Mcp\Tool;
+namespace Kytarna\Mcp\Tool;
 
-use Kytario\Mcp\Dto\McpTabDto;
-use Kytario\Mcp\Dto\McpTabListDto;
-use Kytario\Mcp\Dto\McpTabResultDto;
-use Kytario\Mcp\McpUserContextInterface;
-use Kytario\Model\Entity\Lecture;
-use Kytario\Model\Entity\Tab;
-use Kytario\Service\Provider\LectureProviderInterface;
-use Kytario\Service\Provider\TabProviderInterface;
-use Kytario\Service\Provider\WorkspaceProviderInterface;
-use Kytario\Service\Tab\Exception\TabValidationException;
+use Kytarna\Mcp\Dto\McpTabDto;
+use Kytarna\Mcp\Dto\McpTabListDto;
+use Kytarna\Mcp\Dto\McpTabResultDto;
+use Kytarna\Mcp\McpUserContextInterface;
+use Kytarna\Model\Entity\Lecture;
+use Kytarna\Model\Entity\Tab;
+use Kytarna\Service\Provider\LectureProviderInterface;
+use Kytarna\Service\Provider\TabProviderInterface;
+use Kytarna\Service\Provider\WorkspaceProviderInterface;
+use Kytarna\Service\Tab\Exception\TabValidationException;
 use Mcp\Capability\Attribute\McpTool;
 use RuntimeException;
 

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\App\Bootstrap;
+namespace Kytarna\Tests\App\Bootstrap;
 
-use Kytario\App\Bootstrap\EnvironmentValidator;
+use Kytarna\App\Bootstrap\EnvironmentValidator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
@@ -21,11 +21,11 @@ final class EnvironmentValidatorTest extends TestCase
 		return [
 			'AUTHORIZATION_TOKEN_KEY' => self::ValidTokenKey,
 			'MYSQL_HOST' => 'db',
-			'MYSQL_DATABASE' => 'kytario',
-			'MYSQL_USER' => 'kytario',
+			'MYSQL_DATABASE' => 'kytarna',
+			'MYSQL_USER' => 'kytarna',
 			'MYSQL_PASSWORD' => self::StrongPassword,
 			'MYSQL_ROOT_PASSWORD' => self::StrongPassword,
-			'S3_BUCKET' => 'kytario-files',
+			'S3_BUCKET' => 'kytarna-files',
 			'S3_ACCESS_KEY' => self::StrongPassword,
 			'S3_SECRET_KEY' => self::StrongPassword,
 			'REDIS_HOST' => 'redis',
@@ -90,7 +90,7 @@ final class EnvironmentValidatorTest extends TestCase
 	{
 		$env = self::baseEnv();
 		$env['APP_ENV'] = 'production';
-		$env['MYSQL_PASSWORD'] = 'kytario';
+		$env['MYSQL_PASSWORD'] = 'kytarna';
 
 		$validator = new EnvironmentValidator($env);
 
@@ -105,8 +105,8 @@ final class EnvironmentValidatorTest extends TestCase
 	{
 		$env = self::baseEnv();
 		$env['APP_ENV'] = 'production';
-		$env['MYSQL_PASSWORD'] = 'kytario';
-		$env['MYSQL_ROOT_PASSWORD'] = 'kytario';
+		$env['MYSQL_PASSWORD'] = 'kytarna';
+		$env['MYSQL_ROOT_PASSWORD'] = 'kytarna';
 		$env['S3_ACCESS_KEY'] = 'minioadmin';
 		$env['S3_SECRET_KEY'] = 'minioadmin';
 
@@ -127,7 +127,7 @@ final class EnvironmentValidatorTest extends TestCase
 	{
 		$env = self::baseEnv();
 		$env['APP_ENV'] = 'production';
-		$env['REDIS_PASSWORD'] = 'kytario';
+		$env['REDIS_PASSWORD'] = 'kytarna';
 
 		$validator = new EnvironmentValidator($env);
 
@@ -141,7 +141,7 @@ final class EnvironmentValidatorTest extends TestCase
 	{
 		$env = self::baseEnv();
 		$env['APP_ENV'] = 'production';
-		$env['RABBITMQ_PASSWORD'] = 'kytario';
+		$env['RABBITMQ_PASSWORD'] = 'kytarna';
 
 		$validator = new EnvironmentValidator($env);
 
@@ -195,8 +195,8 @@ final class EnvironmentValidatorTest extends TestCase
 		$this->expectNotToPerformAssertions();
 
 		$env = self::baseEnv();
-		$env['MYSQL_PASSWORD'] = 'kytario';
-		$env['MYSQL_ROOT_PASSWORD'] = 'kytario';
+		$env['MYSQL_PASSWORD'] = 'kytarna';
+		$env['MYSQL_ROOT_PASSWORD'] = 'kytarna';
 		$env['S3_ACCESS_KEY'] = 'minioadmin';
 		$env['S3_SECRET_KEY'] = 'minioadmin';
 		$env['BACKEND_CORS_ALLOWED_ORIGIN'] = '*';

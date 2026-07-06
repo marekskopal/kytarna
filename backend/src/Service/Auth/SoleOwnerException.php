@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Auth;
+namespace Kytarna\Service\Auth;
 
-use Kytario\Model\Entity\Workspace;
+use Kytarna\Model\Entity\Workspace;
 use RuntimeException;
 
 final class SoleOwnerException extends RuntimeException

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Email;
+namespace Kytarna\Service\Email;
 
-use Kytario\Email\EmailVerificationEmail;
-use Kytario\Email\InvitationEmail;
-use Kytario\Email\PasswordResetEmail;
-use Kytario\Model\Entity\Enum\LocaleEnum;
-use Kytario\Service\Translator\TranslatorServiceInterface;
+use Kytarna\Email\EmailVerificationEmail;
+use Kytarna\Email\InvitationEmail;
+use Kytarna\Email\PasswordResetEmail;
+use Kytarna\Model\Entity\Enum\LocaleEnum;
+use Kytarna\Service\Translator\TranslatorServiceInterface;
 use Symfony\Component\Mime\Email;
 
 final readonly class EmailFactory
@@ -20,7 +20,7 @@ final readonly class EmailFactory
 	public function __construct(private TranslatorServiceInterface $translator)
 	{
 		$from = (string) getenv('EMAIL_FROM');
-		$this->from = $from !== '' ? $from : 'no-reply@kytario.local';
+		$this->from = $from !== '' ? $from : 'no-reply@kytarna.local';
 
 		$host = (string) getenv('PROXY_HOST');
 		$host = $host !== '' ? $host : 'localhost';

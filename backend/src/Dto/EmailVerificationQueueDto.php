@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Dto;
+namespace Kytarna\Dto;
 
-use Kytario\Model\Entity\Enum\LocaleEnum;
-use Kytario\Model\Entity\User;
+use Kytarna\Model\Entity\Enum\LocaleEnum;
+use Kytarna\Model\Entity\User;
 
 /**
  * @implements ArrayFactoryInterface<array{

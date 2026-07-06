@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Dto;
+namespace Kytarna\Dto;
 
-use Kytario\Model\Entity\Status;
+use Kytarna\Model\Entity\Status;
 
 final readonly class StatusDto
 {

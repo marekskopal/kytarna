@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Model\Entity\Enum;
+namespace Kytarna\Model\Entity\Enum;
 
 enum EventTypeEnum: string
 {

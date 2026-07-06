@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\Service\Provider\Fake;
+namespace Kytarna\Tests\Service\Provider\Fake;
 
 use DateTimeImmutable;
-use Kytario\Model\Entity\Lecture;
-use Kytario\Model\Entity\LectureFile;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Repository\LectureFileRepository;
-use Kytario\Service\Provider\LectureFileProviderInterface;
+use Kytarna\Model\Entity\Lecture;
+use Kytarna\Model\Entity\LectureFile;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Repository\LectureFileRepository;
+use Kytarna\Service\Provider\LectureFileProviderInterface;
 
 /**
  * Persists LectureFile rows via the real repository (so foreign keys stay valid) but skips S3 entirely,

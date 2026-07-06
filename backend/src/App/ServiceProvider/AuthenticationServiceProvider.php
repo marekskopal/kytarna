@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Kytario\App\ServiceProvider;
+namespace Kytarna\App\ServiceProvider;
 
-use Kytario\Service\Authentication\AuthenticationService;
-use Kytario\Service\Authentication\AuthenticationServiceInterface;
-use Kytario\Service\Authentication\GoogleAuthService;
-use Kytario\Service\Authentication\GoogleAuthServiceInterface;
-use Kytario\Service\Authentication\RateLimitConfig;
+use Kytarna\Service\Authentication\AuthenticationService;
+use Kytarna\Service\Authentication\AuthenticationServiceInterface;
+use Kytarna\Service\Authentication\GoogleAuthService;
+use Kytarna\Service\Authentication\GoogleAuthServiceInterface;
+use Kytarna\Service\Authentication\RateLimitConfig;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
 final class AuthenticationServiceProvider extends AbstractServiceProvider

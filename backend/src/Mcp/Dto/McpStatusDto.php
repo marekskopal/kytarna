@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Mcp\Dto;
+namespace Kytarna\Mcp\Dto;
 
-use Kytario\Model\Entity\Status;
+use Kytarna\Model\Entity\Status;
 
 final readonly class McpStatusDto
 {

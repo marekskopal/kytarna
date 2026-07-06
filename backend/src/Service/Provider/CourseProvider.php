@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider;
+namespace Kytarna\Service\Provider;
 
 use DateTimeImmutable;
 use Iterator;
-use Kytario\Model\Entity\Course;
-use Kytario\Model\Entity\Enum\EventTypeEnum;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Entity\Workspace;
-use Kytario\Model\Repository\CourseRepository;
-use Kytario\Validator\TextFieldValidator;
+use Kytarna\Model\Entity\Course;
+use Kytarna\Model\Entity\Enum\EventTypeEnum;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Entity\Workspace;
+use Kytarna\Model\Repository\CourseRepository;
+use Kytarna\Validator\TextFieldValidator;
 
 final readonly class CourseProvider implements CourseProviderInterface
 {

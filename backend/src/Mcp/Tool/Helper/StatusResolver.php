@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Mcp\Tool\Helper;
+namespace Kytarna\Mcp\Tool\Helper;
 
-use Kytario\Model\Entity\Course;
-use Kytario\Model\Entity\Enum\StatusTypeEnum;
-use Kytario\Model\Entity\Status;
-use Kytario\Service\Provider\StatusProviderInterface;
-use Kytario\Service\Provider\WorkflowProviderInterface;
+use Kytarna\Model\Entity\Course;
+use Kytarna\Model\Entity\Enum\StatusTypeEnum;
+use Kytarna\Model\Entity\Status;
+use Kytarna\Service\Provider\StatusProviderInterface;
+use Kytarna\Service\Provider\WorkflowProviderInterface;
 use RuntimeException;
 
 final readonly class StatusResolver

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Command;
+namespace Kytarna\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

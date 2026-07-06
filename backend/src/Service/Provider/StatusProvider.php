@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider;
+namespace Kytarna\Service\Provider;
 
 use DateTimeImmutable;
 use Iterator;
-use Kytario\Model\Entity\Enum\StatusTypeEnum;
-use Kytario\Model\Entity\Status;
-use Kytario\Model\Entity\Workflow;
-use Kytario\Model\Repository\StatusRepository;
+use Kytarna\Model\Entity\Enum\StatusTypeEnum;
+use Kytarna\Model\Entity\Status;
+use Kytarna\Model\Entity\Workflow;
+use Kytarna\Model\Repository\StatusRepository;
 
 final readonly class StatusProvider implements StatusProviderInterface
 {

@@ -1,6 +1,6 @@
 {
   "app": {
-    "brand": "Kytario",
+    "brand": "Kytarna",
     "actions": {
       "save": "Uložit",
       "cancel": "Zrušit",
@@ -166,7 +166,7 @@
     "auth": {
       "asideOverline": "MCP-native",
       "asideHeadline": "Vaše kanban nástěnka, kterou řídí agenti.",
-      "asideBody": "Kytario je multi-tenantní lecture manager postavený tak, aby AI agenti byli hlavními aktéry. Připojte jakéhokoliv MCP klienta a nechte ho lekce plánovat, vytvářet i uzavírat společně s týmem.",
+      "asideBody": "Kytarna je multi-tenantní lecture manager postavený tak, aby AI agenti byli hlavními aktéry. Připojte jakéhokoliv MCP klienta a nechte ho lekce plánovat, vytvářet i uzavírat společně s týmem.",
       "asideSnippetLabel": "MCP endpoint",
       "login": {
         "title": "Přihlášení",

@@ -1,12 +1,12 @@
 {
     "email": {
         "subject": {
-            "invitation": "Pozvánka do pracovního prostoru {workspace} v Kytario",
-            "passwordReset": "Obnovení hesla pro Kytario",
-            "emailVerification": "Ověřte svůj e-mail pro Kytario"
+            "invitation": "Pozvánka do pracovního prostoru {workspace} v Kytarně",
+            "passwordReset": "Obnovení hesla pro Kytarnu",
+            "emailVerification": "Ověřte svůj e-mail pro Kytarnu"
         },
         "invitation": {
-            "title": "Pozvánka do Kytario",
+            "title": "Pozvánka do Kytarny",
             "intro": "{inviter} vás pozval(a) do pracovního prostoru <strong>{workspace}</strong>.",
             "action": "Pozvánku přijmete kliknutím na tlačítko níže. Pokud ještě nemáte účet, budete vyzváni k registraci pomocí této e-mailové adresy.",
             "button": "Přijmout pozvánku",
@@ -16,7 +16,7 @@
         "passwordReset": {
             "title": "Obnovení hesla",
             "greeting": "Dobrý den, {name},",
-            "intro": "Obdrželi jsme žádost o obnovení hesla k vašemu účtu Kytario. Klikněte na tlačítko níže a zvolte si nové heslo.",
+            "intro": "Obdrželi jsme žádost o obnovení hesla k vašemu účtu na Kytarně. Klikněte na tlačítko níže a zvolte si nové heslo.",
             "button": "Obnovit heslo",
             "fallback": "Nebo zkopírujte tento odkaz do prohlížeče:",
             "expires": "Tento odkaz vyprší za 1 hodinu.",
@@ -25,11 +25,11 @@
         "emailVerification": {
             "title": "Ověření e-mailu",
             "greeting": "Dobrý den, {name},",
-            "intro": "Vítejte v Kytario! Potvrďte prosím, že vám patří tato e-mailová adresa, abyste mohli začít budovat své kytarové kurzy a propojovat AI agenty.",
+            "intro": "Vítejte v Kytarně! Potvrďte prosím, že vám patří tato e-mailová adresa, abyste mohli začít budovat své kytarové kurzy a propojovat AI agenty.",
             "button": "Ověřit e-mail",
             "fallback": "Nebo zkopírujte tento odkaz do prohlížeče:",
             "expires": "Tento odkaz vyprší za 24 hodin.",
-            "ignore": "Pokud jste si Kytario nezakládal(a), můžete tento e-mail bez obav ignorovat."
+            "ignore": "Pokud jste si Kytarnu nezakládal(a), můžete tento e-mail bez obav ignorovat."
         }
     }
 }

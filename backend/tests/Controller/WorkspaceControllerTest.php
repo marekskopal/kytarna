@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\Controller;
+namespace Kytarna\Tests\Controller;
 
-use Kytario\Controller\WorkspaceController;
-use Kytario\Model\Entity\Enum\WorkspaceRoleEnum;
-use Kytario\OAuth\AuthorizationServiceInterface;
-use Kytario\OAuth\ClientServiceInterface;
-use Kytario\Tests\Support\Fixture;
-use Kytario\Tests\Support\IntegrationTestCase;
+use Kytarna\Controller\WorkspaceController;
+use Kytarna\Model\Entity\Enum\WorkspaceRoleEnum;
+use Kytarna\OAuth\AuthorizationServiceInterface;
+use Kytarna\OAuth\ClientServiceInterface;
+use Kytarna\Tests\Support\Fixture;
+use Kytarna\Tests\Support\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(WorkspaceController::class)]

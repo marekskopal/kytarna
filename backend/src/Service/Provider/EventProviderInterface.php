@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider;
+namespace Kytarna\Service\Provider;
 
 use Iterator;
-use Kytario\Model\Entity\Course;
-use Kytario\Model\Entity\Enum\ActorTypeEnum;
-use Kytario\Model\Entity\Enum\EventTypeEnum;
-use Kytario\Model\Entity\Event;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Entity\Workspace;
+use Kytarna\Model\Entity\Course;
+use Kytarna\Model\Entity\Enum\ActorTypeEnum;
+use Kytarna\Model\Entity\Enum\EventTypeEnum;
+use Kytarna\Model\Entity\Event;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Entity\Workspace;
 
 interface EventProviderInterface
 {

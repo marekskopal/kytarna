@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Auth;
+namespace Kytarna\Service\Auth;
 
 use DateTimeImmutable;
 use Iterator;
-use Kytario\Model\Entity\Enum\EventTypeEnum;
-use Kytario\Model\Entity\Enum\SystemRoleEnum;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Entity\Workspace;
-use Kytario\Model\Repository\UserRepository;
-use Kytario\Model\Repository\WorkspaceRepository;
-use Kytario\Model\Repository\WorkspaceUserRepository;
-use Kytario\Service\Provider\EventProviderInterface;
-use Kytario\Service\Provider\WorkspaceProviderInterface;
+use Kytarna\Model\Entity\Enum\EventTypeEnum;
+use Kytarna\Model\Entity\Enum\SystemRoleEnum;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Entity\Workspace;
+use Kytarna\Model\Repository\UserRepository;
+use Kytarna\Model\Repository\WorkspaceRepository;
+use Kytarna\Model\Repository\WorkspaceUserRepository;
+use Kytarna\Service\Provider\EventProviderInterface;
+use Kytarna\Service\Provider\WorkspaceProviderInterface;
 use RuntimeException;
 use const FILTER_VALIDATE_EMAIL;
 

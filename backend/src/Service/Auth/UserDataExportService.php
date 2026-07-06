@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Auth;
+namespace Kytarna\Service\Auth;
 
 use DateTimeImmutable;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Repository\EventRepository;
-use Kytario\Model\Repository\InvitationRepository;
-use Kytario\Model\Repository\LectureFileRepository;
-use Kytario\Model\Repository\OAuthClientRepository;
-use Kytario\Model\Repository\WorkspaceUserRepository;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Repository\EventRepository;
+use Kytarna\Model\Repository\InvitationRepository;
+use Kytarna\Model\Repository\LectureFileRepository;
+use Kytarna\Model\Repository\OAuthClientRepository;
+use Kytarna\Model\Repository\WorkspaceUserRepository;
 use const DATE_ATOM;
 use const JSON_THROW_ON_ERROR;
 

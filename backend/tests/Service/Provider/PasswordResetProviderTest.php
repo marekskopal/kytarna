@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\Service\Provider;
+namespace Kytarna\Tests\Service\Provider;
 
 use DateTimeImmutable;
-use Kytario\Model\Repository\PasswordResetTokenRepository;
-use Kytario\Service\Authentication\RateLimitConfig;
-use Kytario\Service\Provider\PasswordResetProvider;
-use Kytario\Service\Provider\PasswordResetProviderInterface;
-use Kytario\Tests\Support\Fixture;
-use Kytario\Tests\Support\IntegrationTestCase;
+use Kytarna\Model\Repository\PasswordResetTokenRepository;
+use Kytarna\Service\Authentication\RateLimitConfig;
+use Kytarna\Service\Provider\PasswordResetProvider;
+use Kytarna\Service\Provider\PasswordResetProviderInterface;
+use Kytarna\Tests\Support\Fixture;
+use Kytarna\Tests\Support\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(PasswordResetProvider::class)]

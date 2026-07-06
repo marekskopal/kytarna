@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Tab\Dto;
+namespace Kytarna\Service\Tab\Dto;
 
 final readonly class TabMetadata
 {

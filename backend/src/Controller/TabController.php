@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Controller;
+namespace Kytarna\Controller;
 
-use Kytario\Dto\TabCreateDto;
-use Kytario\Dto\TabDto;
-use Kytario\Dto\TabUpdateDto;
-use Kytario\Model\Entity\Lecture;
-use Kytario\Model\Entity\Tab;
-use Kytario\Model\Entity\User;
-use Kytario\Response\ErrorResponse;
-use Kytario\Response\NotFoundResponse;
-use Kytario\Response\OkResponse;
-use Kytario\Route\Routes;
-use Kytario\Service\Provider\LectureCodeResolverInterface;
-use Kytario\Service\Provider\TabProviderInterface;
-use Kytario\Service\Provider\WorkspaceProviderInterface;
-use Kytario\Service\Request\RequestServiceInterface;
-use Kytario\Service\Tab\Dto\TabValidationError;
-use Kytario\Service\Tab\Exception\TabServiceException;
-use Kytario\Service\Tab\Exception\TabValidationException;
+use Kytarna\Dto\TabCreateDto;
+use Kytarna\Dto\TabDto;
+use Kytarna\Dto\TabUpdateDto;
+use Kytarna\Model\Entity\Lecture;
+use Kytarna\Model\Entity\Tab;
+use Kytarna\Model\Entity\User;
+use Kytarna\Response\ErrorResponse;
+use Kytarna\Response\NotFoundResponse;
+use Kytarna\Response\OkResponse;
+use Kytarna\Route\Routes;
+use Kytarna\Service\Provider\LectureCodeResolverInterface;
+use Kytarna\Service\Provider\TabProviderInterface;
+use Kytarna\Service\Provider\WorkspaceProviderInterface;
+use Kytarna\Service\Request\RequestServiceInterface;
+use Kytarna\Service\Tab\Dto\TabValidationError;
+use Kytarna\Service\Tab\Exception\TabServiceException;
+use Kytarna\Service\Tab\Exception\TabValidationException;
 use Laminas\Diactoros\Response\JsonResponse;
 use MarekSkopal\Router\Attribute\RouteDelete;
 use MarekSkopal\Router\Attribute\RouteGet;

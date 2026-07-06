@@ -16,7 +16,7 @@ RUN install-php-extensions \
     memcached
 
 # curl/tzdata/supervisor for the runtime; supercronic runs the in-container cron
-# (see docker/cron.d/kytario).
+# (see docker/cron.d/kytarna).
 RUN apk add --no-cache curl tzdata supervisor supercronic
 
 COPY --from=composer /usr/bin/composer /usr/local/bin/composer

@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Kytario\App;
+namespace Kytarna\App;
 
-use Kytario\App\Bootstrap\EnvironmentValidator;
-use Kytario\App\ServiceProvider\AuthenticationServiceProvider;
-use Kytario\App\ServiceProvider\DomainServiceProvider;
-use Kytario\App\ServiceProvider\InfrastructureServiceProvider;
-use Kytario\App\ServiceProvider\OrmServiceProvider;
-use Kytario\Middleware\AuthorizationMiddleware;
-use Kytario\Middleware\CorsMiddleware;
-use Kytario\Route\Strategy\JsonStrategy;
-use Kytario\Service\Dbal\DbContext;
+use Kytarna\App\Bootstrap\EnvironmentValidator;
+use Kytarna\App\ServiceProvider\AuthenticationServiceProvider;
+use Kytarna\App\ServiceProvider\DomainServiceProvider;
+use Kytarna\App\ServiceProvider\InfrastructureServiceProvider;
+use Kytarna\App\ServiceProvider\OrmServiceProvider;
+use Kytarna\Middleware\AuthorizationMiddleware;
+use Kytarna\Middleware\CorsMiddleware;
+use Kytarna\Route\Strategy\JsonStrategy;
+use Kytarna\Service\Dbal\DbContext;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 use MarekSkopal\Router\Builder\RouterBuilder;

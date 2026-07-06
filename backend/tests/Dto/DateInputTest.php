@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\Dto;
+namespace Kytarna\Tests\Dto;
 
-use Kytario\Dto\DateInput;
+use Kytarna\Dto\DateInput;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\Service\Translator;
+namespace Kytarna\Tests\Service\Translator;
 
-use Kytario\Model\Entity\Enum\LocaleEnum;
-use Kytario\Service\Translator\TranslatorService;
+use Kytarna\Model\Entity\Enum\LocaleEnum;
+use Kytarna\Service\Translator\TranslatorService;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -16,7 +16,7 @@ final class TranslatorServiceTest extends TestCase
 
 	protected function setUp(): void
 	{
-		$this->dir = sys_get_temp_dir() . '/kytario-translator-' . uniqid();
+		$this->dir = sys_get_temp_dir() . '/kytarna-translator-' . uniqid();
 		mkdir($this->dir);
 		file_put_contents(
 			$this->dir . '/en.json',

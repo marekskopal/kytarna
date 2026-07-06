@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Command;
+namespace Kytarna\Command;
 
 use DateTimeImmutable;
-use Kytario\App\ApplicationFactory;
-use Kytario\Model\Entity\Enum\LocaleEnum;
-use Kytario\Model\Entity\Enum\SystemRoleEnum;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Repository\UserRepository;
+use Kytarna\App\ApplicationFactory;
+use Kytarna\Model\Entity\Enum\LocaleEnum;
+use Kytarna\Model\Entity\Enum\SystemRoleEnum;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Repository\UserRepository;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider;
+namespace Kytarna\Service\Provider;
 
 use DateTimeImmutable;
-use Kytario\Model\Entity\Lecture;
-use Kytario\Model\Entity\Status;
-use Kytario\Model\Repository\LectureRepository;
+use Kytarna\Model\Entity\Lecture;
+use Kytarna\Model\Entity\Status;
+use Kytarna\Model\Repository\LectureRepository;
 
 /**
  * Encapsulates the per-status position bookkeeping for lectures.

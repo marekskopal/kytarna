@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Controller;
+namespace Kytarna\Controller;
 
-use Kytario\Dto\DateInput;
-use Kytario\Dto\PracticeSummaryDto;
-use Kytario\Dto\ProgressEntryCreateDto;
-use Kytario\Dto\ProgressEntryDto;
-use Kytario\Dto\ProgressEntryUpdateDto;
-use Kytario\Model\Entity\Lecture;
-use Kytario\Model\Entity\ProgressEntry;
-use Kytario\Model\Entity\User;
-use Kytario\Response\ErrorResponse;
-use Kytario\Response\NotFoundResponse;
-use Kytario\Response\OkResponse;
-use Kytario\Route\Routes;
-use Kytario\Service\Provider\CourseProviderInterface;
-use Kytario\Service\Provider\LectureCodeResolverInterface;
-use Kytario\Service\Provider\ProgressProviderInterface;
-use Kytario\Service\Provider\WorkspaceProviderInterface;
-use Kytario\Service\Request\RequestServiceInterface;
+use Kytarna\Dto\DateInput;
+use Kytarna\Dto\PracticeSummaryDto;
+use Kytarna\Dto\ProgressEntryCreateDto;
+use Kytarna\Dto\ProgressEntryDto;
+use Kytarna\Dto\ProgressEntryUpdateDto;
+use Kytarna\Model\Entity\Lecture;
+use Kytarna\Model\Entity\ProgressEntry;
+use Kytarna\Model\Entity\User;
+use Kytarna\Response\ErrorResponse;
+use Kytarna\Response\NotFoundResponse;
+use Kytarna\Response\OkResponse;
+use Kytarna\Route\Routes;
+use Kytarna\Service\Provider\CourseProviderInterface;
+use Kytarna\Service\Provider\LectureCodeResolverInterface;
+use Kytarna\Service\Provider\ProgressProviderInterface;
+use Kytarna\Service\Provider\WorkspaceProviderInterface;
+use Kytarna\Service\Request\RequestServiceInterface;
 use Laminas\Diactoros\Response\JsonResponse;
 use MarekSkopal\Router\Attribute\RouteDelete;
 use MarekSkopal\Router\Attribute\RouteGet;

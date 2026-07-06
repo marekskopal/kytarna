@@ -1,7 +1,7 @@
 {
-    "name": "marekskopal/kytario",
+    "name": "marekskopal/kytarna",
     "type": "project",
-    "description": "Kytario",
+    "description": "Kytarna",
     "license": "MIT",
     "require": {
         "php": ">=8.5",
@@ -52,12 +52,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Kytario\\": "src/"
+            "Kytarna\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Kytario\\Tests\\": "tests/"
+            "Kytarna\\Tests\\": "tests/"
         }
     },
     "config": {

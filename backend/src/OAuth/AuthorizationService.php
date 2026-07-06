@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Kytario\OAuth;
+namespace Kytarna\OAuth;
 
 use DateTimeImmutable;
-use Kytario\Model\Entity\OAuthAuthorization;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Repository\OAuthAuthorizationRepository;
-use Kytario\Service\Provider\UserProviderInterface;
+use Kytarna\Model\Entity\OAuthAuthorization;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Repository\OAuthAuthorizationRepository;
+use Kytarna\Service\Provider\UserProviderInterface;
 use MarekSkopal\ORM\Database\DatabaseInterface;
 use RuntimeException;
 

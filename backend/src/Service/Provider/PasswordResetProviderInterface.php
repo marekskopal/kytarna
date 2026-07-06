@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider;
+namespace Kytarna\Service\Provider;
 
-use Kytario\Model\Entity\PasswordResetToken;
-use Kytario\Model\Entity\User;
+use Kytarna\Model\Entity\PasswordResetToken;
+use Kytarna\Model\Entity\User;
 
 interface PasswordResetProviderInterface
 {

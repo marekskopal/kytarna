@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Provider\Dto;
+namespace Kytarna\Service\Provider\Dto;
 
-use Kytario\Model\Entity\ProgressEntry;
+use Kytarna\Model\Entity\ProgressEntry;
 
 final readonly class PracticeSummary
 {

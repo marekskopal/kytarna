@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Model\Repository\Enum;
+namespace Kytarna\Model\Repository\Enum;
 
 enum OrderDirectionEnum: string
 {

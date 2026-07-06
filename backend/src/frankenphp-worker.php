@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Kytario;
+namespace Kytarna;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Kytario\App\ApplicationFactory;
-use Kytario\Mcp\McpUserContextInterface;
-use Kytario\Response\ErrorResponse;
-use Kytario\Service\Actor\ActorContextInterface;
+use Kytarna\App\ApplicationFactory;
+use Kytarna\Mcp\McpUserContextInterface;
+use Kytarna\Response\ErrorResponse;
+use Kytarna\Service\Actor\ActorContextInterface;
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
 use Psr\Log\LoggerInterface;

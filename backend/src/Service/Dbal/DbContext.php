@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Service\Dbal;
+namespace Kytarna\Service\Dbal;
 
-use Kytario\Service\Cache\CacheFactory;
+use Kytarna\Service\Cache\CacheFactory;
 use MarekSkopal\ORM\Database\DatabaseInterface;
 use MarekSkopal\ORM\Migrations\Migrator;
 use MarekSkopal\ORM\ORM;

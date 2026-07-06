@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Kytario\Tests\Service\Provider;
+namespace Kytarna\Tests\Service\Provider;
 
-use Kytario\Model\Entity\Enum\TabSourceTypeEnum;
-use Kytario\Model\Entity\Lecture;
-use Kytario\Model\Entity\User;
-use Kytario\Model\Repository\LectureFileRepository;
-use Kytario\Model\Repository\TabRepository;
-use Kytario\Service\Provider\TabProvider;
-use Kytario\Service\Tab\Dto\TabConversionResult;
-use Kytario\Service\Tab\Dto\TabMetadata;
-use Kytario\Service\Tab\Dto\TabTrackMetadata;
-use Kytario\Service\Tab\Dto\TabValidationError;
-use Kytario\Service\Tab\Exception\TabValidationException;
-use Kytario\Tests\Service\Provider\Fake\FakeLectureFileProvider;
-use Kytario\Tests\Support\FakeTabServiceClient;
-use Kytario\Tests\Support\Fixture;
-use Kytario\Tests\Support\IntegrationTestCase;
+use Kytarna\Model\Entity\Enum\TabSourceTypeEnum;
+use Kytarna\Model\Entity\Lecture;
+use Kytarna\Model\Entity\User;
+use Kytarna\Model\Repository\LectureFileRepository;
+use Kytarna\Model\Repository\TabRepository;
+use Kytarna\Service\Provider\TabProvider;
+use Kytarna\Service\Tab\Dto\TabConversionResult;
+use Kytarna\Service\Tab\Dto\TabMetadata;
+use Kytarna\Service\Tab\Dto\TabTrackMetadata;
+use Kytarna\Service\Tab\Dto\TabValidationError;
+use Kytarna\Service\Tab\Exception\TabValidationException;
+use Kytarna\Tests\Service\Provider\Fake\FakeLectureFileProvider;
+use Kytarna\Tests\Support\FakeTabServiceClient;
+use Kytarna\Tests\Support\Fixture;
+use Kytarna\Tests\Support\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(TabProvider::class)]
