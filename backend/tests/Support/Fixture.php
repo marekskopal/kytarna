@@ -7,30 +7,28 @@ namespace Kytarna\Tests\Support;
 use DateTimeImmutable;
 use Firebase\JWT\JWT;
 use Kytarna\Model\Entity\Course;
+use Kytarna\Model\Entity\Enum\LearningStatusEnum;
 use Kytarna\Model\Entity\Enum\LocaleEnum;
-use Kytarna\Model\Entity\Enum\StatusTypeEnum;
 use Kytarna\Model\Entity\Enum\SystemRoleEnum;
 use Kytarna\Model\Entity\Enum\TabSourceTypeEnum;
 use Kytarna\Model\Entity\Enum\WorkspaceRoleEnum;
 use Kytarna\Model\Entity\Lecture;
 use Kytarna\Model\Entity\LectureLink;
 use Kytarna\Model\Entity\ProgressEntry;
-use Kytarna\Model\Entity\Status;
+use Kytarna\Model\Entity\Song;
 use Kytarna\Model\Entity\Tab;
 use Kytarna\Model\Entity\User;
 use Kytarna\Model\Entity\Workspace;
-use Kytarna\Model\Repository\StatusRepository;
 use Kytarna\Model\Repository\TabRepository;
 use Kytarna\Model\Repository\UserRepository;
-use Kytarna\Model\Repository\WorkflowRepository;
 use Kytarna\Service\Authentication\AuthenticationServiceInterface;
 use Kytarna\Service\Provider\CourseProviderInterface;
 use Kytarna\Service\Provider\LectureProviderInterface;
 use Kytarna\Service\Provider\LinkProviderInterface;
 use Kytarna\Service\Provider\ProgressProviderInterface;
+use Kytarna\Service\Provider\SongProviderInterface;
 use Kytarna\Service\Provider\UserProviderInterface;
 use Kytarna\Service\Provider\WorkspaceProviderInterface;
-use RuntimeException;
 
 final class Fixture
 {
@@ -89,35 +87,27 @@ final class Fixture
 		return $provider->createCourse($author, $workspace, $name, null);
 	}
 
-	public static function startStatusForCourse(Course $course): Status
-	{
-		$workflowRepo = AppHarness::container()->get(WorkflowRepository::class);
-		assert($workflowRepo instanceof WorkflowRepository);
-		$workflow = $workflowRepo->findByCourse($course->id);
-		if ($workflow === null) {
-			throw new RuntimeException('Course has no workflow.');
-		}
-
-		$statusRepo = AppHarness::container()->get(StatusRepository::class);
-		assert($statusRepo instanceof StatusRepository);
-		$first = null;
-		foreach ($statusRepo->findByWorkflow($workflow->id) as $status) {
-			$first ??= $status;
-			if ($status->type === StatusTypeEnum::Start) {
-				return $status;
-			}
-		}
-		if ($first === null) {
-			throw new RuntimeException('Course workflow has no statuses.');
-		}
-		return $first;
-	}
-
-	public static function createLecture(User $author, Course $course, string $name = 'Test Lecture'): Lecture
-	{
+	public static function createLecture(
+		User $author,
+		Course $course,
+		string $name = 'Test Lecture',
+		LearningStatusEnum $status = LearningStatusEnum::ToLearn,
+	): Lecture {
 		$provider = AppHarness::container()->get(LectureProviderInterface::class);
 		assert($provider instanceof LectureProviderInterface);
-		return $provider->createLecture($author, $course, self::startStatusForCourse($course), $name, null);
+		return $provider->createLecture($author, $course, $status, $name, null);
+	}
+
+	public static function createSong(
+		User $author,
+		Workspace $workspace,
+		string $name = 'Test Song',
+		?Course $course = null,
+		LearningStatusEnum $status = LearningStatusEnum::ToLearn,
+	): Song {
+		$provider = AppHarness::container()->get(SongProviderInterface::class);
+		assert($provider instanceof SongProviderInterface);
+		return $provider->createSong(author: $author, workspace: $workspace, name: $name, status: $status, course: $course);
 	}
 
 	/** Persists a Tab directly (bypassing tab-service validation) — for tests that need an existing tab. */

@@ -46,14 +46,14 @@
     </div>
 
     @if (mode() === 'create') {
-        <uk-tab-editor [lectureId]="lectureId()" [tab]="null" (saved)="onSaved($event)" (cancelled)="cancelEdit()" />
+        <uk-tab-editor [lectureId]="lectureId()" [parent]="parent()" [tab]="null" (saved)="onSaved($event)" (cancelled)="cancelEdit()" />
     } @else if (loading()) {
         <p class="text-subtle">{{ 'app.actions.loading' | translate }}</p>
     } @else if (tabs().length === 0) {
         <p class="text-subtle">{{ 'app.tabs.empty' | translate }}</p>
     } @else if (selectedTab(); as tab) {
         @if (mode() === 'edit') {
-            <uk-tab-editor [lectureId]="lectureId()" [tab]="tab" (saved)="onSaved($event)" (cancelled)="cancelEdit()" />
+            <uk-tab-editor [lectureId]="lectureId()" [parent]="parent()" [tab]="tab" (saved)="onSaved($event)" (cancelled)="cancelEdit()" />
         } @else {
             <div class="tab-sheet">
                 <div class="tab-sheet-head">

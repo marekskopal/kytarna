@@ -54,6 +54,10 @@
                 <span class="nav-bullet nav-bullet--gold" aria-hidden="true"></span>
                 {{ 'app.nav.lectures' | translate }}
             </a>
+            <a routerLink="/songs" routerLinkActive="nav-link--active" [routerLinkActiveOptions]="{exact: false}" class="nav-link">
+                <span class="nav-bullet nav-bullet--info" aria-hidden="true"></span>
+                {{ 'app.nav.songs' | translate }}
+            </a>
             <a routerLink="/agents" routerLinkActive="nav-link--active" [routerLinkActiveOptions]="{exact: false}" class="nav-link">
                 <span class="nav-bullet nav-bullet--green" aria-hidden="true"></span>
                 {{ 'app.nav.agents' | translate }}

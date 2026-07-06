@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, Component, inject, input, OnInit, signal} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {LectureLink, LectureLinkKind} from '@app/models/lecture-link';
+import {PracticeParent} from '@app/models/practice-parent';
 import {LinkService} from '@app/services/link.service';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
@@ -15,6 +16,7 @@ import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 })
 export class LectureLinksComponent implements OnInit {
     public readonly lectureId = input.required<number | string>();
+    public readonly parent = input<PracticeParent>('lectures');
 
     private readonly fb = inject(FormBuilder);
     private readonly linkService = inject(LinkService);
@@ -37,7 +39,7 @@ export class LectureLinksComponent implements OnInit {
     private async reload(): Promise<void> {
         this.loading.set(true);
         try {
-            this.links.set(await this.linkService.listLinks(this.lectureId()));
+            this.links.set(await this.linkService.listLinks(this.lectureId(), this.parent()));
         } catch {
             this.links.set([]);
         } finally {
@@ -58,7 +60,7 @@ export class LectureLinksComponent implements OnInit {
                 label: raw.label.trim() === '' ? null : raw.label.trim(),
                 kind: this.detectKind(url),
                 timestampSeconds: raw.timestampSeconds !== null ? Number(raw.timestampSeconds) : null,
-            });
+            }, this.parent());
             this.form.reset({url: '', label: '', timestampSeconds: null});
             await this.reload();
         } catch {
@@ -74,7 +76,7 @@ export class LectureLinksComponent implements OnInit {
             return;
         }
         try {
-            await this.linkService.deleteLink(this.lectureId(), link.id);
+            await this.linkService.deleteLink(this.lectureId(), link.id, this.parent());
             await this.reload();
         } catch {
             // error interceptor

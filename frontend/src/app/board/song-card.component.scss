@@ -1,0 +1,149 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.song-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    padding: $space-6;
+    background: $color-surface;
+    border: 1px solid $color-border;
+    border-left: 2px solid $color-info;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-sm;
+    cursor: pointer;
+    transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        border-color: $color-border-strong;
+        box-shadow: $shadow-md;
+    }
+
+    &[data-agent='true'] {
+        border-left-color: $color-ai;
+    }
+}
+
+// Small "Song" marker so song cards read differently from lecture cards.
+.song-card-badge {
+    align-self: flex-start;
+    padding: 2px 6px;
+    border-radius: $radius-xs;
+    background: $color-surface-muted;
+    color: $color-text-subtle;
+    font-family: $font-mono;
+    font-size: $font-size-10;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1;
+}
+
+.song-card-head {
+    display: flex;
+    align-items: flex-start;
+    gap: $space-3;
+}
+
+.song-card-cover {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: $radius-sm;
+    overflow: hidden;
+    background: $color-surface-muted;
+    border: 1px solid $color-border;
+}
+
+.song-card-cover-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.song-card-head-main {
+    min-width: 0;
+    flex: 1;
+}
+
+.song-card-title {
+    margin: 0;
+    font-family: $font-display;
+    font-weight: 400;
+    font-size: $font-size-18;
+    line-height: 1.15;
+    color: $color-text;
+    word-break: break-word;
+}
+
+.song-card-byline {
+    margin: 2px 0 0;
+    font-family: $font-mono;
+    font-size: $font-size-11;
+    color: $color-text-subtle;
+    @include truncate;
+}
+
+.song-card-agent {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    flex: 0 0 auto;
+    border: 1px solid $color-border-strong;
+    border-radius: 50%;
+    background: $color-surface-muted;
+}
+
+.song-card-agent-mark {
+    width: 6px;
+    height: 6px;
+    background: $color-ai;
+    transform: rotate(45deg);
+}
+
+.song-card-desc {
+    margin: 0;
+    font-size: $font-size-13;
+    color: $color-text-muted;
+    line-height: 1.45;
+    @include clamp-lines(2);
+}
+
+.song-card-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-2;
+}
+
+.song-card-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 7px;
+    border: 1px solid $color-border;
+    border-radius: $radius-xs;
+    background: $color-surface-muted;
+    font-family: $font-mono;
+    font-size: 10.5px;
+    line-height: 1;
+    white-space: nowrap;
+
+    &--muted {
+        color: $color-text-muted;
+    }
+}
+
+.song-card-footer {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    font-family: $font-mono;
+    font-size: 10.5px;
+    line-height: 1.3;
+    color: $color-text-subtle;
+}

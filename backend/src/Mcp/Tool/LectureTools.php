@@ -7,10 +7,9 @@ namespace Kytarna\Mcp\Tool;
 use Kytarna\Mcp\Dto\McpLectureDto;
 use Kytarna\Mcp\Dto\McpLectureListDto;
 use Kytarna\Mcp\McpUserContextInterface;
-use Kytarna\Mcp\Tool\Helper\StatusResolver;
 use Kytarna\Model\Entity\Course;
 use Kytarna\Model\Entity\Enum\DifficultyEnum;
-use Kytarna\Model\Entity\Enum\StatusTypeEnum;
+use Kytarna\Model\Entity\Enum\LearningStatusEnum;
 use Kytarna\Model\Entity\Lecture;
 use Kytarna\Model\Entity\Workspace;
 use Kytarna\Service\Provider\BulkLectureProviderInterface;
@@ -19,7 +18,6 @@ use Kytarna\Service\Provider\Enum\BulkOpEnum;
 use Kytarna\Service\Provider\LectureCodeResolverInterface;
 use Kytarna\Service\Provider\LectureProviderInterface;
 use Kytarna\Service\Provider\LectureTagProviderInterface;
-use Kytarna\Service\Provider\StatusProviderInterface;
 use Kytarna\Service\Provider\WorkspaceProviderInterface;
 use Mcp\Capability\Attribute\McpTool;
 use RuntimeException;
@@ -29,12 +27,10 @@ final readonly class LectureTools
 	public function __construct(
 		private McpUserContextInterface $userContext,
 		private CourseProviderInterface $courseProvider,
-		private StatusProviderInterface $statusProvider,
 		private LectureProviderInterface $lectureProvider,
 		private LectureCodeResolverInterface $lectureCodeResolver,
 		private WorkspaceProviderInterface $workspaceProvider,
 		private LectureTagProviderInterface $lectureTagProvider,
-		private StatusResolver $statusResolver,
 		private BulkLectureProviderInterface $bulkLectureProvider,
 	) {
 	}
@@ -44,7 +40,7 @@ final readonly class LectureTools
 	 * Archived lectures are hidden by default; pass includeArchived=true to include them.
 	 *
 	 * @param int $courseId Course ID
-	 * @param int|null $statusId Optional: only return lectures in this status
+	 * @param string|null $status Optional: only return lectures in this status ("To Learn", "Learning" or "Mastered")
 	 * @param string|null $tuning Optional: only return lectures whose tuning matches (case-insensitive substring,
 	 *     e.g. "drop d")
 	 * @param bool $includeArchived Include archived lectures (default false)
@@ -55,16 +51,17 @@ final readonly class LectureTools
 	)]
 	public function listLectures(
 		int $courseId,
-		?int $statusId = null,
+		?string $status = null,
 		?string $tuning = null,
 		bool $includeArchived = false,
 	): McpLectureListDto {
 		$course = $this->requireCourse($courseId);
+		$statusFilter = $status !== null && $status !== '' ? $this->parseStatus($status) : null;
 		$tuningNeedle = $tuning !== null && $tuning !== '' ? mb_strtolower($tuning) : null;
 
 		$lectures = [];
 		foreach ($this->lectureProvider->getLecturesByCourse($course, $includeArchived) as $lecture) {
-			if ($statusId !== null && $lecture->status->id !== $statusId) {
+			if ($statusFilter !== null && $lecture->status !== $statusFilter) {
 				continue;
 			}
 			if (
@@ -131,27 +128,25 @@ final readonly class LectureTools
 	}
 
 	/**
-	 * Create a new lecture. By default it lands in the course's Start status (e.g. "To Learn").
-	 * Provide statusId or statusName to put it in a different column.
+	 * Create a new lecture. By default it lands in the "To Learn" status.
+	 * Provide status to put it in a different column.
 	 *
 	 * @param int $courseId Course ID
 	 * @param string $name Lecture name
 	 * @param string|null $description Optional markdown description
-	 * @param int|null $statusId Optional explicit status ID
-	 * @param string|null $statusName Optional status name (case-insensitive); ignored if statusId is given
+	 * @param string|null $status Optional status: "To Learn" (default), "Learning" or "Mastered"
 	 * @param string|null $tuning Optional tuning, e.g. "E A D G B E" or "Drop D"
 	 * @param int|null $capo Optional capo fret number
 	 * @param int|null $targetTempoBpm Optional target practice tempo in BPM
 	 * @param string|null $difficulty Optional difficulty: "Beginner", "Intermediate" or "Advanced"
 	 * @param list<int>|null $tagIds Optional list of workspace tag IDs to apply to the new lecture
 	 */
-	#[McpTool(name: 'create_lecture', description: 'Create a lecture in a course. Lands in Start status by default.')]
+	#[McpTool(name: 'create_lecture', description: 'Create a lecture in a course. Lands in "To Learn" status by default.')]
 	public function createLecture(
 		int $courseId,
 		string $name,
 		?string $description = null,
-		?int $statusId = null,
-		?string $statusName = null,
+		?string $status = null,
 		?string $tuning = null,
 		?int $capo = null,
 		?int $targetTempoBpm = null,
@@ -160,14 +155,12 @@ final readonly class LectureTools
 	): McpLectureDto {
 		$user = $this->userContext->getUser();
 		$course = $this->requireCourse($courseId);
-		$status = $this->statusResolver->resolve($course, $statusId, $statusName)
-			?? $this->statusResolver->findByType($course, StatusTypeEnum::Start)
-			?? throw new RuntimeException(sprintf('No Start status found for course %d.', $courseId));
+		$statusEnum = $status !== null && $status !== '' ? $this->parseStatus($status) : LearningStatusEnum::ToLearn;
 
 		$lecture = $this->lectureProvider->createLecture(
 			author: $user,
 			course: $course,
-			status: $status,
+			status: $statusEnum,
 			name: $name,
 			description: $description,
 			tagIds: $tagIds,
@@ -225,25 +218,20 @@ final readonly class LectureTools
 	}
 
 	/**
-	 * Move a lecture to a different status (column). Provide either statusId or statusName.
-	 * The lecture is appended to the end of the destination column.
+	 * Move a lecture to a different status (column). The lecture is appended to the end of the destination column.
 	 *
 	 * @param int|string $lectureId Lecture ID or code (e.g. "MP-3")
-	 * @param int|null $statusId Target status ID
-	 * @param string|null $statusName Target status name (case-insensitive); ignored if statusId is given
+	 * @param string $status Target status: "To Learn", "Learning" or "Mastered"
 	 */
 	#[McpTool(name: 'move_lecture', description: 'Move a lecture to a different status. Appends to the end of the destination column.')]
-	public function moveLecture(int|string $lectureId, ?int $statusId = null, ?string $statusName = null): McpLectureDto
+	public function moveLecture(int|string $lectureId, string $status): McpLectureDto
 	{
 		$user = $this->userContext->getUser();
 		$lecture = $this->requireLecture($lectureId);
-		$status = $this->statusResolver->resolve($lecture->course, $statusId, $statusName);
-		if ($status === null) {
-			throw new RuntimeException('Provide statusId or statusName to move the lecture.');
-		}
+		$statusEnum = $this->parseStatus($status);
 
-		$position = $this->nextPositionInStatus($status->id);
-		$moved = $this->lectureProvider->moveLecture($user, $lecture, $status, $position);
+		$position = $this->lectureProvider->nextPosition($lecture->course, $statusEnum);
+		$moved = $this->lectureProvider->moveLecture($user, $lecture, $statusEnum, $position);
 
 		return McpLectureDto::fromEntity($moved, $this->lectureTagProvider->getTagIdsForLecture($moved));
 	}
@@ -300,11 +288,12 @@ final readonly class LectureTools
 
 	/**
 	 * Apply one operation to many lectures in the current workspace in a single batch.
-	 * Per-lecture failures (not found, out of workspace, status mismatch) are returned as `skipped` —
+	 * Per-lecture failures (not found, out of workspace) are returned as `skipped` —
 	 * the call succeeds even if some ids could not be processed. Up to 200 ids per call.
 	 *
 	 * Operations and required `payload`:
-	 * - "move": `{statusId: int}` — moves each lecture to the given status, appended to end of column
+	 * - "move": `{status: string}` — moves each lecture to the given status ("To Learn"|"Learning"|"Mastered"),
+	 *   appended to end of column
 	 * - "tag": `{tagIds: int[]}` — adds these tag ids to each lecture's existing tags
 	 * - "untag": `{tagIds: int[]}` — removes these tag ids from each lecture's existing tags
 	 * - "delete": no payload — deletes each lecture
@@ -361,6 +350,12 @@ final readonly class LectureTools
 		return $lecture;
 	}
 
+	private function parseStatus(string $raw): LearningStatusEnum
+	{
+		return LearningStatusEnum::fromLoose($raw)
+			?? throw new RuntimeException(sprintf('Invalid status "%s"; expected "To Learn", "Learning" or "Mastered".', $raw));
+	}
+
 	/** Partial-update string semantics: null leaves the value unchanged, '' clears it, otherwise sets it. */
 	private static function resolveStringField(?string $current, ?string $value): ?string
 	{
@@ -377,22 +372,5 @@ final readonly class LectureTools
 		}
 		return DifficultyEnum::tryFrom($raw)
 			?? throw new RuntimeException('Invalid difficulty; expected Beginner, Intermediate or Advanced.');
-	}
-
-	private function nextPositionInStatus(int $statusId): int
-	{
-		$status = $this->statusProvider->getStatus($statusId);
-		if ($status === null) {
-			throw new RuntimeException(sprintf('Status %d not found.', $statusId));
-		}
-
-		$max = -1;
-		foreach ($this->lectureProvider->getLecturesByCourse($status->workflow->course) as $lecture) {
-			if ($lecture->status->id === $statusId && $lecture->position > $max) {
-				$max = $lecture->position;
-			}
-		}
-
-		return $max + 1;
 	}
 }

@@ -31,6 +31,8 @@ use Kytarna\Service\Provider\CoursePrefixGenerator;
 use Kytarna\Service\Provider\CoursePrefixGeneratorInterface;
 use Kytarna\Service\Provider\CourseProvider;
 use Kytarna\Service\Provider\CourseProviderInterface;
+use Kytarna\Service\Provider\CourseSequenceProvider;
+use Kytarna\Service\Provider\CourseSequenceProviderInterface;
 use Kytarna\Service\Provider\EmailVerificationProvider;
 use Kytarna\Service\Provider\EmailVerificationProviderInterface;
 use Kytarna\Service\Provider\EventProvider;
@@ -57,16 +59,26 @@ use Kytarna\Service\Provider\ProgressProvider;
 use Kytarna\Service\Provider\ProgressProviderInterface;
 use Kytarna\Service\Provider\SavedViewProvider;
 use Kytarna\Service\Provider\SavedViewProviderInterface;
-use Kytarna\Service\Provider\StatusProvider;
-use Kytarna\Service\Provider\StatusProviderInterface;
+use Kytarna\Service\Provider\SongFileProvider;
+use Kytarna\Service\Provider\SongFileProviderInterface;
+use Kytarna\Service\Provider\SongLinkProvider;
+use Kytarna\Service\Provider\SongLinkProviderInterface;
+use Kytarna\Service\Provider\SongProgressProvider;
+use Kytarna\Service\Provider\SongProgressProviderInterface;
+use Kytarna\Service\Provider\SongProvider;
+use Kytarna\Service\Provider\SongProviderInterface;
+use Kytarna\Service\Provider\SongTabProvider;
+use Kytarna\Service\Provider\SongTabProviderInterface;
+use Kytarna\Service\Provider\SongTagProvider;
+use Kytarna\Service\Provider\SongTagProviderInterface;
+use Kytarna\Service\Provider\SongWatcherProvider;
+use Kytarna\Service\Provider\SongWatcherProviderInterface;
 use Kytarna\Service\Provider\TabProvider;
 use Kytarna\Service\Provider\TabProviderInterface;
 use Kytarna\Service\Provider\TagProvider;
 use Kytarna\Service\Provider\TagProviderInterface;
 use Kytarna\Service\Provider\UserProvider;
 use Kytarna\Service\Provider\UserProviderInterface;
-use Kytarna\Service\Provider\WorkflowProvider;
-use Kytarna\Service\Provider\WorkflowProviderInterface;
 use Kytarna\Service\Provider\WorkspaceMcpClientProvider;
 use Kytarna\Service\Provider\WorkspaceMcpClientProviderInterface;
 use Kytarna\Service\Provider\WorkspaceProvider;
@@ -96,9 +108,15 @@ final class DomainServiceProvider extends AbstractServiceProvider
 			EmailVerificationProviderInterface::class,
 			CourseProviderInterface::class,
 			CoursePrefixGeneratorInterface::class,
-			WorkflowProviderInterface::class,
-			StatusProviderInterface::class,
+			CourseSequenceProviderInterface::class,
 			LectureProviderInterface::class,
+			SongProviderInterface::class,
+			SongFileProviderInterface::class,
+			SongTabProviderInterface::class,
+			SongLinkProviderInterface::class,
+			SongProgressProviderInterface::class,
+			SongTagProviderInterface::class,
+			SongWatcherProviderInterface::class,
 			BulkLectureProviderInterface::class,
 			LectureCodeResolverInterface::class,
 			LectureFileProviderInterface::class,
@@ -141,11 +159,17 @@ final class DomainServiceProvider extends AbstractServiceProvider
 		$c->add(EmailVerificationProviderInterface::class, EmailVerificationProvider::class);
 		$c->add(PayloadServiceInterface::class, PayloadService::class);
 		$c->add(EventProviderInterface::class, EventProvider::class);
-		$c->add(StatusProviderInterface::class, StatusProvider::class);
-		$c->add(WorkflowProviderInterface::class, WorkflowProvider::class);
 		$c->add(CourseProviderInterface::class, CourseProvider::class);
 		$c->add(CoursePrefixGeneratorInterface::class, CoursePrefixGenerator::class);
+		$c->add(CourseSequenceProviderInterface::class, CourseSequenceProvider::class);
 		$c->add(LectureProviderInterface::class, LectureProvider::class);
+		$c->add(SongProviderInterface::class, SongProvider::class);
+		$c->add(SongFileProviderInterface::class, SongFileProvider::class);
+		$c->add(SongTabProviderInterface::class, SongTabProvider::class);
+		$c->add(SongLinkProviderInterface::class, SongLinkProvider::class);
+		$c->add(SongProgressProviderInterface::class, SongProgressProvider::class);
+		$c->add(SongTagProviderInterface::class, SongTagProvider::class);
+		$c->add(SongWatcherProviderInterface::class, SongWatcherProvider::class);
 		$c->add(BulkLectureProviderInterface::class, BulkLectureProvider::class);
 		$c->add(LectureCodeResolverInterface::class, LectureCodeResolver::class);
 		$c->add(LectureFileProviderInterface::class, LectureFileProvider::class);

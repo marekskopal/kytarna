@@ -6,7 +6,6 @@ namespace Kytarna\Tests\Controller;
 
 use Kytarna\Controller\CourseController;
 use Kytarna\Model\Entity\Enum\WorkspaceRoleEnum;
-use Kytarna\Model\Repository\StatusRepository;
 use Kytarna\Model\Repository\UserRepository;
 use Kytarna\Tests\Support\Fixture;
 use Kytarna\Tests\Support\IntegrationTestCase;
@@ -15,7 +14,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 #[CoversClass(CourseController::class)]
 final class CourseControllerTest extends IntegrationTestCase
 {
-	public function testOwnerCanCreateCourseAndDefaultWorkflowIsCreated(): void
+	public function testOwnerCanCreateCourse(): void
 	{
 		$owner = Fixture::createUser();
 		Fixture::createWorkspace($owner);
@@ -31,23 +30,11 @@ final class CourseControllerTest extends IntegrationTestCase
 		$course = $this->jsonBody($response);
 		self::assertSame('My Course', $course['name']);
 		self::assertNotEmpty($course['prefix']);
-		$courseId = self::intField($course['id']);
 
 		// Course shows up in the list
 		$listResponse = $this->request('GET', '/api/courses', authenticatedAs: $owner);
 		self::assertSame(200, $listResponse->getStatusCode());
 		self::assertCount(1, $this->jsonList($listResponse));
-
-		// Default workflow has 3 statuses
-		$workflowResponse = $this->request('GET', '/api/courses/' . $courseId . '/workflow', authenticatedAs: $owner);
-		self::assertSame(200, $workflowResponse->getStatusCode());
-		$workflow = $this->jsonBody($workflowResponse);
-		$workflowId = self::intField($workflow['id']);
-
-		$statusRepo = $this->container->get(StatusRepository::class);
-		assert($statusRepo instanceof StatusRepository);
-		$statuses = iterator_to_array($statusRepo->findByWorkflow($workflowId), false);
-		self::assertCount(3, $statuses);
 	}
 
 	public function testMemberCannotCreateCourse(): void

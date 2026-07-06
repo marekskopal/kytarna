@@ -6,7 +6,6 @@ namespace Kytarna\Tests\Mcp;
 
 use Kytarna\Mcp\McpUserContextInterface;
 use Kytarna\Mcp\Tool\LectureTools;
-use Kytarna\Mcp\Tool\WorkflowTools;
 use Kytarna\Model\Entity\User;
 use Kytarna\Service\Actor\ActorContextInterface;
 use Kytarna\Tests\Support\AppHarness;
@@ -15,7 +14,6 @@ use Kytarna\Tests\Support\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(LectureTools::class)]
-#[CoversClass(WorkflowTools::class)]
 final class LectureToolsTest extends IntegrationTestCase
 {
 	public function testCreateLectureDefaultsToStartStatusAndIsMarkedAgentCreated(): void
@@ -24,15 +22,15 @@ final class LectureToolsTest extends IntegrationTestCase
 		$workspace = Fixture::createWorkspace($user);
 		$course = Fixture::createCourse($user, $workspace);
 
-		[$lectureTools, $workflowTools] = $this->bootAs($user);
+		$lectureTools = $this->bootAs($user);
 
 		$lecture = $lectureTools->createLecture(courseId: $course->id, name: 'Agent lecture');
 
 		self::assertSame('Agent lecture', $lecture->name);
 
-		// The Start status is the first in the default workflow.
-		$statuses = $workflowTools->listStatuses($course->id);
-		self::assertSame($statuses->statuses[0]->id, $lecture->statusId);
+		// A new lecture lands in the first learning status by default.
+		self::assertSame('ToLearn', $lecture->status);
+		self::assertSame('To Learn', $lecture->statusLabel);
 
 		// Verify the lecture was attributed to an agent (ActorContext was flipped to Agent in bootAs).
 		$pdo = AppHarness::pdo();
@@ -44,37 +42,32 @@ final class LectureToolsTest extends IntegrationTestCase
 		self::assertSame(1, (int) $stmt->fetchColumn());
 	}
 
-	public function testCreateLectureHonoursStatusName(): void
+	public function testCreateLectureHonoursStatus(): void
 	{
 		$user = Fixture::createUser();
 		$workspace = Fixture::createWorkspace($user);
 		$course = Fixture::createCourse($user, $workspace);
 
-		[$lectureTools] = $this->bootAs($user);
+		$lectureTools = $this->bootAs($user);
 
-		$lecture = $lectureTools->createLecture(courseId: $course->id, name: 'Learning lecture', statusName: 'Learning');
+		$lecture = $lectureTools->createLecture(courseId: $course->id, name: 'Learning lecture', status: 'Learning');
 		self::assertSame('Learning lecture', $lecture->name);
+		self::assertSame('Learning', $lecture->status);
 	}
 
-	public function testMoveLectureByStatusName(): void
+	public function testMoveLectureByStatus(): void
 	{
 		$user = Fixture::createUser();
 		$workspace = Fixture::createWorkspace($user);
 		$course = Fixture::createCourse($user, $workspace);
 
-		[$lectureTools, $workflowTools] = $this->bootAs($user);
+		$lectureTools = $this->bootAs($user);
 
 		$lecture = $lectureTools->createLecture(courseId: $course->id, name: 'Move me');
-		$moved = $lectureTools->moveLecture(lectureId: $lecture->id, statusName: 'Mastered');
+		$moved = $lectureTools->moveLecture(lectureId: $lecture->id, status: 'Mastered');
 
-		$statuses = $workflowTools->listStatuses($course->id);
-		$doneId = null;
-		foreach ($statuses->statuses as $status) {
-			if ($status->name === 'Mastered') {
-				$doneId = $status->id;
-			}
-		}
-		self::assertSame($doneId, $moved->statusId);
+		self::assertSame('Mastered', $moved->status);
+		self::assertSame('Mastered', $moved->statusLabel);
 	}
 
 	public function testFindLectureByNamePrefersExactMatchOverSubstring(): void
@@ -83,7 +76,7 @@ final class LectureToolsTest extends IntegrationTestCase
 		$workspace = Fixture::createWorkspace($user);
 		$course = Fixture::createCourse($user, $workspace);
 
-		[$lectureTools] = $this->bootAs($user);
+		$lectureTools = $this->bootAs($user);
 		$lectureTools->createLecture(courseId: $course->id, name: 'Pay invoice');
 		$lectureTools->createLecture(courseId: $course->id, name: 'Pay');
 
@@ -98,7 +91,7 @@ final class LectureToolsTest extends IntegrationTestCase
 		$workspace = Fixture::createWorkspace($user);
 		$course = Fixture::createCourse($user, $workspace);
 
-		[$lectureTools] = $this->bootAs($user);
+		$lectureTools = $this->bootAs($user);
 		$lecture = $lectureTools->createLecture(courseId: $course->id, name: 'Codeable');
 
 		$fetched = $lectureTools->getLecture($lecture->code);
@@ -111,7 +104,7 @@ final class LectureToolsTest extends IntegrationTestCase
 		$workspace = Fixture::createWorkspace($user);
 		$course = Fixture::createCourse($user, $workspace);
 
-		[$lectureTools] = $this->bootAs($user);
+		$lectureTools = $this->bootAs($user);
 		$lecture = $lectureTools->createLecture(courseId: $course->id, name: 'Doomed');
 
 		$lectureTools->deleteLecture($lecture->id);
@@ -126,7 +119,7 @@ final class LectureToolsTest extends IntegrationTestCase
 		$workspace = Fixture::createWorkspace($user);
 		$course = Fixture::createCourse($user, $workspace);
 
-		[$lectureTools] = $this->bootAs($user);
+		$lectureTools = $this->bootAs($user);
 
 		// Create carries the guitar metadata through to the DTO.
 		$lecture = $lectureTools->createLecture(
@@ -161,7 +154,7 @@ final class LectureToolsTest extends IntegrationTestCase
 		$workspace = Fixture::createWorkspace($user);
 		$course = Fixture::createCourse($user, $workspace);
 
-		[$lectureTools] = $this->bootAs($user);
+		$lectureTools = $this->bootAs($user);
 
 		$this->expectException(\RuntimeException::class);
 		$lectureTools->createLecture(courseId: $course->id, name: 'Bad', difficulty: 'Impossible');
@@ -173,7 +166,7 @@ final class LectureToolsTest extends IntegrationTestCase
 		$workspace = Fixture::createWorkspace($user);
 		$course = Fixture::createCourse($user, $workspace);
 
-		[$lectureTools] = $this->bootAs($user);
+		$lectureTools = $this->bootAs($user);
 
 		$lecture = $lectureTools->createLecture(courseId: $course->id, name: 'Archive me');
 
@@ -190,8 +183,7 @@ final class LectureToolsTest extends IntegrationTestCase
 		self::assertCount(1, $lectureTools->listLectures($course->id)->lectures);
 	}
 
-	/** @return array{0:LectureTools,1:WorkflowTools} */
-	private function bootAs(User $user): array
+	private function bootAs(User $user): LectureTools
 	{
 		$ctx = AppHarness::container()->get(McpUserContextInterface::class);
 		assert($ctx instanceof McpUserContextInterface);
@@ -204,9 +196,6 @@ final class LectureToolsTest extends IntegrationTestCase
 		$lectureTools = AppHarness::container()->get(LectureTools::class);
 		assert($lectureTools instanceof LectureTools);
 
-		$workflowTools = AppHarness::container()->get(WorkflowTools::class);
-		assert($workflowTools instanceof WorkflowTools);
-
-		return [$lectureTools, $workflowTools];
+		return $lectureTools;
 	}
 }

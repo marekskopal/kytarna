@@ -16,11 +16,22 @@ $testEnv = [
 	'MYSQL_DATABASE' => getenv('TEST_MYSQL_DATABASE') !== false && getenv('TEST_MYSQL_DATABASE') !== ''
 		? (string) getenv('TEST_MYSQL_DATABASE')
 		: 'kytarna_test',
+	// Object storage: respect the container-provided endpoint/credentials (so file/cover uploads
+	// reach the real MinIO service on the docker network) and fall back to local defaults otherwise.
+	// A dedicated test bucket keeps fixtures isolated; S3FileStorage creates it on first use.
 	'S3_BUCKET' => 'test-bucket',
-	'S3_ACCESS_KEY' => 'test-access-key',
-	'S3_SECRET_KEY' => 'test-secret-key',
-	'S3_ENDPOINT' => 'http://localhost:9000',
-	'S3_REGION' => 'us-east-1',
+	'S3_ACCESS_KEY' => getenv('S3_ACCESS_KEY') !== false && getenv('S3_ACCESS_KEY') !== ''
+		? (string) getenv('S3_ACCESS_KEY')
+		: 'test-access-key',
+	'S3_SECRET_KEY' => getenv('S3_SECRET_KEY') !== false && getenv('S3_SECRET_KEY') !== ''
+		? (string) getenv('S3_SECRET_KEY')
+		: 'test-secret-key',
+	'S3_ENDPOINT' => getenv('S3_ENDPOINT') !== false && getenv('S3_ENDPOINT') !== ''
+		? (string) getenv('S3_ENDPOINT')
+		: 'http://localhost:9000',
+	'S3_REGION' => getenv('S3_REGION') !== false && getenv('S3_REGION') !== ''
+		? (string) getenv('S3_REGION')
+		: 'us-east-1',
 	'S3_USE_PATH_STYLE' => 'true',
 	'REDIS_HOST' => getenv('REDIS_HOST') !== false && getenv('REDIS_HOST') !== '' ? getenv('REDIS_HOST') : 'redis',
 	'REDIS_PORT' => getenv('REDIS_PORT') !== false && getenv('REDIS_PORT') !== '' ? getenv('REDIS_PORT') : '6379',

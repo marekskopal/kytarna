@@ -2,26 +2,35 @@ import {CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray, tr
 import {ChangeDetectionStrategy, Component, computed, inject, OnInit, signal} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {LectureCardComponent} from '@app/board/lecture-card.component';
+import {SongCardComponent} from '@app/board/song-card.component';
 import {Board} from '@app/models/board';
 import {Lecture} from '@app/models/lecture';
-import {Status, StatusType} from '@app/models/status';
+import {Song} from '@app/models/song';
+import {LearningStatus, statusColorVar} from '@app/models/status';
 import {Tag} from '@app/models/tag';
 import {BoardService} from '@app/services/board.service';
 import {CurrentUserService} from '@app/services/current-user.service';
 import {LectureService} from '@app/services/lecture.service';
+import {SongService} from '@app/services/song.service';
 import {TagService} from '@app/services/tag.service';
 import {WorkspaceService} from '@app/services/workspace.service';
+import {StatusLabelPipe} from '@app/shared/pipes/status-label.pipe';
 import {TranslatePipe} from '@ngx-translate/core';
 
+/** A card is either a lecture or a song; `id` is prefixed so cdk tracking never collides. */
+type BoardCard =
+    | {kind: 'lecture'; key: string; lecture: Lecture}
+    | {kind: 'song'; key: string; song: Song};
+
 interface Column {
-    status: Status;
-    lectures: Lecture[];
+    status: LearningStatus;
+    cards: BoardCard[];
 }
 
 @Component({
     selector: 'uk-board',
     standalone: true,
-    imports: [CdkDropListGroup, CdkDropList, CdkDrag, RouterLink, LectureCardComponent, TranslatePipe],
+    imports: [CdkDropListGroup, CdkDropList, CdkDrag, RouterLink, LectureCardComponent, SongCardComponent, TranslatePipe, StatusLabelPipe],
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './board.component.html',
     styleUrl: './board.component.scss',
@@ -31,6 +40,7 @@ export class BoardComponent implements OnInit {
     private readonly router = inject(Router);
     private readonly boardService = inject(BoardService);
     private readonly lectureService = inject(LectureService);
+    private readonly songService = inject(SongService);
     private readonly tagService = inject(TagService);
     private readonly workspaceService = inject(WorkspaceService);
     private readonly currentUserService = inject(CurrentUserService);
@@ -45,58 +55,60 @@ export class BoardComponent implements OnInit {
         if (!board) {
             return [];
         }
-        return [...board.statuses]
-            .sort((a, b) => a.position - b.position)
-            .map((status) => ({
-                status,
-                lectures: board.lectures
-                    .filter((t) => t.statusId === status.id)
-                    .sort((a, b) => a.position - b.position),
-            }));
+        return board.statuses.map((status) => ({
+            status,
+            cards: this.cardsForStatus(board, status),
+        }));
     });
 
     // ─── Course header stats ────────────────────────────────────
-    // Ring geometry (matches the design's 76px ring, r=33, 6px stroke).
     protected readonly ringCircumference = 2 * Math.PI * 33;
 
-    protected readonly totalCount = computed<number>(() => this.board()?.lectures.length ?? 0);
+    protected readonly totalCount = computed<number>(() => {
+        const board = this.board();
+        return board ? board.lectures.length + board.songs.length : 0;
+    });
 
-    protected readonly masteredCount = computed<number>(() => this.countByStatusType('Finish'));
+    protected readonly masteredCount = computed<number>(() => this.countByStatus('Mastered'));
 
-    protected readonly learningCount = computed<number>(() => this.countByStatusType('Normal'));
+    protected readonly learningCount = computed<number>(() => this.countByStatus('Learning'));
 
     protected readonly masteredPercent = computed<number>(() => {
         const total = this.totalCount();
         return total === 0 ? 0 : Math.round((this.masteredCount() / total) * 100);
     });
 
-    // stroke-dasharray for the progress arc: "<filled> <remaining>".
     protected readonly ringDash = computed<string>(() => {
         const c = this.ringCircumference;
         const filled = (this.masteredPercent() / 100) * c;
         return `${filled} ${c - filled}`;
     });
 
-    private countByStatusType(type: StatusType): number {
+    private countByStatus(status: LearningStatus): number {
         const board = this.board();
         if (!board) {
             return 0;
         }
-        const ids = new Set(board.statuses.filter((s) => s.type === type).map((s) => s.id));
-        return board.lectures.filter((l) => ids.has(l.statusId)).length;
+        return board.lectures.filter((l) => l.status === status).length
+            + board.songs.filter((s) => s.status === status).length;
     }
 
-    // Status dot color by workflow role, mapped to theme-aware tokens so it
-    // flips in dark mode (backend status.color is a static hex).
-    protected statusDotColor(status: Status): string {
-        switch (status.type) {
-            case 'Start':
-                return 'var(--color-status-todo)';
-            case 'Finish':
-                return 'var(--color-status-done)';
-            default:
-                return 'var(--color-status-doing)';
-        }
+    private cardsForStatus(board: Board, status: LearningStatus): BoardCard[] {
+        const lectures: BoardCard[] = board.lectures
+            .filter((l) => l.status === status)
+            .map((lecture) => ({kind: 'lecture' as const, key: `l-${lecture.id}`, lecture}));
+        const songs: BoardCard[] = board.songs
+            .filter((s) => s.status === status)
+            .map((song) => ({kind: 'song' as const, key: `s-${song.id}`, song}));
+        return [...lectures, ...songs].sort((a, b) => this.cardPosition(a) - this.cardPosition(b));
+    }
+
+    private cardPosition(card: BoardCard): number {
+        return card.kind === 'lecture' ? card.lecture.position : card.song.position;
+    }
+
+    protected statusDotColor(status: LearningStatus): string {
+        return statusColorVar(status);
     }
 
     public async ngOnInit(): Promise<void> {
@@ -111,7 +123,6 @@ export class BoardComponent implements OnInit {
         if (openLectureParam !== null) {
             const openId = Number(openLectureParam);
             if (Number.isFinite(openId) && openId > 0) {
-                // Legacy deep link: redirect to the routed lecture page.
                 void this.router.navigate(['courses', id, 'lectures', openId], {replaceUrl: true});
             }
         }
@@ -146,42 +157,64 @@ export class BoardComponent implements OnInit {
         }
     }
 
-    protected async onDrop(event: CdkDragDrop<Lecture[]>, targetStatus: Status): Promise<void> {
+    protected async onDrop(event: CdkDragDrop<BoardCard[]>, targetStatus: LearningStatus): Promise<void> {
         const previousArr = event.previousContainer.data;
         const currentArr = event.container.data;
-        let movedLecture: Lecture;
+        let moved: BoardCard;
 
         if (event.previousContainer === event.container) {
             if (event.previousIndex === event.currentIndex) {
                 return;
             }
-            movedLecture = currentArr[event.previousIndex];
+            moved = currentArr[event.previousIndex];
             moveItemInArray(currentArr, event.previousIndex, event.currentIndex);
         } else {
-            movedLecture = previousArr[event.previousIndex];
+            moved = previousArr[event.previousIndex];
             transferArrayItem(previousArr, currentArr, event.previousIndex, event.currentIndex);
         }
 
-        currentArr.forEach((t, i) => { t.position = i; t.statusId = targetStatus.id; });
-        previousArr.forEach((t, i) => { t.position = i; });
+        currentArr.forEach((c, i) => this.applyCardPositionStatus(c, i, targetStatus));
+        previousArr.forEach((c, i) => this.applyCardPositionStatus(c, i, c.kind === 'lecture' ? c.lecture.status : c.song.status));
 
-        this.board.update((b) => b ? {...b, lectures: [...b.lectures]} : b);
+        this.board.update((b) => b ? {...b, lectures: [...b.lectures], songs: [...b.songs]} : b);
 
         try {
-            await this.lectureService.moveLecture(movedLecture.id, targetStatus.id, event.currentIndex);
+            if (moved.kind === 'lecture') {
+                await this.lectureService.moveLecture(moved.lecture.id, targetStatus, event.currentIndex);
+            } else {
+                await this.songService.moveSong(moved.song.id, targetStatus, event.currentIndex);
+            }
         } catch {
             await this.loadBoard();
         }
     }
 
-    protected openCreate(status: Status): void {
+    private applyCardPositionStatus(card: BoardCard, position: number, status: LearningStatus): void {
+        if (card.kind === 'lecture') {
+            card.lecture.position = position;
+            card.lecture.status = status;
+        } else {
+            card.song.position = position;
+            card.song.status = status;
+        }
+    }
+
+    protected openCreate(status: LearningStatus): void {
         void this.router.navigate(
             ['courses', this.courseId(), 'lectures', 'new'],
-            {queryParams: {status: status.id}},
+            {queryParams: {status}},
         );
     }
 
-    protected openEdit(lecture: Lecture): void {
-        void this.router.navigate(['courses', this.courseId(), 'lectures', lecture.id]);
+    protected openNewSong(): void {
+        void this.router.navigate(['songs', 'new'], {queryParams: {courseId: this.courseId()}});
+    }
+
+    protected openCard(card: BoardCard): void {
+        if (card.kind === 'lecture') {
+            void this.router.navigate(['courses', this.courseId(), 'lectures', card.lecture.id]);
+        } else {
+            void this.router.navigate(['songs', card.song.id]);
+        }
     }
 }

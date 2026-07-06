@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Kytarna\Dto;
 
 use Kytarna\Model\Entity\Enum\DifficultyEnum;
+use Kytarna\Model\Entity\Enum\LearningStatusEnum;
 use RuntimeException;
 
 /**
  * @implements ArrayFactoryInterface<array{
- *     statusId: int,
+ *     status?: ?string,
  *     name: string,
  *     description?: ?string,
  *     tuning?: ?string,
@@ -23,7 +24,7 @@ final readonly class LectureCreateDto implements ArrayFactoryInterface
 {
 	/** @param list<int>|null $tagIds */
 	public function __construct(
-		public int $statusId,
+		public LearningStatusEnum $status,
 		public string $name,
 		public ?string $description,
 		public ?string $tuning,
@@ -37,7 +38,7 @@ final readonly class LectureCreateDto implements ArrayFactoryInterface
 	public static function fromArray(array $data): static
 	{
 		return new self(
-			statusId: $data['statusId'],
+			status: self::parseStatus($data['status'] ?? null) ?? LearningStatusEnum::ToLearn,
 			name: $data['name'],
 			description: $data['description'] ?? null,
 			tuning: $data['tuning'] ?? null,
@@ -46,6 +47,15 @@ final readonly class LectureCreateDto implements ArrayFactoryInterface
 			difficulty: self::parseDifficulty($data['difficulty'] ?? null),
 			tagIds: self::parseTagIds($data['tagIds'] ?? null),
 		);
+	}
+
+	public static function parseStatus(?string $raw): ?LearningStatusEnum
+	{
+		if ($raw === null || $raw === '') {
+			return null;
+		}
+		return LearningStatusEnum::fromLoose($raw)
+			?? throw new RuntimeException('Invalid status; expected To Learn, Learning or Mastered.');
 	}
 
 	public static function parseDifficulty(?string $raw): ?DifficultyEnum
@@ -61,7 +71,7 @@ final readonly class LectureCreateDto implements ArrayFactoryInterface
 	 * @param list<int>|null $raw
 	 * @return list<int>|null
 	 */
-	private static function parseTagIds(?array $raw): ?array
+	public static function parseTagIds(?array $raw): ?array
 	{
 		if ($raw === null) {
 			return null;

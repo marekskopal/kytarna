@@ -1,8 +1,9 @@
 import {ArchivedFilter, LectureOrderBy,OrderDirection} from '@app/models/lecture';
+import {LearningStatus} from '@app/models/status';
 
 export interface SavedViewFilters {
     q?: string;
-    statusIds?: number[];
+    statuses?: LearningStatus[];
     tagIds?: number[];
     onlyActive?: boolean;
     archived?: ArchivedFilter;

@@ -1,9 +1,11 @@
+import {LearningStatus} from '@app/models/status';
+
 export type NotificationType = 'LectureMoved';
 
 export interface NotificationData {
     lectureCode?: string;
     lectureName?: string;
-    statusName?: string;
+    status?: LearningStatus;
 }
 
 export interface Notification {

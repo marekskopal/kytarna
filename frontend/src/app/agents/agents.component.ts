@@ -34,7 +34,7 @@ export class AgentsComponent {
             case 'Agents':
                 return events.filter((e) => e.actorType === 'Agent');
             case 'StatusChanges':
-                return events.filter((e) => e.type === 'LectureMoved' || e.type === 'StatusUpdated');
+                return events.filter((e) => e.type === 'LectureMoved' || e.type === 'SongMoved');
             case 'All':
             default:
                 return events;

@@ -1,0 +1,307 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.page-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: $space-5;
+    margin-bottom: $space-6;
+}
+
+// ─── Filter bar ─────────────────────────────────────────────
+.filters {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: $space-3;
+    margin-bottom: $space-5;
+    padding-bottom: $space-5;
+    border-bottom: 1px solid $color-border;
+}
+
+.filter-search {
+    flex: 1 1 240px;
+    max-width: 360px;
+    height: $h-sm;
+    font-size: $font-size-12;
+}
+
+.filter-statuses {
+    position: relative;
+
+    &[open] .filter-summary {
+        border-color: $color-border-focus;
+        box-shadow: $ring;
+    }
+}
+
+.filter-summary {
+    list-style: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    height: $h-sm;
+    padding: 0 $space-3;
+    border: 1px dashed $color-border-strong;
+    border-radius: $radius-sm;
+    background: $color-surface;
+    color: $color-text-muted;
+    font-size: $font-size-12;
+    user-select: none;
+    transition: border-color 80ms ease, color 80ms ease;
+
+    &::-webkit-details-marker { display: none; }
+
+    &:hover {
+        border-color: $color-text-subtle;
+        color: $color-text;
+    }
+}
+
+.filter-summary-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 5px;
+    border-radius: $radius-xs;
+    background: $color-accent;
+    color: $color-accent-fg;
+    font-size: $font-size-10;
+    font-weight: 600;
+}
+
+.filter-popover {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    min-width: 260px;
+    max-height: 360px;
+    overflow-y: auto;
+    padding: $space-1;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    background: $color-surface;
+    box-shadow: $shadow-md;
+    z-index: $z-overlay;
+}
+
+.filter-group {
+    & + & {
+        margin-top: $space-3;
+        padding-top: $space-3;
+        border-top: 1px solid $color-border;
+    }
+}
+
+.filter-option {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    padding: $space-1 $space-2;
+    border-radius: $radius-xs;
+    font-size: $font-size-13;
+    cursor: pointer;
+
+    &:hover { background: $color-surface-muted; }
+}
+
+.filter-option-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.filter-option-name { @include truncate; }
+
+.filter-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    font-size: $font-size-12;
+    color: $color-text;
+    cursor: pointer;
+}
+
+.filter-clear {
+    font-size: $font-size-12;
+}
+
+.filter-archived {
+    width: auto;
+}
+
+// ─── Table ──────────────────────────────────────────────────
+.table-wrapper {
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    background: $color-surface;
+    overflow: hidden;
+}
+
+.lecture-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: $font-size-13;
+
+    th, td {
+        padding: $space-3 $space-5;
+        text-align: left;
+        border-bottom: 1px solid $color-border;
+    }
+
+    tbody tr:last-child td { border-bottom: 0; }
+
+    th {
+        font-family: $font-mono;
+        font-weight: 400;
+        color: $color-text-subtle;
+        font-size: $font-size-11;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        background: $color-surface-muted;
+        white-space: nowrap;
+    }
+
+    .sortable {
+        cursor: pointer;
+        user-select: none;
+
+        &:hover { color: $color-text; }
+    }
+
+    .sort-arrow {
+        display: inline-block;
+        width: 10px;
+        margin-left: $space-1;
+        color: $color-accent;
+    }
+
+    .th-code    { width: 90px; }
+    .th-created { width: 140px; }
+    .th-course  { width: 200px; }
+    .th-status  { width: 180px; }
+}
+
+.lecture-row {
+    cursor: pointer;
+    transition: background-color 80ms ease;
+
+    &:hover td { background: $color-surface-muted; }
+
+    &:focus-visible {
+        outline: 2px solid $color-accent;
+        outline-offset: -2px;
+    }
+}
+
+.lecture-row[data-agent='true'] td:first-child {
+    box-shadow: inset 2px 0 0 $color-ai;
+}
+
+.td-code {
+    font-family: $font-mono;
+    font-size: $font-size-12;
+    color: $color-text-subtle;
+    white-space: nowrap;
+}
+
+.td-created {
+    color: $color-text-subtle;
+    white-space: nowrap;
+    font-family: $font-mono;
+    font-size: $font-size-12;
+    font-variant-numeric: tabular-nums;
+}
+
+.td-name {
+    display: flex;
+    flex-direction: column;
+    gap: $space-1;
+}
+
+.lecture-name {
+    color: $color-text;
+    font-family: $font-display;
+    font-weight: 400;
+    font-size: $font-size-18;
+    line-height: 1.2;
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+}
+
+.lecture-meta {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $space-2 $space-3;
+    font-family: $font-mono;
+    font-size: $font-size-11;
+    color: $color-text-subtle;
+}
+
+.song-byline {
+    color: $color-text-subtle;
+}
+
+.lecture-meta-item {
+    position: relative;
+    padding-left: $space-3;
+    color: $color-text-muted;
+
+    &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        width: 3px;
+        height: 3px;
+        margin-top: -1.5px;
+        border-radius: 50%;
+        background: $color-border-strong;
+    }
+}
+
+.td-course {
+    color: $color-text-muted;
+    font-family: $font-mono;
+    font-size: $font-size-12;
+}
+
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    font-family: $font-mono;
+    font-size: $font-size-12;
+    color: $color-text;
+    white-space: nowrap;
+}
+
+.status-pill-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.archived-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 1px 6px;
+    border-radius: 999px;
+    background: $color-surface-deep;
+    color: $color-text-subtle;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    flex-shrink: 0;
+}

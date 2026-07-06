@@ -48,39 +48,47 @@
     <div class="course-toolbar">
         <div class="board-views" role="tablist">
             <a class="board-views-tab board-views-tab--active" aria-current="page">{{ 'app.board.viewBoard' | translate }}</a>
-            <a class="board-views-tab" [routerLink]="['/courses', board.course.id, 'workflow']">{{ 'app.board.viewWorkflow' | translate }}</a>
             <a class="board-views-tab" [routerLink]="['/courses', board.course.id, 'events']">{{ 'app.board.viewEvents' | translate }}</a>
         </div>
-        <button type="button" class="btn btn-primary btn-sm" (click)="openCreate(board.statuses[0])">
-            {{ 'app.board.newLecture' | translate }}
-        </button>
+        <div class="course-toolbar-actions">
+            <button type="button" class="btn btn-ghost btn-sm" (click)="openNewSong()">
+                {{ 'app.board.newSong' | translate }}
+            </button>
+            <button type="button" class="btn btn-primary btn-sm" (click)="openCreate(board.statuses[0])">
+                {{ 'app.board.newLecture' | translate }}
+            </button>
+        </div>
     </div>
 
     <div cdkDropListGroup class="kanban">
-        @for (col of columns(); track col.status.id) {
+        @for (col of columns(); track col.status) {
             <div class="column">
                 <header class="column-header">
                     <span class="column-dot" [style.background]="statusDotColor(col.status)"></span>
-                    <h3 class="column-label">{{ col.status.name }}</h3>
-                    <span class="column-count">{{ col.lectures.length }}</span>
+                    <h3 class="column-label">{{ col.status | statusLabel | translate }}</h3>
+                    <span class="column-count">{{ col.cards.length }}</span>
                 </header>
 
                 <div
                     cdkDropList
-                    [cdkDropListData]="col.lectures"
+                    [cdkDropListData]="col.cards"
                     class="column-lectures"
                     (cdkDropListDropped)="onDrop($event, col.status)"
                 >
-                    @for (lecture of col.lectures; track lecture.id) {
+                    @for (card of col.cards; track card.key) {
                         <div
                             cdkDrag
                             role="button"
                             tabindex="0"
-                            (click)="openEdit(lecture)"
-                            (keydown.enter)="openEdit(lecture)"
-                            (keydown.space)="openEdit(lecture)"
+                            (click)="openCard(card)"
+                            (keydown.enter)="openCard(card)"
+                            (keydown.space)="openCard(card)"
                         >
-                            <uk-lecture-card [lecture]="lecture" [status]="col.status" [workspaceTags]="workspaceTags()" />
+                            @if (card.kind === 'lecture') {
+                                <uk-lecture-card [lecture]="card.lecture" [status]="col.status" [workspaceTags]="workspaceTags()" />
+                            } @else {
+                                <uk-song-card [song]="card.song" />
+                            }
                         </div>
                     }
                 </div>

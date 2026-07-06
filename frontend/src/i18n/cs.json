@@ -44,6 +44,7 @@
       "primary": "Hlavní",
       "courses": "Kurzy",
       "lectures": "Lekce",
+      "songs": "Skladby",
       "agents": "Agenti",
       "workspaces": "Pracovní prostory",
       "admin": "Správa",
@@ -88,17 +89,20 @@
         "CourseCreated": "vytvořil(a) kurz",
         "CourseUpdated": "upravil(a) kurz",
         "CourseDeleted": "smazal(a) kurz",
-        "WorkflowUpdated": "upravil(a) workflow",
-        "StatusCreated": "přidal(a) stav",
-        "StatusUpdated": "upravil(a) stav",
-        "StatusDeleted": "smazal(a) stav",
-        "StatusMoved": "přesunul(a) stav",
         "LectureCreated": "vytvořil(a) lekci",
         "LectureUpdated": "upravil(a) lekci",
         "LectureDeleted": "smazal(a) lekci",
         "LectureMoved": "přesunul(a) lekci",
         "LectureArchived": "archivoval(a) lekci",
         "LectureUnarchived": "obnovil(a) lekci z archivu",
+        "SongCreated": "vytvořil(a) skladbu",
+        "SongUpdated": "upravil(a) skladbu",
+        "SongDeleted": "smazal(a) skladbu",
+        "SongMoved": "přesunul(a) skladbu",
+        "SongArchived": "archivoval(a) skladbu",
+        "SongUnarchived": "obnovil(a) skladbu z archivu",
+        "SongAddedToCourse": "přidal(a) skladbu do kurzu",
+        "SongRemovedFromCourse": "odebral(a) skladbu z kurzu",
         "MemberRoleChanged": "změnil(a) roli člena",
         "OwnershipTransferred": "převedl(a) vlastnictví",
         "AdminDeletedWorkspace": "(admin) smazal pracovní prostor",
@@ -238,7 +242,6 @@
       "new": "Nový kurz",
       "empty": "Zatím žádné kurzy.",
       "openBoard": "Otevřít tabuli",
-      "workflow": "Pracovní postup",
       "history": "Historie",
       "deleteConfirm": "Smazat kurz „{{name}}\"? Odstraní se i všechny jeho lekce a historie.",
       "deleted": "Kurz smazán.",
@@ -259,11 +262,16 @@
       "noWorking": "Zatím nic rozpracováno.",
       "formOverline": "Kurz"
     },
+    "status": {
+      "toLearn": "K naučení",
+      "learning": "Učím se",
+      "mastered": "Zvládnuto"
+    },
     "board": {
       "addLecture": "+ Přidat lekci",
       "newLecture": "Nová lekce",
+      "newSong": "+ Přidat skladbu",
       "viewBoard": "Nástěnka",
-      "viewWorkflow": "Workflow",
       "viewEvents": "Události",
       "breadcrumb": "Kurzy",
       "filter": "Filtr",
@@ -337,23 +345,36 @@
         "learningCount": "{{count}} v učení"
       }
     },
-    "workflow": {
-      "title": "Pracovní postup",
-      "addStatus": "+ Přidat stav",
-      "deleteStatusConfirm": "Smazat stav „{{name}}\"? Lekce v tomto stavu zůstanou bez stavu.",
-      "lastStatusError": "Nelze smazat poslední stav.",
-      "namePlaceholder": "Název stavu",
-      "namePrompt": "Název stavu?",
-      "newStatusDefault": "Nový",
-      "statusAdded": "Stav přidán.",
-      "statusDeleted": "Stav smazán.",
-      "backToBoard": "← Zpět na tabuli",
-      "hint": "Tip: stav přesunete tažením rukojetí. Každý postup by měl mít jeden Začátek a alespoň jedno Dokončení.",
-      "dragHandle": "Přetáhněte pro změnu pořadí",
-      "type": {
-        "Start": "Začátek",
-        "Normal": "Průběh",
-        "Finish": "Dokončení"
+    "songs": {
+      "title": "Skladby",
+      "subtitle": "{{count}} skladeb ve vaší knihovně",
+      "search": "Hledat podle názvu…",
+      "new": "Nová skladba",
+      "empty": "Žádné skladby neodpovídají zvoleným filtrům.",
+      "badge": "Skladba",
+      "namePlaceholder": "Název skladby",
+      "authorPlaceholder": "Autor",
+      "albumPlaceholder": "Album",
+      "backToLibrary": "Zpět na skladby",
+      "cover": "Obal",
+      "uploadCover": "Nahrát obal",
+      "coverUploading": "Nahrávání…",
+      "removeCover": "Odebrat obal",
+      "coverSaveFirst": "Nejprve skladbu uložte, poté přidejte obal.",
+      "coverUpdated": "Obal aktualizován.",
+      "coverRemoved": "Obal odebrán.",
+      "course": "Kurz",
+      "standalone": "Samostatná (bez kurzu)",
+      "attachedTo": "Na nástěnce kurzu {{name}}",
+      "attached": "Skladba přidána do kurzu.",
+      "detached": "Skladba odebrána z kurzu.",
+      "created": "Skladba vytvořena.",
+      "updated": "Skladba uložena.",
+      "deleted": "Skladba smazána.",
+      "deleteConfirm": "Smazat skladbu „{{name}}\"?",
+      "col": {
+        "code": "Kód",
+        "course": "Kurz"
       }
     },
     "events": {
@@ -363,11 +384,6 @@
         "CourseCreated": "vytvořil(a) kurz",
         "CourseUpdated": "upravil(a) kurz",
         "CourseDeleted": "smazal(a) kurz",
-        "WorkflowUpdated": "upravil(a) pracovní postup",
-        "StatusCreated": "přidal(a) stav „{{name}}\"",
-        "StatusUpdated": "upravil(a) stav",
-        "StatusDeleted": "smazal(a) stav",
-        "StatusMoved": "změnil(a) pořadí stavů",
         "LectureCreated": "vytvořil(a) lekci „{{name}}\"",
         "LectureUpdated": "upravil(a) lekci „{{name}}\"",
         "LectureDeleted": "smazal(a) lekci „{{name}}\"",
@@ -375,7 +391,15 @@
         "LectureArchived": "archivoval(a) lekci „{{name}}\"",
         "LectureUnarchived": "obnovil(a) lekci „{{name}}\" z archivu",
         "LectureFileAdded": "přidal(a) přílohu „{{filename}}\"",
-        "LectureFileDeleted": "odebral(a) přílohu „{{filename}}\""
+        "LectureFileDeleted": "odebral(a) přílohu „{{filename}}\"",
+        "SongCreated": "vytvořil(a) skladbu „{{name}}\"",
+        "SongUpdated": "upravil(a) skladbu „{{name}}\"",
+        "SongDeleted": "smazal(a) skladbu „{{name}}\"",
+        "SongMoved": "přesunul(a) skladbu „{{name}}\" z {{from}} → {{to}}",
+        "SongArchived": "archivoval(a) skladbu „{{name}}\"",
+        "SongUnarchived": "obnovil(a) skladbu „{{name}}\" z archivu",
+        "SongAddedToCourse": "přidal(a) skladbu „{{name}}\" do {{course}}",
+        "SongRemovedFromCourse": "odebral(a) skladbu „{{name}}\" z kurzu"
       },
       "deletedAuthor": "Smazaný uživatel",
       "timeAgo": {
@@ -574,8 +598,8 @@
         "signOut": "Odhlásit se",
         "signedInAs": "Přihlášen jako",
         "workspaceLabel": "Nastavit workspace",
-        "tipTitle": "Proč workflow?",
-        "tipBody": "Každý kurz má jeden workflow — uspořádané stavy, kterými lekce prochází. Přejmenovat nebo přidat sloupce můžete kdykoli později.",
+        "tipTitle": "Jak fungují kurzy",
+        "tipBody": "Kurz sdružuje související lekce a skladby. Každá položka prochází na nástěnce třemi fázemi — K naučení, Učím se, Zvládnuto.",
         "stepCounter": "Krok {{step}} z {{total}}",
         "skip": "Přeskočit",
         "back": "Zpět",
@@ -584,7 +608,7 @@
       },
       "steps": {
         "step1": {
-          "label": "Kurz a workflow",
+          "label": "První kurz",
           "hint": "Kde žijí lekce"
         },
         "step2": {
@@ -599,33 +623,13 @@
       "step1": {
         "overline": "Krok 01",
         "title": "Vytvořte první kurz",
-        "lead": "Kurz sdružuje související lekce. Vyberte název a zvolte workflow, kterým bude tým lekce posouvat.",
+        "lead": "Kurz sdružuje související lekce a skladby. Začněte zadáním názvu.",
         "nameLabel": "Název kurzu",
-        "namePlaceholder": "Přepis backendu",
+        "namePlaceholder": "Základy fingerstyle",
         "descriptionLabel": "Popis",
         "descriptionPlaceholder": "Volitelný kontext pro tým.",
         "optional": "volitelné",
-        "workflowTitle": "Workflow",
-        "workflowSub": "Stavy, kterými lekce procházejí. Vyberte šablonu — později ji můžete upravit.",
-        "errorCreate": "Kurz se nepodařilo vytvořit. Zkuste to znovu.",
-        "templates": {
-          "kanban": {
-            "name": "Kanban",
-            "sub": "Klasický 4-stavový tok"
-          },
-          "engineering": {
-            "name": "Engineering",
-            "sub": "Backlog → Spec → Build → Ship"
-          },
-          "simple": {
-            "name": "Jednoduchý",
-            "sub": "Jen otevřené / zavřené"
-          },
-          "blank": {
-            "name": "Začít prázdné",
-            "sub": "Vlastní sloupce"
-          }
-        }
+        "errorCreate": "Kurz se nepodařilo vytvořit. Zkuste to znovu."
       },
       "step2": {
         "overline": "Krok 02",

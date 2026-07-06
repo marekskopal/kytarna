@@ -17,7 +17,6 @@ final readonly class CourseProvider implements CourseProviderInterface
 {
 	public function __construct(
 		private CourseRepository $courseRepository,
-		private WorkflowProviderInterface $workflowProvider,
 		private EventProviderInterface $eventProvider,
 		private CoursePrefixGeneratorInterface $prefixGenerator,
 	) {
@@ -45,8 +44,6 @@ final readonly class CourseProvider implements CourseProviderInterface
 		$course->updatedAt = $now;
 
 		$this->courseRepository->persist($course);
-
-		$this->workflowProvider->createDefaultWorkflow($course);
 
 		$this->eventProvider->recordEvent($author, $course, EventTypeEnum::CourseCreated, ['name' => $name]);
 

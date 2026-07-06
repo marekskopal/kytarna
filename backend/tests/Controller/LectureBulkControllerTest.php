@@ -9,8 +9,6 @@ use Kytarna\Model\Entity\Enum\EventTypeEnum;
 use Kytarna\Model\Entity\User;
 use Kytarna\Model\Entity\Workspace;
 use Kytarna\Model\Repository\EventRepository;
-use Kytarna\Model\Repository\StatusRepository;
-use Kytarna\Model\Repository\WorkflowRepository;
 use Kytarna\Tests\Support\Fixture;
 use Kytarna\Tests\Support\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -23,14 +21,13 @@ final class LectureBulkControllerTest extends IntegrationTestCase
 		$owner = Fixture::createUser();
 		$workspace = Fixture::createWorkspace($owner);
 		$course = Fixture::createCourse($owner, $workspace);
-		[$todoId, $inProgressId] = $this->statusIds($course->id);
 
-		$ids = $this->createLectures($owner, $course->id, $todoId, ['A', 'B', 'C']);
+		$ids = $this->createLectures($owner, $course->id, 'ToLearn', ['A', 'B', 'C']);
 
 		$response = $this->request(
 			'POST',
 			'/api/lectures/bulk',
-			body: ['ids' => $ids, 'op' => 'move', 'payload' => ['statusId' => $inProgressId]],
+			body: ['ids' => $ids, 'op' => 'move', 'payload' => ['status' => 'Learning']],
 			authenticatedAs: $owner,
 		);
 
@@ -42,7 +39,7 @@ final class LectureBulkControllerTest extends IntegrationTestCase
 		// All three lectures are now in the target column, in input order.
 		foreach ($ids as $id) {
 			$lecture = $this->jsonBody($this->request('GET', '/api/lectures/' . $id, authenticatedAs: $owner));
-			self::assertSame($inProgressId, $lecture['statusId']);
+			self::assertSame('Learning', $lecture['status']);
 		}
 
 		$this->assertExactlyOneBulkEvent($workspace, 'move', $ids);
@@ -53,16 +50,14 @@ final class LectureBulkControllerTest extends IntegrationTestCase
 		$owner = Fixture::createUser();
 		$workspace = Fixture::createWorkspace($owner);
 		$course = Fixture::createCourse($owner, $workspace);
-		[$todoId, $inProgressId] = $this->statusIds($course->id);
-		$ids = $this->createLectures($owner, $course->id, $todoId, ['Mine']);
+		$ids = $this->createLectures($owner, $course->id, 'ToLearn', ['Mine']);
 		$mineId = $ids[0];
 
 		// Lecture in a foreign workspace owned by someone else.
 		$other = Fixture::createUser(email: 'other@example.com');
 		$otherWorkspace = Fixture::createWorkspace($other, 'Other');
 		$otherCourse = Fixture::createCourse($other, $otherWorkspace);
-		$otherTodoId = $this->firstStatusId($otherCourse->id);
-		$foreignIds = $this->createLectures($other, $otherCourse->id, $otherTodoId, ['Theirs']);
+		$foreignIds = $this->createLectures($other, $otherCourse->id, 'ToLearn', ['Theirs']);
 		$foreignId = $foreignIds[0];
 
 		$missingId = 999999;
@@ -73,7 +68,7 @@ final class LectureBulkControllerTest extends IntegrationTestCase
 			body: [
 				'ids' => [$mineId, $foreignId, $missingId],
 				'op' => 'move',
-				'payload' => ['statusId' => $inProgressId],
+				'payload' => ['status' => 'Learning'],
 			],
 			authenticatedAs: $owner,
 		);
@@ -155,8 +150,7 @@ final class LectureBulkControllerTest extends IntegrationTestCase
 		$owner = Fixture::createUser();
 		$workspace = Fixture::createWorkspace($owner);
 		$course = Fixture::createCourse($owner, $workspace);
-		$todoId = $this->firstStatusId($course->id);
-		$ids = $this->createLectures($owner, $course->id, $todoId, ['X', 'Y']);
+		$ids = $this->createLectures($owner, $course->id, 'ToLearn', ['X', 'Y']);
 
 		$response = $this->request(
 			'POST',
@@ -181,8 +175,7 @@ final class LectureBulkControllerTest extends IntegrationTestCase
 		$owner = Fixture::createUser();
 		$workspace = Fixture::createWorkspace($owner);
 		$course = Fixture::createCourse($owner, $workspace);
-		$todoId = $this->firstStatusId($course->id);
-		$ids = $this->createLectures($owner, $course->id, $todoId, ['T1', 'T2']);
+		$ids = $this->createLectures($owner, $course->id, 'ToLearn', ['T1', 'T2']);
 
 		$tagId = $this->createTag($workspace, 'urgent');
 
@@ -205,14 +198,14 @@ final class LectureBulkControllerTest extends IntegrationTestCase
 	 * @param list<string> $names
 	 * @return list<int>
 	 */
-	private function createLectures(User $owner, int $courseId, int $statusId, array $names): array
+	private function createLectures(User $owner, int $courseId, string $status, array $names): array
 	{
 		$ids = [];
 		foreach ($names as $name) {
 			$create = $this->request(
 				'POST',
 				'/api/courses/' . $courseId . '/lectures',
-				body: ['statusId' => $statusId, 'name' => $name, 'description' => null],
+				body: ['status' => $status, 'name' => $name, 'description' => null],
 				authenticatedAs: $owner,
 			);
 			self::assertSame(200, $create->getStatusCode(), 'create lecture ' . $name);
@@ -253,26 +246,5 @@ final class LectureBulkControllerTest extends IntegrationTestCase
 		self::assertIsArray($meta);
 		self::assertSame($expectedOp, $meta['op']);
 		self::assertSame($expectedIds, $meta['succeededIds']);
-	}
-
-	/** @return array{0:int,1:int} */
-	private function statusIds(int $courseId): array
-	{
-		$workflowRepo = $this->container->get(WorkflowRepository::class);
-		assert($workflowRepo instanceof WorkflowRepository);
-		$workflow = $workflowRepo->findByCourse($courseId);
-		assert($workflow !== null);
-		$statusRepo = $this->container->get(StatusRepository::class);
-		assert($statusRepo instanceof StatusRepository);
-		$statuses = [];
-		foreach ($statusRepo->findByWorkflow($workflow->id) as $status) {
-			$statuses[] = $status->id;
-		}
-		return [$statuses[0], $statuses[1]];
-	}
-
-	private function firstStatusId(int $courseId): int
-	{
-		return $this->statusIds($courseId)[0];
 	}
 }

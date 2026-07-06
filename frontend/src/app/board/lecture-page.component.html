@@ -45,7 +45,7 @@
                                     [class.hero-status-dot--glow]="currentStatusIsActive()"
                                     [style.background]="currentStatusColor()"
                                 ></span>
-                                {{ currentStatus()?.name }}
+                                {{ currentStatus() | statusLabel | translate }}
                             </span>
                             @if (l.createdByAgent) {
                                 <span class="hero-agent-badge" [attr.title]="'app.agent.createdBy' | translate">
@@ -245,17 +245,17 @@
                 <section class="drawer-section">
                     <div class="uk-overline">{{ 'app.board.drawer.status' | translate }}</div>
                     <div class="status-picker" role="radiogroup" [attr.aria-label]="'app.board.drawer.status' | translate">
-                        @for (s of statuses(); track s.id) {
+                        @for (s of statuses(); track s) {
                             <button
                                 type="button"
                                 class="status-option"
-                                [class.status-option--active]="currentStatus()?.id === s.id"
+                                [class.status-option--active]="currentStatus() === s"
                                 role="radio"
-                                [attr.aria-checked]="currentStatus()?.id === s.id"
-                                (click)="selectStatus(s.id)"
+                                [attr.aria-checked]="currentStatus() === s"
+                                (click)="selectStatus(s)"
                             >
-                                <span class="status-option-dot" [style.background]="s.color"></span>
-                                {{ s.name }}
+                                <span class="status-option-dot" [style.background]="statusDotColor(s)"></span>
+                                {{ s | statusLabel | translate }}
                             </button>
                         }
                     </div>

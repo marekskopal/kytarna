@@ -1,4 +1,4 @@
-import {Status} from '@app/models/status';
+import {LearningStatus} from '@app/models/status';
 
 export type Difficulty = 'Beginner' | 'Intermediate' | 'Advanced';
 
@@ -6,7 +6,7 @@ export interface Lecture {
     id: number;
     code: string;
     courseId: number;
-    statusId: number;
+    status: LearningStatus;
     name: string;
     description: string | null;
     tuning: string | null;
@@ -22,7 +22,7 @@ export interface Lecture {
     tagIds: number[];
 }
 
-export type LectureOrderBy = 'created_at' | 'name' | 'status_id';
+export type LectureOrderBy = 'created_at' | 'name' | 'status';
 export type OrderDirection = 'ASC' | 'DESC';
 export type ArchivedFilter = 'active' | 'archived' | 'all';
 
@@ -31,8 +31,7 @@ export interface LectureListItem {
     code: string;
     courseId: number;
     courseName: string;
-    statusId: number;
-    status: Status;
+    status: LearningStatus;
     name: string;
     description: string | null;
     tuning: string | null;

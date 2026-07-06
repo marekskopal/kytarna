@@ -1,6 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {LectureWatchers} from '@app/models/lecture-watcher';
+import {PracticeParent} from '@app/models/practice-parent';
 import {environment} from '@environments/environment';
 import {firstValueFrom} from 'rxjs';
 
@@ -8,15 +9,15 @@ import {firstValueFrom} from 'rxjs';
 export class LectureWatcherService {
     private readonly http = inject(HttpClient);
 
-    public list(lectureId: number): Promise<LectureWatchers> {
-        return firstValueFrom(this.http.get<LectureWatchers>(`${environment.apiUrl}/lectures/${lectureId}/watchers`));
+    public list(id: number, parent: PracticeParent = 'lectures'): Promise<LectureWatchers> {
+        return firstValueFrom(this.http.get<LectureWatchers>(`${environment.apiUrl}/${parent}/${id}/watchers`));
     }
 
-    public watch(lectureId: number): Promise<LectureWatchers> {
-        return firstValueFrom(this.http.post<LectureWatchers>(`${environment.apiUrl}/lectures/${lectureId}/watch`, {}));
+    public watch(id: number, parent: PracticeParent = 'lectures'): Promise<LectureWatchers> {
+        return firstValueFrom(this.http.post<LectureWatchers>(`${environment.apiUrl}/${parent}/${id}/watch`, {}));
     }
 
-    public unwatch(lectureId: number): Promise<LectureWatchers> {
-        return firstValueFrom(this.http.delete<LectureWatchers>(`${environment.apiUrl}/lectures/${lectureId}/watch`));
+    public unwatch(id: number, parent: PracticeParent = 'lectures'): Promise<LectureWatchers> {
+        return firstValueFrom(this.http.delete<LectureWatchers>(`${environment.apiUrl}/${parent}/${id}/watch`));
     }
 }

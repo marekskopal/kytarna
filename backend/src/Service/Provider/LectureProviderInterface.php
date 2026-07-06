@@ -7,8 +7,8 @@ namespace Kytarna\Service\Provider;
 use Iterator;
 use Kytarna\Model\Entity\Course;
 use Kytarna\Model\Entity\Enum\DifficultyEnum;
+use Kytarna\Model\Entity\Enum\LearningStatusEnum;
 use Kytarna\Model\Entity\Lecture;
-use Kytarna\Model\Entity\Status;
 use Kytarna\Model\Entity\User;
 use Kytarna\Model\Entity\Workspace;
 use Kytarna\Model\Repository\Enum\ArchivedFilterEnum;
@@ -23,7 +23,7 @@ interface LectureProviderInterface
 	public function getLecturesByCourse(Course $course, bool $includeArchived = true): Iterator;
 
 	/**
-	 * @param list<int>|null $statusIds
+	 * @param list<LearningStatusEnum>|null $statuses
 	 * @param list<int>|null $tagIds
 	 * @return Iterator<Lecture>
 	 */
@@ -34,20 +34,20 @@ interface LectureProviderInterface
 		LectureOrderByEnum $orderBy,
 		OrderDirectionEnum $direction,
 		?string $search,
-		?array $statusIds,
+		?array $statuses,
 		bool $onlyActive,
 		?array $tagIds = null,
 		ArchivedFilterEnum $archived = ArchivedFilterEnum::Active,
 	): Iterator;
 
 	/**
-	 * @param list<int>|null $statusIds
+	 * @param list<LearningStatusEnum>|null $statuses
 	 * @param list<int>|null $tagIds
 	 */
 	public function countLecturesInWorkspace(
 		Workspace $workspace,
 		?string $search,
-		?array $statusIds,
+		?array $statuses,
 		bool $onlyActive,
 		?array $tagIds = null,
 		ArchivedFilterEnum $archived = ArchivedFilterEnum::Active,
@@ -57,7 +57,7 @@ interface LectureProviderInterface
 	public function createLecture(
 		User $author,
 		Course $course,
-		Status $status,
+		LearningStatusEnum $status,
 		string $name,
 		?string $description,
 		?array $tagIds = null,
@@ -73,7 +73,7 @@ interface LectureProviderInterface
 		Lecture $lecture,
 		string $name,
 		?string $description,
-		Status $status,
+		LearningStatusEnum $status,
 		?array $tagIds = null,
 		bool $recordEvent = true,
 		?string $tuning = null,
@@ -82,7 +82,13 @@ interface LectureProviderInterface
 		?DifficultyEnum $difficulty = null,
 	): Lecture;
 
-	public function moveLecture(User $author, Lecture $lecture, Status $newStatus, int $newPosition, bool $recordEvent = true): Lecture;
+	public function moveLecture(
+		User $author,
+		Lecture $lecture,
+		LearningStatusEnum $newStatus,
+		int $newPosition,
+		bool $recordEvent = true,
+	): Lecture;
 
 	public function archiveLecture(User $author, Lecture $lecture): Lecture;
 
@@ -90,5 +96,5 @@ interface LectureProviderInterface
 
 	public function deleteLecture(User $author, Lecture $lecture, bool $recordEvent = true): void;
 
-	public function nextPosition(Status $status): int;
+	public function nextPosition(Course $course, LearningStatusEnum $status): int;
 }

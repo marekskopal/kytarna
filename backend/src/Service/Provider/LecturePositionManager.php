@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace Kytarna\Service\Provider;
 
 use DateTimeImmutable;
+use Kytarna\Model\Entity\Course;
+use Kytarna\Model\Entity\Enum\LearningStatusEnum;
 use Kytarna\Model\Entity\Lecture;
-use Kytarna\Model\Entity\Status;
 use Kytarna\Model\Repository\LectureRepository;
 
 /**
- * Encapsulates the per-status position bookkeeping for lectures.
+ * Encapsulates the per-(course, status) position bookkeeping for lectures.
  * Extracted from LectureProvider to keep that class focused on lifecycle / events.
  */
 final readonly class LecturePositionManager
@@ -19,9 +20,9 @@ final readonly class LecturePositionManager
 	{
 	}
 
-	public function nextPosition(Status $status): int
+	public function nextPosition(Course $course, LearningStatusEnum $status): int
 	{
-		$lectures = iterator_to_array($this->lectureRepository->findByStatus($status->id), false);
+		$lectures = iterator_to_array($this->lectureRepository->findByCourseAndStatus($course->id, $status), false);
 		if ($lectures === []) {
 			return 0;
 		}
@@ -41,7 +42,7 @@ final readonly class LecturePositionManager
 			return;
 		}
 		$now = new DateTimeImmutable();
-		foreach ($this->lectureRepository->findByStatus($lecture->status->id) as $sibling) {
+		foreach ($this->lectureRepository->findByCourseAndStatus($lecture->course->id, $lecture->status) as $sibling) {
 			if ($sibling->id === $lecture->id) {
 				continue;
 			}
@@ -59,7 +60,7 @@ final readonly class LecturePositionManager
 	public function closeGapInOldColumn(Lecture $lecture): void
 	{
 		$now = new DateTimeImmutable();
-		foreach ($this->lectureRepository->findByStatus($lecture->status->id) as $sibling) {
+		foreach ($this->lectureRepository->findByCourseAndStatus($lecture->course->id, $lecture->status) as $sibling) {
 			if ($sibling->id === $lecture->id || $sibling->position <= $lecture->position) {
 				continue;
 			}
@@ -69,10 +70,10 @@ final readonly class LecturePositionManager
 		}
 	}
 
-	public function openSlotInNewColumn(Status $newStatus, int $newPosition): void
+	public function openSlotInNewColumn(Course $course, LearningStatusEnum $newStatus, int $newPosition): void
 	{
 		$now = new DateTimeImmutable();
-		foreach ($this->lectureRepository->findByStatus($newStatus->id) as $sibling) {
+		foreach ($this->lectureRepository->findByCourseAndStatus($course->id, $newStatus) as $sibling) {
 			if ($sibling->position < $newPosition) {
 				continue;
 			}

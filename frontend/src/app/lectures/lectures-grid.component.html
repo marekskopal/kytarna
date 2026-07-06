@@ -17,31 +17,24 @@
     <details class="filter-statuses" #statusDetails>
         <summary class="filter-summary">
             <span>{{ 'app.lectures.filterStatus' | translate }}</span>
-            @if (selectedStatusIds().length > 0) {
-                <span class="filter-summary-count">{{ selectedStatusIds().length }}</span>
+            @if (selectedStatuses().length > 0) {
+                <span class="filter-summary-count">{{ selectedStatuses().length }}</span>
             }
         </summary>
         <div class="filter-popover">
-            @if (workflows().length === 0) {
-                <p class="text-muted filter-empty">{{ 'app.lectures.noWorkflows' | translate }}</p>
-            } @else {
-                @for (wf of workflows(); track wf.id) {
-                    <div class="filter-group">
-                        <div class="filter-group-label">{{ wf.courseName }}</div>
-                        @for (status of wf.statuses; track status.id) {
-                            <label class="filter-option">
-                                <input
-                                    type="checkbox"
-                                    [checked]="isStatusSelected(status.id)"
-                                    (change)="onStatusToggle(status.id, $event)"
-                                />
-                                <span class="filter-option-dot" [style.background]="status.color"></span>
-                                <span class="filter-option-name">{{ status.name }}</span>
-                            </label>
-                        }
-                    </div>
+            <div class="filter-group">
+                @for (status of statuses; track status) {
+                    <label class="filter-option">
+                        <input
+                            type="checkbox"
+                            [checked]="isStatusSelected(status)"
+                            (change)="onStatusToggle(status, $event)"
+                        />
+                        <span class="filter-option-dot" [style.background]="statusDotColor(status)"></span>
+                        <span class="filter-option-name">{{ status | statusLabel | translate }}</span>
+                    </label>
                 }
-            }
+            </div>
         </div>
     </details>
 
@@ -168,7 +161,7 @@
         </div>
     </details>
 
-    @if (search() || selectedStatusIds().length > 0 || selectedTagIds().length > 0 || onlyActive() || archived() !== 'active') {
+    @if (search() || selectedStatuses().length > 0 || selectedTagIds().length > 0 || onlyActive() || archived() !== 'active') {
         <button type="button" class="btn-link filter-clear" (click)="clearFilters()">
             {{ 'app.lectures.clearFilters' | translate }}
         </button>
@@ -186,26 +179,19 @@
                 {{ 'app.lectures.bulk.move' | translate }}
             </summary>
             <div class="bulk-popover">
-                @if (workflows().length === 0) {
-                    <p class="text-muted filter-empty">{{ 'app.lectures.noWorkflows' | translate }}</p>
-                } @else {
-                    @for (wf of workflows(); track wf.id) {
-                        <div class="filter-group">
-                            <div class="filter-group-label">{{ wf.courseName }}</div>
-                            @for (status of wf.statuses; track status.id) {
-                                <button
-                                    type="button"
-                                    class="bulk-option"
-                                    [disabled]="bulkBusy()"
-                                    (click)="onBulkMove(status.id)"
-                                >
-                                    <span class="filter-option-dot" [style.background]="status.color"></span>
-                                    <span class="filter-option-name">{{ status.name }}</span>
-                                </button>
-                            }
-                        </div>
+                <div class="filter-group">
+                    @for (status of statuses; track status) {
+                        <button
+                            type="button"
+                            class="bulk-option"
+                            [disabled]="bulkBusy()"
+                            (click)="onBulkMove(status)"
+                        >
+                            <span class="filter-option-dot" [style.background]="statusDotColor(status)"></span>
+                            <span class="filter-option-name">{{ status | statusLabel | translate }}</span>
+                        </button>
                     }
-                }
+                </div>
             </div>
         </details>
 
@@ -327,9 +313,9 @@
                     {{ 'app.lectures.col.name' | translate }}
                     <span class="sort-arrow">{{ sortArrow('name') }}</span>
                 </th>
-                <th class="sortable th-status" (click)="onSortClick('status_id')">
+                <th class="sortable th-status" (click)="onSortClick('status')">
                     {{ 'app.lectures.col.status' | translate }}
-                    <span class="sort-arrow">{{ sortArrow('status_id') }}</span>
+                    <span class="sort-arrow">{{ sortArrow('status') }}</span>
                 </th>
                 <th class="th-tags">{{ 'app.lectureTags.heading' | translate }}</th>
             </tr>
@@ -401,7 +387,7 @@
                         <td class="td-status">
                             <span class="status-pill">
                                 <span class="status-pill-dot" [style.background]="statusDotColor(lecture.status)"></span>
-                                {{ lecture.status.name }}
+                                {{ lecture.status | statusLabel | translate }}
                             </span>
                         </td>
                         <td class="td-tags">

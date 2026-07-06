@@ -157,6 +157,12 @@
     background: $color-surface;
 }
 
+.course-toolbar-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-3;
+}
+
 .board-views-tab {
     display: inline-flex;
     align-items: center;

@@ -69,6 +69,18 @@ export const appRoutes: Routes = [
                 loadComponent: () => import('@app/lectures/lectures-grid.component').then((m) => m.LecturesGridComponent),
             },
             {
+                path: 'songs',
+                loadComponent: () => import('@app/songs/songs-grid.component').then((m) => m.SongsGridComponent),
+            },
+            {
+                path: 'songs/new',
+                loadComponent: () => import('@app/songs/song-page.component').then((m) => m.SongPageComponent),
+            },
+            {
+                path: 'songs/:id',
+                loadComponent: () => import('@app/songs/song-page.component').then((m) => m.SongPageComponent),
+            },
+            {
                 path: 'agents',
                 loadComponent: () => import('@app/agents/agents.component').then((m) => m.AgentsComponent),
             },
@@ -91,10 +103,6 @@ export const appRoutes: Routes = [
             {
                 path: 'courses/:id/lectures/:lectureId',
                 loadComponent: () => import('@app/board/lecture-page.component').then((m) => m.LecturePageComponent),
-            },
-            {
-                path: 'courses/:id/workflow',
-                loadComponent: () => import('@app/workflow-editor/workflow-editor.component').then((m) => m.WorkflowEditorComponent),
             },
             {
                 path: 'courses/:id/events',

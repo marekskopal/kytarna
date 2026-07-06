@@ -1,11 +1,11 @@
 import {Course} from './course';
 import {Lecture} from './lecture';
-import {Status} from './status';
-import {Workflow} from './workflow';
+import {Song} from './song';
+import {LearningStatus} from './status';
 
 export interface Board {
     course: Course;
-    workflow: Workflow;
-    statuses: Status[];
+    statuses: LearningStatus[];
     lectures: Lecture[];
+    songs: Song[];
 }

@@ -2,7 +2,7 @@
     <div>
         <h1 class="page-title">{{ 'app.events.title' | translate }}</h1>
     </div>
-    <a [routerLink]="['/courses', courseId(), 'board']" class="muted-link">{{ 'app.workflow.backToBoard' | translate }}</a>
+    <a [routerLink]="['/courses', courseId(), 'board']" class="muted-link">{{ 'app.board.drawer.backToBoard' | translate }}</a>
 </div>
 
 @if (loading()) {

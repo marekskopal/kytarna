@@ -6,7 +6,7 @@ namespace Kytarna\Model\Repository;
 
 use EmptyIterator;
 use Iterator;
-use Kytarna\Model\Entity\Enum\StatusTypeEnum;
+use Kytarna\Model\Entity\Enum\LearningStatusEnum;
 use Kytarna\Model\Entity\Lecture;
 use Kytarna\Model\Repository\Enum\ArchivedFilterEnum;
 use Kytarna\Model\Repository\Enum\LectureOrderByEnum;
@@ -50,13 +50,19 @@ final class LectureRepository extends AbstractRepository
 
 	public function nextSequenceNumber(int $courseId): int
 	{
+		return $this->maxSequenceNumber($courseId) + 1;
+	}
+
+	/** Highest lecture sequence number in the course, 0 when the course has no lectures. */
+	public function maxSequenceNumber(int $courseId): int
+	{
 		$max = 0;
 		foreach ($this->findByCourse($courseId) as $lecture) {
 			if ($lecture->sequenceNumber > $max) {
 				$max = $lecture->sequenceNumber;
 			}
 		}
-		return $max + 1;
+		return $max;
 	}
 
 	/** @return Iterator<Lecture> */
@@ -70,22 +76,23 @@ final class LectureRepository extends AbstractRepository
 		}
 
 		return $select
-			->orderBy('status_id', 'ASC')
+			->orderBy('status', 'ASC')
 			->orderBy('position', 'ASC')
 			->fetchAll();
 	}
 
 	/** @return Iterator<Lecture> */
-	public function findByStatus(int $statusId): Iterator
+	public function findByCourseAndStatus(int $courseId, LearningStatusEnum $status): Iterator
 	{
 		return $this->select()
-			->where(['status_id' => $statusId])
+			->where(['course_id' => $courseId])
+			->where(['status', '=', $status])
 			->orderBy('position', 'ASC')
 			->fetchAll();
 	}
 
 	/**
-	 * @param list<int>|null $statusIds
+	 * @param list<LearningStatusEnum>|null $statuses
 	 * @param list<int>|null $lectureIdsFilter restrict to these IDs; pass [] to force an empty result
 	 * @param list<int>|null $excludeLectureIds drop these IDs from the result
 	 * @return Iterator<Lecture>
@@ -97,7 +104,7 @@ final class LectureRepository extends AbstractRepository
 		LectureOrderByEnum $orderBy,
 		OrderDirectionEnum $direction,
 		?string $search,
-		?array $statusIds,
+		?array $statuses,
 		bool $onlyActive,
 		?array $lectureIdsFilter = null,
 		?array $excludeLectureIds = null,
@@ -110,7 +117,7 @@ final class LectureRepository extends AbstractRepository
 		$select = $this->buildWorkspaceSelect(
 			$workspaceId,
 			$search,
-			$statusIds,
+			$statuses,
 			$onlyActive,
 			$lectureIdsFilter,
 			$excludeLectureIds,
@@ -132,14 +139,14 @@ final class LectureRepository extends AbstractRepository
 	}
 
 	/**
-	 * @param list<int>|null $statusIds
+	 * @param list<LearningStatusEnum>|null $statuses
 	 * @param list<int>|null $lectureIdsFilter
 	 * @param list<int>|null $excludeLectureIds
 	 */
 	public function countInWorkspace(
 		int $workspaceId,
 		?string $search,
-		?array $statusIds,
+		?array $statuses,
 		bool $onlyActive,
 		?array $lectureIdsFilter = null,
 		?array $excludeLectureIds = null,
@@ -148,12 +155,12 @@ final class LectureRepository extends AbstractRepository
 		if ($lectureIdsFilter !== null && $lectureIdsFilter === []) {
 			return 0;
 		}
-		return $this->buildWorkspaceSelect($workspaceId, $search, $statusIds, $onlyActive, $lectureIdsFilter, $excludeLectureIds, $archived)
+		return $this->buildWorkspaceSelect($workspaceId, $search, $statuses, $onlyActive, $lectureIdsFilter, $excludeLectureIds, $archived)
 			->count();
 	}
 
 	/**
-	 * @param list<int>|null $statusIds
+	 * @param list<LearningStatusEnum>|null $statuses
 	 * @param list<int>|null $lectureIdsFilter
 	 * @param list<int>|null $excludeLectureIds
 	 * @return Select<Lecture>
@@ -161,7 +168,7 @@ final class LectureRepository extends AbstractRepository
 	private function buildWorkspaceSelect(
 		int $workspaceId,
 		?string $search,
-		?array $statusIds,
+		?array $statuses,
 		bool $onlyActive,
 		?array $lectureIdsFilter = null,
 		?array $excludeLectureIds = null,
@@ -175,11 +182,11 @@ final class LectureRepository extends AbstractRepository
 		if ($search !== null && $search !== '') {
 			$select->where(['name', 'LIKE', '%' . self::escapeLikePattern($search) . '%']);
 		}
-		if ($statusIds !== null && $statusIds !== []) {
-			$select->where(['status_id', 'IN', $statusIds]);
+		if ($statuses !== null && $statuses !== []) {
+			$select->where(['status', 'IN', array_map(static fn (LearningStatusEnum $s): string => $s->value, $statuses)]);
 		}
 		if ($onlyActive) {
-			$select->where(['status.type', '!=', StatusTypeEnum::Finish]);
+			$select->where(['status', '!=', LearningStatusEnum::Mastered]);
 		}
 		if ($lectureIdsFilter !== null && $lectureIdsFilter !== []) {
 			$select->where(['id', 'IN', $lectureIdsFilter]);
@@ -195,7 +202,7 @@ final class LectureRepository extends AbstractRepository
 	 * The ORM's where-builder has no IS NULL operator (a null value binds as `col = ?`, which never
 	 * matches), so the archived filter is expressed as a parenthesised raw predicate compared to 1.
 	 * `archived_at` exists only on the lectures table, so the unqualified reference is unambiguous even
-	 * when course/status are joined.
+	 * when course is joined.
 	 *
 	 * @param Select<Lecture> $select
 	 */

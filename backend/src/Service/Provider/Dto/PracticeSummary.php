@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Kytarna\Service\Provider\Dto;
 
 use Kytarna\Model\Entity\ProgressEntry;
+use Kytarna\Model\Entity\SongProgressEntry;
 
 final readonly class PracticeSummary
 {
@@ -16,7 +17,7 @@ final readonly class PracticeSummary
 	{
 	}
 
-	/** @param list<ProgressEntry> $entries chronological (oldest first) */
+	/** @param list<ProgressEntry|SongProgressEntry> $entries chronological (oldest first) */
 	public static function fromEntries(array $entries): self
 	{
 		$totalMinutes = 0;

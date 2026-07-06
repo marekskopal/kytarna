@@ -21,6 +21,18 @@ final readonly class BulkPayloadParser
 		return $this->coerceInt($payload[$key], $key);
 	}
 
+	/** @param array<string, mixed> $payload */
+	public function stringOrNull(array $payload, string $key): ?string
+	{
+		if (!array_key_exists($key, $payload) || $payload[$key] === null) {
+			return null;
+		}
+		if (!is_string($payload[$key])) {
+			throw new RuntimeException(sprintf('Payload "%s" must be a string.', $key));
+		}
+		return $payload[$key];
+	}
+
 	/**
 	 * @param array<string, mixed> $payload
 	 * @return list<int>

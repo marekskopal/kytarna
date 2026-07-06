@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, computed, input} from '@angular/core';
 import {Difficulty, Lecture} from '@app/models/lecture';
-import {Status} from '@app/models/status';
+import {LearningStatus} from '@app/models/status';
 import {Tag} from '@app/models/tag';
 import {TranslatePipe} from '@ngx-translate/core';
 
@@ -16,11 +16,11 @@ const MAX_VISIBLE_TAGS = 3;
 })
 export class LectureCardComponent {
     public readonly lecture = input.required<Lecture>();
-    public readonly status = input<Status | null>(null);
+    public readonly status = input<LearningStatus | null>(null);
     public readonly workspaceTags = input<Tag[]>([]);
 
-    // A lecture is "mastered" when it sits in a workflow Finish-type status.
-    protected readonly isMastered = computed<boolean>(() => this.status()?.type === 'Finish');
+    // A lecture is "mastered" once it reaches the Mastered status.
+    protected readonly isMastered = computed<boolean>(() => this.status() === 'Mastered');
 
     protected readonly visibleTags = computed<Tag[]>(() => this.lectureTags().slice(0, MAX_VISIBLE_TAGS));
 

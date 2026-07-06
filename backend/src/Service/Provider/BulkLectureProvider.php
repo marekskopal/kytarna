@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Kytarna\Service\Provider;
 
 use Kytarna\Model\Entity\Enum\EventTypeEnum;
+use Kytarna\Model\Entity\Enum\LearningStatusEnum;
 use Kytarna\Model\Entity\Lecture;
-use Kytarna\Model\Entity\Status;
 use Kytarna\Model\Entity\User;
 use Kytarna\Model\Entity\Workspace;
 use Kytarna\Model\Repository\LectureRepository;
@@ -21,7 +21,6 @@ final readonly class BulkLectureProvider implements BulkLectureProviderInterface
 		private LectureRepository $lectureRepository,
 		private LectureProviderInterface $lectureProvider,
 		private LectureTagProviderInterface $lectureTagProvider,
-		private StatusProviderInterface $statusProvider,
 		private EventProviderInterface $eventProvider,
 		private BulkPayloadParser $payloadParser,
 	) {
@@ -35,7 +34,7 @@ final readonly class BulkLectureProvider implements BulkLectureProviderInterface
 	public function execute(User $actor, Workspace $workspace, BulkOpEnum $op, array $ids, array $payload): array
 	{
 		$ids = $this->normaliseIds($ids);
-		$context = $this->resolvePayloadContext($workspace, $op, $payload);
+		$context = $this->resolvePayloadContext($op, $payload);
 		$lecturesById = $this->loadLecturesById($ids);
 
 		$succeeded = [];
@@ -94,7 +93,7 @@ final readonly class BulkLectureProvider implements BulkLectureProviderInterface
 	}
 
 	/**
-	 * @param array{status?: Status, tagIds?: list<int>} $context
+	 * @param array{status?: LearningStatusEnum, tagIds?: list<int>} $context
 	 * @return non-empty-string|null null on success, reason string on skip
 	 */
 	private function processOne(User $actor, Workspace $workspace, BulkOpEnum $op, array $context, ?Lecture $lecture, int $id,): ?string
@@ -117,18 +116,18 @@ final readonly class BulkLectureProvider implements BulkLectureProviderInterface
 
 	/**
 	 * @param array<string, mixed> $payload
-	 * @return array{status?: Status, tagIds?: list<int>}
+	 * @return array{status?: LearningStatusEnum, tagIds?: list<int>}
 	 */
-	private function resolvePayloadContext(Workspace $workspace, BulkOpEnum $op, array $payload): array
+	private function resolvePayloadContext(BulkOpEnum $op, array $payload): array
 	{
 		return match ($op) {
-			BulkOpEnum::Move => ['status' => $this->requireStatus($workspace, $payload)],
+			BulkOpEnum::Move => ['status' => $this->requireStatus($payload)],
 			BulkOpEnum::Tag, BulkOpEnum::Untag => ['tagIds' => $this->requireTagIds($payload)],
 			BulkOpEnum::Delete => [],
 		};
 	}
 
-	/** @param array{status?: Status, tagIds?: list<int>} $context */
+	/** @param array{status?: LearningStatusEnum, tagIds?: list<int>} $context */
 	private function applyOp(User $actor, Lecture $lecture, BulkOpEnum $op, array $context): void
 	{
 		match ($op) {
@@ -139,15 +138,18 @@ final readonly class BulkLectureProvider implements BulkLectureProviderInterface
 		};
 	}
 
-	private function doMove(User $actor, Lecture $lecture, ?Status $status): void
+	private function doMove(User $actor, Lecture $lecture, ?LearningStatusEnum $status): void
 	{
 		if ($status === null) {
 			throw new RuntimeException('Internal: status not resolved.');
 		}
-		if ($status->workflow->course->id !== $lecture->course->id) {
-			throw new RuntimeException('status_not_in_course');
-		}
-		$this->lectureProvider->moveLecture($actor, $lecture, $status, $this->lectureProvider->nextPosition($status), recordEvent: false);
+		$this->lectureProvider->moveLecture(
+			$actor,
+			$lecture,
+			$status,
+			$this->lectureProvider->nextPosition($lecture->course, $status),
+			recordEvent: false,
+		);
 	}
 
 	/** @param list<int> $payloadTagIds */
@@ -167,17 +169,14 @@ final readonly class BulkLectureProvider implements BulkLectureProviderInterface
 	}
 
 	/** @param array<string, mixed> $payload */
-	private function requireStatus(Workspace $workspace, array $payload): Status
+	private function requireStatus(array $payload): LearningStatusEnum
 	{
-		$statusId = $this->payloadParser->intOrNull($payload, 'statusId');
-		if ($statusId === null) {
-			throw new RuntimeException('Payload missing statusId.');
+		$raw = $this->payloadParser->stringOrNull($payload, 'status');
+		if ($raw === null) {
+			throw new RuntimeException('Payload missing status.');
 		}
-		$status = $this->statusProvider->getStatus($statusId);
-		if ($status === null || $status->workflow->course->workspace->id !== $workspace->id) {
-			throw new RuntimeException('Status not found in this workspace.');
-		}
-		return $status;
+		return LearningStatusEnum::fromLoose($raw)
+			?? throw new RuntimeException('Invalid status; expected To Learn, Learning or Mastered.');
 	}
 
 	/**

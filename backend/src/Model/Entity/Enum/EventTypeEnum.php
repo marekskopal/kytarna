@@ -10,13 +10,6 @@ enum EventTypeEnum: string
 	case CourseUpdated = 'CourseUpdated';
 	case CourseDeleted = 'CourseDeleted';
 
-	case WorkflowUpdated = 'WorkflowUpdated';
-
-	case StatusCreated = 'StatusCreated';
-	case StatusUpdated = 'StatusUpdated';
-	case StatusDeleted = 'StatusDeleted';
-	case StatusMoved = 'StatusMoved';
-
 	case LectureCreated = 'LectureCreated';
 	case LectureUpdated = 'LectureUpdated';
 	case LectureDeleted = 'LectureDeleted';
@@ -24,6 +17,18 @@ enum EventTypeEnum: string
 	case LectureArchived = 'LectureArchived';
 	case LectureUnarchived = 'LectureUnarchived';
 	case LecturesBulkUpdated = 'LecturesBulkUpdated';
+
+	case SongCreated = 'SongCreated';
+	case SongUpdated = 'SongUpdated';
+	case SongDeleted = 'SongDeleted';
+	case SongMoved = 'SongMoved';
+	case SongArchived = 'SongArchived';
+	case SongUnarchived = 'SongUnarchived';
+	case SongAddedToCourse = 'SongAddedToCourse';
+	case SongRemovedFromCourse = 'SongRemovedFromCourse';
+	case SongFileAdded = 'SongFileAdded';
+	case SongFileDeleted = 'SongFileDeleted';
+	case SongTagsUpdated = 'SongTagsUpdated';
 
 	case MemberRoleChanged = 'MemberRoleChanged';
 	case OwnershipTransferred = 'OwnershipTransferred';

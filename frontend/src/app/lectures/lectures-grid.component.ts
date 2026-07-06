@@ -4,17 +4,16 @@ import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {ArchivedFilter, Difficulty, LectureListItem, LectureOrderBy,OrderDirection} from '@app/models/lecture';
 import {SavedView, SavedViewFilters} from '@app/models/saved-view';
-import {Status} from '@app/models/status';
+import {LEARNING_STATUSES, LearningStatus, statusColorVar} from '@app/models/status';
 import {Tag} from '@app/models/tag';
-import {WorkflowWithStatuses} from '@app/models/workflow';
 import {CurrentUserService} from '@app/services/current-user.service';
 import {BulkOp, BulkResult, LectureService} from '@app/services/lecture.service';
 import {SavedViewService} from '@app/services/saved-view.service';
 import {TagService} from '@app/services/tag.service';
-import {WorkflowService} from '@app/services/workflow.service';
 import {WorkspaceService} from '@app/services/workspace.service';
 import {pickReadableForeground} from '@app/shared/color-contrast';
 import {PaginationComponent} from '@app/shared/components/pagination/pagination.component';
+import {StatusLabelPipe} from '@app/shared/pipes/status-label.pipe';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {debounceTime, distinctUntilChanged} from 'rxjs';
 
@@ -24,7 +23,7 @@ interface QueryParams {
     orderBy: LectureOrderBy;
     orderDirection: OrderDirection;
     search: string | undefined;
-    statusIds: number[] | undefined;
+    statuses: LearningStatus[] | undefined;
     tagIds: number[] | undefined;
     onlyActive: boolean | undefined;
     archived: ArchivedFilter | undefined;
@@ -34,7 +33,7 @@ interface QueryParams {
     selector: 'uk-lectures-grid',
     standalone: true,
     imports: [
-        ReactiveFormsModule, PaginationComponent, TranslatePipe,
+        ReactiveFormsModule, PaginationComponent, TranslatePipe, StatusLabelPipe,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './lectures-grid.component.html',
@@ -42,7 +41,6 @@ interface QueryParams {
 })
 export class LecturesGridComponent implements OnInit {
     private readonly lectureService = inject(LectureService);
-    private readonly workflowService = inject(WorkflowService);
     private readonly tagService = inject(TagService);
     private readonly workspaceService = inject(WorkspaceService);
     private readonly currentUserService = inject(CurrentUserService);
@@ -54,7 +52,8 @@ export class LecturesGridComponent implements OnInit {
     protected readonly searchControl = new FormControl<string>('', {nonNullable: true});
     protected readonly search = signal<string>('');
 
-    protected readonly selectedStatusIds = signal<number[]>([]);
+    protected readonly statuses = LEARNING_STATUSES;
+    protected readonly selectedStatuses = signal<LearningStatus[]>([]);
     protected readonly selectedTagIds = signal<number[]>([]);
     protected readonly workspaceTags = signal<Tag[]>([]);
     protected readonly onlyActive = signal<boolean>(false);
@@ -67,7 +66,6 @@ export class LecturesGridComponent implements OnInit {
     protected readonly lectures = signal<LectureListItem[]>([]);
     protected readonly count = signal<number>(0);
     protected readonly loading = signal<boolean>(false);
-    protected readonly workflows = signal<WorkflowWithStatuses[]>([]);
 
     protected readonly views = this.savedViewService.views;
     protected readonly activeViewId = signal<number | null>(null);
@@ -125,14 +123,13 @@ export class LecturesGridComponent implements OnInit {
         orderBy: this.sortBy(),
         orderDirection: this.sortDirection(),
         search: this.search() === '' ? undefined : this.search(),
-        statusIds: this.selectedStatusIds().length > 0 ? this.selectedStatusIds() : undefined,
+        statuses: this.selectedStatuses().length > 0 ? this.selectedStatuses() : undefined,
         tagIds: this.selectedTagIds().length > 0 ? this.selectedTagIds() : undefined,
         onlyActive: this.onlyActive() ? true : undefined,
         archived: this.archived() === 'active' ? undefined : this.archived(),
     }));
 
     public ngOnInit(): void {
-        void this.loadWorkflows();
         void this.loadWorkspaceTags();
         void this.loadSavedViews();
         void this.openFromQueryParam();
@@ -205,8 +202,8 @@ export class LecturesGridComponent implements OnInit {
             this.search.set(q);
         }
 
-        const statusIds = parseIdList(map.get('statusIds'));
-        if (statusIds.length > 0) this.selectedStatusIds.set(statusIds);
+        const statuses = parseStatusList(map.get('statuses'));
+        if (statuses.length > 0) this.selectedStatuses.set(statuses);
 
         const tagIds = parseIdList(map.get('tagIds'));
         if (tagIds.length > 0) this.selectedTagIds.set(tagIds);
@@ -221,7 +218,7 @@ export class LecturesGridComponent implements OnInit {
         }
 
         const orderBy = map.get('orderBy');
-        if (orderBy === 'created_at' || orderBy === 'name' || orderBy === 'status_id') {
+        if (orderBy === 'created_at' || orderBy === 'name' || orderBy === 'status') {
             this.sortBy.set(orderBy);
         }
 
@@ -245,7 +242,7 @@ export class LecturesGridComponent implements OnInit {
         const out: Record<string, string> = {};
         const s = this.search();
         if (s !== '') out['q'] = s;
-        if (this.selectedStatusIds().length > 0) out['statusIds'] = this.selectedStatusIds().join('|');
+        if (this.selectedStatuses().length > 0) out['statuses'] = this.selectedStatuses().join('|');
         if (this.selectedTagIds().length > 0) out['tagIds'] = this.selectedTagIds().join('|');
         if (this.onlyActive()) out['onlyActive'] = '1';
         if (this.archived() !== 'active') out['archived'] = this.archived();
@@ -255,14 +252,6 @@ export class LecturesGridComponent implements OnInit {
         if (this.pageSize() !== 50) out['pageSize'] = String(this.pageSize());
         return out;
     });
-
-    private async loadWorkflows(): Promise<void> {
-        try {
-            this.workflows.set(await this.workflowService.getWorkflows());
-        } catch {
-            this.workflows.set([]);
-        }
-    }
 
     private async loadWorkspaceTags(): Promise<void> {
         const workspaceId = await this.resolveCurrentWorkspaceId();
@@ -302,7 +291,7 @@ export class LecturesGridComponent implements OnInit {
 
     private isEmptyFilterState(): boolean {
         return this.search() === ''
-            && this.selectedStatusIds().length === 0
+            && this.selectedStatuses().length === 0
             && this.selectedTagIds().length === 0
             && !this.onlyActive()
             && this.archived() === 'active'
@@ -325,8 +314,8 @@ export class LecturesGridComponent implements OnInit {
             this.searchControl.setValue(filters.q, {emitEvent: false});
             this.search.set(filters.q);
         }
-        if (filters.statusIds && filters.statusIds.length > 0) {
-            this.selectedStatusIds.set([...filters.statusIds]);
+        if (filters.statuses && filters.statuses.length > 0) {
+            this.selectedStatuses.set([...filters.statuses]);
         }
         if (filters.tagIds && filters.tagIds.length > 0) {
             this.selectedTagIds.set([...filters.tagIds]);
@@ -372,7 +361,7 @@ export class LecturesGridComponent implements OnInit {
 
         const filters: SavedViewFilters = {};
         if (this.search() !== '') filters.q = this.search();
-        if (this.selectedStatusIds().length > 0) filters.statusIds = [...this.selectedStatusIds()];
+        if (this.selectedStatuses().length > 0) filters.statuses = [...this.selectedStatuses()];
         if (this.selectedTagIds().length > 0) filters.tagIds = [...this.selectedTagIds()];
         if (this.onlyActive()) filters.onlyActive = true;
         if (this.archived() !== 'active') filters.archived = this.archived();
@@ -430,7 +419,7 @@ export class LecturesGridComponent implements OnInit {
     }
 
     private currentMatchesFilters(saved: SavedViewFilters): boolean {
-        const sameArray = (a: number[], b: number[] | undefined): boolean => {
+        const sameArray = <T>(a: T[], b: T[] | undefined): boolean => {
             const other = b ?? [];
             if (a.length !== other.length) return false;
             const sortedA = [...a].sort();
@@ -438,7 +427,7 @@ export class LecturesGridComponent implements OnInit {
             return sortedA.every((v, i) => v === sortedB[i]);
         };
         return this.search() === (saved.q ?? '')
-            && sameArray(this.selectedStatusIds(), saved.statusIds)
+            && sameArray(this.selectedStatuses(), saved.statuses)
             && sameArray(this.selectedTagIds(), saved.tagIds)
             && this.onlyActive() === (saved.onlyActive ?? false)
             && this.archived() === (saved.archived ?? 'active')
@@ -468,7 +457,7 @@ export class LecturesGridComponent implements OnInit {
                 orderBy: params.orderBy,
                 orderDirection: params.orderDirection,
                 search: params.search,
-                statusIds: params.statusIds,
+                statuses: params.statuses,
                 tagIds: params.tagIds,
                 onlyActive: params.onlyActive,
                 archived: params.archived,
@@ -536,19 +525,19 @@ export class LecturesGridComponent implements OnInit {
         return this.sortDirection() === 'ASC' ? '↑' : '↓';
     }
 
-    protected onStatusToggle(statusId: number, event: Event): void {
+    protected onStatusToggle(status: LearningStatus, event: Event): void {
         const checked = (event.target as HTMLInputElement).checked;
-        const current = this.selectedStatusIds();
-        if (checked && !current.includes(statusId)) {
-            this.selectedStatusIds.set([...current, statusId]);
+        const current = this.selectedStatuses();
+        if (checked && !current.includes(status)) {
+            this.selectedStatuses.set([...current, status]);
         } else if (!checked) {
-            this.selectedStatusIds.set(current.filter((id) => id !== statusId));
+            this.selectedStatuses.set(current.filter((s) => s !== status));
         }
         this.page.set(1);
     }
 
-    protected isStatusSelected(statusId: number): boolean {
-        return this.selectedStatusIds().includes(statusId);
+    protected isStatusSelected(status: LearningStatus): boolean {
+        return this.selectedStatuses().includes(status);
     }
 
     protected onTagToggle(tagId: number, event: Event): void {
@@ -579,7 +568,7 @@ export class LecturesGridComponent implements OnInit {
 
     protected clearFilters(): void {
         this.searchControl.setValue('');
-        this.selectedStatusIds.set([]);
+        this.selectedStatuses.set([]);
         this.selectedTagIds.set([]);
         this.onlyActive.set(false);
         this.archived.set('active');
@@ -615,16 +604,9 @@ export class LecturesGridComponent implements OnInit {
         }
     }
 
-    // Status dot color by workflow role (theme-aware; flips in dark mode).
-    protected statusDotColor(status: Status): string {
-        switch (status.type) {
-            case 'Start':
-                return 'var(--color-status-todo)';
-            case 'Finish':
-                return 'var(--color-status-done)';
-            default:
-                return 'var(--color-status-doing)';
-        }
+    // Status dot color (theme-aware; flips in dark mode).
+    protected statusDotColor(status: LearningStatus): string {
+        return statusColorVar(status);
     }
 
     protected onPageChange(page: number): void {
@@ -677,9 +659,9 @@ export class LecturesGridComponent implements OnInit {
         return Array.from(this.selectedIds());
     }
 
-    protected async onBulkMove(statusId: number): Promise<void> {
+    protected async onBulkMove(status: LearningStatus): Promise<void> {
         this.closeBulkPopovers();
-        await this.runBulk('move', {statusId});
+        await this.runBulk('move', {status});
     }
 
     protected async onBulkAddTag(tagId: number): Promise<void> {
@@ -776,6 +758,19 @@ function parseIdList(raw: string | null): number[] {
         const n = Number.parseInt(part, 10);
         if (Number.isFinite(n) && n > 0) {
             out.push(n);
+        }
+    }
+    return out;
+}
+
+function parseStatusList(raw: string | null): LearningStatus[] {
+    if (raw === null || raw === '') {
+        return [];
+    }
+    const out: LearningStatus[] = [];
+    for (const part of raw.split('|')) {
+        if (LEARNING_STATUSES.includes(part as LearningStatus)) {
+            out.push(part as LearningStatus);
         }
     }
     return out;

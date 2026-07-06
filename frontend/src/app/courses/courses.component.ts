@@ -90,13 +90,13 @@ export class CoursesComponent implements OnInit {
 
     private readonly workingLectures = computed<LectureListItem[]>(() =>
         this.lectures()
-            .filter((l) => l.status.type === 'Normal')
+            .filter((l) => l.status === 'Learning')
             .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)),
     );
 
     private readonly masteredLectures = computed<LectureListItem[]>(() =>
         this.lectures()
-            .filter((l) => l.status.type === 'Finish')
+            .filter((l) => l.status === 'Mastered')
             .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)),
     );
 
@@ -138,7 +138,7 @@ export class CoursesComponent implements OnInit {
         const lectures = this.lectures();
         return this.courses().map((course, index) => {
             const own = lectures.filter((l) => l.courseId === course.id);
-            const masteredCount = own.filter((l) => l.status.type === 'Finish').length;
+            const masteredCount = own.filter((l) => l.status === 'Mastered').length;
             const ringPct = own.length > 0 ? Math.round((masteredCount / own.length) * 100) : 0;
             return {
                 id: course.id,
@@ -183,7 +183,7 @@ export class CoursesComponent implements OnInit {
     // Latest recorded tempo per in-progress lecture drives the "current → target"
     // row. Fetched only for the (small) working set; failures fall back to null.
     private async loadCurrentTempos(): Promise<void> {
-        const working = this.lectures().filter((l) => l.status.type === 'Normal');
+        const working = this.lectures().filter((l) => l.status === 'Learning');
         const pairs = await Promise.all(
             working.map(async (l): Promise<[number, number | null]> => {
                 try {

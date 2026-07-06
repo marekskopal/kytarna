@@ -67,7 +67,8 @@ final readonly class NotificationDispatcher implements NotificationDispatcherInt
 	/** @param array<string, mixed> $metadata */
 	private function handleMoved(Lecture $lecture, ?int $actorId, ?string $actorName, array $metadata): void
 	{
-		$extra = ['statusName' => is_string($metadata['toStatusName'] ?? null) ? $metadata['toStatusName'] : null];
+		// `status` is a fixed LearningStatusEnum value (ToLearn|Learning|Mastered); the frontend maps it to a label.
+		$extra = ['status' => is_string($metadata['toStatus'] ?? null) ? $metadata['toStatus'] : null];
 
 		foreach ($this->recipientIds($lecture) as $userId) {
 			if ($userId === $actorId) {

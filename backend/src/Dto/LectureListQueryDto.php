@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace Kytarna\Dto;
 
+use Kytarna\Model\Entity\Enum\LearningStatusEnum;
 use Kytarna\Model\Repository\Enum\ArchivedFilterEnum;
 use Kytarna\Model\Repository\Enum\LectureOrderByEnum;
 use Kytarna\Model\Repository\Enum\OrderDirectionEnum;
 use RuntimeException;
 use const PHP_INT_MAX;
+use const SORT_REGULAR;
 
 /** Parsed and validated query parameters of the workspace-wide lecture list (GET /api/lectures). */
 final readonly class LectureListQueryDto
 {
 	/**
-	 * @param list<int>|null $statusIds
+	 * @param list<LearningStatusEnum>|null $statuses
 	 * @param list<int>|null $tagIds
 	 */
 	public function __construct(
@@ -24,7 +26,7 @@ final readonly class LectureListQueryDto
 		public int $limit,
 		public int $offset,
 		public ?string $search,
-		public ?array $statusIds,
+		public ?array $statuses,
 		public ?array $tagIds,
 		public bool $onlyActive,
 	) {
@@ -44,7 +46,7 @@ final readonly class LectureListQueryDto
 			limit: self::intParam($query, 'limit', 50, 1, 200),
 			offset: self::intParam($query, 'offset', 0, 0, PHP_INT_MAX),
 			search: self::stringParam($query, 'search'),
-			statusIds: self::idsParam($query, 'statusIds'),
+			statuses: self::statusesParam($query, 'statuses'),
 			tagIds: self::idsParam($query, 'tagIds'),
 			onlyActive: self::boolParam($query, 'onlyActive'),
 		);
@@ -119,5 +121,24 @@ final readonly class LectureListQueryDto
 			static fn (int $id): bool => $id > 0,
 		));
 		return $parsed === [] ? null : $parsed;
+	}
+
+	/**
+	 * @param array<array-key, mixed> $query
+	 * @return list<LearningStatusEnum>|null
+	 */
+	private static function statusesParam(array $query, string $key): ?array
+	{
+		if (!isset($query[$key]) || !is_string($query[$key]) || $query[$key] === '') {
+			return null;
+		}
+		$parsed = [];
+		foreach (explode('|', $query[$key]) as $raw) {
+			$status = LearningStatusEnum::fromLoose($raw);
+			if ($status !== null) {
+				$parsed[] = $status;
+			}
+		}
+		return $parsed === [] ? null : array_values(array_unique($parsed, SORT_REGULAR));
 	}
 }

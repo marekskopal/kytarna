@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, Component, inject, OnInit, signal} from '@angular/core';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {AuditEvent} from '@app/models/event';
+import {LearningStatus, statusLabelKey} from '@app/models/status';
 import {EventService} from '@app/services/event.service';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
@@ -35,16 +36,13 @@ export class EventsComponent implements OnInit {
         const md = event.metadata;
         const t = (key: string, params?: Record<string, unknown>): string =>
             this.translate.instant(key, params) as string;
+        const st = (v: unknown): string =>
+            typeof v === 'string' ? t(statusLabelKey(v as LearningStatus)) : '?';
 
         switch (event.type) {
             case 'CourseCreated': return t('app.events.types.CourseCreated');
             case 'CourseUpdated': return t('app.events.types.CourseUpdated');
             case 'CourseDeleted': return t('app.events.types.CourseDeleted');
-            case 'WorkflowUpdated': return t('app.events.types.WorkflowUpdated');
-            case 'StatusCreated': return t('app.events.types.StatusCreated', {name: String(md['name'] ?? '')});
-            case 'StatusUpdated': return t('app.events.types.StatusUpdated');
-            case 'StatusDeleted': return t('app.events.types.StatusDeleted');
-            case 'StatusMoved': return t('app.events.types.StatusMoved');
             case 'LectureCreated': return t('app.events.types.LectureCreated', {name: String(md['name'] ?? '')});
             case 'LectureUpdated': return t('app.events.types.LectureUpdated', {name: String(md['name'] ?? '')});
             case 'LectureDeleted': return t('app.events.types.LectureDeleted', {name: String(md['name'] ?? '')});
@@ -52,9 +50,23 @@ export class EventsComponent implements OnInit {
             case 'LectureUnarchived': return t('app.events.types.LectureUnarchived', {name: String(md['name'] ?? '')});
             case 'LectureMoved':
                 return t('app.events.types.LectureMoved', {
-                    name: String(md['lectureName'] ?? ''),
-                    from: String(md['fromStatusName'] ?? '?'),
-                    to: String(md['toStatusName'] ?? '?'),
+                    name: String(md['lectureName'] ?? md['name'] ?? ''),
+                    from: st(md['fromStatus']),
+                    to: st(md['toStatus']),
+                });
+            case 'SongCreated': return t('app.events.types.SongCreated', {name: String(md['name'] ?? '')});
+            case 'SongUpdated': return t('app.events.types.SongUpdated', {name: String(md['name'] ?? '')});
+            case 'SongDeleted': return t('app.events.types.SongDeleted', {name: String(md['name'] ?? '')});
+            case 'SongArchived': return t('app.events.types.SongArchived', {name: String(md['name'] ?? '')});
+            case 'SongUnarchived': return t('app.events.types.SongUnarchived', {name: String(md['name'] ?? '')});
+            case 'SongAddedToCourse':
+                return t('app.events.types.SongAddedToCourse', {name: String(md['name'] ?? ''), course: String(md['courseName'] ?? '')});
+            case 'SongRemovedFromCourse': return t('app.events.types.SongRemovedFromCourse', {name: String(md['name'] ?? '')});
+            case 'SongMoved':
+                return t('app.events.types.SongMoved', {
+                    name: String(md['name'] ?? ''),
+                    from: st(md['fromStatus']),
+                    to: st(md['toStatus']),
                 });
             default:
                 return t(`app.agents.verb.${event.type}`);

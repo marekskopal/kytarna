@@ -15,7 +15,7 @@ const list: NotificationList = {
             courseId: 7,
             actorId: 9,
             actorName: 'Carol',
-            data: {lectureCode: 'UK-1', lectureName: 'Ship it', statusName: 'Done'},
+            data: {lectureCode: 'UK-1', lectureName: 'Ship it', status: 'Mastered'},
             read: false,
             createdAt: '2026-06-22T10:00:00+00:00',
         },

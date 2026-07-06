@@ -8,5 +8,5 @@ enum LectureOrderByEnum: string
 {
 	case CreatedAt = 'created_at';
 	case Name = 'name';
-	case Status = 'status_id';
+	case Status = 'status';
 }

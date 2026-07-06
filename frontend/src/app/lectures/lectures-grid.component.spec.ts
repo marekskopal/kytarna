@@ -4,12 +4,12 @@ import {TestBed} from '@angular/core/testing';
 import {FormControl} from '@angular/forms';
 import {provideRouter} from '@angular/router';
 import {LectureListItem, LectureOrderBy,OrderDirection} from '@app/models/lecture';
+import {LearningStatus} from '@app/models/status';
 import {BoardService} from '@app/services/board.service';
 import {CurrentUserService} from '@app/services/current-user.service';
 import {BulkResult, LectureService} from '@app/services/lecture.service';
 import {SavedViewService} from '@app/services/saved-view.service';
 import {TagService} from '@app/services/tag.service';
-import {WorkflowService} from '@app/services/workflow.service';
 import {WorkspaceService} from '@app/services/workspace.service';
 import {provideTranslateStub} from '@app/testing/test-providers';
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
@@ -59,7 +59,7 @@ interface LastBulkResultSignal {
 interface GridInternals {
     page: PageSignal;
     pageSize: PageSignal;
-    selectedStatusIds: SelectionSignal<number>;
+    selectedStatuses: SelectionSignal<LearningStatus>;
     selectedTagIds: SelectionSignal<number>;
     onlyActive: FlagSignal;
     sortBy: SortBySignal;
@@ -75,10 +75,10 @@ interface GridInternals {
     toggleRow: (id: number, event: Event) => void;
     togglePage: (event: Event) => void;
     clearSelection: () => void;
-    onBulkMove: (statusId: number) => Promise<void>;
+    onBulkMove: (status: LearningStatus) => Promise<void>;
     onBulkAddTag: (tagId: number) => Promise<void>;
     onSortClick: (column: LectureOrderBy) => void;
-    onStatusToggle: (statusId: number, event: Event) => void;
+    onStatusToggle: (status: LearningStatus, event: Event) => void;
     onTagToggle: (tagId: number, event: Event) => void;
     onOnlyActiveToggle: (event: Event) => void;
     onPageSizeChange: (size: number) => void;
@@ -108,7 +108,6 @@ function createComponent(options: CreateOptions = {}): LecturesGridComponent {
                 getLecture: vi.fn().mockResolvedValue(null),
                 bulkUpdate: options.bulkUpdate ?? vi.fn().mockResolvedValue({succeeded: [], skipped: []}),
             }},
-            {provide: WorkflowService, useValue: {getWorkflows: vi.fn().mockResolvedValue([])}},
             {provide: BoardService, useValue: {getBoard: vi.fn().mockResolvedValue({statuses: []})}},
             {provide: TagService, useValue: {loadWorkspaceTags: vi.fn().mockResolvedValue([])}},
             {provide: WorkspaceService, useValue: {
@@ -139,8 +138,7 @@ function fakeLecture(id: number): LectureListItem {
         code: 'T-' + id,
         courseId: 1,
         courseName: 'P',
-        statusId: 1,
-        status: {id: 1, name: 'To Do', color: '#000', position: 0, type: 'Start'} as unknown as LectureListItem['status'],
+        status: 'ToLearn',
         name: 'lecture ' + id,
         description: null,
         position: 0,
@@ -197,10 +195,10 @@ describe('LecturesGridComponent', () => {
         const inner = internals(createComponent());
         inner.page.set(5);
 
-        inner.onStatusToggle(7, checkboxEvent(true));
+        inner.onStatusToggle('Learning', checkboxEvent(true));
 
         expect(inner.page()).toBe(1);
-        expect(inner.selectedStatusIds()).toContain(7);
+        expect(inner.selectedStatuses()).toContain('Learning');
     });
 
     it('onTagToggle resets the page to 1', () => {
@@ -226,7 +224,7 @@ describe('LecturesGridComponent', () => {
     it('clearFilters resets the page to 1 and clears every active filter', () => {
         const inner = internals(createComponent());
         inner.page.set(6);
-        inner.selectedStatusIds.set([1, 2]);
+        inner.selectedStatuses.set(['ToLearn', 'Learning']);
         inner.selectedTagIds.set([3]);
         inner.onlyActive.set(true);
         inner.searchControl.setValue('something');
@@ -234,7 +232,7 @@ describe('LecturesGridComponent', () => {
         inner.clearFilters();
 
         expect(inner.page()).toBe(1);
-        expect(inner.selectedStatusIds()).toEqual([]);
+        expect(inner.selectedStatuses()).toEqual([]);
         expect(inner.selectedTagIds()).toEqual([]);
         expect(inner.onlyActive()).toBe(false);
         expect(inner.searchControl.value).toBe('');
@@ -309,9 +307,9 @@ describe('LecturesGridComponent', () => {
             inner.toggleRow(1, checkboxEvent(true));
             inner.toggleRow(2, checkboxEvent(true));
 
-            await inner.onBulkMove(7);
+            await inner.onBulkMove('Learning');
 
-            expect(bulkUpdate).toHaveBeenCalledWith([1, 2], 'move', {statusId: 7});
+            expect(bulkUpdate).toHaveBeenCalledWith([1, 2], 'move', {status: 'Learning'});
         });
 
         it('exposes lastBulkResult after a partial-skip response', async () => {

@@ -1,0 +1,51 @@
+<div class="song-card" [attr.data-agent]="song().createdByAgent ? 'true' : null">
+    <span class="song-card-badge">{{ 'app.songs.badge' | translate }}</span>
+
+    <div class="song-card-head">
+        @if (song().hasCover) {
+            <span class="song-card-cover" aria-hidden="true">
+                @if (coverUrl(); as url) {
+                    <!-- eslint-disable-next-line @angular-eslint/template/prefer-ngsrc -- blob: object URL, NgOptimizedImage is not applicable -->
+                    <img class="song-card-cover-img" [src]="url" alt="" />
+                }
+            </span>
+        }
+        <div class="song-card-head-main">
+            <p class="song-card-title">{{ song().name }}</p>
+            @if (byline()) {
+                <p class="song-card-byline">{{ byline() }}</p>
+            }
+        </div>
+        @if (song().createdByAgent) {
+            <span class="song-card-agent" [attr.aria-label]="'app.agent.createdBy' | translate" [attr.title]="'app.agent.createdBy' | translate">
+                <span class="song-card-agent-mark" aria-hidden="true"></span>
+            </span>
+        }
+    </div>
+
+    @if (song().description) {
+        <p class="song-card-desc">{{ stripMd(song().description!) }}</p>
+    }
+
+    @if (song().difficulty || song().tuning || song().capo !== null) {
+        <div class="song-card-chips">
+            @if (song().difficulty) {
+                <span class="song-card-chip" [style.color]="difficultyColor(song().difficulty!)">
+                    {{ 'app.board.drawer.guitar.difficulties.' + song().difficulty | translate }}
+                </span>
+            }
+            @if (song().tuning) {
+                <span class="song-card-chip song-card-chip--muted">{{ song().tuning }}</span>
+            }
+            @if (song().capo !== null) {
+                <span class="song-card-chip song-card-chip--muted">{{ 'app.board.card.capo' | translate }} {{ song().capo }}</span>
+            }
+        </div>
+    }
+
+    @if (song().targetTempoBpm !== null) {
+        <div class="song-card-footer">
+            {{ 'app.board.card.targetBpm' | translate: {bpm: song().targetTempoBpm} }}
+        </div>
+    }
+</div>

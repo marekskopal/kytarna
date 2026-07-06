@@ -15,8 +15,6 @@ use Kytarna\Model\Entity\Notification;
 use Kytarna\Model\Entity\User;
 use Kytarna\Model\Entity\Workspace;
 use Kytarna\Model\Repository\LectureRepository;
-use Kytarna\Model\Repository\StatusRepository;
-use Kytarna\Model\Repository\WorkflowRepository;
 use Kytarna\Service\Notification\NotificationDispatcher;
 use Kytarna\Service\Notification\NotificationDispatcherInterface;
 use Kytarna\Service\Provider\LectureWatcherProviderInterface;
@@ -42,19 +40,27 @@ final class NotificationDispatcherTest extends IntegrationTestCase
 
 		// An agent-driven move must not ping watchers (agents churn statuses).
 		$this->dispatcher()->onEvent($this->moveEvent($owner, $workspace, $course, $lecture, ActorTypeEnum::Agent));
-		self::assertCount(0, $this->notificationsFor($bob));
+		$afterAgentMove = $this->notificationsFor($bob);
+		self::assertCount(0, $afterAgentMove);
 
 		// A human move pings the watcher (Bob), but not the actor (owner).
-		$secondStatusId = $this->statusIdAtIndex($course->id, 1);
 		$this->request(
 			'PUT',
 			'/api/lectures/' . $lectureId . '/move',
-			body: ['statusId' => $secondStatusId, 'position' => 0],
+			body: ['status' => 'Learning', 'position' => 0],
 			authenticatedAs: $owner,
 		);
 
-		self::assertCount(1, $this->notificationsFor($bob));
-		self::assertCount(0, $this->notificationsFor($owner));
+		$ownerNotifications = $this->notificationsFor($owner);
+		self::assertCount(0, $ownerNotifications);
+
+		$bobNotifications = $this->notificationsFor($bob);
+		self::assertCount(1, $bobNotifications);
+
+		// The stored notification carries the destination status (enum value) under the `status` data key.
+		$data = json_decode((string) $bobNotifications[0]->data, true, flags: JSON_THROW_ON_ERROR);
+		self::assertIsArray($data);
+		self::assertSame('Learning', $data['status']);
 	}
 
 	private function moveEvent(User $author, Workspace $workspace, Course $course, Lecture $lecture, ActorTypeEnum $actorType): Event
@@ -62,7 +68,7 @@ final class NotificationDispatcherTest extends IntegrationTestCase
 		$event = new Event(
 			author: $author,
 			type: EventTypeEnum::LectureMoved,
-			metadata: json_encode(['toStatusName' => 'Learning', 'lectureName' => $lecture->name], JSON_THROW_ON_ERROR),
+			metadata: json_encode(['toStatus' => 'Learning', 'lectureName' => $lecture->name], JSON_THROW_ON_ERROR),
 			course: $course,
 			workspaceId: $workspace->id,
 			lectureId: $lecture->id,
@@ -104,7 +110,7 @@ final class NotificationDispatcherTest extends IntegrationTestCase
 
 	private function createLecture(User $author, int $courseId, string $name): Lecture
 	{
-		$body = ['statusId' => $this->statusIdAtIndex($courseId, 0), 'name' => $name, 'description' => null];
+		$body = ['status' => 'ToLearn', 'name' => $name, 'description' => null];
 
 		$response = $this->request('POST', '/api/courses/' . $courseId . '/lectures', body: $body, authenticatedAs: $author);
 		self::assertSame(200, $response->getStatusCode());
@@ -119,22 +125,5 @@ final class NotificationDispatcherTest extends IntegrationTestCase
 		$lecture = $lectureRepository->findById($lectureId);
 		assert($lecture instanceof Lecture);
 		return $lecture;
-	}
-
-	private function statusIdAtIndex(int $courseId, int $index): int
-	{
-		$workflowRepo = $this->container->get(WorkflowRepository::class);
-		assert($workflowRepo instanceof WorkflowRepository);
-		$workflow = $workflowRepo->findByCourse($courseId);
-		assert($workflow !== null);
-
-		$statusRepo = $this->container->get(StatusRepository::class);
-		assert($statusRepo instanceof StatusRepository);
-		$ids = [];
-		foreach ($statusRepo->findByWorkflow($workflow->id) as $status) {
-			$ids[] = $status->id;
-		}
-		self::assertArrayHasKey($index, $ids);
-		return $ids[$index];
 	}
 }

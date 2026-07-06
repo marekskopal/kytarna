@@ -9,8 +9,8 @@ use Iterator;
 use Kytarna\Model\Entity\Course;
 use Kytarna\Model\Entity\Enum\DifficultyEnum;
 use Kytarna\Model\Entity\Enum\EventTypeEnum;
+use Kytarna\Model\Entity\Enum\LearningStatusEnum;
 use Kytarna\Model\Entity\Lecture;
-use Kytarna\Model\Entity\Status;
 use Kytarna\Model\Entity\User;
 use Kytarna\Model\Entity\Workspace;
 use Kytarna\Model\Repository\Enum\ArchivedFilterEnum;
@@ -32,6 +32,7 @@ final readonly class LectureProvider implements LectureProviderInterface
 		private LectureTagRepository $lectureTagRepository,
 		private ActorContextInterface $actorContext,
 		private LecturePositionManager $positionManager,
+		private CourseSequenceProviderInterface $courseSequenceProvider,
 	) {
 	}
 
@@ -47,7 +48,7 @@ final readonly class LectureProvider implements LectureProviderInterface
 	}
 
 	/**
-	 * @param list<int>|null $statusIds
+	 * @param list<LearningStatusEnum>|null $statuses
 	 * @param list<int>|null $tagIds
 	 * @return Iterator<Lecture>
 	 */
@@ -58,7 +59,7 @@ final readonly class LectureProvider implements LectureProviderInterface
 		LectureOrderByEnum $orderBy,
 		OrderDirectionEnum $direction,
 		?string $search,
-		?array $statusIds,
+		?array $statuses,
 		bool $onlyActive,
 		?array $tagIds = null,
 		ArchivedFilterEnum $archived = ArchivedFilterEnum::Active,
@@ -70,7 +71,7 @@ final readonly class LectureProvider implements LectureProviderInterface
 			$orderBy,
 			$direction,
 			$search,
-			$statusIds,
+			$statuses,
 			$onlyActive,
 			$this->resolveLectureIdsByTags($tagIds),
 			null,
@@ -79,13 +80,13 @@ final readonly class LectureProvider implements LectureProviderInterface
 	}
 
 	/**
-	 * @param list<int>|null $statusIds
+	 * @param list<LearningStatusEnum>|null $statuses
 	 * @param list<int>|null $tagIds
 	 */
 	public function countLecturesInWorkspace(
 		Workspace $workspace,
 		?string $search,
-		?array $statusIds,
+		?array $statuses,
 		bool $onlyActive,
 		?array $tagIds = null,
 		ArchivedFilterEnum $archived = ArchivedFilterEnum::Active,
@@ -93,7 +94,7 @@ final readonly class LectureProvider implements LectureProviderInterface
 		return $this->lectureRepository->countInWorkspace(
 			$workspace->id,
 			$search,
-			$statusIds,
+			$statuses,
 			$onlyActive,
 			$this->resolveLectureIdsByTags($tagIds),
 			null,
@@ -117,7 +118,7 @@ final readonly class LectureProvider implements LectureProviderInterface
 	public function createLecture(
 		User $author,
 		Course $course,
-		Status $status,
+		LearningStatusEnum $status,
 		string $name,
 		?string $description,
 		?array $tagIds = null,
@@ -129,8 +130,8 @@ final readonly class LectureProvider implements LectureProviderInterface
 		$name = TextFieldValidator::validateName($name, 'Lecture');
 		$description = TextFieldValidator::validateDescription($description);
 
-		$position = $this->nextPosition($status);
-		$sequenceNumber = $this->lectureRepository->nextSequenceNumber($course->id);
+		$position = $this->nextPosition($course, $status);
+		$sequenceNumber = $this->courseSequenceProvider->next($course);
 
 		$now = new DateTimeImmutable();
 		$lecture = new Lecture(
@@ -168,7 +169,7 @@ final readonly class LectureProvider implements LectureProviderInterface
 			$author,
 			$course,
 			EventTypeEnum::LectureCreated,
-			['name' => $name, 'statusId' => $status->id, 'statusName' => $status->name],
+			['name' => $name, 'status' => $status->value],
 			$lecture->id,
 		);
 
@@ -181,7 +182,7 @@ final readonly class LectureProvider implements LectureProviderInterface
 		Lecture $lecture,
 		string $name,
 		?string $description,
-		Status $status,
+		LearningStatusEnum $status,
 		?array $tagIds = null,
 		bool $recordEvent = true,
 		?string $tuning = null,
@@ -193,7 +194,7 @@ final readonly class LectureProvider implements LectureProviderInterface
 		$description = TextFieldValidator::validateDescription($description);
 
 		$oldName = $lecture->name;
-		$statusChanged = $lecture->status->id !== $status->id;
+		$statusChanged = $lecture->status !== $status;
 
 		$lecture->name = $name;
 		$lecture->description = $description;
@@ -203,7 +204,7 @@ final readonly class LectureProvider implements LectureProviderInterface
 		$lecture->difficulty = $difficulty;
 		if ($statusChanged) {
 			$lecture->status = $status;
-			$lecture->position = $this->positionManager->nextPosition($status);
+			$lecture->position = $this->positionManager->nextPosition($lecture->course, $status);
 		}
 		$lecture->updatedAt = new DateTimeImmutable();
 		$this->lectureRepository->persist($lecture);
@@ -219,17 +220,23 @@ final readonly class LectureProvider implements LectureProviderInterface
 		return $lecture;
 	}
 
-	public function moveLecture(User $author, Lecture $lecture, Status $newStatus, int $newPosition, bool $recordEvent = true): Lecture
+	public function moveLecture(
+		User $author,
+		Lecture $lecture,
+		LearningStatusEnum $newStatus,
+		int $newPosition,
+		bool $recordEvent = true,
+	): Lecture
 	{
 		$fromStatus = $lecture->status;
 		$fromPosition = $lecture->position;
-		$sameColumn = $fromStatus->id === $newStatus->id;
+		$sameColumn = $fromStatus === $newStatus;
 
 		if ($sameColumn) {
 			$this->positionManager->reorderWithinColumn($lecture, $newPosition);
 		} else {
 			$this->positionManager->closeGapInOldColumn($lecture);
-			$this->positionManager->openSlotInNewColumn($newStatus, $newPosition);
+			$this->positionManager->openSlotInNewColumn($lecture->course, $newStatus, $newPosition);
 			$lecture->status = $newStatus;
 			$lecture->position = $newPosition;
 		}
@@ -269,8 +276,8 @@ final readonly class LectureProvider implements LectureProviderInterface
 	private function recordMoveEvent(
 		User $author,
 		Lecture $lecture,
-		Status $fromStatus,
-		Status $newStatus,
+		LearningStatusEnum $fromStatus,
+		LearningStatusEnum $newStatus,
 		int $fromPosition,
 		int $newPosition,
 	): void
@@ -280,10 +287,8 @@ final readonly class LectureProvider implements LectureProviderInterface
 			$lecture->course,
 			EventTypeEnum::LectureMoved,
 			[
-				'fromStatusId' => $fromStatus->id,
-				'fromStatusName' => $fromStatus->name,
-				'toStatusId' => $newStatus->id,
-				'toStatusName' => $newStatus->name,
+				'fromStatus' => $fromStatus->value,
+				'toStatus' => $newStatus->value,
 				'fromPosition' => $fromPosition,
 				'toPosition' => $newPosition,
 				'lectureName' => $lecture->name,
@@ -306,7 +311,7 @@ final readonly class LectureProvider implements LectureProviderInterface
 			$author,
 			$lecture->course,
 			EventTypeEnum::LectureArchived,
-			['name' => $lecture->name, 'statusId' => $lecture->status->id, 'statusName' => $lecture->status->name],
+			['name' => $lecture->name, 'status' => $lecture->status->value],
 			$lecture->id,
 		);
 
@@ -327,7 +332,7 @@ final readonly class LectureProvider implements LectureProviderInterface
 			$author,
 			$lecture->course,
 			EventTypeEnum::LectureUnarchived,
-			['name' => $lecture->name, 'statusId' => $lecture->status->id, 'statusName' => $lecture->status->name],
+			['name' => $lecture->name, 'status' => $lecture->status->value],
 			$lecture->id,
 		);
 
@@ -352,8 +357,8 @@ final readonly class LectureProvider implements LectureProviderInterface
 		$this->lectureRepository->delete($lecture);
 	}
 
-	public function nextPosition(Status $status): int
+	public function nextPosition(Course $course, LearningStatusEnum $status): int
 	{
-		return $this->positionManager->nextPosition($status);
+		return $this->positionManager->nextPosition($course, $status);
 	}
 }

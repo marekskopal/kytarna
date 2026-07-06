@@ -1,6 +1,7 @@
 import {HttpErrorResponse} from '@angular/common/http';
 import {ChangeDetectionStrategy, Component, inject, input, OnInit, output, signal} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
+import {PracticeParent} from '@app/models/practice-parent';
 import {Tab, TabValidationError, TabValidationErrorResponse} from '@app/models/tab';
 import {TabService} from '@app/services/tab.service';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -22,6 +23,7 @@ import {TabViewerComponent} from './tab-viewer.component';
 })
 export class TabEditorComponent implements OnInit {
     public readonly lectureId = input.required<number | string>();
+    public readonly parent = input<PracticeParent>('lectures');
     public readonly tab = input<Tab | null>(null);
 
     public readonly saved = output<Tab>();
@@ -60,8 +62,8 @@ export class TabEditorComponent implements OnInit {
         try {
             const existing = this.tab();
             const result = existing
-                ? await this.tabService.updateTab(existing.id, payload)
-                : await this.tabService.createTab(this.lectureId(), payload);
+                ? await this.tabService.updateTab(existing.id, payload, this.parent())
+                : await this.tabService.createTab(this.lectureId(), payload, this.parent());
             this.previewTex.set(result.alphatexContent);
             this.saved.emit(result);
         } catch (err) {

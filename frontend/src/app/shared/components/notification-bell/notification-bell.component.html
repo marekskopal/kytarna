@@ -52,7 +52,7 @@
                             }
                             <span class="notif-body">
                                 <span class="notif-message">{{
-                                    messageKey(n.type) | translate: {actor: n.actorName ?? '', lecture: n.data.lectureCode ?? '', status: n.data.statusName ?? ''}
+                                    messageKey(n.type) | translate: {actor: n.actorName ?? '', lecture: n.data.lectureCode ?? '', status: statusLabel(n.data.status)}
                                 }}</span>
                                 @if (n.data.lectureName) {
                                     <span class="notif-lecture">{{ n.data.lectureName }}</span>

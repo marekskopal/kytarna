@@ -19,11 +19,16 @@ use Kytarna\Model\Entity\OAuthClient;
 use Kytarna\Model\Entity\PasswordResetToken;
 use Kytarna\Model\Entity\ProgressEntry;
 use Kytarna\Model\Entity\SavedView;
-use Kytarna\Model\Entity\Status;
+use Kytarna\Model\Entity\Song;
+use Kytarna\Model\Entity\SongFile;
+use Kytarna\Model\Entity\SongLink;
+use Kytarna\Model\Entity\SongProgressEntry;
+use Kytarna\Model\Entity\SongTab;
+use Kytarna\Model\Entity\SongTag;
+use Kytarna\Model\Entity\SongWatcher;
 use Kytarna\Model\Entity\Tab;
 use Kytarna\Model\Entity\Tag;
 use Kytarna\Model\Entity\User;
-use Kytarna\Model\Entity\Workflow;
 use Kytarna\Model\Entity\Workspace;
 use Kytarna\Model\Entity\WorkspaceUser;
 use Kytarna\Model\Repository\CourseRepository;
@@ -41,11 +46,16 @@ use Kytarna\Model\Repository\OAuthClientRepository;
 use Kytarna\Model\Repository\PasswordResetTokenRepository;
 use Kytarna\Model\Repository\ProgressEntryRepository;
 use Kytarna\Model\Repository\SavedViewRepository;
-use Kytarna\Model\Repository\StatusRepository;
+use Kytarna\Model\Repository\SongFileRepository;
+use Kytarna\Model\Repository\SongLinkRepository;
+use Kytarna\Model\Repository\SongProgressEntryRepository;
+use Kytarna\Model\Repository\SongRepository;
+use Kytarna\Model\Repository\SongTabRepository;
+use Kytarna\Model\Repository\SongTagRepository;
+use Kytarna\Model\Repository\SongWatcherRepository;
 use Kytarna\Model\Repository\TabRepository;
 use Kytarna\Model\Repository\TagRepository;
 use Kytarna\Model\Repository\UserRepository;
-use Kytarna\Model\Repository\WorkflowRepository;
 use Kytarna\Model\Repository\WorkspaceRepository;
 use Kytarna\Model\Repository\WorkspaceUserRepository;
 use Kytarna\Service\Dbal\DbContext;
@@ -73,9 +83,14 @@ final class OrmServiceProvider extends AbstractServiceProvider
 			PasswordResetTokenRepository::class,
 			EmailVerificationTokenRepository::class,
 			CourseRepository::class,
-			WorkflowRepository::class,
-			StatusRepository::class,
 			LectureRepository::class,
+			SongRepository::class,
+			SongFileRepository::class,
+			SongTabRepository::class,
+			SongLinkRepository::class,
+			SongProgressEntryRepository::class,
+			SongTagRepository::class,
+			SongWatcherRepository::class,
 			LectureFileRepository::class,
 			TagRepository::class,
 			LectureTagRepository::class,
@@ -108,9 +123,14 @@ final class OrmServiceProvider extends AbstractServiceProvider
 		$this->addRepository($container, $orm, PasswordResetTokenRepository::class, PasswordResetToken::class);
 		$this->addRepository($container, $orm, EmailVerificationTokenRepository::class, EmailVerificationToken::class);
 		$this->addRepository($container, $orm, CourseRepository::class, Course::class);
-		$this->addRepository($container, $orm, WorkflowRepository::class, Workflow::class);
-		$this->addRepository($container, $orm, StatusRepository::class, Status::class);
 		$this->addRepository($container, $orm, LectureRepository::class, Lecture::class);
+		$this->addRepository($container, $orm, SongRepository::class, Song::class);
+		$this->addRepository($container, $orm, SongFileRepository::class, SongFile::class);
+		$this->addRepository($container, $orm, SongTabRepository::class, SongTab::class);
+		$this->addRepository($container, $orm, SongLinkRepository::class, SongLink::class);
+		$this->addRepository($container, $orm, SongProgressEntryRepository::class, SongProgressEntry::class);
+		$this->addRepository($container, $orm, SongTagRepository::class, SongTag::class);
+		$this->addRepository($container, $orm, SongWatcherRepository::class, SongWatcher::class);
 		$this->addRepository($container, $orm, LectureFileRepository::class, LectureFile::class);
 		$this->addRepository($container, $orm, TagRepository::class, Tag::class);
 		$this->addRepository($container, $orm, LectureTagRepository::class, LectureTag::class);

@@ -61,7 +61,7 @@ describe('TabEditorComponent', () => {
         await c.onSubmit();
         fixture.detectChanges();
 
-        expect(createTab).toHaveBeenCalledWith('MP-3', {name: 'Intro', alphaTex: '. 3.3.4'});
+        expect(createTab).toHaveBeenCalledWith('MP-3', {name: 'Intro', alphaTex: '. 3.3.4'}, 'lectures');
         expect(saved).toEqual([savedTab]);
         expect(c.errors().length).toBe(0);
         expect(c.previewTex()).toBe('. 3.3.4');

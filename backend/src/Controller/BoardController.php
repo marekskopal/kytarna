@@ -7,17 +7,17 @@ namespace Kytarna\Controller;
 use Kytarna\Dto\BoardDto;
 use Kytarna\Dto\CourseDto;
 use Kytarna\Dto\LectureDto;
-use Kytarna\Dto\StatusDto;
-use Kytarna\Dto\WorkflowDto;
+use Kytarna\Dto\SongDto;
+use Kytarna\Model\Entity\Enum\LearningStatusEnum;
 use Kytarna\Model\Entity\Lecture;
-use Kytarna\Model\Entity\Status;
+use Kytarna\Model\Entity\Song;
 use Kytarna\Response\NotFoundResponse;
 use Kytarna\Route\Routes;
 use Kytarna\Service\Provider\CourseProviderInterface;
 use Kytarna\Service\Provider\LectureProviderInterface;
 use Kytarna\Service\Provider\LectureTagProviderInterface;
-use Kytarna\Service\Provider\StatusProviderInterface;
-use Kytarna\Service\Provider\WorkflowProviderInterface;
+use Kytarna\Service\Provider\SongProviderInterface;
+use Kytarna\Service\Provider\SongTagProviderInterface;
 use Kytarna\Service\Provider\WorkspaceProviderInterface;
 use Kytarna\Service\Request\RequestServiceInterface;
 use Laminas\Diactoros\Response\JsonResponse;
@@ -29,10 +29,10 @@ final readonly class BoardController
 {
 	public function __construct(
 		private CourseProviderInterface $courseProvider,
-		private WorkflowProviderInterface $workflowProvider,
-		private StatusProviderInterface $statusProvider,
 		private LectureProviderInterface $lectureProvider,
 		private LectureTagProviderInterface $lectureTagProvider,
+		private SongProviderInterface $songProvider,
+		private SongTagProviderInterface $songTagProvider,
 		private WorkspaceProviderInterface $workspaceProvider,
 		private RequestServiceInterface $requestService,
 	) {
@@ -51,15 +51,7 @@ final readonly class BoardController
 			return new NotFoundResponse('Course with id "' . $courseId . '" was not found.');
 		}
 
-		$workflow = $this->workflowProvider->getWorkflowByCourse($course);
-		if ($workflow === null) {
-			return new NotFoundResponse('Course has no workflow.');
-		}
-
-		$statuses = array_map(
-			fn (Status $s): StatusDto => StatusDto::fromEntity($s),
-			iterator_to_array($this->statusProvider->getStatuses($workflow), false),
-		);
+		$statuses = array_map(static fn (LearningStatusEnum $s): string => $s->value, LearningStatusEnum::cases());
 
 		$courseLectures = iterator_to_array($this->lectureProvider->getLecturesByCourse($course, includeArchived: false), false);
 		$lectureIds = array_map(static fn (Lecture $t): int => $t->id, $courseLectures);
@@ -69,11 +61,18 @@ final readonly class BoardController
 			$courseLectures,
 		);
 
+		$courseSongs = iterator_to_array($this->songProvider->getSongsByCourse($course, includeArchived: false), false);
+		$tagsBySongId = $this->songTagProvider->getTagIdsBySongIds(array_map(static fn (Song $s): int => $s->id, $courseSongs));
+		$songs = array_map(
+			static fn (Song $s): SongDto => SongDto::fromEntity($s, $tagsBySongId[$s->id] ?? []),
+			$courseSongs,
+		);
+
 		return new JsonResponse(new BoardDto(
 			course: CourseDto::fromEntity($course),
-			workflow: WorkflowDto::fromEntity($workflow),
 			statuses: $statuses,
 			lectures: $lectures,
+			songs: $songs,
 		));
 	}
 }

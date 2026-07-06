@@ -21,7 +21,6 @@ use Kytarna\Service\Provider\CourseProviderInterface;
 use Kytarna\Service\Provider\LectureCodeResolverInterface;
 use Kytarna\Service\Provider\LectureProviderInterface;
 use Kytarna\Service\Provider\LectureTagProviderInterface;
-use Kytarna\Service\Provider\StatusProviderInterface;
 use Kytarna\Service\Provider\WorkspaceProviderInterface;
 use Kytarna\Service\Request\RequestServiceInterface;
 use Laminas\Diactoros\Response\JsonResponse;
@@ -39,7 +38,6 @@ final readonly class LectureController
 		private CourseProviderInterface $courseProvider,
 		private LectureProviderInterface $lectureProvider,
 		private LectureCodeResolverInterface $lectureCodeResolver,
-		private StatusProviderInterface $statusProvider,
 		private WorkspaceProviderInterface $workspaceProvider,
 		private LectureTagProviderInterface $lectureTagProvider,
 		private RequestServiceInterface $requestService,
@@ -69,7 +67,7 @@ final readonly class LectureController
 				$listQuery->orderBy,
 				$listQuery->direction,
 				$listQuery->search,
-				$listQuery->statusIds,
+				$listQuery->statuses,
 				$listQuery->onlyActive,
 				$listQuery->tagIds,
 				$listQuery->archived,
@@ -80,7 +78,7 @@ final readonly class LectureController
 		$count = $this->lectureProvider->countLecturesInWorkspace(
 			$workspace,
 			$listQuery->search,
-			$listQuery->statusIds,
+			$listQuery->statuses,
 			$listQuery->onlyActive,
 			$listQuery->tagIds,
 			$listQuery->archived,
@@ -148,16 +146,11 @@ final readonly class LectureController
 			return new ErrorResponse($e->getMessage(), 422);
 		}
 
-		$status = $this->statusProvider->getStatus($dto->statusId);
-		if ($status === null || $status->workflow->course->id !== $course->id) {
-			return new NotFoundResponse('Status not found in this course.');
-		}
-
 		try {
 			$lecture = $this->lectureProvider->createLecture(
 				author: $user,
 				course: $course,
-				status: $status,
+				status: $dto->status,
 				name: $dto->name,
 				description: $dto->description,
 				tagIds: $dto->tagIds,
@@ -200,18 +193,13 @@ final readonly class LectureController
 			return new ErrorResponse($e->getMessage(), 422);
 		}
 
-		$status = $this->statusProvider->getStatus($dto->statusId);
-		if ($status === null || $status->workflow->course->id !== $lecture->course->id) {
-			return new NotFoundResponse('Status not found in this course.');
-		}
-
 		try {
 			$lecture = $this->lectureProvider->updateLecture(
 				author: $user,
 				lecture: $lecture,
 				name: $dto->name,
 				description: $dto->description,
-				status: $status,
+				status: $dto->status,
 				tagIds: $dto->tagIds,
 				tuning: $dto->tuning,
 				capo: $dto->capo,
@@ -234,14 +222,13 @@ final readonly class LectureController
 			return new NotFoundResponse('Lecture not found.');
 		}
 
-		$dto = $this->requestService->getRequestBodyDto($request, LectureMoveDto::class);
-
-		$newStatus = $this->statusProvider->getStatus($dto->statusId);
-		if ($newStatus === null || $newStatus->workflow->course->id !== $lecture->course->id) {
-			return new NotFoundResponse('Status not found in this course.');
+		try {
+			$dto = $this->requestService->getRequestBodyDto($request, LectureMoveDto::class);
+		} catch (RuntimeException $e) {
+			return new ErrorResponse($e->getMessage(), 422);
 		}
 
-		$lecture = $this->lectureProvider->moveLecture($user, $lecture, $newStatus, $dto->position);
+		$lecture = $this->lectureProvider->moveLecture($user, $lecture, $dto->status, $dto->position);
 
 		return new JsonResponse(LectureDto::fromEntity($lecture, $this->lectureTagProvider->getTagIdsForLecture($lecture)));
 	}

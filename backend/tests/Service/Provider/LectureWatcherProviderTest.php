@@ -8,8 +8,6 @@ use Kytarna\Model\Entity\Enum\WorkspaceRoleEnum;
 use Kytarna\Model\Entity\Lecture;
 use Kytarna\Model\Entity\User;
 use Kytarna\Model\Repository\LectureRepository;
-use Kytarna\Model\Repository\StatusRepository;
-use Kytarna\Model\Repository\WorkflowRepository;
 use Kytarna\Service\Provider\LectureWatcherProvider;
 use Kytarna\Service\Provider\LectureWatcherProviderInterface;
 use Kytarna\Tests\Support\Fixture;
@@ -74,7 +72,7 @@ final class LectureWatcherProviderTest extends IntegrationTestCase
 		$response = $this->request(
 			'POST',
 			'/api/courses/' . $courseId . '/lectures',
-			body: ['statusId' => $this->firstStatusId($courseId), 'name' => $name, 'description' => null],
+			body: ['status' => 'ToLearn', 'name' => $name, 'description' => null],
 			authenticatedAs: $author,
 		);
 		$lectureId = self::intField($this->jsonBody($response)['id']);
@@ -84,21 +82,5 @@ final class LectureWatcherProviderTest extends IntegrationTestCase
 		$lecture = $lectureRepository->findById($lectureId);
 		assert($lecture instanceof Lecture);
 		return $lecture;
-	}
-
-	private function firstStatusId(int $courseId): int
-	{
-		$workflowRepo = $this->container->get(WorkflowRepository::class);
-		assert($workflowRepo instanceof WorkflowRepository);
-		$workflow = $workflowRepo->findByCourse($courseId);
-		assert($workflow !== null);
-
-		$statusRepo = $this->container->get(StatusRepository::class);
-		assert($statusRepo instanceof StatusRepository);
-		foreach ($statusRepo->findByWorkflow($workflow->id) as $status) {
-			return $status->id;
-		}
-
-		self::fail('Course has no statuses.');
 	}
 }

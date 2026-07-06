@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, Component, ElementRef, HostListener, inject, OnInit, signal} from '@angular/core';
 import {Router} from '@angular/router';
 import {Notification} from '@app/models/notification';
+import {LearningStatus, statusLabelKey} from '@app/models/status';
 import {NotificationService} from '@app/services/notification.service';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
@@ -74,6 +75,11 @@ export class NotificationBellComponent implements OnInit {
 
     protected messageKey(type: Notification['type']): string {
         return 'app.notifications.message.' + type;
+    }
+
+    /** Translated learning-status label for interpolation into the notification message. */
+    protected statusLabel(status: LearningStatus | undefined): string {
+        return status ? this.translate.instant(statusLabelKey(status)) as string : '';
     }
 
     protected formatRelative(iso: string): string {

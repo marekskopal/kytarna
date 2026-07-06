@@ -1,0 +1,145 @@
+<div class="page-header">
+    <div>
+        <h1 class="page-title">{{ 'app.songs.title' | translate }}</h1>
+        <p class="page-subtitle">{{ 'app.songs.subtitle' | translate: {count: count()} }}</p>
+    </div>
+    <button type="button" class="btn btn-primary btn-lg" (click)="onNew()">{{ 'app.songs.new' | translate }}</button>
+</div>
+
+<div class="filters">
+    <input
+        type="search"
+        class="input filter-search"
+        [formControl]="searchControl"
+        [placeholder]="'app.songs.search' | translate"
+        autocomplete="off"
+    />
+
+    <details class="filter-statuses" #statusDetails>
+        <summary class="filter-summary">
+            <span>{{ 'app.lectures.filterStatus' | translate }}</span>
+            @if (selectedStatuses().length > 0) {
+                <span class="filter-summary-count">{{ selectedStatuses().length }}</span>
+            }
+        </summary>
+        <div class="filter-popover">
+            <div class="filter-group">
+                @for (status of statuses; track status) {
+                    <label class="filter-option">
+                        <input
+                            type="checkbox"
+                            [checked]="isStatusSelected(status)"
+                            (change)="onStatusToggle(status, $event)"
+                        />
+                        <span class="filter-option-dot" [style.background]="statusDotColor(status)"></span>
+                        <span class="filter-option-name">{{ status | statusLabel | translate }}</span>
+                    </label>
+                }
+            </div>
+        </div>
+    </details>
+
+    <label class="filter-toggle">
+        <input type="checkbox" [checked]="onlyActive()" (change)="onOnlyActiveToggle($event)" />
+        <span>{{ 'app.lectures.onlyActive' | translate }}</span>
+    </label>
+
+    <select
+        class="select filter-archived"
+        [value]="archived()"
+        (change)="onArchivedFilterChange($event)"
+        [attr.aria-label]="'app.lectures.archivedFilter.label' | translate"
+    >
+        <option value="active">{{ 'app.lectures.archivedFilter.active' | translate }}</option>
+        <option value="archived">{{ 'app.lectures.archivedFilter.archived' | translate }}</option>
+        <option value="all">{{ 'app.lectures.archivedFilter.all' | translate }}</option>
+    </select>
+
+    @if (search() || selectedStatuses().length > 0 || onlyActive() || archived() !== 'active') {
+        <button type="button" class="btn-link filter-clear" (click)="clearFilters()">
+            {{ 'app.lectures.clearFilters' | translate }}
+        </button>
+    }
+</div>
+
+<div class="table-wrapper">
+    <table class="lecture-table">
+        <thead>
+            <tr>
+                <th class="th-code">{{ 'app.songs.col.code' | translate }}</th>
+                <th class="sortable th-created" (click)="onSortClick('created_at')">
+                    {{ 'app.lectures.col.created' | translate }}
+                    <span class="sort-arrow">{{ sortArrow('created_at') }}</span>
+                </th>
+                <th class="sortable th-name" (click)="onSortClick('name')">
+                    {{ 'app.lectures.col.name' | translate }}
+                    <span class="sort-arrow">{{ sortArrow('name') }}</span>
+                </th>
+                <th class="th-course">{{ 'app.songs.col.course' | translate }}</th>
+                <th class="sortable th-status" (click)="onSortClick('status')">
+                    {{ 'app.lectures.col.status' | translate }}
+                    <span class="sort-arrow">{{ sortArrow('status') }}</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (loading() && songs().length === 0) {
+                <tr><td colspan="5" class="text-muted">{{ 'app.actions.loading' | translate }}</td></tr>
+            } @else if (songs().length === 0) {
+                <tr><td colspan="5" class="text-muted">{{ 'app.songs.empty' | translate }}</td></tr>
+            } @else {
+                @for (song of songs(); track song.id) {
+                    <tr
+                        class="lecture-row"
+                        role="button"
+                        tabindex="0"
+                        [attr.data-agent]="song.createdByAgent ? 'true' : null"
+                        (click)="onRowClick(song)"
+                        (keydown.enter)="onRowClick(song)"
+                        (keydown.space)="onRowClick(song)"
+                    >
+                        <td class="td-code">{{ song.code ?? '—' }}</td>
+                        <td class="td-created">{{ formatCreated(song.createdAt) }}</td>
+                        <td class="td-name">
+                            <span class="lecture-name">
+                                {{ song.name }}
+                                @if (song.archivedAt) {
+                                    <span class="archived-badge">{{ 'app.lectures.archivedBadge' | translate }}</span>
+                                }
+                            </span>
+                            <span class="lecture-meta">
+                                @if (byline(song)) {
+                                    <span class="song-byline">{{ byline(song) }}</span>
+                                }
+                                @if (song.difficulty) {
+                                    <span class="lecture-meta-item" [style.color]="difficultyColor(song.difficulty)">{{ 'app.board.drawer.guitar.difficulties.' + song.difficulty | translate }}</span>
+                                }
+                                @if (song.tuning) {
+                                    <span class="lecture-meta-item">{{ song.tuning }}</span>
+                                }
+                                @if (song.targetTempoBpm !== null) {
+                                    <span class="lecture-meta-item">{{ song.targetTempoBpm }} BPM</span>
+                                }
+                            </span>
+                        </td>
+                        <td class="td-course">{{ song.courseName ?? '—' }}</td>
+                        <td class="td-status">
+                            <span class="status-pill">
+                                <span class="status-pill-dot" [style.background]="statusDotColor(song.status)"></span>
+                                {{ song.status | statusLabel | translate }}
+                            </span>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<uk-pagination
+    [totalItems]="count()"
+    [currentPage]="page()"
+    [pageSize]="pageSize()"
+    (pageChange)="onPageChange($event)"
+    (pageSizeChange)="onPageSizeChange($event)"
+/>

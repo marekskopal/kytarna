@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, computed, inject, input, OnInit, signal} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
+import {PracticeParent} from '@app/models/practice-parent';
 import {PracticeSummary, ProgressEntry} from '@app/models/progress';
 import {ProgressService} from '@app/services/progress.service';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
@@ -36,6 +37,7 @@ const SPARK_PAD = 12;
 })
 export class LectureProgressComponent implements OnInit {
     public readonly lectureId = input.required<number | string>();
+    public readonly parent = input<PracticeParent>('lectures');
     /** Target tempo (from the lecture) drawn as a dashed goal line on the sparkline. */
     public readonly targetBpm = input<number | null>(null);
 
@@ -112,8 +114,8 @@ export class LectureProgressComponent implements OnInit {
         this.loading.set(true);
         try {
             const [entries, summary] = await Promise.all([
-                this.progressService.listEntries(this.lectureId()),
-                this.progressService.getLectureSummary(this.lectureId()),
+                this.progressService.listEntries(this.lectureId(), this.parent()),
+                this.progressService.getLectureSummary(this.lectureId(), this.parent()),
             ]);
             this.entries.set(entries);
             this.summary.set(summary);
@@ -137,7 +139,7 @@ export class LectureProgressComponent implements OnInit {
                 note: raw.note.trim() === '' ? null : raw.note,
                 tempoBpm: raw.tempoBpm !== null ? Number(raw.tempoBpm) : null,
                 durationMinutes: raw.durationMinutes !== null ? Number(raw.durationMinutes) : null,
-            });
+            }, this.parent());
             this.form.reset({practicedAt: this.today(), note: '', tempoBpm: null, durationMinutes: null});
             await this.reload();
         } catch {
@@ -153,7 +155,7 @@ export class LectureProgressComponent implements OnInit {
             return;
         }
         try {
-            await this.progressService.deleteEntry(entry.id);
+            await this.progressService.deleteEntry(entry.id, this.parent());
             await this.reload();
         } catch {
             // error interceptor

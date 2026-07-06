@@ -5,7 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Difficulty, Lecture} from '@app/models/lecture';
 import {LectureFile} from '@app/models/lecture-file';
 import {LectureWatcher} from '@app/models/lecture-watcher';
-import {Status} from '@app/models/status';
+import {LEARNING_STATUSES, LearningStatus, statusColorVar} from '@app/models/status';
 import {Tag} from '@app/models/tag';
 import {AlertService} from '@app/services/alert.service';
 import {BoardService} from '@app/services/board.service';
@@ -16,6 +16,8 @@ import {TagService} from '@app/services/tag.service';
 import {WorkspaceService} from '@app/services/workspace.service';
 import {pickReadableForeground} from '@app/shared/color-contrast';
 import {MarkdownEditorComponent} from '@app/shared/components/markdown-editor/markdown-editor.component';
+import {FileTypeChip, fileTypeChip, formatFileSize} from '@app/shared/file-type-chip';
+import {StatusLabelPipe} from '@app/shared/pipes/status-label.pipe';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
 import {LectureLinksComponent} from './lecture-links.component';
@@ -25,38 +27,6 @@ import {LectureTabsComponent} from './lecture-tabs.component';
 type LecturePanel = 'details' | 'tabs' | 'progress' | 'links';
 const DIFFICULTIES: Difficulty[] = ['Beginner', 'Intermediate', 'Advanced'];
 
-interface FileTypeChip {
-    tag: string;
-    bg: string;
-    fg: string;
-}
-
-const FILE_TYPE_MAP: Record<string, FileTypeChip> = {
-    pdf: {tag: 'PDF', fg: '#b42318', bg: '#fdecea'},
-    doc: {tag: 'DOC', fg: '#1e58b6', bg: '#e6efff'},
-    docx: {tag: 'DOC', fg: '#1e58b6', bg: '#e6efff'},
-    xls: {tag: 'XLS', fg: '#16794a', bg: '#e6f5ee'},
-    xlsx: {tag: 'XLS', fg: '#16794a', bg: '#e6f5ee'},
-    csv: {tag: 'CSV', fg: '#16794a', bg: '#e6f5ee'},
-    png: {tag: 'IMG', fg: '#6f4ed3', bg: '#f0ebfb'},
-    jpg: {tag: 'IMG', fg: '#6f4ed3', bg: '#f0ebfb'},
-    jpeg: {tag: 'IMG', fg: '#6f4ed3', bg: '#f0ebfb'},
-    svg: {tag: 'IMG', fg: '#6f4ed3', bg: '#f0ebfb'},
-    gif: {tag: 'IMG', fg: '#6f4ed3', bg: '#f0ebfb'},
-    md: {tag: 'MD', fg: '#18181b', bg: '#f4f4f5'},
-    txt: {tag: 'TXT', fg: '#52525b', bg: '#f4f4f5'},
-    log: {tag: 'LOG', fg: '#52525b', bg: '#f4f4f5'},
-    json: {tag: 'JSON', fg: '#a35c00', bg: '#fbf2dd'},
-    yaml: {tag: 'YML', fg: '#a35c00', bg: '#fbf2dd'},
-    yml: {tag: 'YML', fg: '#a35c00', bg: '#fbf2dd'},
-    sql: {tag: 'SQL', fg: '#0e7490', bg: '#e0f2fe'},
-    zip: {tag: 'ZIP', fg: '#52525b', bg: '#ebebed'},
-    mp4: {tag: 'MP4', fg: '#be185d', bg: '#fce7f3'},
-    mov: {tag: 'MOV', fg: '#be185d', bg: '#fce7f3'},
-};
-
-const FILE_TYPE_FALLBACK: FileTypeChip = {tag: 'FILE', fg: '#52525b', bg: '#f4f4f5'};
-
 @Component({
     selector: 'uk-lecture-page',
     standalone: true,
@@ -64,6 +34,7 @@ const FILE_TYPE_FALLBACK: FileTypeChip = {tag: 'FILE', fg: '#52525b', bg: '#f4f4
         ReactiveFormsModule,
         MarkdownEditorComponent,
         TranslatePipe,
+        StatusLabelPipe,
         LectureTabsComponent,
         LectureProgressComponent,
         LectureLinksComponent,
@@ -87,10 +58,9 @@ export class LecturePageComponent implements OnInit {
 
     /** The lecture being viewed/edited. `null` while loading or in CREATE mode. */
     protected readonly lecture = signal<Lecture | null>(null);
-    protected readonly statuses = signal<Status[]>([]);
+    protected readonly statuses = signal<readonly LearningStatus[]>(LEARNING_STATUSES);
     protected readonly courseId = signal<number>(0);
     protected readonly courseName = signal<string>('');
-    protected readonly defaultStatusId = signal<number | null>(null);
     protected readonly workspaceTags = signal<Tag[]>([]);
 
     /** True once route data has resolved; CREATE mode is `true` immediately (no lecture to fetch). */
@@ -128,7 +98,7 @@ export class LecturePageComponent implements OnInit {
     protected readonly form = this.fb.nonNullable.group({
         name: ['', Validators.required],
         description: [''],
-        statusId: [0, Validators.required],
+        status: ['ToLearn' as LearningStatus, Validators.required],
         tuning: [''],
         capo: [null as number | null],
         targetTempoBpm: [null as number | null],
@@ -142,24 +112,17 @@ export class LecturePageComponent implements OnInit {
         this.panel.set(panel);
     }
 
-    private readonly statusId = signal<number>(0);
+    private readonly status = signal<LearningStatus>('ToLearn');
 
     /** Live view of the form so the header band (chips + BPM) reflects unsaved edits. */
     private readonly formValue = toSignal(this.form.valueChanges, {initialValue: this.form.getRawValue()});
 
-    protected readonly currentStatusColor = computed<string>(() => {
-        const id = this.statusId();
-        const match = this.statuses().find((s) => s.id === id);
-        return match?.color ?? '#94a3a8';
-    });
+    protected readonly currentStatus = computed<LearningStatus>(() => this.status());
 
-    protected readonly currentStatus = computed(() => {
-        const id = this.statusId();
-        return this.statuses().find((s) => s.id === id) ?? null;
-    });
+    protected readonly currentStatusColor = computed<string>(() => statusColorVar(this.status()));
 
-    /** The "Learning"-equivalent status (a mid-workflow / Normal step) gets the soft glow dot. */
-    protected readonly currentStatusIsActive = computed<boolean>(() => this.currentStatus()?.type === 'Normal');
+    /** The "Learning" step gets the soft glow dot. */
+    protected readonly currentStatusIsActive = computed<boolean>(() => this.status() === 'Learning');
 
     protected readonly tuningDisplay = computed<string>(() => {
         const v = (this.formValue().tuning ?? '').trim();
@@ -194,8 +157,12 @@ export class LecturePageComponent implements OnInit {
     // Current tempo is tracked in the Progress panel, not here, so the header shows a dash.
     protected readonly currentBpmDisplay = '—';
 
-    protected selectStatus(id: number): void {
-        this.form.controls.statusId.setValue(id);
+    protected selectStatus(status: LearningStatus): void {
+        this.form.controls.status.setValue(status);
+    }
+
+    protected statusDotColor(status: LearningStatus): string {
+        return statusColorVar(status);
     }
 
     public async ngOnInit(): Promise<void> {
@@ -220,17 +187,15 @@ export class LecturePageComponent implements OnInit {
         } else {
             this.isCreate.set(true);
             const statusParam = this.route.snapshot.queryParamMap.get('status');
-            const parsed = statusParam !== null ? Number(statusParam) : NaN;
-            const fallbackStatusId = Number.isFinite(parsed) && parsed > 0
-                ? parsed
-                : this.statuses()[0]?.id ?? 0;
-            this.defaultStatusId.set(Number.isFinite(parsed) && parsed > 0 ? parsed : null);
-            this.form.patchValue({statusId: fallbackStatusId});
-            this.statusId.set(fallbackStatusId);
+            const fallbackStatus: LearningStatus = LEARNING_STATUSES.includes(statusParam as LearningStatus)
+                ? statusParam as LearningStatus
+                : this.statuses()[0] ?? 'ToLearn';
+            this.form.patchValue({status: fallbackStatus});
+            this.status.set(fallbackStatus);
         }
 
-        this.form.controls.statusId.valueChanges.subscribe((value) => {
-            this.statusId.set(Number(value));
+        this.form.controls.status.valueChanges.subscribe((value) => {
+            this.status.set(value);
         });
 
         this.loaded.set(true);
@@ -243,13 +208,13 @@ export class LecturePageComponent implements OnInit {
         this.form.patchValue({
             name: existing.name,
             description: existing.description ?? '',
-            statusId: existing.statusId,
+            status: existing.status,
             tuning: existing.tuning ?? '',
             capo: existing.capo,
             targetTempoBpm: existing.targetTempoBpm,
             difficulty: existing.difficulty ?? '',
         });
-        this.statusId.set(existing.statusId);
+        this.status.set(existing.status);
         this.selectedTagIds.set([...(existing.tagIds ?? [])]);
         void this.loadFiles(existing.id);
         void this.loadWatchers(existing.id);
@@ -258,10 +223,10 @@ export class LecturePageComponent implements OnInit {
     private async loadStatuses(courseId: number): Promise<void> {
         try {
             const board = await this.boardService.getBoard(courseId);
-            this.statuses.set(board.statuses);
+            this.statuses.set(board.statuses.length > 0 ? board.statuses : LEARNING_STATUSES);
             this.courseName.set(board.course.name);
         } catch {
-            this.statuses.set([]);
+            this.statuses.set(LEARNING_STATUSES);
         }
     }
 
@@ -296,7 +261,7 @@ export class LecturePageComponent implements OnInit {
         this.saving.set(true);
         const raw = this.form.getRawValue();
         const payload = {
-            statusId: Number(raw.statusId),
+            status: raw.status,
             name: raw.name,
             description: (raw.description ?? '').trim() === '' ? null : raw.description,
             tuning: raw.tuning.trim() === '' ? null : raw.tuning.trim(),
@@ -462,22 +427,11 @@ export class LecturePageComponent implements OnInit {
     }
 
     protected formatFileSize(size: number): string {
-        if (size < 1024) {
-            return size + ' B';
-        }
-        if (size < 1024 * 1024) {
-            return (size / 1024).toFixed(1) + ' KB';
-        }
-        return (size / (1024 * 1024)).toFixed(1) + ' MB';
+        return formatFileSize(size);
     }
 
     protected fileTypeChip(filename: string): FileTypeChip {
-        const dot = filename.lastIndexOf('.');
-        if (dot === -1 || dot === filename.length - 1) {
-            return FILE_TYPE_FALLBACK;
-        }
-        const ext = filename.slice(dot + 1).toLowerCase();
-        return FILE_TYPE_MAP[ext] ?? FILE_TYPE_FALLBACK;
+        return fileTypeChip(filename);
     }
 
     private async loadFiles(lectureId: number): Promise<void> {

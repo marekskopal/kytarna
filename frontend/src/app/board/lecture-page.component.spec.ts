@@ -2,7 +2,6 @@ import {provideZonelessChangeDetection} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Lecture} from '@app/models/lecture';
-import {Status} from '@app/models/status';
 import {AlertService} from '@app/services/alert.service';
 import {BoardService} from '@app/services/board.service';
 import {CurrentUserService} from '@app/services/current-user.service';
@@ -41,15 +40,12 @@ interface ServiceStubs {
     router: {navigate: ReturnType<typeof vi.fn>};
 }
 
-const STATUS_TODO: Status = {id: 10, workflowId: 1, name: 'To Do', color: '#888', position: 1, type: 'Start'};
-const STATUS_DOING: Status = {id: 11, workflowId: 1, name: 'In Progress', color: '#369', position: 2, type: 'Normal'};
-
 function makeLecture(overrides: Partial<Lecture> = {}): Lecture {
     return {
         id: 42,
         code: 'U-42',
         courseId: 1,
-        statusId: STATUS_TODO.id,
+        status: 'ToLearn',
         name: 'Existing lecture',
         description: 'A description',
         position: 1,
@@ -108,8 +104,9 @@ async function createFixture(options: {lecture: Lecture | null}): Promise<{
             {provide: BoardService, useValue: {
                 getBoard: vi.fn().mockResolvedValue({
                     course: {id: 1, name: 'Course One'},
-                    statuses: [STATUS_TODO, STATUS_DOING],
+                    statuses: ['ToLearn', 'Learning', 'Mastered'],
                     lectures: [],
+                    songs: [],
                 }),
             }},
             {provide: TagService, useValue: {loadWorkspaceTags: vi.fn().mockResolvedValue([])}},
@@ -165,7 +162,7 @@ describe('LecturePageComponent', () => {
         expect(stubs.lectureService.updateLecture).toHaveBeenCalledTimes(1);
         expect(stubs.lectureService.updateLecture).toHaveBeenCalledWith(original.id, expect.objectContaining({
             name: original.name,
-            statusId: original.statusId,
+            status: original.status,
         }));
         expect(internals(component).form.getRawValue().name).toBe(updated.name);
     });

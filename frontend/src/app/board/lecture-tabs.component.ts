@@ -1,4 +1,5 @@
 import {ChangeDetectionStrategy, Component, computed, inject, input, OnInit, signal} from '@angular/core';
+import {PracticeParent} from '@app/models/practice-parent';
 import {Tab} from '@app/models/tab';
 import {AlertService} from '@app/services/alert.service';
 import {TabService} from '@app/services/tab.service';
@@ -20,6 +21,7 @@ type Mode = 'view' | 'edit' | 'create';
 })
 export class LectureTabsComponent implements OnInit {
     public readonly lectureId = input.required<number | string>();
+    public readonly parent = input<PracticeParent>('lectures');
 
     private readonly tabService = inject(TabService);
     private readonly alertService = inject(AlertService);
@@ -43,7 +45,7 @@ export class LectureTabsComponent implements OnInit {
     private async reload(selectId?: number): Promise<void> {
         this.loading.set(true);
         try {
-            const tabs = await this.tabService.listTabs(this.lectureId());
+            const tabs = await this.tabService.listTabs(this.lectureId(), this.parent());
             this.tabs.set(tabs);
             const targetId = selectId ?? this.selectedTabId() ?? tabs[0]?.id ?? null;
             this.selectedTabId.set(tabs.some((t) => t.id === targetId) ? targetId : tabs[0]?.id ?? null);
@@ -89,7 +91,7 @@ export class LectureTabsComponent implements OnInit {
             return;
         }
         try {
-            await this.tabService.deleteTab(tab.id);
+            await this.tabService.deleteTab(tab.id, this.parent());
             this.selectedTabId.set(null);
             await this.reload();
         } catch {
@@ -106,7 +108,7 @@ export class LectureTabsComponent implements OnInit {
         }
         this.importing.set(true);
         try {
-            const tab = await this.tabService.importGpFile(this.lectureId(), file);
+            const tab = await this.tabService.importGpFile(this.lectureId(), file, undefined, this.parent());
             this.alertService.success(await this.translate.instant('app.tabs.imported') as string);
             await this.reload(tab.id);
             this.mode.set('view');

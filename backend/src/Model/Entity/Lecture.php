@@ -6,6 +6,7 @@ namespace Kytarna\Model\Entity;
 
 use DateTimeImmutable;
 use Kytarna\Model\Entity\Enum\DifficultyEnum;
+use Kytarna\Model\Entity\Enum\LearningStatusEnum;
 use Kytarna\Model\Repository\LectureRepository;
 use MarekSkopal\ORM\Attribute\Column;
 use MarekSkopal\ORM\Attribute\ColumnEnum;
@@ -19,8 +20,8 @@ class Lecture extends AEntity
 	public function __construct(
 		#[ManyToOne(entityClass: Course::class)]
 		public readonly Course $course,
-		#[ManyToOne(entityClass: Status::class)]
-		public Status $status,
+		#[ColumnEnum(enum: LearningStatusEnum::class)]
+		public LearningStatusEnum $status,
 		#[Column(type: Type::String)]
 		public string $name,
 		#[Column(type: Type::Text, nullable: true)]

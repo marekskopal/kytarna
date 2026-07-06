@@ -27,7 +27,7 @@ final class EventToolsTest extends IntegrationTestCase
 		[$lectureTools, $eventTools] = $this->bootAs($user);
 
 		$lecture = $lectureTools->createLecture(courseId: $course->id, name: 'Ship it');
-		$lectureTools->moveLecture(lectureId: $lecture->id, statusName: 'Mastered');
+		$lectureTools->moveLecture(lectureId: $lecture->id, status: 'Mastered');
 
 		$events = $eventTools->listEvents()->events;
 		self::assertNotEmpty($events);
@@ -36,7 +36,7 @@ final class EventToolsTest extends IntegrationTestCase
 		self::assertSame($lecture->id, $events[0]->lectureId);
 		$meta = $events[0]->metadata;
 		self::assertIsArray($meta);
-		self::assertSame('Mastered', $meta['toStatusName']);
+		self::assertSame('Mastered', $meta['toStatus']);
 	}
 
 	public function testListEventsFiltersByType(): void
@@ -48,7 +48,7 @@ final class EventToolsTest extends IntegrationTestCase
 		[$lectureTools, $eventTools] = $this->bootAs($user);
 
 		$lecture = $lectureTools->createLecture(courseId: $course->id, name: 'Filter me');
-		$lectureTools->moveLecture(lectureId: $lecture->id, statusName: 'Mastered');
+		$lectureTools->moveLecture(lectureId: $lecture->id, status: 'Mastered');
 
 		$moved = $eventTools->listEvents(type: 'LectureMoved')->events;
 		self::assertCount(1, $moved);
@@ -56,7 +56,7 @@ final class EventToolsTest extends IntegrationTestCase
 		self::assertSame($lecture->id, $moved[0]->lectureId);
 		$meta = $moved[0]->metadata;
 		self::assertIsArray($meta);
-		self::assertSame('Mastered', $meta['toStatusName']);
+		self::assertSame('Mastered', $meta['toStatus']);
 	}
 
 	public function testListLectureEventsScopesToSingleLectureByCode(): void
@@ -69,7 +69,7 @@ final class EventToolsTest extends IntegrationTestCase
 
 		$kept = $lectureTools->createLecture(courseId: $course->id, name: 'Keep');
 		$other = $lectureTools->createLecture(courseId: $course->id, name: 'Other');
-		$lectureTools->moveLecture(lectureId: $other->id, statusName: 'Mastered');
+		$lectureTools->moveLecture(lectureId: $other->id, status: 'Mastered');
 
 		$events = $eventTools->listLectureEvents(lectureId: $kept->code)->events;
 		self::assertNotEmpty($events);

@@ -1,8 +1,8 @@
 export type EventType =
     | 'CourseCreated' | 'CourseUpdated' | 'CourseDeleted'
-    | 'WorkflowUpdated'
-    | 'StatusCreated' | 'StatusUpdated' | 'StatusDeleted' | 'StatusMoved'
     | 'LectureCreated' | 'LectureUpdated' | 'LectureDeleted' | 'LectureMoved' | 'LectureArchived' | 'LectureUnarchived'
+    | 'SongCreated' | 'SongUpdated' | 'SongDeleted' | 'SongMoved' | 'SongArchived' | 'SongUnarchived'
+    | 'SongAddedToCourse' | 'SongRemovedFromCourse'
     | 'MemberRoleChanged' | 'OwnershipTransferred'
     | 'AdminDeletedWorkspace' | 'AdminDeletedUser' | 'AdminChangedSystemRole'
     | 'UserSelfDeleted';

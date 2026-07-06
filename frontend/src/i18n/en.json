@@ -44,6 +44,7 @@
       "primary": "Primary",
       "courses": "Courses",
       "lectures": "Lectures",
+      "songs": "Songs",
       "agents": "Agents",
       "workspaces": "Workspaces",
       "admin": "Admin",
@@ -88,17 +89,20 @@
         "CourseCreated": "created course",
         "CourseUpdated": "updated course",
         "CourseDeleted": "deleted course",
-        "WorkflowUpdated": "updated workflow",
-        "StatusCreated": "added status",
-        "StatusUpdated": "updated status",
-        "StatusDeleted": "removed status",
-        "StatusMoved": "reordered status",
         "LectureCreated": "created lecture",
         "LectureUpdated": "updated lecture",
         "LectureDeleted": "deleted lecture",
         "LectureMoved": "moved lecture",
         "LectureArchived": "archived lecture",
         "LectureUnarchived": "unarchived lecture",
+        "SongCreated": "created song",
+        "SongUpdated": "updated song",
+        "SongDeleted": "deleted song",
+        "SongMoved": "moved song",
+        "SongArchived": "archived song",
+        "SongUnarchived": "unarchived song",
+        "SongAddedToCourse": "added song to course",
+        "SongRemovedFromCourse": "removed song from course",
         "MemberRoleChanged": "changed member role",
         "OwnershipTransferred": "transferred ownership",
         "AdminDeletedWorkspace": "(admin) deleted workspace",
@@ -238,7 +242,6 @@
       "new": "New course",
       "empty": "No courses yet.",
       "openBoard": "Open board",
-      "workflow": "Workflow",
       "history": "History",
       "deleteConfirm": "Delete course \"{{name}}\"? This also removes all its lectures and history.",
       "deleted": "Course deleted.",
@@ -259,11 +262,16 @@
       "noWorking": "Nothing in progress yet.",
       "formOverline": "Course"
     },
+    "status": {
+      "toLearn": "To Learn",
+      "learning": "Learning",
+      "mastered": "Mastered"
+    },
     "board": {
       "addLecture": "+ Add lecture",
       "newLecture": "New lecture",
+      "newSong": "+ Add song",
       "viewBoard": "Board",
-      "viewWorkflow": "Workflow",
       "viewEvents": "Events",
       "breadcrumb": "Courses",
       "filter": "Filter",
@@ -337,23 +345,36 @@
         "learningCount": "{{count}} learning"
       }
     },
-    "workflow": {
-      "title": "Workflow",
-      "addStatus": "+ Add status",
-      "deleteStatusConfirm": "Delete status \"{{name}}\"? Lectures in this status will be orphaned.",
-      "lastStatusError": "Cannot delete the last status of a workflow.",
-      "namePlaceholder": "Status name",
-      "namePrompt": "Status name?",
-      "newStatusDefault": "New",
-      "statusAdded": "Status added.",
-      "statusDeleted": "Status deleted.",
-      "backToBoard": "← Back to board",
-      "hint": "Tip: drag the handle to reorder. Each workflow should have one Start and at least one Finish status.",
-      "dragHandle": "Drag to reorder",
-      "type": {
-        "Start": "Start",
-        "Normal": "Normal",
-        "Finish": "Finish"
+    "songs": {
+      "title": "Songs",
+      "subtitle": "{{count}} song(s) in your library",
+      "search": "Search by name…",
+      "new": "New song",
+      "empty": "No songs match the current filters.",
+      "badge": "Song",
+      "namePlaceholder": "Song title",
+      "authorPlaceholder": "Author",
+      "albumPlaceholder": "Album",
+      "backToLibrary": "Back to songs",
+      "cover": "Cover",
+      "uploadCover": "Upload cover",
+      "coverUploading": "Uploading…",
+      "removeCover": "Remove cover",
+      "coverSaveFirst": "Save the song first to add a cover.",
+      "coverUpdated": "Cover updated.",
+      "coverRemoved": "Cover removed.",
+      "course": "Course",
+      "standalone": "Standalone (no course)",
+      "attachedTo": "On board of {{name}}",
+      "attached": "Song added to course.",
+      "detached": "Song removed from course.",
+      "created": "Song created.",
+      "updated": "Song updated.",
+      "deleted": "Song deleted.",
+      "deleteConfirm": "Delete song \"{{name}}\"?",
+      "col": {
+        "code": "Code",
+        "course": "Course"
       }
     },
     "events": {
@@ -363,11 +384,6 @@
         "CourseCreated": "created the course",
         "CourseUpdated": "updated the course",
         "CourseDeleted": "deleted the course",
-        "WorkflowUpdated": "updated the workflow",
-        "StatusCreated": "added status \"{{name}}\"",
-        "StatusUpdated": "updated a status",
-        "StatusDeleted": "deleted a status",
-        "StatusMoved": "reordered statuses",
         "LectureCreated": "created lecture \"{{name}}\"",
         "LectureUpdated": "updated lecture \"{{name}}\"",
         "LectureDeleted": "deleted lecture \"{{name}}\"",
@@ -375,7 +391,15 @@
         "LectureArchived": "archived lecture \"{{name}}\"",
         "LectureUnarchived": "unarchived lecture \"{{name}}\"",
         "LectureFileAdded": "attached file \"{{filename}}\"",
-        "LectureFileDeleted": "removed file \"{{filename}}\""
+        "LectureFileDeleted": "removed file \"{{filename}}\"",
+        "SongCreated": "created song \"{{name}}\"",
+        "SongUpdated": "updated song \"{{name}}\"",
+        "SongDeleted": "deleted song \"{{name}}\"",
+        "SongMoved": "moved song \"{{name}}\" from {{from}} → {{to}}",
+        "SongArchived": "archived song \"{{name}}\"",
+        "SongUnarchived": "unarchived song \"{{name}}\"",
+        "SongAddedToCourse": "added song \"{{name}}\" to {{course}}",
+        "SongRemovedFromCourse": "removed song \"{{name}}\" from its course"
       },
       "deletedAuthor": "Deleted user",
       "timeAgo": {
@@ -574,8 +598,8 @@
         "signOut": "Sign out",
         "signedInAs": "Signed in as",
         "workspaceLabel": "Set up workspace",
-        "tipTitle": "Why workflows?",
-        "tipBody": "Each course owns one workflow — the ordered statuses a lecture moves through. You can rename or add columns later.",
+        "tipTitle": "How courses work",
+        "tipBody": "A course groups related lectures and songs. Each item moves through three stages on the board — To Learn, Learning, Mastered.",
         "stepCounter": "Step {{step}} of {{total}}",
         "skip": "Skip for now",
         "back": "Back",
@@ -584,7 +608,7 @@
       },
       "steps": {
         "step1": {
-          "label": "Course & workflow",
+          "label": "First course",
           "hint": "Where work lives"
         },
         "step2": {
@@ -599,33 +623,13 @@
       "step1": {
         "overline": "Step 01",
         "title": "Create your first course",
-        "lead": "A course groups related lectures. Pick a name, then choose the workflow your team will use to move work to done.",
+        "lead": "A course groups related lectures and songs. Pick a name to get started.",
         "nameLabel": "Course name",
-        "namePlaceholder": "Backend rewrite",
+        "namePlaceholder": "Fingerstyle fundamentals",
         "descriptionLabel": "Description",
         "descriptionPlaceholder": "Optional context for your team.",
         "optional": "optional",
-        "workflowTitle": "Workflow",
-        "workflowSub": "The statuses lectures move through. Pick a template — you can edit it after.",
-        "errorCreate": "Could not create course. Please try again.",
-        "templates": {
-          "kanban": {
-            "name": "Kanban",
-            "sub": "Classic 4-stage flow"
-          },
-          "engineering": {
-            "name": "Engineering",
-            "sub": "Backlog → Spec → Build → Ship"
-          },
-          "simple": {
-            "name": "Simple",
-            "sub": "Just open / closed"
-          },
-          "blank": {
-            "name": "Start blank",
-            "sub": "Define your own columns"
-          }
-        }
+        "errorCreate": "Could not create course. Please try again."
       },
       "step2": {
         "overline": "Step 02",

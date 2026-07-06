@@ -2,11 +2,12 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {ArchivedFilter, Difficulty, Lecture, LectureList, LectureOrderBy,OrderDirection} from '@app/models/lecture';
 import {LectureFile} from '@app/models/lecture-file';
+import {LearningStatus} from '@app/models/status';
 import {environment} from '@environments/environment';
 import {firstValueFrom} from 'rxjs';
 
 export interface LectureWritePayload {
-    statusId: number;
+    status: LearningStatus;
     name: string;
     description: string | null;
     tuning?: string | null;
@@ -22,7 +23,7 @@ export interface LectureListParams {
     orderBy: LectureOrderBy;
     orderDirection: OrderDirection;
     search?: string;
-    statusIds?: number[];
+    statuses?: LearningStatus[];
     tagIds?: number[];
     onlyActive?: boolean;
     archived?: ArchivedFilter;
@@ -53,8 +54,8 @@ export class LectureService {
         if (params.search) {
             httpParams = httpParams.set('search', params.search);
         }
-        if (params.statusIds && params.statusIds.length > 0) {
-            httpParams = httpParams.set('statusIds', params.statusIds.join('|'));
+        if (params.statuses && params.statuses.length > 0) {
+            httpParams = httpParams.set('statuses', params.statuses.join('|'));
         }
         if (params.tagIds && params.tagIds.length > 0) {
             httpParams = httpParams.set('tagIds', params.tagIds.join('|'));
@@ -80,8 +81,8 @@ export class LectureService {
         return firstValueFrom(this.http.put<Lecture>(`${environment.apiUrl}/lectures/${lectureId}`, payload));
     }
 
-    public moveLecture(lectureId: number, statusId: number, position: number): Promise<Lecture> {
-        return firstValueFrom(this.http.put<Lecture>(`${environment.apiUrl}/lectures/${lectureId}/move`, {statusId, position}));
+    public moveLecture(lectureId: number, status: LearningStatus, position: number): Promise<Lecture> {
+        return firstValueFrom(this.http.put<Lecture>(`${environment.apiUrl}/lectures/${lectureId}/move`, {status, position}));
     }
 
     public archiveLecture(lectureId: number): Promise<Lecture> {

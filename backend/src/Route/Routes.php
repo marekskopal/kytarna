@@ -45,14 +45,8 @@ enum Routes: string
 	case Course = '/api/courses/{courseId:number}';
 	case CourseBoard = '/api/courses/{courseId:number}/board';
 	case CourseEvents = '/api/courses/{courseId:number}/events';
-	case CourseWorkflow = '/api/courses/{courseId:number}/workflow';
 	case CourseLectures = '/api/courses/{courseId:number}/lectures';
 	case CoursePracticeSummary = '/api/courses/{courseId:number}/practice-summary';
-
-	case Workflows = '/api/workflows';
-	case WorkflowStatuses = '/api/workflows/{workflowId:number}/statuses';
-	case Status = '/api/statuses/{statusId:number}';
-	case StatusMove = '/api/statuses/{statusId:number}/move';
 
 	case Lectures = '/api/lectures';
 	case LecturesBulk = '/api/lectures/bulk';
@@ -78,6 +72,32 @@ enum Routes: string
 
 	case LectureLinks = '/api/lectures/{lectureId:[A-Z0-9][A-Z0-9-]*}/links';
 	case LectureLink = '/api/lectures/{lectureId:[A-Z0-9][A-Z0-9-]*}/links/{linkId:number}';
+
+	case Songs = '/api/songs';
+	case Song = '/api/songs/{songId:number}';
+	case SongMove = '/api/songs/{songId:number}/move';
+	case SongArchive = '/api/songs/{songId:number}/archive';
+	case SongUnarchive = '/api/songs/{songId:number}/unarchive';
+	case SongCourse = '/api/songs/{songId:number}/course';
+	case SongCover = '/api/songs/{songId:number}/cover';
+
+	case SongFiles = '/api/songs/{songId:number}/files';
+	case SongFile = '/api/songs/{songId:number}/files/{fileId:number}';
+	case SongFileContent = '/api/songs/{songId:number}/files/{fileId:number}/content';
+
+	case SongTabs = '/api/songs/{songId:number}/tabs';
+	case SongTabsImport = '/api/songs/{songId:number}/tabs/import';
+	case SongTab = '/api/song-tabs/{tabId:number}';
+
+	case SongLinks = '/api/songs/{songId:number}/links';
+	case SongLink = '/api/songs/{songId:number}/links/{linkId:number}';
+
+	case SongProgress = '/api/songs/{songId:number}/progress';
+	case SongPracticeSummary = '/api/songs/{songId:number}/practice-summary';
+	case SongProgressEntry = '/api/song-progress/{progressEntryId:number}';
+
+	case SongWatchers = '/api/songs/{songId:number}/watchers';
+	case SongWatch = '/api/songs/{songId:number}/watch';
 
 	case Notifications = '/api/notifications';
 	case NotificationsReadAll = '/api/notifications/read-all';

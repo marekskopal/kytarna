@@ -8,8 +8,6 @@ use Kytarna\Controller\NotificationController;
 use Kytarna\Model\Entity\Enum\WorkspaceRoleEnum;
 use Kytarna\Model\Entity\User;
 use Kytarna\Model\Entity\Workspace;
-use Kytarna\Model\Repository\StatusRepository;
-use Kytarna\Model\Repository\WorkflowRepository;
 use Kytarna\Tests\Support\Fixture;
 use Kytarna\Tests\Support\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -121,7 +119,7 @@ final class NotificationControllerTest extends IntegrationTestCase
 			'POST',
 			'/api/courses/' . $courseId . '/lectures',
 			body: [
-				'statusId' => $this->statusIdAtIndex($courseId, 0),
+				'status' => 'ToLearn',
 				'name' => $name,
 				'description' => null,
 			],
@@ -136,26 +134,9 @@ final class NotificationControllerTest extends IntegrationTestCase
 		$move = $this->request(
 			'PUT',
 			'/api/lectures/' . $lectureId . '/move',
-			body: ['statusId' => $this->statusIdAtIndex($courseId, 1), 'position' => 0],
+			body: ['status' => 'Learning', 'position' => 0],
 			authenticatedAs: $author,
 		);
 		self::assertSame(200, $move->getStatusCode());
-	}
-
-	private function statusIdAtIndex(int $courseId, int $index): int
-	{
-		$workflowRepo = $this->container->get(WorkflowRepository::class);
-		assert($workflowRepo instanceof WorkflowRepository);
-		$workflow = $workflowRepo->findByCourse($courseId);
-		assert($workflow !== null);
-
-		$statusRepo = $this->container->get(StatusRepository::class);
-		assert($statusRepo instanceof StatusRepository);
-		$ids = [];
-		foreach ($statusRepo->findByWorkflow($workflow->id) as $status) {
-			$ids[] = $status->id;
-		}
-		self::assertArrayHasKey($index, $ids);
-		return $ids[$index];
 	}
 }
