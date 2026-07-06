@@ -23,137 +23,73 @@ docker compose exec -T backend php bin/console admin:create \
 Passwords must be at least 12 characters. Re-run the command later to add
 additional SystemAdmins; existing users are detected by email and rejected.
 
-## Upgrading from a build that seeded `admin@kytarna.com`
-
-Earlier builds shipped a default SystemAdmin (`admin@kytarna.com` / `admin`)
-that was created by the init migration. From `20260520_120000` onward, the
-init migration no longer seeds that user, and a follow-up migration
-invalidates the password on existing installs **if it is still the default**.
-
-After `make migrate`:
-
-1. The legacy `admin@kytarna.com` account is still in the database but its
-   password is replaced with an unverifiable random string, so nothing can
-   log in as it.
-2. Run `admin:create` to provision your real SystemAdmin (above).
-3. Log in as the new SystemAdmin and either rotate the legacy user's
-   password via the admin UI or delete the row.
-
-If your team had already rotated the admin password, the follow-up migration
-detects this (it only acts when `password_verify('admin', …)` succeeds) and
-leaves the account alone.
+Everyone else signs up at `/sign-up`, verifies their email, and is dropped into
+the onboarding wizard where they either create their own workspace (becoming its
+**Teacher**) or join a teacher's workspace as a **Student**. No workspace and no
+admin are seeded automatically.
 
 ## Environment
 
-Required variables — see `.env.example` for the full list:
+Required variables — see `.env.example` for the full annotated list:
 
 | Variable | Notes |
 |----------|-------|
-| `APP_ENV` | Set to `production` on real deployments. The boot guard then rejects the dev defaults for `MYSQL_PASSWORD`, `MYSQL_ROOT_PASSWORD`, `S3_ACCESS_KEY`, `S3_SECRET_KEY` (and anything shorter than 16 characters), and refuses `*` for `BACKEND_CORS_ALLOWED_ORIGIN` |
-| `BACKEND_CORS_ALLOWED_ORIGIN` | Allowed Origin(s) for `/api/*` and the Mercure hub. Space- or comma-separated; production must list explicit origins (no `*`) |
-| `AUTHORIZATION_TOKEN_KEY` | ≥ 32 chars; sign with `openssl rand -hex 32`. The boot guard rejects the placeholder value regardless of `APP_ENV` |
-| `MERCURE_PUBLISHER_JWT_KEY` / `MERCURE_SUBSCRIBER_JWT_KEY` | Mercure realtime hub JWT keys; also generate with `openssl rand -hex 32` |
-| `MYSQL_*` | Database host + credentials |
-| `SMTP_*`, `EMAIL_FROM` | Outbound mail (invitations, password resets) — sent via the async `amqp-consumer` worker, see "Async email delivery" below |
-| `APP_URL` | Embedded in email links |
-| `S3_*` | Object storage for task file attachments |
-| `REDIS_*` | Used by the MCP session store |
+| `APP_ENV` | Set to `production` on real deployments. The boot guard then rejects the dev defaults for `MYSQL_PASSWORD`, `MYSQL_ROOT_PASSWORD`, `REDIS_PASSWORD`, `S3_ACCESS_KEY`, `S3_SECRET_KEY` (and any secret shorter than 16 characters), and refuses `*` for `BACKEND_CORS_ALLOWED_ORIGIN` |
+| `BACKEND_CORS_ALLOWED_ORIGIN` | Allowed Origin(s) for `/api/*`. Space- or comma-separated; production must list explicit origins (no `*`) |
+| `AUTHORIZATION_TOKEN_KEY` | ≥ 32 chars; generate with `openssl rand -hex 32`. The boot guard rejects the placeholder value regardless of `APP_ENV` |
+| `MYSQL_*` | MariaDB host + credentials |
+| `SMTP_*`, `EMAIL_FROM` | Outbound mail (invitations, email verification, password resets) — sent via the async `amqp-consumer` worker, see "Async email delivery" below |
+| `S3_*` | Object storage (MinIO in dev) for lecture / song file attachments and song covers |
+| `LECTURE_FILE_MAX_SIZE_MB` | Maximum per-file upload size for lecture / song attachments |
+| `REDIS_*` | Redis — sessions, rate-limit counters, and the MCP session store |
+| `MEMCACHED_*` | Memcached (secondary cache backend) |
 | `RABBITMQ_*` | RabbitMQ host/port/user/password used by both the publisher (HTTP request path) and the supervisor-managed `amqp-consumer.php` worker |
 | `BACKEND_AMQP_CONSUMER_PREFETCH` | Per-channel `basic_qos` prefetch for the consumer (default `10`) — caps in-flight unacked messages |
-| `MEILI_*` | Meilisearch host/port/master-key + index prefix powering `/api/search` and the `search_tasks` MCP tool. Rotate `MEILI_MASTER_KEY` in production |
+| `TAB_SERVICE_URL` | URL the backend uses to reach the `tab-service` (default `http://tab-service:8080`); the service validates alphaTex and converts Guitar Pro files. `TAB_SERVICE_PORT` / `TAB_SERVICE_MAX_BODY_BYTES` configure the service itself |
+| `MCP_SESSION_TTL` | TTL (seconds) for persisted MCP/OAuth sessions in Redis (default 86400) |
+| `GOOGLE_CLIENT_ID` | Optional — enables "Sign in with Google"; leave blank to disable |
+
+## Background processes
+
+Inside the `backend` container, **supervisor** (`backend/docker/supervisord.conf`)
+manages three programs alongside each other:
+
+- `frankenphp` — the web/API server.
+- `amqp-consumer` — `backend/src/amqp-consumer.php`, the async email worker (below).
+- `cron` — `supercronic` against `backend/docker/cron.d/kytarna`. The crontab
+  currently defines **no scheduled jobs**; the program is wired up so future
+  scheduled work needs no host cron.
 
 ## Async email delivery
 
-Invitations, password-reset, and email-verification emails are published to
+Invitation, password-reset, and email-verification emails are published to
 RabbitMQ from the HTTP request and sent by a background worker, so SMTP
-latency / outages no longer block sign-up / invite flows.
+latency / outages don't block sign-up / invite flows.
 
 - **Publisher**: `Kytarna\Service\Queue\QueuePublisher` (`php-amqplib`), injected
-  into the three providers. Lazy-connects on first publish per worker.
+  into the providers. Lazy-connects on first publish per worker.
 - **Queues**: `invitation`, `email-verification`, `password-reset` —
   enumerated in `Kytarna\Service\Queue\Enum\QueueEnum`. Messages are durable
   + persistent.
 - **Consumer**: `backend/src/amqp-consumer.php`, managed by supervisor inside
   the `backend` container alongside FrankenPHP (see
-  `backend/docker/supervisord.conf`). One process consumes all three queues
-  via callbacks.
+  `backend/docker/supervisord.conf`). One process consumes all three queues.
 - **Retry**: handler exceptions trigger `nack(requeue=true)` — the message
-  goes back to the queue and is retried indefinitely. There is no DLQ; rely
-  on alerting on the `[program:amqp-consumer]` log stream.
+  goes back to the queue and is retried. There is no DLQ; alert on the
+  `[program:amqp-consumer]` log stream.
 - **Operations**:
   - Tail the worker: `docker compose logs -f backend | grep amqp-consumer`
   - Check queue depth: `docker compose exec rabbitmq rabbitmqctl list_queues`
   - Restart just the worker without bouncing the web process (supervisord
     respawns it): `docker compose exec backend pkill -f amqp-consumer.php`
 
-## Scripting (sandboxed automations)
+## Tab service
 
-Workspace scripts run in a V8 sandbox (`ext-v8js`) executed by a dedicated
-**script-worker** process — managed by supervisor inside the `backend` container
-(`backend/docker/supervisord.conf`), separate from FrankenPHP and the
-amqp-consumer so V8 never loads in the web tier. Manual and event-triggered runs
-are enqueued automatically; **scheduled** triggers are dispatched by the
-built-in cron below.
-
-- **Built-in cron.** The backend container runs `supercronic` under supervisor
-  (`[program:cron]` in `backend/docker/supervisord.conf`, crontab at
-  `backend/docker/cron.d/kytarna` → `/etc/cron.d/kytarna`). No host cron is
-  needed. It runs:
-
-  ```cron
-  * * * * *  php /app/bin/console scripts:tick
-  0 * * * *  php /app/bin/console notifications:due-tick
-  0 * * * *  php /app/bin/console recurring-tasks:tick
-  ```
-
-  - `scripts:tick` dispatches every active scheduled script whose cron is due.
-    It is safe to run more than once per minute — a per-(script, minute) cache
-    guard de-dupes dispatch. `Manual` and `Event` scripts don't depend on it.
-  - `notifications:due-tick` sends due-date reminders (in-app + email, U-83) for
-    tasks due today and tomorrow to each task's assignee and watchers.
-    Per-(task, user, type) de-duplication via the notifications table makes the
-    hourly schedule idempotent — each reminder fires at most once per day.
-  - `recurring-tasks:tick` is the safety net for date-anchored recurring series
-    (U-67): it enqueues the next occurrence of any active recurrence whose
-    `next_run_at` has passed (to the `recurring-task-spawn` queue, consumed by
-    the standard `amqp-consumer`). The common case — spawning the next
-    occurrence when a recurring task is moved to a Finish status — happens
-    inline via the event hook. A per-(recurrence, day) cache guard plus a
-    carrier re-check in the handler keep both paths idempotent.
-- **Operations.**
-  - Tail the cron: `docker compose logs -f backend | grep cron`
-  - Tail the worker: `docker compose logs -f backend | grep script-worker`
-  - Restart just the worker (supervisord respawns it):
-    `docker compose exec backend pkill -f script-worker.php`
-- **Outbound-fetch allowlist (optional hardening).** Set a workspace script
-  variable named `KYTARNA_FETCH_ALLOWLIST` to a comma/whitespace-separated list of
-  hosts (e.g. `hooks.slack.com, api.github.com`). When present, `kytarna.fetch`
-  is restricted to those hosts (and their subdomains); when unset, any http(s)
-  host is allowed.
-- **Resource limits per run** (fixed): 5 s CPU, 64 MB memory, 20 `fetch` calls,
-  200 task-API calls, no filesystem.
-
-## Full-text search (Meilisearch)
-
-`/api/search` (and the `search_tasks` MCP tool) is backed by a Meilisearch
-sidecar. The `meilisearch` service in `docker-compose.yml` persists data to
-the `kytarna_meilisearch` volume. Reindex is driven by the same RabbitMQ
-worker as emails — every task mutation publishes a `search-reindex` message
-that `Kytarna\Jobs\Handler\SearchReindexHandler` consumes.
-
-After first deploy (and whenever the index settings change), populate the
-index with:
-
-```bash
-docker compose exec backend php bin/console search:reindex
-# Restrict to one workspace:
-docker compose exec backend php bin/console search:reindex --workspace=123
-# Drop everything and rebuild from scratch:
-docker compose exec backend php bin/console search:reindex --flush
-```
-
-The command ensures the index + settings exist before walking tasks, so it
-is safe to re-run.
+The `tab-service` container (Node + alphaTab) is a hard dependency of the
+backend — it validates alphaTex notation and converts uploaded Guitar Pro files
+to alphaTex. `docker compose` starts it automatically and the backend waits on
+its health check; the backend reaches it at `TAB_SERVICE_URL`. It is stateless,
+so no volume or migration is involved — just keep it running.
 
 ## SSL termination
 
