@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, effect, ElementRef, inject, input, signal, viewChild} from '@angular/core';
 import {AlphaTabHandle, AlphaTabService} from '@app/services/alphatab.service';
+import {ThemeService} from '@app/services/theme.service';
 import {TranslatePipe} from '@ngx-translate/core';
 
 /** Renders alphaTex read-only via alphaTab (through the AlphaTabService wrapper). */
@@ -26,12 +27,14 @@ export class TabViewerComponent {
 
     private readonly container = viewChild<ElementRef<HTMLElement>>('container');
     private readonly alphaTabService = inject(AlphaTabService);
+    private readonly themeService = inject(ThemeService);
 
     protected readonly renderFailed = signal(false);
 
     public constructor() {
         effect((onCleanup) => {
             const tex = this.alphaTex();
+            const theme = this.themeService.resolvedTheme();
             const ref = this.container();
             if (!ref) {
                 return;
@@ -43,7 +46,7 @@ export class TabViewerComponent {
             let handle: AlphaTabHandle | null = null;
             let disposed = false;
             void this.alphaTabService
-                .render(el, tex, () => this.renderFailed.set(true))
+                .render(el, tex, () => this.renderFailed.set(true), theme)
                 .then((h) => {
                     if (disposed) {
                         h.destroy();
