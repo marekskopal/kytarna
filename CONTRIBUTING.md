@@ -18,7 +18,7 @@ open. Bug reports, fixes, docs, and features are all welcome.
 ## Setting up locally
 
 You need Docker, `make`, and (for direct backend/frontend commands) PHP 8.5,
-Composer, Node 22+, and `pnpm`.
+Composer, Node 24+ (the `tab-service` requires it), and `pnpm`.
 
 ```bash
 git clone git@github.com:marekskopal/kytarna.git
@@ -82,8 +82,8 @@ with suppressions.
 
 ## Commit messages
 
-- One line, imperative, ≤ 72 chars on the subject (e.g. `Add Meilisearch
-  search index (U-71)`).
+- One line, imperative, ≤ 72 chars on the subject (e.g. `Add Guitar Pro tab
+  import (U-71)`).
 - Reference the related issue / task code at the end of the subject or in the
   body (`Fixes #42`, `U-71`).
 - Body (optional) wraps at ~72 chars and explains the **why**, not the what —
@@ -95,7 +95,7 @@ locally if you need to).
 ## Pull request flow
 
 1. Fork & branch from `main`. Pick a short, kebab-case branch name
-   (`feat/full-text-search`, `fix/login-rate-limit`).
+   (`feat/guitar-pro-import`, `fix/login-rate-limit`).
 2. Make your change. Run `make lint && make test` until green.
 3. Open the PR against `main`. Fill in the
    [pull request template](.github/PULL_REQUEST_TEMPLATE.md) — what changed,
