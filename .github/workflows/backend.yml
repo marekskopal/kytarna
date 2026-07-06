@@ -1,6 +1,14 @@
 name: Backend
 
 on:
+    push:
+        branches: [main]
+    pull_request:
+        paths:
+            - 'backend/**'
+            - '.github/workflows/backend.yml'
+    schedule:
+        - cron: '0 6 * * 1'
     workflow_dispatch:
 
 jobs:

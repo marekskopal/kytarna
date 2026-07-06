@@ -23,4 +23,8 @@ FROM nginx:1.30.3-alpine
 
 COPY --from=build /etc/ssl/dhparam.pem /etc/ssl/dhparam.pem
 COPY --from=build /etc/nginx/conf.d/.htpasswd /etc/nginx/conf.d/.htpasswd
-COPY ["./conf/default.conf.template","/etc/nginx/templates/default.conf.template"]
+COPY ./conf/http.conf.template /etc/nginx/conf-available/http.conf.template
+COPY ./conf/ssl.conf.template /etc/nginx/conf-available/ssl.conf.template
+COPY ./docker-entrypoint.d/10-select-template.sh /docker-entrypoint.d/10-select-template.sh
+
+RUN chmod +x /docker-entrypoint.d/10-select-template.sh

@@ -20,26 +20,6 @@ server {
 
     server_name _;
 
-    return 301 https://$host$request_uri;
-}
-
-server {
-    listen 443 default_server ssl;
-
-    http2 on;
-
-    server_name ${PROXY_HOST};
-
-    ssl_protocols TLSv1.3;
-    ssl_ecdh_curve X25519:prime256v1:secp384r1;
-    ssl_prefer_server_ciphers off;
-    ssl_certificate /etc/nginx/ssl/server.pem;
-    ssl_certificate_key /etc/nginx/ssl/server.key;
-    ssl_buffer_size 4k;
-    ssl_stapling on;
-    ssl_stapling_verify on;
-    ssl_dhparam /etc/ssl/dhparam.pem;
-
     gzip on;
     gzip_min_length   256;
     gzip_vary         on;
@@ -66,11 +46,6 @@ server {
 
         add_header Cache-Control "no-store" always;
         add_header X-Content-Type-Options nosniff always;
-        add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
-    }
-
-    if ($host != "${PROXY_HOST}") {
-        return  301 $scheme://www.kytarna.com$request_uri;
     }
 
     location = /api/authentication/login {
@@ -88,7 +63,6 @@ server {
 
         add_header Cache-Control "no-store" always;
         add_header X-Content-Type-Options nosniff always;
-        add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
         add_header Retry-After "60" always;
     }
 
@@ -107,7 +81,6 @@ server {
 
         add_header Cache-Control "no-store" always;
         add_header X-Content-Type-Options nosniff always;
-        add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
         add_header Retry-After "60" always;
     }
 
@@ -126,7 +99,6 @@ server {
 
         add_header Cache-Control "no-store" always;
         add_header X-Content-Type-Options nosniff always;
-        add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
         add_header Retry-After "60" always;
     }
 
@@ -145,7 +117,6 @@ server {
 
         add_header Cache-Control "no-store" always;
         add_header X-Content-Type-Options nosniff always;
-        add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
         add_header Retry-After "60" always;
     }
 
@@ -167,7 +138,6 @@ server {
 
         add_header Cache-Control "no-store" always;
         add_header X-Content-Type-Options nosniff always;
-        add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
     }
 
     location ~ ^/api/(authentication/(request-password-reset|verify-email)|current-user/resend-verification)$ {
@@ -185,7 +155,6 @@ server {
 
         add_header Cache-Control "no-store" always;
         add_header X-Content-Type-Options nosniff always;
-        add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
         add_header Retry-After "60" always;
     }
 
@@ -204,7 +173,6 @@ server {
 
         add_header Cache-Control "no-store" always;
         add_header X-Content-Type-Options nosniff always;
-        add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
         add_header Retry-After "60" always;
     }
 
@@ -221,7 +189,6 @@ server {
 
         add_header Cache-Control "no-store" always;
         add_header X-Content-Type-Options nosniff always;
-        add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
     }
 
     location ~ ^/\.well-known/oauth- {
@@ -237,10 +204,9 @@ server {
 
         add_header Cache-Control "no-store" always;
         add_header X-Content-Type-Options nosniff always;
-        add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
     }
 
-    location /app {
+    location / {
         # Strip Accept-Encoding so the upstream response is plain text and
         # sub_filter can substitute the CSP nonce before gzip.
         proxy_set_header Accept-Encoding "";
@@ -256,7 +222,6 @@ server {
         proxy_set_header X-Forwarded-Host "";
 
         add_header Referrer-Policy strict-origin-when-cross-origin always;
-        add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
         add_header X-Frame-Options DENY always;
         add_header X-Content-Type-Options nosniff always;
         add_header Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()" always;
@@ -269,12 +234,6 @@ server {
 
         sub_filter_once off;
         sub_filter random_nonce_value $request_id;
-    }
-
-    # No marketing site in this build — the SPA lives under /app, so the root
-    # just forwards there.
-    location = / {
-        return 301 /app;
     }
 
     location /adminer {

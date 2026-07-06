@@ -1,0 +1,17 @@
+name: kytarna
+
+# Override that turns on HTTPS for the proxy. Use with:
+#   docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
+# Requires PROXY_HOST, PROXY_PORT_SSL, PROXY_SSL_CERT, PROXY_SSL_KEY in .env.
+
+services:
+    proxy:
+        environment:
+            PROXY_HOST: ${PROXY_HOST}
+            PROXY_PORT_SSL: ${PROXY_PORT_SSL}
+            PROXY_SSL_ENABLED: "1"
+        ports:
+            - "${PROXY_PORT_SSL}:443"
+        volumes:
+            - ${PROXY_SSL_CERT}:/etc/nginx/ssl/server.pem:ro
+            - ${PROXY_SSL_KEY}:/etc/nginx/ssl/server.key:ro
