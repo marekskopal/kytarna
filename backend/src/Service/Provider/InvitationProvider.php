@@ -95,7 +95,7 @@ final readonly class InvitationProvider implements InvitationProviderInterface
 			throw new RuntimeException('This invitation is for a different email address.');
 		}
 
-		$this->workspaceProvider->addMember($invitation->workspace, $user, $invitation->role);
+		$this->workspaceProvider->joinAsStudent($user, $invitation->workspace);
 
 		$invitation->acceptedAt = new DateTimeImmutable();
 		$invitation->updatedAt = $invitation->acceptedAt;

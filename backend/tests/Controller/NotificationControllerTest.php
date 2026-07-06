@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace Kytarna\Tests\Controller;
 
 use Kytarna\Controller\NotificationController;
+use Kytarna\Model\Entity\Enum\NotificationTypeEnum;
 use Kytarna\Model\Entity\Enum\WorkspaceRoleEnum;
 use Kytarna\Model\Entity\User;
 use Kytarna\Model\Entity\Workspace;
+use Kytarna\Service\Provider\NotificationProviderInterface;
+use Kytarna\Service\Provider\WorkspaceProviderInterface;
 use Kytarna\Tests\Support\Fixture;
 use Kytarna\Tests\Support\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -108,11 +111,15 @@ final class NotificationControllerTest extends IntegrationTestCase
 	private function createMember(Workspace $workspace, string $name): User
 	{
 		$user = Fixture::createUser(name: $name);
-		Fixture::addMember($workspace, $user, WorkspaceRoleEnum::Member);
+		Fixture::addMember($workspace, $user, WorkspaceRoleEnum::Student);
 		return $user;
 	}
 
-	/** Creates a lecture, lets the watcher start watching it, then the author moves it — the only notifying flow. */
+	/**
+	 * Creates a lecture, lets the watcher start watching it, then seeds a LectureMoved notification
+	 * for the watcher. Board card drags now record personal progress (no shared move event), so the
+	 * notification is seeded directly to exercise the notification inbox controller.
+	 */
 	private function createWatchedAndMovedLecture(User $author, User $watcher, int $courseId, string $name): void
 	{
 		$response = $this->request(
@@ -131,12 +138,22 @@ final class NotificationControllerTest extends IntegrationTestCase
 		$watch = $this->request('POST', '/api/lectures/' . $lectureId . '/watch', authenticatedAs: $watcher);
 		self::assertSame(200, $watch->getStatusCode());
 
-		$move = $this->request(
-			'PUT',
-			'/api/lectures/' . $lectureId . '/move',
-			body: ['status' => 'Learning', 'position' => 0],
-			authenticatedAs: $author,
+		$notificationProvider = $this->container->get(NotificationProviderInterface::class);
+		assert($notificationProvider instanceof NotificationProviderInterface);
+		$workspaceProvider = $this->container->get(WorkspaceProviderInterface::class);
+		assert($workspaceProvider instanceof WorkspaceProviderInterface);
+		$workspace = $workspaceProvider->getCurrentWorkspace($author);
+		assert($workspace !== null);
+
+		$notificationProvider->create(
+			$watcher,
+			$workspace->id,
+			NotificationTypeEnum::LectureMoved,
+			$lectureId,
+			$courseId,
+			$author->id,
+			$author->name,
+			['status' => 'Learning'],
 		);
-		self::assertSame(200, $move->getStatusCode());
 	}
 }

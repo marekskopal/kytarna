@@ -176,7 +176,7 @@ final class CurrentUserControllerTest extends IntegrationTestCase
 		$owner = Fixture::createUser(email: 'owner@example.com');
 		$workspace = Fixture::createWorkspace($owner, 'Shared');
 		$member = Fixture::createUser(email: 'member@example.com', password: 'MemberPass1');
-		Fixture::addMember($workspace, $member, WorkspaceRoleEnum::Member);
+		Fixture::addMember($workspace, $member, WorkspaceRoleEnum::Student);
 
 		$response = $this->request('DELETE', '/api/current-user', authenticatedAs: $member);
 		self::assertSame(200, $response->getStatusCode());
@@ -251,7 +251,7 @@ final class CurrentUserControllerTest extends IntegrationTestCase
 		$owner = Fixture::createUser(email: 'owner@example.com');
 		$workspace = Fixture::createWorkspace($owner, 'Acme');
 		$me = Fixture::createUser(email: 'me@example.com', name: 'Me');
-		Fixture::addMember($workspace, $me, WorkspaceRoleEnum::Member);
+		Fixture::addMember($workspace, $me, WorkspaceRoleEnum::Student);
 
 		$response = $this->request('GET', '/api/current-user/export', authenticatedAs: $me);
 		self::assertSame(200, $response->getStatusCode());

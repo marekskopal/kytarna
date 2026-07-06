@@ -16,10 +16,10 @@ interface ProgressProviderInterface
 	public function getEntry(int $entryId): ?ProgressEntry;
 
 	/** @return list<ProgressEntry> */
-	public function getEntriesByLecture(Lecture $lecture, ?string $from = null, ?string $to = null): array;
+	public function getEntriesByLecture(User $user, Lecture $lecture, ?string $from = null, ?string $to = null): array;
 
 	/** @return list<ProgressEntry> */
-	public function getEntriesByCourse(Course $course, ?string $from = null, ?string $to = null): array;
+	public function getEntriesByCourse(User $user, Course $course, ?string $from = null, ?string $to = null): array;
 
 	public function createEntry(
 		User $author,
@@ -41,7 +41,7 @@ interface ProgressProviderInterface
 
 	public function deleteEntry(User $author, ProgressEntry $entry): void;
 
-	public function summarizeLecture(Lecture $lecture, ?string $from = null, ?string $to = null): PracticeSummary;
+	public function summarizeLecture(User $user, Lecture $lecture, ?string $from = null, ?string $to = null): PracticeSummary;
 
-	public function summarizeCourse(Course $course, ?string $from = null, ?string $to = null): PracticeSummary;
+	public function summarizeCourse(User $user, Course $course, ?string $from = null, ?string $to = null): PracticeSummary;
 }

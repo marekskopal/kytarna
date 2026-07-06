@@ -12,12 +12,16 @@ use Kytarna\Dto\SongListQueryDto;
 use Kytarna\Dto\SongMoveDto;
 use Kytarna\Dto\SongUpdateDto;
 use Kytarna\Model\Entity\Song;
+use Kytarna\Model\Entity\User;
 use Kytarna\Model\Entity\Workspace;
 use Kytarna\Response\ErrorResponse;
+use Kytarna\Response\NotAuthorizedResponse;
 use Kytarna\Response\NotFoundResponse;
 use Kytarna\Response\OkResponse;
 use Kytarna\Route\Routes;
+use Kytarna\Service\Auth\PermissionCheckerInterface;
 use Kytarna\Service\Provider\CourseProviderInterface;
+use Kytarna\Service\Provider\ProgressStatusProviderInterface;
 use Kytarna\Service\Provider\SongProviderInterface;
 use Kytarna\Service\Provider\SongTagProviderInterface;
 use Kytarna\Service\Provider\WorkspaceProviderInterface;
@@ -44,18 +48,26 @@ final readonly class SongController
 		private CourseProviderInterface $courseProvider,
 		private WorkspaceProviderInterface $workspaceProvider,
 		private SongTagProviderInterface $songTagProvider,
+		private ProgressStatusProviderInterface $progressStatusProvider,
+		private PermissionCheckerInterface $permissionChecker,
 		private RequestServiceInterface $requestService,
 	) {
 	}
 
-	private function songDto(Song $song): SongDto
+	/** Song response with the viewing user's personal board status applied. */
+	private function songResponse(User $user, Song $song): SongDto
 	{
-		return SongDto::fromEntity($song, $this->songTagProvider->getTagIdsForSong($song));
+		return SongDto::fromEntity(
+			$song,
+			$this->songTagProvider->getTagIdsForSong($song),
+			$this->progressStatusProvider->statusForSong($user, $song),
+		);
 	}
 
 	#[RouteGet(Routes::Songs->value)]
 	public function actionGetSongs(ServerRequestInterface $request): ResponseInterface
 	{
+		$user = $this->requestService->getUser($request);
 		$workspace = $this->currentWorkspace($request);
 		if ($workspace === null) {
 			return new ErrorResponse('No active workspace.', 422);
@@ -84,9 +96,13 @@ final readonly class SongController
 		$count = $this->songProvider->countSongsInWorkspace($workspace, $q->search, $q->statuses, $q->onlyActive, $q->archived);
 
 		$tagsBySongId = $this->songTagProvider->getTagIdsBySongIds(array_map(static fn (Song $s): int => $s->id, $songs));
+		$statusBySongId = $this->progressStatusProvider->songStatusesForUserInWorkspace($user, $workspace);
 
 		return new JsonResponse(new SongListDto(
-			songs: array_map(static fn (Song $s): SongDto => SongDto::fromEntity($s, $tagsBySongId[$s->id] ?? []), $songs),
+			songs: array_map(
+				static fn (Song $s): SongDto => SongDto::fromEntity($s, $tagsBySongId[$s->id] ?? [], $statusBySongId[$s->id] ?? null),
+				$songs,
+			),
 			count: $count,
 		));
 	}
@@ -98,6 +114,10 @@ final readonly class SongController
 		$workspace = $this->currentWorkspace($request);
 		if ($workspace === null) {
 			return new ErrorResponse('No active workspace.', 422);
+		}
+
+		if (!$this->permissionChecker->canManageSongs($user, $workspace)) {
+			return new NotAuthorizedResponse('Only the teacher can create songs.');
 		}
 
 		try {
@@ -134,17 +154,18 @@ final readonly class SongController
 			return new ErrorResponse($e->getMessage(), 422);
 		}
 
-		return new JsonResponse($this->songDto($song), 201);
+		return new JsonResponse($this->songResponse($user, $song), 201);
 	}
 
 	#[RouteGet(Routes::Song->value)]
 	public function actionGetSong(ServerRequestInterface $request, int $songId): ResponseInterface
 	{
+		$user = $this->requestService->getUser($request);
 		$song = $this->loadSong($request, $songId);
 		if ($song === null) {
 			return new NotFoundResponse('Song not found.');
 		}
-		return new JsonResponse($this->songDto($song));
+		return new JsonResponse($this->songResponse($user, $song));
 	}
 
 	#[RoutePut(Routes::Song->value)]
@@ -154,6 +175,10 @@ final readonly class SongController
 		$song = $this->loadSong($request, $songId);
 		if ($song === null) {
 			return new NotFoundResponse('Song not found.');
+		}
+
+		if (!$this->permissionChecker->canManageSongs($user, $song->workspace)) {
+			return new NotAuthorizedResponse('Only the teacher can edit songs.');
 		}
 
 		try {
@@ -176,7 +201,7 @@ final readonly class SongController
 			return new ErrorResponse($e->getMessage(), 422);
 		}
 
-		return new JsonResponse($this->songDto($song));
+		return new JsonResponse($this->songResponse($user, $song));
 	}
 
 	#[RoutePut(Routes::SongMove->value)]
@@ -188,37 +213,42 @@ final readonly class SongController
 			return new NotFoundResponse('Song not found.');
 		}
 
+		// A card drag records the viewing user's personal progress, not the shared template.
+		if (!$this->permissionChecker->canTrackProgress($user, $song->workspace)) {
+			return new NotAuthorizedResponse('You cannot track progress in this workspace.');
+		}
+
 		try {
 			$dto = $this->requestService->getRequestBodyDto($request, SongMoveDto::class);
 		} catch (RuntimeException $e) {
 			return new ErrorResponse($e->getMessage(), 422);
 		}
 
-		$song = $this->songProvider->moveSong($user, $song, $dto->status, $dto->position);
+		$this->progressStatusProvider->setSongStatus($user, $song, $dto->status);
 
-		return new JsonResponse($this->songDto($song));
+		return new JsonResponse($this->songResponse($user, $song));
 	}
 
 	#[RoutePost(Routes::SongArchive->value)]
 	public function actionPostSongArchive(ServerRequestInterface $request, int $songId): ResponseInterface
 	{
-		$user = $this->requestService->getUser($request);
-		$song = $this->loadSong($request, $songId);
-		if ($song === null) {
-			return new NotFoundResponse('Song not found.');
+		$song = $this->requireManageableSong($request, $songId);
+		if ($song instanceof ResponseInterface) {
+			return $song;
 		}
-		return new JsonResponse($this->songDto($this->songProvider->archiveSong($user, $song)));
+		$user = $this->requestService->getUser($request);
+		return new JsonResponse($this->songResponse($user, $this->songProvider->archiveSong($user, $song)));
 	}
 
 	#[RoutePost(Routes::SongUnarchive->value)]
 	public function actionPostSongUnarchive(ServerRequestInterface $request, int $songId): ResponseInterface
 	{
-		$user = $this->requestService->getUser($request);
-		$song = $this->loadSong($request, $songId);
-		if ($song === null) {
-			return new NotFoundResponse('Song not found.');
+		$song = $this->requireManageableSong($request, $songId);
+		if ($song instanceof ResponseInterface) {
+			return $song;
 		}
-		return new JsonResponse($this->songDto($this->songProvider->unarchiveSong($user, $song)));
+		$user = $this->requestService->getUser($request);
+		return new JsonResponse($this->songResponse($user, $this->songProvider->unarchiveSong($user, $song)));
 	}
 
 	#[RoutePut(Routes::SongCourse->value)]
@@ -234,6 +264,10 @@ final readonly class SongController
 			return new NotFoundResponse('Song not found.');
 		}
 
+		if (!$this->permissionChecker->canManageSongs($user, $workspace)) {
+			return new NotAuthorizedResponse('Only the teacher can attach songs to courses.');
+		}
+
 		try {
 			$dto = $this->requestService->getRequestBodyDto($request, SongCourseDto::class);
 		} catch (RuntimeException $e) {
@@ -242,7 +276,7 @@ final readonly class SongController
 
 		if ($dto->courseId === null) {
 			$song = $this->songProvider->removeFromCourse($user, $song);
-			return new JsonResponse($this->songDto($song));
+			return new JsonResponse($this->songResponse($user, $song));
 		}
 
 		$course = $this->courseProvider->getCourse($workspace, $dto->courseId);
@@ -256,7 +290,7 @@ final readonly class SongController
 			return new ErrorResponse($e->getMessage(), 422);
 		}
 
-		return new JsonResponse($this->songDto($song));
+		return new JsonResponse($this->songResponse($user, $song));
 	}
 
 	#[RoutePost(Routes::SongCover->value)]
@@ -266,6 +300,10 @@ final readonly class SongController
 		$song = $this->loadSong($request, $songId);
 		if ($song === null) {
 			return new NotFoundResponse('Song not found.');
+		}
+
+		if (!$this->permissionChecker->canManageSongs($user, $song->workspace)) {
+			return new NotAuthorizedResponse('Only the teacher can set a song cover.');
 		}
 
 		$uploaded = $request->getUploadedFiles()['file'] ?? null;
@@ -286,7 +324,7 @@ final readonly class SongController
 			return new ErrorResponse($e->getMessage(), 422);
 		}
 
-		return new JsonResponse($this->songDto($song));
+		return new JsonResponse($this->songResponse($user, $song));
 	}
 
 	#[RouteGet(Routes::SongCover->value)]
@@ -319,22 +357,22 @@ final readonly class SongController
 	#[RouteDelete(Routes::SongCover->value)]
 	public function actionDeleteSongCover(ServerRequestInterface $request, int $songId): ResponseInterface
 	{
-		$user = $this->requestService->getUser($request);
-		$song = $this->loadSong($request, $songId);
-		if ($song === null) {
-			return new NotFoundResponse('Song not found.');
+		$song = $this->requireManageableSong($request, $songId);
+		if ($song instanceof ResponseInterface) {
+			return $song;
 		}
-		return new JsonResponse($this->songDto($this->songProvider->deleteCover($user, $song)));
+		$user = $this->requestService->getUser($request);
+		return new JsonResponse($this->songResponse($user, $this->songProvider->deleteCover($user, $song)));
 	}
 
 	#[RouteDelete(Routes::Song->value)]
 	public function actionDeleteSong(ServerRequestInterface $request, int $songId): ResponseInterface
 	{
-		$user = $this->requestService->getUser($request);
-		$song = $this->loadSong($request, $songId);
-		if ($song === null) {
-			return new NotFoundResponse('Song not found.');
+		$song = $this->requireManageableSong($request, $songId);
+		if ($song instanceof ResponseInterface) {
+			return $song;
 		}
+		$user = $this->requestService->getUser($request);
 		$this->songProvider->deleteSong($user, $song);
 		return new OkResponse();
 	}
@@ -342,6 +380,20 @@ final readonly class SongController
 	private function currentWorkspace(ServerRequestInterface $request): ?Workspace
 	{
 		return $this->workspaceProvider->getCurrentWorkspace($this->requestService->getUser($request));
+	}
+
+	/** Loads a song the current user is allowed to manage (Teacher only), or the error response to send. */
+	private function requireManageableSong(ServerRequestInterface $request, int $songId): Song|ResponseInterface
+	{
+		$user = $this->requestService->getUser($request);
+		$song = $this->loadSong($request, $songId);
+		if ($song === null) {
+			return new NotFoundResponse('Song not found.');
+		}
+		if (!$this->permissionChecker->canManageSongs($user, $song->workspace)) {
+			return new NotAuthorizedResponse('Only the teacher can manage songs.');
+		}
+		return $song;
 	}
 
 	private function loadSong(ServerRequestInterface $request, int $songId): ?Song

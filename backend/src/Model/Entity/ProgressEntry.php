@@ -17,6 +17,8 @@ class ProgressEntry extends AEntity
 	public function __construct(
 		#[ManyToOne(entityClass: Lecture::class)]
 		public readonly Lecture $lecture,
+		#[ManyToOne(entityClass: User::class)]
+		public readonly User $user,
 		#[Column(type: Type::Date)]
 		public DateTimeImmutable $practicedAt,
 		#[Column(type: Type::Text, nullable: true)]

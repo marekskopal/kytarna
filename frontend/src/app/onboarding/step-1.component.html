@@ -2,36 +2,83 @@
 <h1 class="step-title">{{ 'app.onboarding.step1.title' | translate }}</h1>
 <p class="step-lead">{{ 'app.onboarding.step1.lead' | translate }}</p>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()" class="step-form">
-    <div class="step-field">
-        <label for="ob-name" class="step-label">{{ 'app.onboarding.step1.nameLabel' | translate }}</label>
-        <input
-            id="ob-name"
-            type="text"
-            formControlName="name"
-            class="step-input"
-            [placeholder]="'app.onboarding.step1.namePlaceholder' | translate"
-            autocomplete="off"
-        />
-    </div>
-
-    <div class="step-field">
-        <label for="ob-description" class="step-label">
-            {{ 'app.onboarding.step1.descriptionLabel' | translate }}
-            <span class="step-hint">{{ 'app.onboarding.step1.optional' | translate }}</span>
-        </label>
-        <textarea
-            id="ob-description"
-            formControlName="description"
-            class="step-textarea"
-            rows="2"
-            [placeholder]="'app.onboarding.step1.descriptionPlaceholder' | translate"
-        ></textarea>
-    </div>
-
-    <div class="step-actions">
-        <button type="submit" class="btn btn-primary" [disabled]="form.invalid || saving()">
-            {{ (saving() ? 'app.actions.loading' : 'app.onboarding.shell.continue') | translate }}
+@if (choice() === null) {
+    <div class="onboarding-tiles">
+        <button type="button" class="onboarding-tile" (click)="chooseTeacher()">
+            <span class="onboarding-tile-icon">🎸</span>
+            <span class="onboarding-tile-title">{{ 'app.onboarding.step1.teacherTitle' | translate }}</span>
+            <span class="onboarding-tile-desc">{{ 'app.onboarding.step1.teacherDescription' | translate }}</span>
+        </button>
+        <button type="button" class="onboarding-tile" (click)="chooseStudent()">
+            <span class="onboarding-tile-icon">🎓</span>
+            <span class="onboarding-tile-title">{{ 'app.onboarding.step1.studentTitle' | translate }}</span>
+            <span class="onboarding-tile-desc">{{ 'app.onboarding.step1.studentDescription' | translate }}</span>
         </button>
     </div>
-</form>
+}
+
+@if (choice() === 'teacher') {
+    <form class="step-form" (submit)="createWorkspace(); $event.preventDefault()">
+        <div class="step-field">
+            <label for="ob-ws-name" class="step-label">{{ 'app.onboarding.step1.workspaceNameLabel' | translate }}</label>
+            <input
+                id="ob-ws-name"
+                type="text"
+                required
+                class="step-input"
+                [placeholder]="'app.onboarding.step1.workspaceNamePlaceholder' | translate"
+                [ngModel]="workspaceName()"
+                (ngModelChange)="workspaceName.set($event)"
+                name="workspaceName"
+                autocomplete="off"
+            />
+        </div>
+        <div class="step-actions">
+            <button type="button" class="btn btn-ghost" (click)="back()">{{ 'app.actions.back' | translate }}</button>
+            <button type="submit" class="btn btn-primary" [disabled]="saving()">{{ 'app.onboarding.step1.createWorkspace' | translate }}</button>
+        </div>
+    </form>
+}
+
+@if (choice() === 'student') {
+    <div class="step-form">
+        <h3>{{ 'app.onboarding.step1.directoryTitle' | translate }}</h3>
+        @if (directoryLoading()) {
+            <p class="step-hint">{{ 'app.actions.loading' | translate }}</p>
+        } @else if (directory().length === 0) {
+            <p class="step-hint">{{ 'app.onboarding.step1.directoryEmpty' | translate }}</p>
+        } @else {
+            <ul class="directory-list">
+                @for (ws of directory(); track ws.id) {
+                    <li class="directory-item">
+                        <div>
+                            <strong>{{ ws.name }}</strong>
+                            <span class="step-hint"> · {{ ws.teacherName }}</span>
+                            @if (ws.description) {
+                                <p class="step-hint">{{ ws.description }}</p>
+                            }
+                        </div>
+                        <button type="button" class="btn btn-primary" [disabled]="saving()" (click)="joinPublic(ws)">{{ 'app.onboarding.step1.join' | translate }}</button>
+                    </li>
+                }
+            </ul>
+        }
+
+        <h3>{{ 'app.onboarding.step1.joinByCodeTitle' | translate }}</h3>
+        <form class="step-form" (submit)="joinWithCode(); $event.preventDefault()">
+            <input
+                type="text"
+                class="step-input"
+                [placeholder]="'app.onboarding.step1.joinCodePlaceholder' | translate"
+                [ngModel]="joinCode()"
+                (ngModelChange)="joinCode.set($event)"
+                name="joinCode"
+                autocomplete="off"
+            />
+            <div class="step-actions">
+                <button type="button" class="btn btn-ghost" (click)="back()">{{ 'app.actions.back' | translate }}</button>
+                <button type="submit" class="btn btn-secondary" [disabled]="saving()">{{ 'app.onboarding.step1.join' | translate }}</button>
+            </div>
+        </form>
+    </div>
+}

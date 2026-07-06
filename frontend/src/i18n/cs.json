@@ -458,6 +458,12 @@
       "general": {
         "renameTitle": "Název pracovního prostoru",
         "renameDescription": "Přejmenujte tento pracovní prostor. Název vidí všichni členové.",
+        "publicTitle": "Veřejný katalog",
+        "publicDescription": "Je-li veřejný, studenti mohou tento prostor najít a připojit se k němu z katalogu.",
+        "makePublic": "Zveřejnit",
+        "makePrivate": "Skrýt",
+        "joinCodeTitle": "Kód pro připojení",
+        "rotateJoinCode": "Přegenerovat",
         "deleteTitle": "Smazat pracovní prostor",
         "deleteDescription": "Trvale smaže tento pracovní prostor včetně všech kurzů a lekcí. Tato akce je nevratná."
       },
@@ -473,9 +479,8 @@
         "revoked": "Přístup klienta byl odebrán."
       },
       "role": {
-        "Owner": "Vlastník",
-        "Admin": "Admin",
-        "Member": "Člen"
+        "Teacher": "Učitel",
+        "Student": "Student"
       }
     },
     "admin": {
@@ -621,15 +626,23 @@
         }
       },
       "step1": {
-        "overline": "Krok 01",
-        "title": "Vytvořte první kurz",
-        "lead": "Kurz sdružuje související lekce a skladby. Začněte zadáním názvu.",
-        "nameLabel": "Název kurzu",
-        "namePlaceholder": "Základy fingerstyle",
-        "descriptionLabel": "Popis",
-        "descriptionPlaceholder": "Volitelný kontext pro tým.",
-        "optional": "volitelné",
-        "errorCreate": "Kurz se nepodařilo vytvořit. Zkuste to znovu."
+        "overline": "Vítejte",
+        "title": "Jak chcete začít?",
+        "lead": "Učte vlastní kurzy, nebo se připojte k učiteli a začněte se učit.",
+        "teacherTitle": "Vytvořit vlastní prostor",
+        "teacherDescription": "Jsem učitel (nebo se učím sám). Vytvořím prostor, kde tvořím kurzy, lekce a skladby.",
+        "studentTitle": "Připojit se k učiteli",
+        "studentDescription": "Jsem student. Připojím se k prostoru učitele, abych se učil a sledoval svůj pokrok.",
+        "workspaceNameLabel": "Název prostoru",
+        "workspaceNamePlaceholder": "Moje kytarová škola",
+        "createWorkspace": "Vytvořit prostor",
+        "directoryTitle": "Veřejné prostory",
+        "directoryEmpty": "Zatím žádné veřejné prostory. Požádejte učitele o kód pro připojení.",
+        "joinByCodeTitle": "Máte kód pro připojení?",
+        "joinCodePlaceholder": "Zadejte kód",
+        "join": "Připojit se",
+        "errorCreate": "Prostor se nepodařilo vytvořit. Zkuste to znovu.",
+        "errorJoin": "K prostoru se nepodařilo připojit. Zkontrolujte kód a zkuste to znovu."
       },
       "step2": {
         "overline": "Krok 02",

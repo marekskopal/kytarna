@@ -17,6 +17,8 @@ class SongProgressEntry extends AEntity
 	public function __construct(
 		#[ManyToOne(entityClass: Song::class)]
 		public readonly Song $song,
+		#[ManyToOne(entityClass: User::class)]
+		public readonly User $user,
 		#[Column(type: Type::Date)]
 		public DateTimeImmutable $practicedAt,
 		#[Column(type: Type::Text, nullable: true)]

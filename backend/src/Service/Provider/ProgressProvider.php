@@ -24,20 +24,20 @@ final readonly class ProgressProvider implements ProgressProviderInterface
 	}
 
 	/** @return list<ProgressEntry> */
-	public function getEntriesByLecture(Lecture $lecture, ?string $from = null, ?string $to = null): array
+	public function getEntriesByLecture(User $user, Lecture $lecture, ?string $from = null, ?string $to = null): array
 	{
 		$result = [];
-		foreach ($this->progressEntryRepository->findByLecture($lecture->id, $from, $to) as $entry) {
+		foreach ($this->progressEntryRepository->findByLecture($lecture->id, $user->id, $from, $to) as $entry) {
 			$result[] = $entry;
 		}
 		return $result;
 	}
 
 	/** @return list<ProgressEntry> */
-	public function getEntriesByCourse(Course $course, ?string $from = null, ?string $to = null): array
+	public function getEntriesByCourse(User $user, Course $course, ?string $from = null, ?string $to = null): array
 	{
 		$result = [];
-		foreach ($this->progressEntryRepository->findByCourse($course->id, $from, $to) as $entry) {
+		foreach ($this->progressEntryRepository->findByCourse($course->id, $user->id, $from, $to) as $entry) {
 			$result[] = $entry;
 		}
 		return $result;
@@ -54,6 +54,7 @@ final readonly class ProgressProvider implements ProgressProviderInterface
 		$now = new DateTimeImmutable();
 		$entry = new ProgressEntry(
 			lecture: $lecture,
+			user: $author,
 			practicedAt: $practicedAt,
 			note: $note,
 			tempoBpm: $tempoBpm,
@@ -91,13 +92,13 @@ final readonly class ProgressProvider implements ProgressProviderInterface
 		$this->progressEntryRepository->delete($entry);
 	}
 
-	public function summarizeLecture(Lecture $lecture, ?string $from = null, ?string $to = null): PracticeSummary
+	public function summarizeLecture(User $user, Lecture $lecture, ?string $from = null, ?string $to = null): PracticeSummary
 	{
-		return PracticeSummary::fromEntries($this->getEntriesByLecture($lecture, $from, $to));
+		return PracticeSummary::fromEntries($this->getEntriesByLecture($user, $lecture, $from, $to));
 	}
 
-	public function summarizeCourse(Course $course, ?string $from = null, ?string $to = null): PracticeSummary
+	public function summarizeCourse(User $user, Course $course, ?string $from = null, ?string $to = null): PracticeSummary
 	{
-		return PracticeSummary::fromEntries($this->getEntriesByCourse($course, $from, $to));
+		return PracticeSummary::fromEntries($this->getEntriesByCourse($user, $course, $from, $to));
 	}
 }

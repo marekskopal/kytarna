@@ -27,7 +27,7 @@ final class ProgressProviderTest extends IntegrationTestCase
 		Fixture::createProgressEntry($user, $lecture, '2026-06-03', null, 90, 15);
 		Fixture::createProgressEntry($user, $lecture, '2026-06-08', 'faster', 100, 30);
 
-		$summary = $provider->summarizeLecture($lecture);
+		$summary = $provider->summarizeLecture($user, $lecture);
 
 		self::assertSame(3, $summary->totalEntries);
 		self::assertSame(65, $summary->totalMinutes);
@@ -58,17 +58,17 @@ final class ProgressProviderTest extends IntegrationTestCase
 		Fixture::createProgressEntry($user, $lectureB, '2026-07-01', null, null, 40);
 
 		// Course summary spans both lectures.
-		$courseSummary = $provider->summarizeCourse($course);
+		$courseSummary = $provider->summarizeCourse($user, $course);
 		self::assertSame(3, $courseSummary->totalEntries);
 		self::assertSame(75, $courseSummary->totalMinutes);
 
 		// Date range filters entries out (inclusive bounds).
-		$ranged = $provider->summarizeCourse($course, '2026-06-01', '2026-06-30');
+		$ranged = $provider->summarizeCourse($user, $course, '2026-06-01', '2026-06-30');
 		self::assertSame(2, $ranged->totalEntries);
 		self::assertSame(35, $ranged->totalMinutes);
 
 		// Lecture scope limits to one lecture.
-		$lectureSummary = $provider->summarizeLecture($lectureB);
+		$lectureSummary = $provider->summarizeLecture($user, $lectureB);
 		self::assertSame(2, $lectureSummary->totalEntries);
 	}
 

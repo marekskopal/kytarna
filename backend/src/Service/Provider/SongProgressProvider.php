@@ -23,10 +23,10 @@ final readonly class SongProgressProvider implements SongProgressProviderInterfa
 	}
 
 	/** @return list<SongProgressEntry> */
-	public function getEntriesBySong(Song $song, ?string $from = null, ?string $to = null): array
+	public function getEntriesBySong(User $user, Song $song, ?string $from = null, ?string $to = null): array
 	{
 		$result = [];
-		foreach ($this->songProgressEntryRepository->findBySong($song->id, $from, $to) as $entry) {
+		foreach ($this->songProgressEntryRepository->findBySong($song->id, $user->id, $from, $to) as $entry) {
 			$result[] = $entry;
 		}
 		return $result;
@@ -43,6 +43,7 @@ final readonly class SongProgressProvider implements SongProgressProviderInterfa
 		$now = new DateTimeImmutable();
 		$entry = new SongProgressEntry(
 			song: $song,
+			user: $author,
 			practicedAt: $practicedAt,
 			note: $note,
 			tempoBpm: $tempoBpm,
@@ -80,8 +81,8 @@ final readonly class SongProgressProvider implements SongProgressProviderInterfa
 		$this->songProgressEntryRepository->delete($entry);
 	}
 
-	public function summarizeSong(Song $song, ?string $from = null, ?string $to = null): PracticeSummary
+	public function summarizeSong(User $user, Song $song, ?string $from = null, ?string $to = null): PracticeSummary
 	{
-		return PracticeSummary::fromEntries($this->getEntriesBySong($song, $from, $to));
+		return PracticeSummary::fromEntries($this->getEntriesBySong($user, $song, $from, $to));
 	}
 }

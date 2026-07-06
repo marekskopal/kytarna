@@ -19,7 +19,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 #[CoversClass(AuthenticationController::class)]
 final class AuthenticationControllerTest extends IntegrationTestCase
 {
-	public function testSignUpCreatesUserAndPersonalWorkspace(): void
+	public function testSignUpCreatesUserWithoutWorkspace(): void
 	{
 		$response = $this->request('POST', '/api/authentication/sign-up', [
 			'email' => 'new@example.com',
@@ -32,11 +32,12 @@ final class AuthenticationControllerTest extends IntegrationTestCase
 		self::assertSame(200, $response->getStatusCode());
 		self::assertArrayNotHasKey('accessToken', $this->jsonBody($response));
 
+		// No workspace is auto-created — onboarding lets the user choose Teacher (create one)
+		// or Student (join one).
 		$workspaceRepo = $this->container->get(WorkspaceRepository::class);
 		assert($workspaceRepo instanceof WorkspaceRepository);
 		$workspaces = iterator_to_array($workspaceRepo->findAll(), false);
-		self::assertCount(1, $workspaces);
-		self::assertSame("New Person's Workspace", $workspaces[0]->name);
+		self::assertCount(0, $workspaces);
 
 		$login = $this->request('POST', '/api/authentication/login', [
 			'email' => 'new@example.com',

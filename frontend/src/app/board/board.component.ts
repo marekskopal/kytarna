@@ -11,6 +11,7 @@ import {Tag} from '@app/models/tag';
 import {BoardService} from '@app/services/board.service';
 import {CurrentUserService} from '@app/services/current-user.service';
 import {LectureService} from '@app/services/lecture.service';
+import {PermissionsService} from '@app/services/permissions.service';
 import {SongService} from '@app/services/song.service';
 import {TagService} from '@app/services/tag.service';
 import {WorkspaceService} from '@app/services/workspace.service';
@@ -44,11 +45,15 @@ export class BoardComponent implements OnInit {
     private readonly tagService = inject(TagService);
     private readonly workspaceService = inject(WorkspaceService);
     private readonly currentUserService = inject(CurrentUserService);
+    private readonly permissionsService = inject(PermissionsService);
 
     protected readonly loading = signal(true);
     protected readonly board = signal<Board | null>(null);
     protected readonly courseId = signal<number | null>(null);
     protected readonly workspaceTags = signal<Tag[]>([]);
+
+    /** Only the Teacher can add/edit content; Students see a read-only board they can still drag on. */
+    protected readonly canEdit = computed<boolean>(() => this.permissionsService.canManageLectures(this.workspaceService.currentMembers()));
 
     protected readonly columns = computed<Column[]>(() => {
         const board = this.board();

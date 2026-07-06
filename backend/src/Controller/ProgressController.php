@@ -58,7 +58,7 @@ final readonly class ProgressController
 
 		$entries = array_map(
 			static fn (ProgressEntry $entry): ProgressEntryDto => ProgressEntryDto::fromEntity($entry),
-			$this->progressProvider->getEntriesByLecture($lecture, $from, $to),
+			$this->progressProvider->getEntriesByLecture($user, $lecture, $from, $to),
 		);
 
 		return new JsonResponse($entries);
@@ -106,7 +106,7 @@ final readonly class ProgressController
 			return new ErrorResponse($e->getMessage(), 400);
 		}
 
-		return new JsonResponse(PracticeSummaryDto::fromSummary($this->progressProvider->summarizeLecture($lecture, $from, $to)));
+		return new JsonResponse(PracticeSummaryDto::fromSummary($this->progressProvider->summarizeLecture($user, $lecture, $from, $to)));
 	}
 
 	#[RouteGet(Routes::CoursePracticeSummary->value)]
@@ -128,7 +128,7 @@ final readonly class ProgressController
 			return new ErrorResponse($e->getMessage(), 400);
 		}
 
-		return new JsonResponse(PracticeSummaryDto::fromSummary($this->progressProvider->summarizeCourse($course, $from, $to)));
+		return new JsonResponse(PracticeSummaryDto::fromSummary($this->progressProvider->summarizeCourse($user, $course, $from, $to)));
 	}
 
 	#[RoutePut(Routes::ProgressEntry->value)]
@@ -193,7 +193,8 @@ final readonly class ProgressController
 	private function loadEntryInScope(User $user, int $entryId): ?ProgressEntry
 	{
 		$entry = $this->progressProvider->getEntry($entryId);
-		if ($entry === null || !$this->workspaceProvider->isMember($user, $entry->lecture->course->workspace)) {
+		// A practice entry is personal: only its author may read/update/delete it.
+		if ($entry === null || $entry->user->id !== $user->id) {
 			return null;
 		}
 		return $entry;

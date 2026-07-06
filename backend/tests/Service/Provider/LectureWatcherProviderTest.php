@@ -46,7 +46,7 @@ final class LectureWatcherProviderTest extends IntegrationTestCase
 		$owner = Fixture::createUser();
 		$member = Fixture::createUser();
 		$workspace = Fixture::createWorkspace($owner);
-		Fixture::addMember($workspace, $member, WorkspaceRoleEnum::Member);
+		Fixture::addMember($workspace, $member, WorkspaceRoleEnum::Student);
 		$course = Fixture::createCourse($owner, $workspace);
 		$lecture = $this->createLecture($owner, $course->id, 'Shared lecture');
 

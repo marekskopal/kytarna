@@ -1,6 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {inject, Injectable, signal} from '@angular/core';
-import {Invitation, Workspace, WorkspaceMember, WorkspaceRole} from '@app/models/workspace';
+import {Invitation, PublicWorkspace, Workspace, WorkspaceMember} from '@app/models/workspace';
 import {environment} from '@environments/environment';
 import {firstValueFrom} from 'rxjs';
 
@@ -40,8 +40,32 @@ export class WorkspaceService {
         return ws;
     }
 
-    public async update(id: number, name: string): Promise<Workspace> {
-        const ws = await firstValueFrom(this.http.put<Workspace>(`${environment.apiUrl}/workspaces/${id}`, {name}));
+    public async update(
+        id: number,
+        changes: {name?: string; isPublic?: boolean; description?: string},
+    ): Promise<Workspace> {
+        const ws = await firstValueFrom(this.http.put<Workspace>(`${environment.apiUrl}/workspaces/${id}`, changes));
+        await this.loadAll();
+        return ws;
+    }
+
+    public rotateJoinCode(id: number): Promise<Workspace> {
+        return firstValueFrom(this.http.post<Workspace>(`${environment.apiUrl}/workspaces/${id}/rotate-join-code`, {}));
+    }
+
+    public discover(search?: string): Promise<PublicWorkspace[]> {
+        const query = search !== undefined && search !== '' ? `?search=${encodeURIComponent(search)}` : '';
+        return firstValueFrom(this.http.get<PublicWorkspace[]>(`${environment.apiUrl}/workspaces/discover${query}`));
+    }
+
+    public async joinPublic(id: number): Promise<Workspace> {
+        const ws = await firstValueFrom(this.http.post<Workspace>(`${environment.apiUrl}/workspaces/${id}/join`, {}));
+        await this.loadAll();
+        return ws;
+    }
+
+    public async joinByCode(code: string): Promise<Workspace> {
+        const ws = await firstValueFrom(this.http.post<Workspace>(`${environment.apiUrl}/workspaces/join`, {code}));
         await this.loadAll();
         return ws;
     }
@@ -66,31 +90,14 @@ export class WorkspaceService {
         return firstValueFrom(this.http.delete<void>(`${environment.apiUrl}/workspaces/${workspaceId}/members/${userId}`));
     }
 
-    public changeMemberRole(workspaceId: number, userId: number, role: WorkspaceRole): Promise<WorkspaceMember> {
-        return firstValueFrom(
-            this.http.patch<WorkspaceMember>(
-                `${environment.apiUrl}/workspaces/${workspaceId}/members/${userId}`,
-                {role},
-            ),
-        );
-    }
-
-    public transferOwnership(workspaceId: number, userId: number): Promise<Workspace> {
-        return firstValueFrom(
-            this.http.post<Workspace>(
-                `${environment.apiUrl}/workspaces/${workspaceId}/transfer-ownership`,
-                {userId},
-            ),
-        );
-    }
-
     public getInvitations(workspaceId: number): Promise<Invitation[]> {
         return firstValueFrom(this.http.get<Invitation[]>(`${environment.apiUrl}/workspaces/${workspaceId}/invitations`));
     }
 
-    public createInvitation(workspaceId: number, email: string, role: WorkspaceRole = 'Member'): Promise<Invitation> {
+    /** Invitees always join as Students; the sole Teacher is the workspace owner. */
+    public createInvitation(workspaceId: number, email: string): Promise<Invitation> {
         return firstValueFrom(
-            this.http.post<Invitation>(`${environment.apiUrl}/workspaces/${workspaceId}/invitations`, {email, role}),
+            this.http.post<Invitation>(`${environment.apiUrl}/workspaces/${workspaceId}/invitations`, {email, role: 'Student'}),
         );
     }
 

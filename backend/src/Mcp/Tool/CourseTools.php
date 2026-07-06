@@ -8,6 +8,7 @@ use Kytarna\Mcp\Dto\McpCourseDto;
 use Kytarna\Mcp\Dto\McpCourseListDto;
 use Kytarna\Mcp\McpUserContextInterface;
 use Kytarna\Model\Entity\Workspace;
+use Kytarna\Service\Auth\PermissionCheckerInterface;
 use Kytarna\Service\Provider\CourseProviderInterface;
 use Kytarna\Service\Provider\WorkspaceProviderInterface;
 use Mcp\Capability\Attribute\McpTool;
@@ -19,6 +20,7 @@ final readonly class CourseTools
 		private McpUserContextInterface $userContext,
 		private CourseProviderInterface $courseProvider,
 		private WorkspaceProviderInterface $workspaceProvider,
+		private PermissionCheckerInterface $permissionChecker,
 	) {
 	}
 
@@ -90,6 +92,9 @@ final readonly class CourseTools
 	public function createCourse(string $name, ?string $description = null): McpCourseDto
 	{
 		$workspace = $this->requireWorkspace();
+		if (!$this->permissionChecker->canManageCourses($this->userContext->getUser(), $workspace)) {
+			throw new RuntimeException('Only the teacher (workspace owner) can manage courses.');
+		}
 		$course = $this->courseProvider->createCourse($this->userContext->getUser(), $workspace, $name, $description);
 
 		return McpCourseDto::fromEntity($course);
@@ -104,6 +109,9 @@ final readonly class CourseTools
 	public function deleteCourse(int $courseId): string
 	{
 		$workspace = $this->requireWorkspace();
+		if (!$this->permissionChecker->canManageCourses($this->userContext->getUser(), $workspace)) {
+			throw new RuntimeException('Only the teacher (workspace owner) can manage courses.');
+		}
 		$course = $this->courseProvider->getCourse($workspace, $courseId);
 		if ($course === null) {
 			throw new RuntimeException(sprintf('Course %d not found.', $courseId));

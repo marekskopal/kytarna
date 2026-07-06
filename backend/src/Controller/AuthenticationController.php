@@ -28,7 +28,6 @@ use Kytarna\Service\Authentication\GoogleAuthServiceInterface;
 use Kytarna\Service\Provider\EmailVerificationProviderInterface;
 use Kytarna\Service\Provider\PasswordResetProviderInterface;
 use Kytarna\Service\Provider\UserProviderInterface;
-use Kytarna\Service\Provider\WorkspaceProviderInterface;
 use Kytarna\Service\Request\RequestServiceInterface;
 use Kytarna\Validator\PasswordValidator;
 use Kytarna\Validator\TextFieldValidator;
@@ -46,7 +45,6 @@ final readonly class AuthenticationController
 	public function __construct(
 		private AuthenticationServiceInterface $authenticationService,
 		private UserProviderInterface $userProvider,
-		private WorkspaceProviderInterface $workspaceProvider,
 		private PasswordResetProviderInterface $passwordResetProvider,
 		private EmailVerificationProviderInterface $emailVerificationProvider,
 		private GoogleAuthServiceInterface $googleAuthService,
@@ -109,8 +107,8 @@ final readonly class AuthenticationController
 			$locale = $signUp->locale !== null ? LocaleEnum::tryFrom($signUp->locale) ?? LocaleEnum::En : LocaleEnum::En;
 			$user = $this->userProvider->createUser($signUp->email, $signUp->password, $name, $locale);
 
-			$this->workspaceProvider->createWorkspace($user, mb_substr($name, 0, 240) . "'s Workspace");
-
+			// No workspace is auto-created: onboarding lets the user choose to create their own
+			// workspace (Teacher / self-taught) or join a teacher's workspace as a Student.
 			$this->emailVerificationProvider->requestVerification($user);
 		}
 
@@ -204,18 +202,16 @@ final readonly class AuthenticationController
 
 		$user = $this->userProvider->getUserByGoogleId($tokenInfo->sub);
 		if ($user === null) {
-			$user = $this->userProvider->getUserByEmail($tokenInfo->email);
-			if ($user !== null) {
-				$user = $this->userProvider->linkGoogleAccount($user, $tokenInfo->sub);
-			} else {
-				$user = $this->userProvider->createUserFromGoogle(
+			$existing = $this->userProvider->getUserByEmail($tokenInfo->email);
+			// No workspace is auto-created here — the user picks Teacher/Student during onboarding.
+			$user = $existing !== null
+				? $this->userProvider->linkGoogleAccount($existing, $tokenInfo->sub)
+				: $this->userProvider->createUserFromGoogle(
 					email: $tokenInfo->email,
 					name: $tokenInfo->name,
 					googleId: $tokenInfo->sub,
 					locale: $locale,
 				);
-				$this->workspaceProvider->createWorkspace($user, $tokenInfo->name . "'s Workspace");
-			}
 		}
 
 		return new JsonResponse($this->authenticationService->createAuthentication($user));

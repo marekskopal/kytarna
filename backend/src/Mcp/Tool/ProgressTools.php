@@ -73,10 +73,11 @@ final readonly class ProgressTools
 	#[McpTool(name: 'list_progress_entries', description: 'List a lecture\'s practice entries, optionally within a date range.')]
 	public function listProgressEntries(int $lectureId, ?string $from = null, ?string $to = null): McpProgressEntryListDto
 	{
+		$user = $this->userContext->getUser();
 		$lecture = $this->requireLecture($lectureId);
 		$entries = array_map(
 			static fn (ProgressEntry $entry): McpProgressEntryDto => McpProgressEntryDto::fromEntity($entry),
-			$this->progressProvider->getEntriesByLecture($lecture, $this->normalizeDate($from), $this->normalizeDate($to)),
+			$this->progressProvider->getEntriesByLecture($user, $lecture, $this->normalizeDate($from), $this->normalizeDate($to)),
 		);
 
 		return new McpProgressEntryListDto($entries);
@@ -151,10 +152,11 @@ final readonly class ProgressTools
 
 		$fromDate = $this->normalizeDate($from);
 		$toDate = $this->normalizeDate($to);
+		$user = $this->userContext->getUser();
 
 		$summary = $lectureId !== null
-			? $this->progressProvider->summarizeLecture($this->requireLecture($lectureId), $fromDate, $toDate)
-			: $this->progressProvider->summarizeCourse($this->requireCourse((int) $courseId), $fromDate, $toDate);
+			? $this->progressProvider->summarizeLecture($user, $this->requireLecture($lectureId), $fromDate, $toDate)
+			: $this->progressProvider->summarizeCourse($user, $this->requireCourse((int) $courseId), $fromDate, $toDate);
 
 		return McpPracticeSummaryDto::fromSummary($summary);
 	}

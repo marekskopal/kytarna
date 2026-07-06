@@ -42,7 +42,7 @@ final class CourseControllerTest extends IntegrationTestCase
 		$owner = Fixture::createUser(email: 'owner@example.com');
 		$member = Fixture::createUser(email: 'member@example.com');
 		$workspace = Fixture::createWorkspace($owner);
-		Fixture::addMember($workspace, $member, WorkspaceRoleEnum::Member);
+		Fixture::addMember($workspace, $member, WorkspaceRoleEnum::Student);
 		// Member needs to have this workspace as current. createWorkspace switches owner; member's currentWorkspaceId may be null.
 		$member->currentWorkspaceId = $workspace->id;
 		$repo = $this->container->get(UserRepository::class);
@@ -59,16 +59,16 @@ final class CourseControllerTest extends IntegrationTestCase
 		self::assertSame(401, $response->getStatusCode());
 	}
 
-	public function testAdminCanUpdateAndDeleteCourse(): void
+	public function testStudentCannotUpdateOrDeleteCourse(): void
 	{
 		$owner = Fixture::createUser(email: 'o@example.com');
-		$admin = Fixture::createUser(email: 'a@example.com');
+		$student = Fixture::createUser(email: 'a@example.com');
 		$workspace = Fixture::createWorkspace($owner);
-		Fixture::addMember($workspace, $admin, WorkspaceRoleEnum::Admin);
-		$admin->currentWorkspaceId = $workspace->id;
+		Fixture::addMember($workspace, $student, WorkspaceRoleEnum::Student);
+		$student->currentWorkspaceId = $workspace->id;
 		$repo = $this->container->get(UserRepository::class);
 		assert($repo instanceof UserRepository);
-		$repo->persist($admin);
+		$repo->persist($student);
 
 		$course = Fixture::createCourse($owner, $workspace);
 
@@ -76,15 +76,33 @@ final class CourseControllerTest extends IntegrationTestCase
 			'PUT',
 			'/api/courses/' . $course->id,
 			body: ['name' => 'Renamed', 'description' => null],
-			authenticatedAs: $admin,
+			authenticatedAs: $student,
+		);
+		self::assertSame(401, $update->getStatusCode());
+
+		$delete = $this->request('DELETE', '/api/courses/' . $course->id, authenticatedAs: $student);
+		self::assertSame(401, $delete->getStatusCode());
+	}
+
+	public function testTeacherCanUpdateAndDeleteCourse(): void
+	{
+		$owner = Fixture::createUser(email: 'o@example.com');
+		$workspace = Fixture::createWorkspace($owner);
+		$course = Fixture::createCourse($owner, $workspace);
+
+		$update = $this->request(
+			'PUT',
+			'/api/courses/' . $course->id,
+			body: ['name' => 'Renamed', 'description' => null],
+			authenticatedAs: $owner,
 		);
 		self::assertSame(200, $update->getStatusCode());
 		self::assertSame('Renamed', $this->jsonBody($update)['name']);
 
-		$delete = $this->request('DELETE', '/api/courses/' . $course->id, authenticatedAs: $admin);
+		$delete = $this->request('DELETE', '/api/courses/' . $course->id, authenticatedAs: $owner);
 		self::assertSame(200, $delete->getStatusCode());
 
-		$list = $this->request('GET', '/api/courses', authenticatedAs: $admin);
+		$list = $this->request('GET', '/api/courses', authenticatedAs: $owner);
 		self::assertCount(0, $this->jsonList($list));
 	}
 

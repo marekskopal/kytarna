@@ -52,7 +52,7 @@ final class WorkspaceControllerTest extends IntegrationTestCase
 		$owner = Fixture::createUser(email: 'owner@example.com');
 		$admin = Fixture::createUser(email: 'admin@example.com');
 		$workspace = Fixture::createWorkspace($owner, 'Original');
-		Fixture::addMember($workspace, $admin, WorkspaceRoleEnum::Admin);
+		Fixture::addMember($workspace, $admin, WorkspaceRoleEnum::Student);
 
 		$denied = $this->request(
 			'PUT',
@@ -72,48 +72,64 @@ final class WorkspaceControllerTest extends IntegrationTestCase
 		self::assertSame('New', $this->jsonBody($ok)['name']);
 	}
 
-	public function testTransferOwnership(): void
+	public function testTeacherCanOwnOnlyOneWorkspace(): void
 	{
-		$owner = Fixture::createUser(email: 'a@example.com');
-		$other = Fixture::createUser(email: 'b@example.com');
-		$workspace = Fixture::createWorkspace($owner);
-		Fixture::addMember($workspace, $other, WorkspaceRoleEnum::Admin);
+		$user = Fixture::createUser();
+		Fixture::createWorkspace($user, 'First');
 
-		$response = $this->request(
-			'POST',
-			'/api/workspaces/' . $workspace->id . '/transfer-ownership',
-			body: ['userId' => $other->id],
-			authenticatedAs: $owner,
-		);
-		self::assertSame(200, $response->getStatusCode());
-
-		// Members listing now shows other as Owner, original owner as Admin
-		$members = $this->request('GET', '/api/workspaces/' . $workspace->id . '/members', authenticatedAs: $other);
-		self::assertSame(200, $members->getStatusCode());
-		$byEmail = [];
-		foreach ($this->jsonList($members) as $member) {
-			assert(is_string($member['email']));
-			assert(is_string($member['role']));
-			$byEmail[$member['email']] = $member['role'];
-		}
-		self::assertSame('Owner', $byEmail['b@example.com']);
-		self::assertSame('Admin', $byEmail['a@example.com']);
+		$response = $this->request('POST', '/api/workspaces', body: ['name' => 'Second'], authenticatedAs: $user);
+		self::assertSame(422, $response->getStatusCode());
 	}
 
-	public function testTransferOwnershipRejectsNonOwner(): void
+	public function testStudentJoinsPublicWorkspace(): void
 	{
-		$owner = Fixture::createUser(email: 'a@example.com');
-		$other = Fixture::createUser(email: 'b@example.com');
-		$workspace = Fixture::createWorkspace($owner);
-		Fixture::addMember($workspace, $other, WorkspaceRoleEnum::Admin);
+		$teacher = Fixture::createUser(email: 'teacher@example.com');
+		$workspace = Fixture::createWorkspace($teacher, 'Studio');
 
-		$response = $this->request(
-			'POST',
-			'/api/workspaces/' . $workspace->id . '/transfer-ownership',
-			body: ['userId' => $owner->id],
-			authenticatedAs: $other,
-		);
-		self::assertSame(401, $response->getStatusCode());
+		// Teacher makes the workspace public.
+		$this->request('PUT', '/api/workspaces/' . $workspace->id, body: ['isPublic' => true], authenticatedAs: $teacher);
+
+		$student = Fixture::createUser(email: 'student@example.com');
+		$join = $this->request('POST', '/api/workspaces/' . $workspace->id . '/join', authenticatedAs: $student);
+		self::assertSame(200, $join->getStatusCode());
+
+		// The student now sees the workspace in their memberships as a member.
+		$list = $this->jsonList($this->request('GET', '/api/workspaces', authenticatedAs: $student));
+		self::assertCount(1, $list);
+		self::assertSame('Studio', $list[0]['name']);
+	}
+
+	public function testDiscoverListsPublicWorkspacesOnly(): void
+	{
+		$teacher = Fixture::createUser(email: 'teacher@example.com');
+		$public = Fixture::createWorkspace($teacher, 'Public Studio');
+		$this->request('PUT', '/api/workspaces/' . $public->id, body: ['isPublic' => true], authenticatedAs: $teacher);
+
+		$privateTeacher = Fixture::createUser(email: 'private@example.com');
+		Fixture::createWorkspace($privateTeacher, 'Private Studio');
+
+		$student = Fixture::createUser(email: 'student@example.com');
+		$discover = $this->request('GET', '/api/workspaces/discover', authenticatedAs: $student);
+		self::assertSame(200, $discover->getStatusCode());
+		$names = [];
+		foreach ($this->jsonList($discover) as $w) {
+			assert(is_string($w['name']));
+			$names[] = $w['name'];
+		}
+		self::assertContains('Public Studio', $names);
+		self::assertNotContains('Private Studio', $names);
+	}
+
+	public function testStudentJoinsByCode(): void
+	{
+		$teacher = Fixture::createUser(email: 'teacher@example.com');
+		$workspace = Fixture::createWorkspace($teacher, 'Studio');
+		self::assertNotNull($workspace->joinCode);
+
+		$student = Fixture::createUser(email: 'student@example.com');
+		$join = $this->request('POST', '/api/workspaces/join', body: ['code' => $workspace->joinCode], authenticatedAs: $student);
+		self::assertSame(200, $join->getStatusCode());
+		self::assertSame('Studio', $this->jsonBody($join)['name']);
 	}
 
 	public function testNonMemberCannotViewMembers(): void
@@ -140,7 +156,7 @@ final class WorkspaceControllerTest extends IntegrationTestCase
 		$owner = Fixture::createUser(email: 'owner@example.com');
 		$member = Fixture::createUser(email: 'member@example.com');
 		$workspace = Fixture::createWorkspace($owner);
-		Fixture::addMember($workspace, $member, WorkspaceRoleEnum::Member);
+		Fixture::addMember($workspace, $member, WorkspaceRoleEnum::Student);
 
 		$remove = $this->request('DELETE', '/api/workspaces/' . $workspace->id . '/members/' . $member->id, authenticatedAs: $owner);
 		self::assertSame(200, $remove->getStatusCode());
@@ -154,7 +170,7 @@ final class WorkspaceControllerTest extends IntegrationTestCase
 		$owner = Fixture::createUser(email: 'owner@example.com');
 		$member = Fixture::createUser(email: 'member@example.com');
 		$workspace = Fixture::createWorkspace($owner);
-		Fixture::addMember($workspace, $member, WorkspaceRoleEnum::Member);
+		Fixture::addMember($workspace, $member, WorkspaceRoleEnum::Student);
 
 		$clientService = $this->container->get(ClientServiceInterface::class);
 		assert($clientService instanceof ClientServiceInterface);

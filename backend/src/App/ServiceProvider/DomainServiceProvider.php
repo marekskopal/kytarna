@@ -57,6 +57,8 @@ use Kytarna\Service\Provider\PasswordResetProvider;
 use Kytarna\Service\Provider\PasswordResetProviderInterface;
 use Kytarna\Service\Provider\ProgressProvider;
 use Kytarna\Service\Provider\ProgressProviderInterface;
+use Kytarna\Service\Provider\ProgressStatusProvider;
+use Kytarna\Service\Provider\ProgressStatusProviderInterface;
 use Kytarna\Service\Provider\SavedViewProvider;
 use Kytarna\Service\Provider\SavedViewProviderInterface;
 use Kytarna\Service\Provider\SongFileProvider;
@@ -122,6 +124,7 @@ final class DomainServiceProvider extends AbstractServiceProvider
 			LectureFileProviderInterface::class,
 			TabProviderInterface::class,
 			ProgressProviderInterface::class,
+			ProgressStatusProviderInterface::class,
 			LinkProviderInterface::class,
 			TagProviderInterface::class,
 			LectureTagProviderInterface::class,
@@ -175,6 +178,7 @@ final class DomainServiceProvider extends AbstractServiceProvider
 		$c->add(LectureFileProviderInterface::class, LectureFileProvider::class);
 		$c->add(TabProviderInterface::class, TabProvider::class);
 		$c->add(ProgressProviderInterface::class, ProgressProvider::class);
+		$c->add(ProgressStatusProviderInterface::class, ProgressStatusProvider::class);
 		$c->add(LinkProviderInterface::class, LinkProvider::class);
 		$c->add(TagProviderInterface::class, TagProvider::class);
 		$c->add(LectureTagProviderInterface::class, LectureTagProvider::class);

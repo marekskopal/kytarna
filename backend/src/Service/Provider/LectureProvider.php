@@ -33,6 +33,7 @@ final readonly class LectureProvider implements LectureProviderInterface
 		private ActorContextInterface $actorContext,
 		private LecturePositionManager $positionManager,
 		private CourseSequenceProviderInterface $courseSequenceProvider,
+		private ProgressStatusProviderInterface $progressStatusProvider,
 	) {
 	}
 
@@ -354,6 +355,7 @@ final readonly class LectureProvider implements LectureProviderInterface
 		$this->lectureFileProvider->deleteAllForLecture($author, $lecture);
 		$this->lectureWatcherProvider->deleteAllForLecture($lecture);
 		$this->lectureTagProvider->deleteAllForLecture($lecture);
+		$this->progressStatusProvider->deleteAllForLecture($lecture->id);
 		$this->lectureRepository->delete($lecture);
 	}
 

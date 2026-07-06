@@ -29,7 +29,10 @@ enum Routes: string
 	case WorkspaceSwitch = '/api/workspaces/{workspaceId:number}/switch';
 	case WorkspaceMembers = '/api/workspaces/{workspaceId:number}/members';
 	case WorkspaceMember = '/api/workspaces/{workspaceId:number}/members/{userId:number}';
-	case WorkspaceTransferOwnership = '/api/workspaces/{workspaceId:number}/transfer-ownership';
+	case WorkspaceDiscover = '/api/workspaces/discover';
+	case WorkspaceJoinByCode = '/api/workspaces/join';
+	case WorkspaceJoin = '/api/workspaces/{workspaceId:number}/join';
+	case WorkspaceRotateJoinCode = '/api/workspaces/{workspaceId:number}/rotate-join-code';
 	case WorkspaceInvitations = '/api/workspaces/{workspaceId:number}/invitations';
 	case WorkspaceTags = '/api/workspaces/{workspaceId:number}/tags';
 	case WorkspaceTag = '/api/workspaces/{workspaceId:number}/tags/{tagId:number}';
@@ -117,7 +120,6 @@ enum Routes: string
 	case AdminWorkspace = '/api/admin/workspaces/{workspaceId:number}';
 	case AdminWorkspaceMembers = '/api/admin/workspaces/{workspaceId:number}/members';
 	case AdminWorkspaceMember = '/api/admin/workspaces/{workspaceId:number}/members/{userId:number}';
-	case AdminWorkspaceTransferOwnership = '/api/admin/workspaces/{workspaceId:number}/transfer-ownership';
 
 	case Mcp = '/mcp';
 

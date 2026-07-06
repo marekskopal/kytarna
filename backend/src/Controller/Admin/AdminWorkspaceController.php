@@ -8,12 +8,10 @@ use Kytarna\Dto\AdminAddMemberDto;
 use Kytarna\Dto\AdminWorkspaceDto;
 use Kytarna\Dto\WorkspaceDto;
 use Kytarna\Dto\WorkspaceMemberDto;
-use Kytarna\Dto\WorkspaceTransferOwnershipDto;
 use Kytarna\Dto\WorkspaceUpdateDto;
 use Kytarna\Model\Entity\Enum\WorkspaceRoleEnum;
 use Kytarna\Model\Entity\Workspace;
 use Kytarna\Model\Entity\WorkspaceUser;
-use Kytarna\Response\ConflictResponse;
 use Kytarna\Response\ErrorResponse;
 use Kytarna\Response\NotAuthorizedResponse;
 use Kytarna\Response\NotFoundResponse;
@@ -31,7 +29,6 @@ use MarekSkopal\Router\Attribute\RoutePatch;
 use MarekSkopal\Router\Attribute\RoutePost;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use RuntimeException;
 
 final readonly class AdminWorkspaceController
 {
@@ -148,12 +145,8 @@ final readonly class AdminWorkspaceController
 			return new NotFoundResponse('User not found.');
 		}
 
-		$role = WorkspaceRoleEnum::tryFrom($dto->role) ?? WorkspaceRoleEnum::Member;
-		if ($role === WorkspaceRoleEnum::Owner) {
-			return new ErrorResponse('Use transfer-ownership to set the workspace owner.', 422);
-		}
-
-		$membership = $this->workspaceProvider->addMember($workspace, $target, $role);
+		// Admins can only add Students; the sole Teacher is the workspace owner.
+		$membership = $this->workspaceProvider->addMember($workspace, $target, WorkspaceRoleEnum::Student);
 
 		return new JsonResponse(WorkspaceMemberDto::fromEntity($membership));
 	}
@@ -176,45 +169,13 @@ final readonly class AdminWorkspaceController
 			return new NotFoundResponse('Member not found.');
 		}
 
-		if ($target->role === WorkspaceRoleEnum::Owner) {
-			return new ErrorResponse('The workspace owner cannot be removed. Transfer ownership first.', 422);
+		if ($target->role === WorkspaceRoleEnum::Teacher) {
+			return new ErrorResponse('The workspace teacher cannot be removed. Delete the workspace instead.', 422);
 		}
 
 		$this->workspaceProvider->removeMember($target);
 
 		return new OkResponse();
-	}
-
-	#[RoutePatch(Routes::AdminWorkspaceTransferOwnership->value)]
-	public function actionPatchTransferOwnership(ServerRequestInterface $request, int $workspaceId): ResponseInterface
-	{
-		$actor = $this->requestService->getUser($request);
-		if (!$this->permissionChecker->isSystemAdmin($actor)) {
-			return new NotAuthorizedResponse('System administrator access required.');
-		}
-
-		$workspace = $this->workspaceProvider->getWorkspace($workspaceId);
-		if ($workspace === null) {
-			return new NotFoundResponse('Workspace not found.');
-		}
-
-		$dto = $this->requestService->getRequestBodyDto($request, WorkspaceTransferOwnershipDto::class);
-		$target = $this->findMembership($workspace, $dto->userId);
-		if ($target === null) {
-			$user = $this->userProvider->getUser($dto->userId);
-			if ($user === null) {
-				return new NotFoundResponse('Target user not found.');
-			}
-			$target = $this->workspaceProvider->addMember($workspace, $user, WorkspaceRoleEnum::Admin);
-		}
-
-		try {
-			$this->workspaceProvider->transferOwnership($actor, $workspace, $target);
-		} catch (RuntimeException $e) {
-			return new ConflictResponse($e->getMessage());
-		}
-
-		return new JsonResponse(WorkspaceDto::fromEntity($workspace));
 	}
 
 	private function findMembership(Workspace $workspace, int $userId): ?WorkspaceUser

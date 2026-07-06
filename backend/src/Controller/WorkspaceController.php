@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Kytarna\Controller;
 
+use Kytarna\Dto\PublicWorkspaceDto;
 use Kytarna\Dto\WorkspaceCreateDto;
 use Kytarna\Dto\WorkspaceDto;
+use Kytarna\Dto\WorkspaceJoinDto;
 use Kytarna\Dto\WorkspaceMemberDto;
-use Kytarna\Dto\WorkspaceMemberRoleUpdateDto;
-use Kytarna\Dto\WorkspaceTransferOwnershipDto;
 use Kytarna\Dto\WorkspaceUpdateDto;
 use Kytarna\Model\Entity\Enum\WorkspaceRoleEnum;
 use Kytarna\Model\Entity\Workspace;
@@ -25,12 +25,16 @@ use Kytarna\Service\Request\RequestServiceInterface;
 use Laminas\Diactoros\Response\JsonResponse;
 use MarekSkopal\Router\Attribute\RouteDelete;
 use MarekSkopal\Router\Attribute\RouteGet;
-use MarekSkopal\Router\Attribute\RoutePatch;
 use MarekSkopal\Router\Attribute\RoutePost;
 use MarekSkopal\Router\Attribute\RoutePut;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
+use function is_numeric;
+use function is_string;
+use function iterator_count;
+use function max;
+use function min;
 
 final readonly class WorkspaceController
 {
@@ -49,7 +53,32 @@ final readonly class WorkspaceController
 
 		$workspaces = [];
 		foreach ($this->workspaceProvider->getMemberships($user) as $membership) {
-			$workspaces[] = WorkspaceDto::fromEntity($membership->workspace);
+			$workspace = $membership->workspace;
+			$workspaces[] = WorkspaceDto::fromEntity($workspace, includeJoinCode: $workspace->owner->id === $user->id);
+		}
+
+		return new JsonResponse($workspaces);
+	}
+
+	#[RouteGet(Routes::WorkspaceDiscover->value)]
+	public function actionGetDiscover(ServerRequestInterface $request): ResponseInterface
+	{
+		$user = $this->requestService->getUser($request);
+		$params = $request->getQueryParams();
+
+		$searchRaw = $params['search'] ?? null;
+		$search = is_string($searchRaw) && $searchRaw !== '' ? $searchRaw : null;
+
+		$limitRaw = $params['limit'] ?? null;
+		$limit = min(max(is_numeric($limitRaw) ? (int) $limitRaw : 20, 1), 100);
+
+		$offsetRaw = $params['offset'] ?? null;
+		$offset = max(is_numeric($offsetRaw) ? (int) $offsetRaw : 0, 0);
+
+		$workspaces = [];
+		foreach ($this->workspaceProvider->findPublicWorkspaces($user, $search, $limit, $offset) as $workspace) {
+			$memberCount = iterator_count($this->workspaceProvider->getMembers($workspace));
+			$workspaces[] = PublicWorkspaceDto::fromEntity($workspace, $memberCount);
 		}
 
 		return new JsonResponse($workspaces);
@@ -86,12 +115,35 @@ final readonly class WorkspaceController
 		$dto = $this->requestService->getRequestBodyDto($request, WorkspaceUpdateDto::class);
 
 		try {
-			$updated = $this->workspaceProvider->updateWorkspace($workspace, $dto->name ?? $workspace->name);
+			$updated = $this->workspaceProvider->updateWorkspace(
+				$workspace,
+				$dto->name ?? $workspace->name,
+				$dto->isPublic,
+				$dto->description,
+			);
 		} catch (RuntimeException $e) {
 			return new ErrorResponse($e->getMessage(), 422);
 		}
 
-		return new JsonResponse(WorkspaceDto::fromEntity($updated));
+		return new JsonResponse(WorkspaceDto::fromEntity($updated, includeJoinCode: true));
+	}
+
+	#[RoutePost(Routes::WorkspaceRotateJoinCode->value)]
+	public function actionPostRotateJoinCode(ServerRequestInterface $request, int $workspaceId): ResponseInterface
+	{
+		$user = $this->requestService->getUser($request);
+		$workspace = $this->workspaceProvider->getWorkspace($workspaceId);
+		if ($workspace === null) {
+			return new NotFoundResponse('Workspace not found.');
+		}
+
+		if (!$this->permissionChecker->canManageWorkspace($user, $workspace)) {
+			return new NotAuthorizedResponse('Only the teacher can rotate the join code.');
+		}
+
+		$this->workspaceProvider->rotateJoinCode($workspace);
+
+		return new JsonResponse(WorkspaceDto::fromEntity($workspace, includeJoinCode: true));
 	}
 
 	#[RouteDelete(Routes::Workspace->value)]
@@ -130,6 +182,36 @@ final readonly class WorkspaceController
 		return new JsonResponse(WorkspaceDto::fromEntity($workspace));
 	}
 
+	#[RoutePost(Routes::WorkspaceJoin->value)]
+	public function actionPostJoin(ServerRequestInterface $request, int $workspaceId): ResponseInterface
+	{
+		$user = $this->requestService->getUser($request);
+		$workspace = $this->workspaceProvider->getWorkspace($workspaceId);
+		if ($workspace === null || !$workspace->isPublic) {
+			return new NotFoundResponse('Workspace not found.');
+		}
+
+		$this->workspaceProvider->joinAsStudent($user, $workspace);
+
+		return new JsonResponse(WorkspaceDto::fromEntity($workspace));
+	}
+
+	#[RoutePost(Routes::WorkspaceJoinByCode->value)]
+	public function actionPostJoinByCode(ServerRequestInterface $request): ResponseInterface
+	{
+		$user = $this->requestService->getUser($request);
+		$dto = $this->requestService->getRequestBodyDto($request, WorkspaceJoinDto::class);
+
+		$workspace = $this->workspaceProvider->findByJoinCode($dto->code);
+		if ($workspace === null) {
+			return new NotFoundResponse('No workspace matches that join code.');
+		}
+
+		$this->workspaceProvider->joinAsStudent($user, $workspace);
+
+		return new JsonResponse(WorkspaceDto::fromEntity($workspace));
+	}
+
 	#[RouteGet(Routes::WorkspaceMembers->value)]
 	public function actionGetMembers(ServerRequestInterface $request, int $workspaceId): ResponseInterface
 	{
@@ -151,63 +233,6 @@ final readonly class WorkspaceController
 		return new JsonResponse($members);
 	}
 
-	#[RoutePatch(Routes::WorkspaceMember->value)]
-	public function actionPatchMember(ServerRequestInterface $request, int $workspaceId, int $userId): ResponseInterface
-	{
-		$user = $this->requestService->getUser($request);
-		$workspace = $this->workspaceProvider->getWorkspace($workspaceId);
-		if ($workspace === null) {
-			return new NotFoundResponse('Workspace not found.');
-		}
-
-		$target = $this->findMembershipByUserId($workspace, $userId);
-		if ($target === null) {
-			return new NotFoundResponse('Member not found.');
-		}
-
-		$dto = $this->requestService->getRequestBodyDto($request, WorkspaceMemberRoleUpdateDto::class);
-		$newRole = WorkspaceRoleEnum::tryFrom($dto->role);
-		if ($newRole === null) {
-			return new ErrorResponse('Invalid role.', 422);
-		}
-
-		if (!$this->permissionChecker->canChangeRole($user, $workspace, $target, $newRole)) {
-			return new NotAuthorizedResponse('You cannot change this member\'s role.');
-		}
-
-		$this->workspaceProvider->changeMemberRole($user, $target, $newRole);
-
-		return new JsonResponse(WorkspaceMemberDto::fromEntity($target));
-	}
-
-	#[RoutePost(Routes::WorkspaceTransferOwnership->value)]
-	public function actionPostTransferOwnership(ServerRequestInterface $request, int $workspaceId): ResponseInterface
-	{
-		$user = $this->requestService->getUser($request);
-		$workspace = $this->workspaceProvider->getWorkspace($workspaceId);
-		if ($workspace === null) {
-			return new NotFoundResponse('Workspace not found.');
-		}
-
-		if (!$this->permissionChecker->canManageWorkspace($user, $workspace)) {
-			return new NotAuthorizedResponse('Only the current owner can transfer ownership.');
-		}
-
-		$dto = $this->requestService->getRequestBodyDto($request, WorkspaceTransferOwnershipDto::class);
-		$target = $this->findMembershipByUserId($workspace, $dto->userId);
-		if ($target === null) {
-			return new ErrorResponse('Target user is not a member of this workspace.', 422);
-		}
-
-		if ($target->user->id === $workspace->owner->id) {
-			return new ErrorResponse('Target user is already the owner.', 422);
-		}
-
-		$this->workspaceProvider->transferOwnership($user, $workspace, $target);
-
-		return new JsonResponse(WorkspaceDto::fromEntity($workspace));
-	}
-
 	#[RouteDelete(Routes::WorkspaceMember->value)]
 	public function actionDeleteMember(ServerRequestInterface $request, int $workspaceId, int $userId): ResponseInterface
 	{
@@ -222,8 +247,8 @@ final readonly class WorkspaceController
 			return new NotFoundResponse('Member not found.');
 		}
 
-		if ($target->role === WorkspaceRoleEnum::Owner) {
-			return new ErrorResponse('The owner cannot be removed. Transfer ownership first.', 422);
+		if ($target->role === WorkspaceRoleEnum::Teacher) {
+			return new ErrorResponse('The teacher cannot be removed. Delete the workspace instead.', 422);
 		}
 
 		if (!$this->permissionChecker->canRemoveMember($user, $workspace, $target)) {

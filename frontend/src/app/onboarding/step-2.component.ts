@@ -1,7 +1,6 @@
 import {ChangeDetectionStrategy, Component, inject, signal} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {WorkspaceRole} from '@app/models/workspace';
 import {OnboardingStateService} from '@app/onboarding/onboarding-state.service';
 import {AlertService} from '@app/services/alert.service';
 import {CurrentUserService} from '@app/services/current-user.service';
@@ -10,7 +9,6 @@ import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
 type InviteFormGroup = FormGroup<{
     email: FormControl<string>;
-    role: FormControl<WorkspaceRole>;
 }>;
 
 @Component({
@@ -77,7 +75,7 @@ export class OnboardingStep2Component {
 
         this.saving.set(true);
         const results = await Promise.allSettled(filled.map((row) =>
-            this.workspaceService.createInvitation(workspaceId, row.value.email!.trim(), row.value.role!),
+            this.workspaceService.createInvitation(workspaceId, row.value.email!.trim()),
         ));
 
         const ok = results.filter((r) => r.status === 'fulfilled').length;
@@ -101,7 +99,6 @@ export class OnboardingStep2Component {
     private createRow(): InviteFormGroup {
         return this.fb.nonNullable.group({
             email: this.fb.nonNullable.control('', [Validators.email]),
-            role: this.fb.nonNullable.control<WorkspaceRole>('Member'),
         });
     }
 }

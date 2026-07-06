@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Kytarna\Dto;
 
+use Kytarna\Model\Entity\Enum\LearningStatusEnum;
 use Kytarna\Model\Entity\Song;
 use const DATE_ATOM;
 
@@ -35,8 +36,12 @@ final readonly class SongDto
 	) {
 	}
 
-	/** @param list<int> $tagIds */
-	public static function fromEntity(Song $song, array $tagIds = []): self
+	/**
+	 * @param list<int> $tagIds
+	 * @param LearningStatusEnum|null $statusOverride the viewer's personal board status; when given it
+	 *        replaces the song's authored default so each learner sees their own column.
+	 */
+	public static function fromEntity(Song $song, array $tagIds = [], ?LearningStatusEnum $statusOverride = null): self
 	{
 		$code = $song->course !== null && $song->sequenceNumber !== null
 			? $song->course->prefix . '-' . $song->sequenceNumber
@@ -47,7 +52,7 @@ final readonly class SongDto
 			code: $code,
 			courseId: $song->course?->id,
 			courseName: $song->course?->name,
-			status: $song->status->value,
+			status: ($statusOverride ?? $song->status)->value,
 			name: $song->name,
 			description: $song->description,
 			tuning: $song->tuning,

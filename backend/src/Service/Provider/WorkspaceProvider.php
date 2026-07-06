@@ -14,8 +14,8 @@ use Kytarna\Model\Entity\WorkspaceUser;
 use Kytarna\Model\Repository\UserRepository;
 use Kytarna\Model\Repository\WorkspaceRepository;
 use Kytarna\Model\Repository\WorkspaceUserRepository;
+use Kytarna\Service\Provider\Exception\WorkspaceOwnershipException;
 use Kytarna\Validator\TextFieldValidator;
-use RuntimeException;
 
 final readonly class WorkspaceProvider implements WorkspaceProviderInterface
 {
@@ -54,17 +54,30 @@ final readonly class WorkspaceProvider implements WorkspaceProviderInterface
 		return $this->findMembership($user, $workspace) !== null;
 	}
 
+	public function findOwnedWorkspace(User $user): ?Workspace
+	{
+		foreach ($this->workspaceRepository->findByOwner($user->id) as $workspace) {
+			return $workspace;
+		}
+
+		return null;
+	}
+
 	public function createWorkspace(User $owner, string $name): Workspace
 	{
+		if ($this->findOwnedWorkspace($owner) !== null) {
+			throw new WorkspaceOwnershipException();
+		}
+
 		$name = TextFieldValidator::validateName($name, 'Workspace');
 		$now = new DateTimeImmutable();
-		$workspace = new Workspace(owner: $owner, name: $name);
+		$workspace = new Workspace(owner: $owner, name: $name, joinCode: $this->generateUniqueJoinCode());
 		$workspace->createdAt = $now;
 		$workspace->updatedAt = $now;
 
 		$this->workspaceRepository->persist($workspace);
 
-		$this->addMember($workspace, $owner, WorkspaceRoleEnum::Owner);
+		$this->addMember($workspace, $owner, WorkspaceRoleEnum::Teacher);
 
 		if ($owner->currentWorkspaceId === null) {
 			$this->switchCurrentWorkspace($owner, $workspace);
@@ -73,14 +86,77 @@ final readonly class WorkspaceProvider implements WorkspaceProviderInterface
 		return $workspace;
 	}
 
-	public function updateWorkspace(Workspace $workspace, string $name): Workspace
+	public function updateWorkspace(Workspace $workspace, string $name, ?bool $isPublic = null, ?string $description = null): Workspace
 	{
-		$name = TextFieldValidator::validateName($name, 'Workspace');
-		$workspace->name = $name;
+		$workspace->name = TextFieldValidator::validateName($name, 'Workspace');
+		if ($isPublic !== null) {
+			$workspace->isPublic = $isPublic;
+		}
+		if ($description !== null) {
+			$workspace->description = $description === '' ? null : $description;
+		}
 		$workspace->updatedAt = new DateTimeImmutable();
 		$this->workspaceRepository->persist($workspace);
 
 		return $workspace;
+	}
+
+	public function rotateJoinCode(Workspace $workspace): string
+	{
+		$code = $this->generateUniqueJoinCode();
+		$workspace->joinCode = $code;
+		$workspace->updatedAt = new DateTimeImmutable();
+		$this->workspaceRepository->persist($workspace);
+
+		return $code;
+	}
+
+	public function joinAsStudent(User $actor, Workspace $workspace): WorkspaceUser
+	{
+		$membership = $this->addMember($workspace, $actor, WorkspaceRoleEnum::Student);
+
+		if ($actor->currentWorkspaceId === null) {
+			$this->switchCurrentWorkspace($actor, $workspace);
+		}
+
+		$this->eventProvider->recordWorkspaceEvent(
+			$actor,
+			$workspace,
+			EventTypeEnum::MemberJoined,
+			['userId' => $actor->id, 'userName' => $actor->name],
+		);
+
+		return $membership;
+	}
+
+	/** @return Iterator<Workspace> */
+	public function findPublicWorkspaces(User $user, ?string $search, int $limit, int $offset): Iterator
+	{
+		$excludeIds = [];
+		foreach ($this->getMemberships($user) as $membership) {
+			$excludeIds[] = $membership->workspace->id;
+		}
+
+		return $this->workspaceRepository->findPublic($search, $limit, $offset, $excludeIds);
+	}
+
+	public function findByJoinCode(string $joinCode): ?Workspace
+	{
+		$joinCode = trim($joinCode);
+		if ($joinCode === '') {
+			return null;
+		}
+
+		return $this->workspaceRepository->findByJoinCode($joinCode);
+	}
+
+	private function generateUniqueJoinCode(): string
+	{
+		do {
+			$code = bin2hex(random_bytes(6));
+		} while ($this->workspaceRepository->findByJoinCode($code) !== null);
+
+		return $code;
 	}
 
 	public function deleteWorkspace(Workspace $workspace): void
@@ -108,76 +184,6 @@ final readonly class WorkspaceProvider implements WorkspaceProviderInterface
 	public function removeMember(WorkspaceUser $membership): void
 	{
 		$this->workspaceUserRepository->delete($membership);
-	}
-
-	public function changeMemberRole(User $actor, WorkspaceUser $membership, WorkspaceRoleEnum $newRole): WorkspaceUser
-	{
-		if ($newRole === WorkspaceRoleEnum::Owner) {
-			throw new RuntimeException('Use transferOwnership() to assign the Owner role.');
-		}
-		if ($membership->role === WorkspaceRoleEnum::Owner) {
-			throw new RuntimeException('Cannot change the Owner\'s role directly.');
-		}
-
-		$previous = $membership->role;
-		$membership->role = $newRole;
-		$membership->updatedAt = new DateTimeImmutable();
-		$this->workspaceUserRepository->persist($membership);
-
-		$this->eventProvider->recordWorkspaceEvent(
-			$actor,
-			$membership->workspace,
-			EventTypeEnum::MemberRoleChanged,
-			[
-				'userId' => $membership->user->id,
-				'userName' => $membership->user->name,
-				'fromRole' => $previous->value,
-				'toRole' => $newRole->value,
-			],
-		);
-
-		return $membership;
-	}
-
-	public function transferOwnership(User $actor, Workspace $workspace, WorkspaceUser $newOwnerMembership): void
-	{
-		if ($newOwnerMembership->workspace->id !== $workspace->id) {
-			throw new RuntimeException('Target membership belongs to a different workspace.');
-		}
-		if ($newOwnerMembership->user->id === $workspace->owner->id) {
-			throw new RuntimeException('Target user is already the owner.');
-		}
-
-		$previousOwner = $workspace->owner;
-		$previousMembership = $this->findMembership($previousOwner, $workspace);
-
-		$now = new DateTimeImmutable();
-
-		if ($previousMembership !== null) {
-			$previousMembership->role = WorkspaceRoleEnum::Admin;
-			$previousMembership->updatedAt = $now;
-			$this->workspaceUserRepository->persist($previousMembership);
-		}
-
-		$newOwnerMembership->role = WorkspaceRoleEnum::Owner;
-		$newOwnerMembership->updatedAt = $now;
-		$this->workspaceUserRepository->persist($newOwnerMembership);
-
-		$workspace->owner = $newOwnerMembership->user;
-		$workspace->updatedAt = $now;
-		$this->workspaceRepository->persist($workspace);
-
-		$this->eventProvider->recordWorkspaceEvent(
-			$actor,
-			$workspace,
-			EventTypeEnum::OwnershipTransferred,
-			[
-				'fromUserId' => $previousOwner->id,
-				'fromUserName' => $previousOwner->name,
-				'toUserId' => $newOwnerMembership->user->id,
-				'toUserName' => $newOwnerMembership->user->name,
-			],
-		);
 	}
 
 	public function switchCurrentWorkspace(User $user, Workspace $workspace): void

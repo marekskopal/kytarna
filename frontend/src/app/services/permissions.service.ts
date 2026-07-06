@@ -3,6 +3,11 @@ import {WorkspaceMember, WorkspaceRole} from '@app/models/workspace';
 
 import {CurrentUserService} from './current-user.service';
 
+/**
+ * Teacher / Student authorization, mirroring the backend PermissionChecker. The Teacher (workspace
+ * owner) edits all content and manages members; a Student has read-only content and tracks their own
+ * progress. SystemAdmin passes every check.
+ */
 @Injectable({providedIn: 'root'})
 export class PermissionsService {
     private readonly currentUserService = inject(CurrentUserService);
@@ -19,58 +24,46 @@ export class PermissionsService {
         return members.find((m) => m.userId === user.id)?.role ?? null;
     }
 
-    public canManageWorkspace(members: WorkspaceMember[] | null | undefined): boolean {
+    public isTeacher(members: WorkspaceMember[] | null | undefined): boolean {
         if (this.isSystemAdmin()) return true;
-        return this.roleForCurrentUser(members) === 'Owner';
+        return this.roleForCurrentUser(members) === 'Teacher';
+    }
+
+    public canManageWorkspace(members: WorkspaceMember[] | null | undefined): boolean {
+        return this.isTeacher(members);
     }
 
     public canManageMembers(members: WorkspaceMember[] | null | undefined): boolean {
-        if (this.isSystemAdmin()) return true;
-        const role = this.roleForCurrentUser(members);
-        return role === 'Owner' || role === 'Admin';
+        return this.isTeacher(members);
     }
 
     public canManageCourses(members: WorkspaceMember[] | null | undefined): boolean {
-        if (this.isSystemAdmin()) return true;
-        const role = this.roleForCurrentUser(members);
-        return role === 'Owner' || role === 'Admin';
+        return this.isTeacher(members);
+    }
+
+    public canManageLectures(members: WorkspaceMember[] | null | undefined): boolean {
+        return this.isTeacher(members);
+    }
+
+    public canManageSongs(members: WorkspaceMember[] | null | undefined): boolean {
+        return this.isTeacher(members);
     }
 
     public canManageTags(members: WorkspaceMember[] | null | undefined): boolean {
-        if (this.isSystemAdmin()) return true;
-        const role = this.roleForCurrentUser(members);
-        return role === 'Owner' || role === 'Admin';
+        return this.isTeacher(members);
     }
 
-    public canChangeRoleOf(members: WorkspaceMember[] | null | undefined, target: WorkspaceMember): boolean {
-        if (target.role === 'Owner') return false;
-        return this.canManageMembers(members);
+    /** Any member (Teacher or Student) may track their own learning progress. */
+    public canTrackProgress(members: WorkspaceMember[] | null | undefined): boolean {
+        if (this.isSystemAdmin()) return true;
+        return this.roleForCurrentUser(members) !== null;
     }
 
     public canRemoveMember(members: WorkspaceMember[] | null | undefined, target: WorkspaceMember): boolean {
+        // The Teacher (owner) cannot be removed; a Student may remove themselves (leave).
+        if (target.role === 'Teacher') return false;
         const user = this.currentUserService.currentUser();
-        if (target.userId === user?.id) {
-            return target.role !== 'Owner';
-        }
-        if (this.isSystemAdmin()) {
-            return target.role !== 'Owner';
-        }
-        const role = this.roleForCurrentUser(members);
-        if (role === 'Owner') return target.role !== 'Owner';
-        if (role === 'Admin') return target.role === 'Member';
-        return false;
-    }
-
-    public canTransferOwnership(members: WorkspaceMember[] | null | undefined): boolean {
-        if (this.isSystemAdmin()) return true;
-        return this.roleForCurrentUser(members) === 'Owner';
-    }
-
-    public invitableRoles(members: WorkspaceMember[] | null | undefined): WorkspaceRole[] {
-        if (this.isSystemAdmin()) return ['Admin', 'Member'];
-        const role = this.roleForCurrentUser(members);
-        if (role === 'Owner') return ['Admin', 'Member'];
-        if (role === 'Admin') return ['Member'];
-        return [];
+        if (target.userId === user?.id) return true;
+        return this.isTeacher(members);
     }
 }

@@ -50,14 +50,16 @@
             <a class="board-views-tab board-views-tab--active" aria-current="page">{{ 'app.board.viewBoard' | translate }}</a>
             <a class="board-views-tab" [routerLink]="['/courses', board.course.id, 'events']">{{ 'app.board.viewEvents' | translate }}</a>
         </div>
-        <div class="course-toolbar-actions">
-            <button type="button" class="btn btn-ghost btn-sm" (click)="openNewSong()">
-                {{ 'app.board.newSong' | translate }}
-            </button>
-            <button type="button" class="btn btn-primary btn-sm" (click)="openCreate(board.statuses[0])">
-                {{ 'app.board.newLecture' | translate }}
-            </button>
-        </div>
+        @if (canEdit()) {
+            <div class="course-toolbar-actions">
+                <button type="button" class="btn btn-ghost btn-sm" (click)="openNewSong()">
+                    {{ 'app.board.newSong' | translate }}
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" (click)="openCreate(board.statuses[0])">
+                    {{ 'app.board.newLecture' | translate }}
+                </button>
+            </div>
+        }
     </div>
 
     <div cdkDropListGroup class="kanban">
@@ -93,9 +95,11 @@
                     }
                 </div>
 
-                <button type="button" class="column-add-ghost" (click)="openCreate(col.status)">
-                    {{ 'app.board.addLecture' | translate }}
-                </button>
+                @if (canEdit()) {
+                    <button type="button" class="column-add-ghost" (click)="openCreate(col.status)">
+                        {{ 'app.board.addLecture' | translate }}
+                    </button>
+                }
             </div>
         }
     </div>

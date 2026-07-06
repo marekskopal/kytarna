@@ -1,10 +1,23 @@
-export type WorkspaceRole = 'Owner' | 'Admin' | 'Member';
+export type WorkspaceRole = 'Teacher' | 'Student';
 
 export interface Workspace {
     id: number;
     name: string;
     ownerId: number;
+    isPublic: boolean;
+    description: string | null;
+    /** Present only for the workspace's own Teacher (owner). */
+    joinCode: string | null;
     createdAt: string;
+}
+
+/** A workspace as shown in the public teacher directory. */
+export interface PublicWorkspace {
+    id: number;
+    name: string;
+    description: string | null;
+    teacherName: string;
+    memberCount: number;
 }
 
 export interface WorkspaceMember {

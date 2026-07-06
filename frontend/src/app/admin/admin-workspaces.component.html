@@ -69,8 +69,7 @@
                         </div>
                         <div class="member-role">
                             <span class="role-chip role-chip--{{ m.role.toLowerCase() }}">{{ ('app.workspaces.role.' + m.role) | translate }}</span>
-                            @if (m.role !== 'Owner') {
-                                <button type="button" class="btn btn-ghost" (click)="transferOwnership(m)">{{ 'app.workspaces.transferOwnership' | translate }}</button>
+                            @if (m.role !== 'Teacher') {
                                 <button type="button" class="btn btn-ghost" (click)="removeMember(m)">{{ 'app.actions.remove' | translate }}</button>
                             }
                         </div>

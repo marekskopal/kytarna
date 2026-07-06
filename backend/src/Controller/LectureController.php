@@ -14,13 +14,16 @@ use Kytarna\Dto\LectureUpdateDto;
 use Kytarna\Model\Entity\Lecture;
 use Kytarna\Model\Entity\User;
 use Kytarna\Response\ErrorResponse;
+use Kytarna\Response\NotAuthorizedResponse;
 use Kytarna\Response\NotFoundResponse;
 use Kytarna\Response\OkResponse;
 use Kytarna\Route\Routes;
+use Kytarna\Service\Auth\PermissionCheckerInterface;
 use Kytarna\Service\Provider\CourseProviderInterface;
 use Kytarna\Service\Provider\LectureCodeResolverInterface;
 use Kytarna\Service\Provider\LectureProviderInterface;
 use Kytarna\Service\Provider\LectureTagProviderInterface;
+use Kytarna\Service\Provider\ProgressStatusProviderInterface;
 use Kytarna\Service\Provider\WorkspaceProviderInterface;
 use Kytarna\Service\Request\RequestServiceInterface;
 use Laminas\Diactoros\Response\JsonResponse;
@@ -40,6 +43,8 @@ final readonly class LectureController
 		private LectureCodeResolverInterface $lectureCodeResolver,
 		private WorkspaceProviderInterface $workspaceProvider,
 		private LectureTagProviderInterface $lectureTagProvider,
+		private ProgressStatusProviderInterface $progressStatusProvider,
+		private PermissionCheckerInterface $permissionChecker,
 		private RequestServiceInterface $requestService,
 	) {
 	}
@@ -117,9 +122,14 @@ final readonly class LectureController
 		$tagsByLectureId = $this->lectureTagProvider->getTagIdsByLectureIds(
 			array_map(static fn (Lecture $t): int => $t->id, $courseLectures),
 		);
+		$statusByLectureId = $this->progressStatusProvider->lectureStatusesForUserInCourse($user, $course);
 
 		$lectures = array_map(
-			static fn (Lecture $t): LectureDto => LectureDto::fromEntity($t, $tagsByLectureId[$t->id] ?? []),
+			static fn (Lecture $t): LectureDto => LectureDto::fromEntity(
+				$t,
+				$tagsByLectureId[$t->id] ?? [],
+				$statusByLectureId[$t->id] ?? null,
+			),
 			$courseLectures,
 		);
 
@@ -138,6 +148,10 @@ final readonly class LectureController
 		$course = $this->courseProvider->getCourse($workspace, $courseId);
 		if ($course === null) {
 			return new NotFoundResponse('Course with id "' . $courseId . '" was not found.');
+		}
+
+		if (!$this->permissionChecker->canManageLectures($user, $workspace)) {
+			return new NotAuthorizedResponse('Only the teacher can create lectures.');
 		}
 
 		try {
@@ -163,7 +177,7 @@ final readonly class LectureController
 			return new ErrorResponse($e->getMessage(), 422);
 		}
 
-		return new JsonResponse(LectureDto::fromEntity($lecture, $this->lectureTagProvider->getTagIdsForLecture($lecture)));
+		return new JsonResponse($this->lectureResponse($user, $lecture));
 	}
 
 	#[RouteGet(Routes::Lecture->value)]
@@ -175,7 +189,7 @@ final readonly class LectureController
 			return new NotFoundResponse('Lecture not found.');
 		}
 
-		return new JsonResponse(LectureDto::fromEntity($lecture, $this->lectureTagProvider->getTagIdsForLecture($lecture)));
+		return new JsonResponse($this->lectureResponse($user, $lecture));
 	}
 
 	#[RoutePut(Routes::Lecture->value)]
@@ -185,6 +199,10 @@ final readonly class LectureController
 		$lecture = $this->loadLectureInScope($user, $lectureId);
 		if ($lecture === null) {
 			return new NotFoundResponse('Lecture not found.');
+		}
+
+		if (!$this->permissionChecker->canManageLectures($user, $lecture->course->workspace)) {
+			return new NotAuthorizedResponse('Only the teacher can edit lectures.');
 		}
 
 		try {
@@ -210,7 +228,7 @@ final readonly class LectureController
 			return new ErrorResponse($e->getMessage(), 422);
 		}
 
-		return new JsonResponse(LectureDto::fromEntity($lecture, $this->lectureTagProvider->getTagIdsForLecture($lecture)));
+		return new JsonResponse($this->lectureResponse($user, $lecture));
 	}
 
 	#[RoutePut(Routes::LectureMove->value)]
@@ -222,15 +240,21 @@ final readonly class LectureController
 			return new NotFoundResponse('Lecture not found.');
 		}
 
+		// A card drag records the viewing user's personal progress, not the shared template.
+		// Any member (Teacher or Student) may track their own progress.
+		if (!$this->permissionChecker->canTrackProgress($user, $lecture->course->workspace)) {
+			return new NotAuthorizedResponse('You cannot track progress in this workspace.');
+		}
+
 		try {
 			$dto = $this->requestService->getRequestBodyDto($request, LectureMoveDto::class);
 		} catch (RuntimeException $e) {
 			return new ErrorResponse($e->getMessage(), 422);
 		}
 
-		$lecture = $this->lectureProvider->moveLecture($user, $lecture, $dto->status, $dto->position);
+		$this->progressStatusProvider->setLectureStatus($user, $lecture, $dto->status);
 
-		return new JsonResponse(LectureDto::fromEntity($lecture, $this->lectureTagProvider->getTagIdsForLecture($lecture)));
+		return new JsonResponse($this->lectureResponse($user, $lecture));
 	}
 
 	#[RoutePost(Routes::LectureArchive->value)]
@@ -242,9 +266,13 @@ final readonly class LectureController
 			return new NotFoundResponse('Lecture not found.');
 		}
 
+		if (!$this->permissionChecker->canManageLectures($user, $lecture->course->workspace)) {
+			return new NotAuthorizedResponse('Only the teacher can archive lectures.');
+		}
+
 		$lecture = $this->lectureProvider->archiveLecture($user, $lecture);
 
-		return new JsonResponse(LectureDto::fromEntity($lecture, $this->lectureTagProvider->getTagIdsForLecture($lecture)));
+		return new JsonResponse($this->lectureResponse($user, $lecture));
 	}
 
 	#[RoutePost(Routes::LectureUnarchive->value)]
@@ -256,9 +284,13 @@ final readonly class LectureController
 			return new NotFoundResponse('Lecture not found.');
 		}
 
+		if (!$this->permissionChecker->canManageLectures($user, $lecture->course->workspace)) {
+			return new NotAuthorizedResponse('Only the teacher can unarchive lectures.');
+		}
+
 		$lecture = $this->lectureProvider->unarchiveLecture($user, $lecture);
 
-		return new JsonResponse(LectureDto::fromEntity($lecture, $this->lectureTagProvider->getTagIdsForLecture($lecture)));
+		return new JsonResponse($this->lectureResponse($user, $lecture));
 	}
 
 	#[RouteDelete(Routes::Lecture->value)]
@@ -270,6 +302,10 @@ final readonly class LectureController
 			return new NotFoundResponse('Lecture not found.');
 		}
 
+		if (!$this->permissionChecker->canManageLectures($user, $lecture->course->workspace)) {
+			return new NotAuthorizedResponse('Only the teacher can delete lectures.');
+		}
+
 		$this->lectureProvider->deleteLecture($user, $lecture);
 
 		return new OkResponse();
@@ -278,5 +314,15 @@ final readonly class LectureController
 	private function loadLectureInScope(User $user, int|string $lectureId): ?Lecture
 	{
 		return $this->lectureCodeResolver->resolveForUser($user, (string) $lectureId);
+	}
+
+	/** Build a lecture response with the viewing user's personal board status applied. */
+	private function lectureResponse(User $user, Lecture $lecture): LectureDto
+	{
+		return LectureDto::fromEntity(
+			$lecture,
+			$this->lectureTagProvider->getTagIdsForLecture($lecture),
+			$this->progressStatusProvider->statusForLecture($user, $lecture),
+		);
 	}
 }

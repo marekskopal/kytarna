@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Kytarna\Dto;
 
+use Kytarna\Model\Entity\Enum\LearningStatusEnum;
 use Kytarna\Model\Entity\Lecture;
 use const DATE_ATOM;
 
@@ -31,14 +32,18 @@ final readonly class LectureDto
 	) {
 	}
 
-	/** @param list<int> $tagIds */
-	public static function fromEntity(Lecture $lecture, array $tagIds = []): self
+	/**
+	 * @param list<int> $tagIds
+	 * @param LearningStatusEnum|null $statusOverride the viewer's personal board status; when given it
+	 *        replaces the lecture's authored default so each learner sees their own column.
+	 */
+	public static function fromEntity(Lecture $lecture, array $tagIds = [], ?LearningStatusEnum $statusOverride = null): self
 	{
 		return new self(
 			id: $lecture->id,
 			code: $lecture->course->prefix . '-' . $lecture->sequenceNumber,
 			courseId: $lecture->course->id,
-			status: $lecture->status->value,
+			status: ($statusOverride ?? $lecture->status)->value,
 			name: $lecture->name,
 			description: $lecture->description,
 			tuning: $lecture->tuning,

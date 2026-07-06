@@ -16,6 +16,7 @@ use Kytarna\Route\Routes;
 use Kytarna\Service\Provider\CourseProviderInterface;
 use Kytarna\Service\Provider\LectureProviderInterface;
 use Kytarna\Service\Provider\LectureTagProviderInterface;
+use Kytarna\Service\Provider\ProgressStatusProviderInterface;
 use Kytarna\Service\Provider\SongProviderInterface;
 use Kytarna\Service\Provider\SongTagProviderInterface;
 use Kytarna\Service\Provider\WorkspaceProviderInterface;
@@ -33,6 +34,7 @@ final readonly class BoardController
 		private LectureTagProviderInterface $lectureTagProvider,
 		private SongProviderInterface $songProvider,
 		private SongTagProviderInterface $songTagProvider,
+		private ProgressStatusProviderInterface $progressStatusProvider,
 		private WorkspaceProviderInterface $workspaceProvider,
 		private RequestServiceInterface $requestService,
 	) {
@@ -41,7 +43,8 @@ final readonly class BoardController
 	#[RouteGet(Routes::CourseBoard->value)]
 	public function actionGetBoard(ServerRequestInterface $request, int $courseId): ResponseInterface
 	{
-		$workspace = $this->workspaceProvider->getCurrentWorkspace($this->requestService->getUser($request));
+		$user = $this->requestService->getUser($request);
+		$workspace = $this->workspaceProvider->getCurrentWorkspace($user);
 		if ($workspace === null) {
 			return new NotFoundResponse('Course with id "' . $courseId . '" was not found.');
 		}
@@ -53,18 +56,26 @@ final readonly class BoardController
 
 		$statuses = array_map(static fn (LearningStatusEnum $s): string => $s->value, LearningStatusEnum::cases());
 
+		// The board is personal: each viewer sees their own ToLearn/Learning/Mastered column per item.
+		$lectureStatuses = $this->progressStatusProvider->lectureStatusesForUserInCourse($user, $course);
+		$songStatuses = $this->progressStatusProvider->songStatusesForUserInCourse($user, $course);
+
 		$courseLectures = iterator_to_array($this->lectureProvider->getLecturesByCourse($course, includeArchived: false), false);
 		$lectureIds = array_map(static fn (Lecture $t): int => $t->id, $courseLectures);
 		$tagsByLectureId = $this->lectureTagProvider->getTagIdsByLectureIds($lectureIds);
 		$lectures = array_map(
-			static fn (Lecture $t): LectureDto => LectureDto::fromEntity($t, $tagsByLectureId[$t->id] ?? []),
+			static fn (Lecture $t): LectureDto => LectureDto::fromEntity(
+				$t,
+				$tagsByLectureId[$t->id] ?? [],
+				$lectureStatuses[$t->id] ?? null,
+			),
 			$courseLectures,
 		);
 
 		$courseSongs = iterator_to_array($this->songProvider->getSongsByCourse($course, includeArchived: false), false);
 		$tagsBySongId = $this->songTagProvider->getTagIdsBySongIds(array_map(static fn (Song $s): int => $s->id, $courseSongs));
 		$songs = array_map(
-			static fn (Song $s): SongDto => SongDto::fromEntity($s, $tagsBySongId[$s->id] ?? []),
+			static fn (Song $s): SongDto => SongDto::fromEntity($s, $tagsBySongId[$s->id] ?? [], $songStatuses[$s->id] ?? null),
 			$courseSongs,
 		);
 

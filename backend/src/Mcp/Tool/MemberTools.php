@@ -88,13 +88,12 @@ final readonly class MemberTools
 	 * a pending invitation row. Requires Owner or Admin in the workspace; Admins can only invite Members.
 	 *
 	 * @param string $email Invitee email address
-	 * @param string|null $role Role to invite as: "Member" (default) or "Admin". "Owner" is not allowed.
 	 */
 	#[McpTool(
 		name: 'invite_member',
-		description: 'Invite a user by email to the current workspace. Owner/Admin only; Admins can only invite Members.',
+		description: 'Invite a user by email to the current workspace as a Student. Teacher (workspace owner) only.',
 	)]
-	public function inviteMember(string $email, ?string $role = null): McpInvitationDto
+	public function inviteMember(string $email): McpInvitationDto
 	{
 		$user = $this->userContext->getUser();
 		$workspace = $this->requireWorkspace();
@@ -103,12 +102,11 @@ final readonly class MemberTools
 			throw new RuntimeException('You do not have permission to invite members.');
 		}
 
-		$resolvedRole = $role !== null
-			? (WorkspaceRoleEnum::tryFrom($role) ?? throw new RuntimeException(sprintf('Unknown role "%s".', $role)))
-			: WorkspaceRoleEnum::Member;
+		// Only Students can be invited; the sole Teacher is the workspace owner.
+		$resolvedRole = WorkspaceRoleEnum::Student;
 
 		if (!$this->permissionChecker->canInviteAs($user, $workspace, $resolvedRole)) {
-			throw new RuntimeException('You cannot invite a member with this role.');
+			throw new RuntimeException('You cannot invite members to this workspace.');
 		}
 
 		$recentCount = $this->invitationRepository->countByWorkspaceSince(

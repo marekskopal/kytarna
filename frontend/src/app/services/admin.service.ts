@@ -1,7 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {SystemRole} from '@app/models/user';
-import {Workspace, WorkspaceMember, WorkspaceRole} from '@app/models/workspace';
+import {Workspace, WorkspaceMember} from '@app/models/workspace';
 import {environment} from '@environments/environment';
 import {firstValueFrom} from 'rxjs';
 
@@ -63,21 +63,16 @@ export class AdminService {
         return firstValueFrom(this.http.delete<void>(`${this.baseUrl}/workspaces/${id}`));
     }
 
-    public addMember(workspaceId: number, userId: number, role: WorkspaceRole = 'Member'): Promise<WorkspaceMember> {
+    /** Admins can only add Students; the sole Teacher is the workspace owner. */
+    public addMember(workspaceId: number, userId: number): Promise<WorkspaceMember> {
         return firstValueFrom(
-            this.http.post<WorkspaceMember>(`${this.baseUrl}/workspaces/${workspaceId}/members`, {userId, role}),
+            this.http.post<WorkspaceMember>(`${this.baseUrl}/workspaces/${workspaceId}/members`, {userId, role: 'Student'}),
         );
     }
 
     public removeMember(workspaceId: number, userId: number): Promise<void> {
         return firstValueFrom(
             this.http.delete<void>(`${this.baseUrl}/workspaces/${workspaceId}/members/${userId}`),
-        );
-    }
-
-    public transferOwnership(workspaceId: number, userId: number): Promise<Workspace> {
-        return firstValueFrom(
-            this.http.patch<Workspace>(`${this.baseUrl}/workspaces/${workspaceId}/transfer-ownership`, {userId}),
         );
     }
 }

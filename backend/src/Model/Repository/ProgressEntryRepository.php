@@ -18,18 +18,18 @@ final class ProgressEntryRepository extends AbstractRepository
 	}
 
 	/** @return Iterator<ProgressEntry> */
-	public function findByLecture(int $lectureId, ?string $from = null, ?string $to = null): Iterator
+	public function findByLecture(int $lectureId, int $userId, ?string $from = null, ?string $to = null): Iterator
 	{
-		return $this->applyDateRange($this->select()->where(['lecture_id' => $lectureId]), $from, $to)
+		return $this->applyDateRange($this->select()->where(['lecture_id' => $lectureId, 'user_id' => $userId]), $from, $to)
 			->orderBy('practiced_at', 'ASC')
 			->orderBy('id', 'ASC')
 			->fetchAll();
 	}
 
 	/** @return Iterator<ProgressEntry> */
-	public function findByCourse(int $courseId, ?string $from = null, ?string $to = null): Iterator
+	public function findByCourse(int $courseId, int $userId, ?string $from = null, ?string $to = null): Iterator
 	{
-		return $this->applyDateRange($this->select()->where(['lecture.course_id' => $courseId]), $from, $to)
+		return $this->applyDateRange($this->select()->where(['lecture.course_id' => $courseId, 'user_id' => $userId]), $from, $to)
 			->orderBy('practiced_at', 'ASC')
 			->orderBy('id', 'ASC')
 			->fetchAll();

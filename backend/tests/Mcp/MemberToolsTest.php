@@ -25,8 +25,8 @@ final class MemberToolsTest extends IntegrationTestCase
 		$workspace = Fixture::createWorkspace($owner);
 		$admin = Fixture::createUser(email: 'admin@example.com', name: 'Admin');
 		$member = Fixture::createUser(email: 'member@example.com', name: 'Member');
-		Fixture::addMember($workspace, $admin, WorkspaceRoleEnum::Admin);
-		Fixture::addMember($workspace, $member, WorkspaceRoleEnum::Member);
+		Fixture::addMember($workspace, $admin, WorkspaceRoleEnum::Student);
+		Fixture::addMember($workspace, $member, WorkspaceRoleEnum::Student);
 
 		$tools = $this->bootAs($owner);
 
@@ -38,9 +38,9 @@ final class MemberToolsTest extends IntegrationTestCase
 			$byEmail[$dto->email] = $dto;
 		}
 
-		self::assertSame(WorkspaceRoleEnum::Owner->value, $byEmail[$owner->email]->role);
-		self::assertSame(WorkspaceRoleEnum::Admin->value, $byEmail['admin@example.com']->role);
-		self::assertSame(WorkspaceRoleEnum::Member->value, $byEmail['member@example.com']->role);
+		self::assertSame(WorkspaceRoleEnum::Teacher->value, $byEmail[$owner->email]->role);
+		self::assertSame(WorkspaceRoleEnum::Student->value, $byEmail['admin@example.com']->role);
+		self::assertSame(WorkspaceRoleEnum::Student->value, $byEmail['member@example.com']->role);
 	}
 
 	public function testFindMemberByEmailIsCaseInsensitive(): void
@@ -48,7 +48,7 @@ final class MemberToolsTest extends IntegrationTestCase
 		$owner = Fixture::createUser();
 		$workspace = Fixture::createWorkspace($owner);
 		$member = Fixture::createUser(email: 'Marek@Example.com', name: 'Marek');
-		Fixture::addMember($workspace, $member, WorkspaceRoleEnum::Member);
+		Fixture::addMember($workspace, $member, WorkspaceRoleEnum::Student);
 
 		$tools = $this->bootAs($owner);
 
@@ -67,7 +67,7 @@ final class MemberToolsTest extends IntegrationTestCase
 		$ownerB = Fixture::createUser(email: 'ownerb@example.com', name: 'OwnerB');
 		$workspaceB = Fixture::createWorkspace($ownerB, 'Workspace B');
 		$memberB = Fixture::createUser(email: 'b-member@example.com', name: 'MemberB');
-		Fixture::addMember($workspaceB, $memberB, WorkspaceRoleEnum::Member);
+		Fixture::addMember($workspaceB, $memberB, WorkspaceRoleEnum::Student);
 
 		// ownerA's current workspace is Workspace A — should see only its members.
 		$tools = $this->bootAs($ownerA);
@@ -89,7 +89,7 @@ final class MemberToolsTest extends IntegrationTestCase
 		$invitation = $tools->inviteMember('newcomer@example.com');
 
 		self::assertSame('newcomer@example.com', $invitation->email);
-		self::assertSame(WorkspaceRoleEnum::Member->value, $invitation->role);
+		self::assertSame(WorkspaceRoleEnum::Student->value, $invitation->role);
 		self::assertNull($invitation->acceptedAt);
 
 		$pdo = AppHarness::pdo();
@@ -101,29 +101,12 @@ final class MemberToolsTest extends IntegrationTestCase
 		self::assertSame(1, (int) $stmt->fetchColumn());
 	}
 
-	public function testInviteMemberAsAdminCannotInviteAdmin(): void
-	{
-		$owner = Fixture::createUser();
-		$workspace = Fixture::createWorkspace($owner);
-		$admin = Fixture::createUser(email: 'admin@example.com');
-		Fixture::addMember($workspace, $admin, WorkspaceRoleEnum::Admin);
-		$workspaceProvider = AppHarness::container()->get(WorkspaceProviderInterface::class);
-		assert($workspaceProvider instanceof WorkspaceProviderInterface);
-		$workspaceProvider->switchCurrentWorkspace($admin, $workspace);
-
-		$tools = $this->bootAs($admin);
-
-		$this->expectException(RuntimeException::class);
-		$this->expectExceptionMessageIsOrContains('cannot invite a member with this role');
-		$tools->inviteMember('another-admin@example.com', 'Admin');
-	}
-
-	public function testInviteMemberAsMemberIsRejected(): void
+	public function testInviteMemberAsStudentIsRejected(): void
 	{
 		$owner = Fixture::createUser();
 		$workspace = Fixture::createWorkspace($owner);
 		$member = Fixture::createUser(email: 'member@example.com');
-		Fixture::addMember($workspace, $member, WorkspaceRoleEnum::Member);
+		Fixture::addMember($workspace, $member, WorkspaceRoleEnum::Student);
 		$workspaceProvider = AppHarness::container()->get(WorkspaceProviderInterface::class);
 		assert($workspaceProvider instanceof WorkspaceProviderInterface);
 		$workspaceProvider->switchCurrentWorkspace($member, $workspace);
@@ -133,22 +116,6 @@ final class MemberToolsTest extends IntegrationTestCase
 		$this->expectException(RuntimeException::class);
 		$this->expectExceptionMessageIsOrContains('do not have permission');
 		$tools->inviteMember('someone@example.com');
-	}
-
-	public function testInviteMemberAsAdminCanInviteMember(): void
-	{
-		$owner = Fixture::createUser();
-		$workspace = Fixture::createWorkspace($owner);
-		$admin = Fixture::createUser(email: 'admin@example.com');
-		Fixture::addMember($workspace, $admin, WorkspaceRoleEnum::Admin);
-		$workspaceProvider = AppHarness::container()->get(WorkspaceProviderInterface::class);
-		assert($workspaceProvider instanceof WorkspaceProviderInterface);
-		$workspaceProvider->switchCurrentWorkspace($admin, $workspace);
-
-		$tools = $this->bootAs($admin);
-
-		$invitation = $tools->inviteMember('newbie@example.com');
-		self::assertSame(WorkspaceRoleEnum::Member->value, $invitation->role);
 	}
 
 	private function bootAs(User $user): MemberTools

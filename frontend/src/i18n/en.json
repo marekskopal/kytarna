@@ -458,6 +458,12 @@
       "general": {
         "renameTitle": "Workspace name",
         "renameDescription": "Rename this workspace. The name is visible to all members.",
+        "publicTitle": "Public directory",
+        "publicDescription": "When public, students can find and join this workspace from the directory.",
+        "makePublic": "Make public",
+        "makePrivate": "Make private",
+        "joinCodeTitle": "Join code",
+        "rotateJoinCode": "Regenerate",
         "deleteTitle": "Delete workspace",
         "deleteDescription": "Permanently delete this workspace including all courses and lectures. This is irreversible."
       },
@@ -473,9 +479,8 @@
         "revoked": "Client access revoked."
       },
       "role": {
-        "Owner": "Owner",
-        "Admin": "Admin",
-        "Member": "Member"
+        "Teacher": "Teacher",
+        "Student": "Student"
       }
     },
     "admin": {
@@ -621,15 +626,23 @@
         }
       },
       "step1": {
-        "overline": "Step 01",
-        "title": "Create your first course",
-        "lead": "A course groups related lectures and songs. Pick a name to get started.",
-        "nameLabel": "Course name",
-        "namePlaceholder": "Fingerstyle fundamentals",
-        "descriptionLabel": "Description",
-        "descriptionPlaceholder": "Optional context for your team.",
-        "optional": "optional",
-        "errorCreate": "Could not create course. Please try again."
+        "overline": "Welcome",
+        "title": "How do you want to start?",
+        "lead": "Teach your own courses, or join a teacher and start learning.",
+        "teacherTitle": "Create my workspace",
+        "teacherDescription": "I'm a teacher (or learning on my own). Create a workspace where I build courses, lectures and songs.",
+        "studentTitle": "Join a teacher",
+        "studentDescription": "I'm a student. Join a teacher's workspace to learn and track my progress.",
+        "workspaceNameLabel": "Workspace name",
+        "workspaceNamePlaceholder": "My guitar studio",
+        "createWorkspace": "Create workspace",
+        "directoryTitle": "Public workspaces",
+        "directoryEmpty": "No public workspaces yet. Ask your teacher for a join code.",
+        "joinByCodeTitle": "Have a join code?",
+        "joinCodePlaceholder": "Enter join code",
+        "join": "Join",
+        "errorCreate": "Could not create the workspace. Please try again.",
+        "errorJoin": "Could not join that workspace. Check the code and try again."
       },
       "step2": {
         "overline": "Step 02",

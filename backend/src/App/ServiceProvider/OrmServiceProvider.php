@@ -9,6 +9,7 @@ use Kytarna\Model\Entity\EmailVerificationToken;
 use Kytarna\Model\Entity\Event;
 use Kytarna\Model\Entity\Invitation;
 use Kytarna\Model\Entity\Lecture;
+use Kytarna\Model\Entity\LectureBoardStatus;
 use Kytarna\Model\Entity\LectureFile;
 use Kytarna\Model\Entity\LectureLink;
 use Kytarna\Model\Entity\LectureTag;
@@ -20,6 +21,7 @@ use Kytarna\Model\Entity\PasswordResetToken;
 use Kytarna\Model\Entity\ProgressEntry;
 use Kytarna\Model\Entity\SavedView;
 use Kytarna\Model\Entity\Song;
+use Kytarna\Model\Entity\SongBoardStatus;
 use Kytarna\Model\Entity\SongFile;
 use Kytarna\Model\Entity\SongLink;
 use Kytarna\Model\Entity\SongProgressEntry;
@@ -35,6 +37,7 @@ use Kytarna\Model\Repository\CourseRepository;
 use Kytarna\Model\Repository\EmailVerificationTokenRepository;
 use Kytarna\Model\Repository\EventRepository;
 use Kytarna\Model\Repository\InvitationRepository;
+use Kytarna\Model\Repository\LectureBoardStatusRepository;
 use Kytarna\Model\Repository\LectureFileRepository;
 use Kytarna\Model\Repository\LectureLinkRepository;
 use Kytarna\Model\Repository\LectureRepository;
@@ -46,6 +49,7 @@ use Kytarna\Model\Repository\OAuthClientRepository;
 use Kytarna\Model\Repository\PasswordResetTokenRepository;
 use Kytarna\Model\Repository\ProgressEntryRepository;
 use Kytarna\Model\Repository\SavedViewRepository;
+use Kytarna\Model\Repository\SongBoardStatusRepository;
 use Kytarna\Model\Repository\SongFileRepository;
 use Kytarna\Model\Repository\SongLinkRepository;
 use Kytarna\Model\Repository\SongProgressEntryRepository;
@@ -103,6 +107,8 @@ final class OrmServiceProvider extends AbstractServiceProvider
 			TabRepository::class,
 			ProgressEntryRepository::class,
 			LectureLinkRepository::class,
+			LectureBoardStatusRepository::class,
+			SongBoardStatusRepository::class,
 		], true);
 	}
 
@@ -143,6 +149,8 @@ final class OrmServiceProvider extends AbstractServiceProvider
 		$this->addRepository($container, $orm, TabRepository::class, Tab::class);
 		$this->addRepository($container, $orm, ProgressEntryRepository::class, ProgressEntry::class);
 		$this->addRepository($container, $orm, LectureLinkRepository::class, LectureLink::class);
+		$this->addRepository($container, $orm, LectureBoardStatusRepository::class, LectureBoardStatus::class);
+		$this->addRepository($container, $orm, SongBoardStatusRepository::class, SongBoardStatus::class);
 	}
 
 	/**

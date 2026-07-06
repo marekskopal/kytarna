@@ -33,120 +33,83 @@ final class PermissionCheckerTest extends TestCase
 		self::assertTrue($checker->canManageWorkspace($admin, $ws));
 		self::assertTrue($checker->canManageMembers($admin, $ws));
 		self::assertTrue($checker->canManageCourses($admin, $ws));
+		self::assertTrue($checker->canManageLectures($admin, $ws));
+		self::assertTrue($checker->canManageSongs($admin, $ws));
 		self::assertTrue($checker->canViewWorkspace($admin, $ws));
 	}
 
-	public function testOwnerCanManageWorkspaceButMemberCannot(): void
+	public function testTeacherCanManageContentButStudentCannot(): void
 	{
-		$owner = $this->makeUser(1);
-		$member = $this->makeUser(2);
-		$ws = $this->makeWorkspace($owner);
+		$teacher = $this->makeUser(1);
+		$student = $this->makeUser(2);
+		$ws = $this->makeWorkspace($teacher);
 
-		$ownerMembership = $this->makeMembership($ws, $owner, WorkspaceRoleEnum::Owner);
-		$memberMembership = $this->makeMembership($ws, $member, WorkspaceRoleEnum::Member);
+		$teacherMembership = $this->makeMembership($ws, $teacher, WorkspaceRoleEnum::Teacher);
+		$studentMembership = $this->makeMembership($ws, $student, WorkspaceRoleEnum::Student);
 
 		$checker = new PermissionChecker($this->fakeProvider([
-			$ws->id => [1 => $ownerMembership, 2 => $memberMembership],
+			$ws->id => [1 => $teacherMembership, 2 => $studentMembership],
 		]));
 
-		self::assertTrue($checker->canManageWorkspace($owner, $ws));
-		self::assertFalse($checker->canManageWorkspace($member, $ws));
-		self::assertFalse($checker->canManageCourses($member, $ws));
-		self::assertTrue($checker->canManageLectures($member, $ws));
+		// Teacher edits everything.
+		self::assertTrue($checker->isTeacher($teacher, $ws));
+		self::assertTrue($checker->canManageWorkspace($teacher, $ws));
+		self::assertTrue($checker->canManageMembers($teacher, $ws));
+		self::assertTrue($checker->canManageCourses($teacher, $ws));
+		self::assertTrue($checker->canManageLectures($teacher, $ws));
+		self::assertTrue($checker->canManageSongs($teacher, $ws));
+		self::assertTrue($checker->canManageTags($teacher, $ws));
+
+		// Student has read-only content, but may view and track their own progress.
+		self::assertFalse($checker->isTeacher($student, $ws));
+		self::assertFalse($checker->canManageWorkspace($student, $ws));
+		self::assertFalse($checker->canManageMembers($student, $ws));
+		self::assertFalse($checker->canManageCourses($student, $ws));
+		self::assertFalse($checker->canManageLectures($student, $ws));
+		self::assertFalse($checker->canManageSongs($student, $ws));
+		self::assertFalse($checker->canManageTags($student, $ws));
+		self::assertTrue($checker->canViewWorkspace($student, $ws));
+		self::assertTrue($checker->canTrackProgress($student, $ws));
 	}
 
-	public function testAdminCanManageMembersButNotWorkspaceItself(): void
+	public function testRemoveMemberRules(): void
 	{
-		$owner = $this->makeUser(1);
-		$admin = $this->makeUser(2);
-		$ws = $this->makeWorkspace($owner);
+		$teacher = $this->makeUser(1);
+		$student = $this->makeUser(2);
+		$ws = $this->makeWorkspace($teacher);
 
-		$ownerMembership = $this->makeMembership($ws, $owner, WorkspaceRoleEnum::Owner);
-		$adminMembership = $this->makeMembership($ws, $admin, WorkspaceRoleEnum::Admin);
+		$teacherM = $this->makeMembership($ws, $teacher, WorkspaceRoleEnum::Teacher);
+		$studentM = $this->makeMembership($ws, $student, WorkspaceRoleEnum::Student);
 
 		$checker = new PermissionChecker($this->fakeProvider([
-			$ws->id => [1 => $ownerMembership, 2 => $adminMembership],
+			$ws->id => [1 => $teacherM, 2 => $studentM],
 		]));
 
-		self::assertFalse($checker->canManageWorkspace($admin, $ws));
-		self::assertTrue($checker->canManageMembers($admin, $ws));
-		self::assertTrue($checker->canManageCourses($admin, $ws));
-	}
-
-	public function testAdminCannotRemoveOwnerOrAnotherAdmin(): void
-	{
-		$owner = $this->makeUser(1);
-		$admin = $this->makeUser(2);
-		$otherAdmin = $this->makeUser(3);
-		$member = $this->makeUser(4);
-		$ws = $this->makeWorkspace($owner);
-
-		$ownerM = $this->makeMembership($ws, $owner, WorkspaceRoleEnum::Owner);
-		$adminM = $this->makeMembership($ws, $admin, WorkspaceRoleEnum::Admin);
-		$otherAdminM = $this->makeMembership($ws, $otherAdmin, WorkspaceRoleEnum::Admin);
-		$memberM = $this->makeMembership($ws, $member, WorkspaceRoleEnum::Member);
-
-		$checker = new PermissionChecker($this->fakeProvider([
-			$ws->id => [1 => $ownerM, 2 => $adminM, 3 => $otherAdminM, 4 => $memberM],
-		]));
-
-		self::assertFalse($checker->canRemoveMember($admin, $ws, $ownerM));
-		self::assertFalse($checker->canRemoveMember($admin, $ws, $otherAdminM));
-		self::assertTrue($checker->canRemoveMember($admin, $ws, $memberM));
-		self::assertTrue($checker->canRemoveMember($owner, $ws, $adminM));
-	}
-
-	public function testOwnerCannotSelfRemove(): void
-	{
-		$owner = $this->makeUser(1);
-		$ws = $this->makeWorkspace($owner);
-		$ownerM = $this->makeMembership($ws, $owner, WorkspaceRoleEnum::Owner);
-
-		$checker = new PermissionChecker($this->fakeProvider([$ws->id => [1 => $ownerM]]));
-
-		self::assertFalse($checker->canRemoveMember($owner, $ws, $ownerM));
-	}
-
-	public function testCanChangeRoleMatrix(): void
-	{
-		$owner = $this->makeUser(1);
-		$admin = $this->makeUser(2);
-		$member = $this->makeUser(3);
-		$ws = $this->makeWorkspace($owner);
-
-		$ownerM = $this->makeMembership($ws, $owner, WorkspaceRoleEnum::Owner);
-		$adminM = $this->makeMembership($ws, $admin, WorkspaceRoleEnum::Admin);
-		$memberM = $this->makeMembership($ws, $member, WorkspaceRoleEnum::Member);
-
-		$checker = new PermissionChecker($this->fakeProvider([
-			$ws->id => [1 => $ownerM, 2 => $adminM, 3 => $memberM],
-		]));
-
-		self::assertTrue($checker->canChangeRole($owner, $ws, $memberM, WorkspaceRoleEnum::Admin));
-		self::assertTrue($checker->canChangeRole($admin, $ws, $memberM, WorkspaceRoleEnum::Admin));
-		self::assertFalse($checker->canChangeRole($member, $ws, $adminM, WorkspaceRoleEnum::Member));
-		self::assertFalse($checker->canChangeRole($owner, $ws, $memberM, WorkspaceRoleEnum::Owner));
-		self::assertFalse($checker->canChangeRole($admin, $ws, $ownerM, WorkspaceRoleEnum::Admin));
+		// Teacher can remove a student; the teacher cannot be removed.
+		self::assertTrue($checker->canRemoveMember($teacher, $ws, $studentM));
+		self::assertFalse($checker->canRemoveMember($teacher, $ws, $teacherM));
+		// A student may remove themselves (leave) but not the teacher or another student.
+		self::assertTrue($checker->canRemoveMember($student, $ws, $studentM));
+		self::assertFalse($checker->canRemoveMember($student, $ws, $teacherM));
 	}
 
 	public function testInvitableRoleConstraints(): void
 	{
-		$owner = $this->makeUser(1);
-		$admin = $this->makeUser(2);
-		$ws = $this->makeWorkspace($owner);
+		$teacher = $this->makeUser(1);
+		$student = $this->makeUser(2);
+		$ws = $this->makeWorkspace($teacher);
 
-		$ownerM = $this->makeMembership($ws, $owner, WorkspaceRoleEnum::Owner);
-		$adminM = $this->makeMembership($ws, $admin, WorkspaceRoleEnum::Admin);
+		$teacherM = $this->makeMembership($ws, $teacher, WorkspaceRoleEnum::Teacher);
+		$studentM = $this->makeMembership($ws, $student, WorkspaceRoleEnum::Student);
 
 		$checker = new PermissionChecker($this->fakeProvider([
-			$ws->id => [1 => $ownerM, 2 => $adminM],
+			$ws->id => [1 => $teacherM, 2 => $studentM],
 		]));
 
-		self::assertTrue($checker->canInviteAs($owner, $ws, WorkspaceRoleEnum::Admin));
-		self::assertTrue($checker->canInviteAs($owner, $ws, WorkspaceRoleEnum::Member));
-		self::assertFalse($checker->canInviteAs($owner, $ws, WorkspaceRoleEnum::Owner));
-		self::assertFalse($checker->canInviteAs($admin, $ws, WorkspaceRoleEnum::Admin));
-		self::assertTrue($checker->canInviteAs($admin, $ws, WorkspaceRoleEnum::Member));
+		// Only the teacher can invite, and only as a Student.
+		self::assertTrue($checker->canInviteAs($teacher, $ws, WorkspaceRoleEnum::Student));
+		self::assertFalse($checker->canInviteAs($teacher, $ws, WorkspaceRoleEnum::Teacher));
+		self::assertFalse($checker->canInviteAs($student, $ws, WorkspaceRoleEnum::Student));
 	}
 
 	private function makeUser(int $id, SystemRoleEnum $systemRole = SystemRoleEnum::User): User
@@ -202,6 +165,11 @@ final class PermissionCheckerTest extends TestCase
 				return $this->findMembership($user, $workspace) !== null;
 			}
 
+			public function findOwnedWorkspace(User $user): ?Workspace
+			{
+				return null;
+			}
+
 			public function getWorkspace(int $workspaceId): ?Workspace
 			{
 				return null;
@@ -224,7 +192,17 @@ final class PermissionCheckerTest extends TestCase
 				throw new \RuntimeException('not used');
 			}
 
-			public function updateWorkspace(Workspace $workspace, string $name): Workspace
+			public function updateWorkspace(
+				Workspace $workspace,
+				string $name,
+				?bool $isPublic = null,
+				?string $description = null,
+			): Workspace
+			{
+				throw new \RuntimeException('not used');
+			}
+
+			public function rotateJoinCode(Workspace $workspace): string
 			{
 				throw new \RuntimeException('not used');
 			}
@@ -239,19 +217,25 @@ final class PermissionCheckerTest extends TestCase
 				throw new \RuntimeException('not used');
 			}
 
+			public function joinAsStudent(User $actor, Workspace $workspace): WorkspaceUser
+			{
+				throw new \RuntimeException('not used');
+			}
+
 			public function removeMember(WorkspaceUser $membership): void
 			{
 				// no-op
 			}
 
-			public function changeMemberRole(User $actor, WorkspaceUser $membership, WorkspaceRoleEnum $newRole): WorkspaceUser
+			/** @return Iterator<Workspace> */
+			public function findPublicWorkspaces(User $user, ?string $search, int $limit, int $offset): Iterator
 			{
-				throw new \RuntimeException('not used');
+				return new ArrayIterator([]);
 			}
 
-			public function transferOwnership(User $actor, Workspace $workspace, WorkspaceUser $newOwnerMembership): void
+			public function findByJoinCode(string $joinCode): ?Workspace
 			{
-				// no-op
+				return null;
 			}
 
 			public function switchCurrentWorkspace(User $user, Workspace $workspace): void

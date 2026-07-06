@@ -81,9 +81,13 @@ final class InitialSchema extends Migration
 			->addColumn('id', Type::Int, autoincrement: true, primary: true)
 			->addColumn('owner_id', Type::Int, size: 11)
 			->addColumn('name', Type::String)
+			->addColumn('is_public', Type::Boolean, default: false)
+			->addColumn('join_code', Type::String, nullable: true)
+			->addColumn('description', Type::Text, nullable: true)
 			->addColumn('created_at', Type::Timestamp)
 			->addColumn('updated_at', Type::Timestamp)
 			->addIndex(['owner_id'], 'workspaces_owner_id_index', false)
+			->addIndex(['join_code'], 'workspaces_join_code_unique', true)
 			->addForeignKey('owner_id', 'users', 'id', 'workspaces_owner_id_users_id_fk')
 			->create();
 
@@ -91,10 +95,10 @@ final class InitialSchema extends Migration
 			->addColumn('id', Type::Int, autoincrement: true, primary: true)
 			->addColumn('workspace_id', Type::Int, size: 11)
 			->addColumn('user_id', Type::Int, size: 11)
-			->addColumn('role', Type::Enum, enum: ['Owner', 'Admin', 'Member'])
+			->addColumn('role', Type::Enum, enum: ['Teacher', 'Student'])
 			->addColumn('created_at', Type::Timestamp)
 			->addColumn('updated_at', Type::Timestamp)
-			->addIndex(['workspace_id'], 'workspace_users_workspace_id_index', false)
+			->addIndex(['workspace_id', 'user_id'], 'workspace_users_workspace_user_unique', true)
 			->addIndex(['user_id'], 'workspace_users_user_id_index', false)
 			->addForeignKey('workspace_id', 'workspaces', 'id', 'workspace_users_workspace_id_workspaces_id_fk')
 			->addForeignKey('user_id', 'users', 'id', 'workspace_users_user_id_users_id_fk')
@@ -123,7 +127,7 @@ final class InitialSchema extends Migration
 			->addColumn('inviter_id', Type::Int, size: 11)
 			->addColumn('email', Type::String)
 			->addColumn('token_hash', Type::String, size: 64)
-			->addColumn('role', Type::Enum, enum: ['Owner', 'Admin', 'Member'])
+			->addColumn('role', Type::Enum, enum: ['Student'])
 			->addColumn('expires_at', Type::Timestamp)
 			->addColumn('accepted_at', Type::Timestamp, nullable: true)
 			->addColumn('created_at', Type::Timestamp)
@@ -189,7 +193,7 @@ final class InitialSchema extends Migration
 			->addColumn(
 				'type',
 				Type::Enum,
-				enum: ['CourseCreated', 'CourseUpdated', 'CourseDeleted', 'LectureCreated', 'LectureUpdated', 'LectureDeleted', 'LectureMoved', 'LectureArchived', 'LectureUnarchived', 'LecturesBulkUpdated', 'SongCreated', 'SongUpdated', 'SongDeleted', 'SongMoved', 'SongArchived', 'SongUnarchived', 'SongAddedToCourse', 'SongRemovedFromCourse', 'SongFileAdded', 'SongFileDeleted', 'SongTagsUpdated', 'MemberRoleChanged', 'OwnershipTransferred', 'AdminDeletedWorkspace', 'AdminDeletedUser', 'AdminChangedSystemRole', 'LectureFileAdded', 'LectureFileDeleted', 'TagCreated', 'TagUpdated', 'TagDeleted', 'LectureTagsUpdated', 'UserSelfDeleted'],
+				enum: ['CourseCreated', 'CourseUpdated', 'CourseDeleted', 'LectureCreated', 'LectureUpdated', 'LectureDeleted', 'LectureMoved', 'LectureArchived', 'LectureUnarchived', 'LecturesBulkUpdated', 'SongCreated', 'SongUpdated', 'SongDeleted', 'SongMoved', 'SongArchived', 'SongUnarchived', 'SongAddedToCourse', 'SongRemovedFromCourse', 'SongFileAdded', 'SongFileDeleted', 'SongTagsUpdated', 'MemberJoined', 'MemberLeft', 'AdminDeletedWorkspace', 'AdminDeletedUser', 'AdminChangedSystemRole', 'LectureFileAdded', 'LectureFileDeleted', 'TagCreated', 'TagUpdated', 'TagDeleted', 'LectureTagsUpdated', 'UserSelfDeleted'],
 			)
 			->addColumn('metadata', Type::Text)
 			->addColumn('course_id', Type::Int, nullable: true, size: 11)
@@ -328,6 +332,7 @@ final class InitialSchema extends Migration
 		$this->table('progress_entries')
 			->addColumn('id', Type::Int, autoincrement: true, primary: true)
 			->addColumn('lecture_id', Type::Int, size: 11)
+			->addColumn('user_id', Type::Int, size: 11)
 			->addColumn('practiced_at', Type::Date)
 			->addColumn('note', Type::Text, nullable: true)
 			->addColumn('tempo_bpm', Type::Int, nullable: true)
@@ -335,7 +340,9 @@ final class InitialSchema extends Migration
 			->addColumn('created_at', Type::Timestamp)
 			->addColumn('updated_at', Type::Timestamp)
 			->addIndex(['lecture_id'], 'progress_entries_lecture_id_index', false)
+			->addIndex(['user_id'], 'progress_entries_user_id_index', false)
 			->addForeignKey('lecture_id', 'lectures', 'id', 'progress_entries_lecture_id_lectures_id_fk')
+			->addForeignKey('user_id', 'users', 'id', 'progress_entries_user_id_users_id_fk')
 			->create();
 
 		$this->table('lecture_watchers')
@@ -364,7 +371,13 @@ final class InitialSchema extends Migration
 			->addIndex(['song_id'], 'song_files_song_id_index', false)
 			->addIndex(['uploaded_by_user_id'], 'song_files_uploaded_by_user_id_index', false)
 			->addForeignKey('song_id', 'songs', 'id', 'song_files_song_id_songs_id_fk')
-			->addForeignKey('uploaded_by_user_id', 'users', 'id', 'song_files_uploaded_by_user_id_users_id_fk', ReferenceOptionEnum::SetNull)
+			->addForeignKey(
+				'uploaded_by_user_id',
+				'users',
+				'id',
+				'song_files_uploaded_by_user_id_users_id_fk',
+				ReferenceOptionEnum::SetNull,
+			)
 			->create();
 
 		$this->table('song_tabs')
@@ -382,7 +395,13 @@ final class InitialSchema extends Migration
 			->addIndex(['song_id'], 'song_tabs_song_id_index', false)
 			->addIndex(['original_file_id'], 'song_tabs_original_file_id_index', false)
 			->addForeignKey('song_id', 'songs', 'id', 'song_tabs_song_id_songs_id_fk')
-			->addForeignKey('original_file_id', 'song_files', 'id', 'song_tabs_original_file_id_song_files_id_fk', ReferenceOptionEnum::SetNull)
+			->addForeignKey(
+				'original_file_id',
+				'song_files',
+				'id',
+				'song_tabs_original_file_id_song_files_id_fk',
+				ReferenceOptionEnum::SetNull,
+			)
 			->create();
 
 		$this->table('song_links')
@@ -401,6 +420,7 @@ final class InitialSchema extends Migration
 		$this->table('song_progress_entries')
 			->addColumn('id', Type::Int, autoincrement: true, primary: true)
 			->addColumn('song_id', Type::Int, size: 11)
+			->addColumn('user_id', Type::Int, size: 11)
 			->addColumn('practiced_at', Type::Date)
 			->addColumn('note', Type::Text, nullable: true)
 			->addColumn('tempo_bpm', Type::Int, nullable: true)
@@ -408,7 +428,9 @@ final class InitialSchema extends Migration
 			->addColumn('created_at', Type::Timestamp)
 			->addColumn('updated_at', Type::Timestamp)
 			->addIndex(['song_id'], 'song_progress_entries_song_id_index', false)
+			->addIndex(['user_id'], 'song_progress_entries_user_id_index', false)
 			->addForeignKey('song_id', 'songs', 'id', 'song_progress_entries_song_id_songs_id_fk')
+			->addForeignKey('user_id', 'users', 'id', 'song_progress_entries_user_id_users_id_fk')
 			->create();
 
 		$this->table('song_tags')
@@ -434,10 +456,40 @@ final class InitialSchema extends Migration
 			->addForeignKey('song_id', 'songs', 'id', 'song_watchers_song_id_songs_id_fk')
 			->addForeignKey('user_id', 'users', 'id', 'song_watchers_user_id_users_id_fk')
 			->create();
+
+		$this->table('lecture_board_statuses')
+			->addColumn('id', Type::Int, autoincrement: true, primary: true)
+			->addColumn('user_id', Type::Int, size: 11)
+			->addColumn('lecture_id', Type::Int, size: 11)
+			->addColumn('status', Type::Enum, enum: ['ToLearn', 'Learning', 'Mastered'], default: 'ToLearn')
+			->addColumn('created_at', Type::Timestamp)
+			->addColumn('updated_at', Type::Timestamp)
+			->addIndex(['user_id', 'lecture_id'], 'lecture_board_statuses_user_lecture_unique', true)
+			->addIndex(['lecture_id'], 'lecture_board_statuses_lecture_id_index', false)
+			->addForeignKey('user_id', 'users', 'id', 'lecture_board_statuses_user_id_users_id_fk')
+			->addForeignKey('lecture_id', 'lectures', 'id', 'lecture_board_statuses_lecture_id_lectures_id_fk')
+			->create();
+
+		$this->table('song_board_statuses')
+			->addColumn('id', Type::Int, autoincrement: true, primary: true)
+			->addColumn('user_id', Type::Int, size: 11)
+			->addColumn('song_id', Type::Int, size: 11)
+			->addColumn('status', Type::Enum, enum: ['ToLearn', 'Learning', 'Mastered'], default: 'ToLearn')
+			->addColumn('created_at', Type::Timestamp)
+			->addColumn('updated_at', Type::Timestamp)
+			->addIndex(['user_id', 'song_id'], 'song_board_statuses_user_song_unique', true)
+			->addIndex(['song_id'], 'song_board_statuses_song_id_index', false)
+			->addForeignKey('user_id', 'users', 'id', 'song_board_statuses_user_id_users_id_fk')
+			->addForeignKey('song_id', 'songs', 'id', 'song_board_statuses_song_id_songs_id_fk')
+			->create();
 	}
 
 	public function down(): void
 	{
+		$this->table('song_board_statuses')
+			->drop();
+		$this->table('lecture_board_statuses')
+			->drop();
 		$this->table('song_watchers')
 			->drop();
 		$this->table('song_tags')

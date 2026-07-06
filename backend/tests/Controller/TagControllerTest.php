@@ -51,7 +51,7 @@ final class TagControllerTest extends IntegrationTestCase
 		$owner = Fixture::createUser(email: 'o@example.com');
 		$member = Fixture::createUser(email: 'm@example.com');
 		$workspace = Fixture::createWorkspace($owner);
-		Fixture::addMember($workspace, $member, WorkspaceRoleEnum::Member);
+		Fixture::addMember($workspace, $member, WorkspaceRoleEnum::Student);
 
 		$denied = $this->request(
 			'POST',

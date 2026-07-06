@@ -15,7 +15,7 @@ interface SongProgressProviderInterface
 	public function getEntry(int $entryId): ?SongProgressEntry;
 
 	/** @return list<SongProgressEntry> */
-	public function getEntriesBySong(Song $song, ?string $from = null, ?string $to = null): array;
+	public function getEntriesBySong(User $user, Song $song, ?string $from = null, ?string $to = null): array;
 
 	public function createEntry(
 		User $author,
@@ -37,5 +37,5 @@ interface SongProgressProviderInterface
 
 	public function deleteEntry(User $author, SongProgressEntry $entry): void;
 
-	public function summarizeSong(Song $song, ?string $from = null, ?string $to = null): PracticeSummary;
+	public function summarizeSong(User $user, Song $song, ?string $from = null, ?string $to = null): PracticeSummary;
 }

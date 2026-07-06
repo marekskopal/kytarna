@@ -56,7 +56,7 @@ final readonly class SongProgressController
 
 		$entries = array_map(
 			static fn (SongProgressEntry $entry): SongProgressEntryDto => SongProgressEntryDto::fromEntity($entry),
-			$this->songProgressProvider->getEntriesBySong($song, $from, $to),
+			$this->songProgressProvider->getEntriesBySong($user, $song, $from, $to),
 		);
 
 		return new JsonResponse($entries);
@@ -104,7 +104,7 @@ final readonly class SongProgressController
 			return new ErrorResponse($e->getMessage(), 400);
 		}
 
-		return new JsonResponse(PracticeSummaryDto::fromSummary($this->songProgressProvider->summarizeSong($song, $from, $to)));
+		return new JsonResponse(PracticeSummaryDto::fromSummary($this->songProgressProvider->summarizeSong($user, $song, $from, $to)));
 	}
 
 	#[RoutePut(Routes::SongProgressEntry->value)]
@@ -173,7 +173,8 @@ final readonly class SongProgressController
 	private function loadEntryInScope(User $user, int $entryId): ?SongProgressEntry
 	{
 		$entry = $this->songProgressProvider->getEntry($entryId);
-		if ($entry === null || !$this->workspaceProvider->isMember($user, $entry->song->workspace)) {
+		// A practice entry is personal: only its author may read/update/delete it.
+		if ($entry === null || $entry->user->id !== $user->id) {
 			return null;
 		}
 		return $entry;

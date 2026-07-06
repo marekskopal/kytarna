@@ -15,6 +15,7 @@ use Kytarna\Model\Entity\Workspace;
 use Kytarna\Model\Repository\Enum\ArchivedFilterEnum;
 use Kytarna\Model\Repository\Enum\LectureOrderByEnum;
 use Kytarna\Model\Repository\Enum\OrderDirectionEnum;
+use Kytarna\Service\Auth\PermissionCheckerInterface;
 use Kytarna\Service\Provider\CourseProviderInterface;
 use Kytarna\Service\Provider\SongProviderInterface;
 use Kytarna\Service\Provider\WorkspaceProviderInterface;
@@ -30,7 +31,16 @@ final readonly class SongTools
 		private SongProviderInterface $songProvider,
 		private CourseProviderInterface $courseProvider,
 		private WorkspaceProviderInterface $workspaceProvider,
+		private PermissionCheckerInterface $permissionChecker,
 	) {
+	}
+
+	/** Content management (create/edit/move/delete) is Teacher-only; students have read-only content. */
+	private function requireTeacher(Workspace $workspace): void
+	{
+		if (!$this->permissionChecker->canManageSongs($this->userContext->getUser(), $workspace)) {
+			throw new RuntimeException('Only the teacher (workspace owner) can manage songs.');
+		}
 	}
 
 	/**
@@ -140,6 +150,7 @@ final readonly class SongTools
 	): McpSongDto {
 		$user = $this->userContext->getUser();
 		$workspace = $this->requireWorkspace();
+		$this->requireTeacher($workspace);
 		$course = $courseId !== null ? $this->requireCourse($workspace, $courseId) : null;
 		$statusEnum = $status !== null && $status !== '' ? $this->parseStatus($status) : LearningStatusEnum::ToLearn;
 
@@ -188,6 +199,7 @@ final readonly class SongTools
 	): McpSongDto {
 		$user = $this->userContext->getUser();
 		$song = $this->requireSong($songId);
+		$this->requireTeacher($song->workspace);
 
 		$updated = $this->songProvider->updateSong(
 			author: $user,
@@ -217,6 +229,7 @@ final readonly class SongTools
 	{
 		$user = $this->userContext->getUser();
 		$song = $this->requireSong($songId);
+		$this->requireTeacher($song->workspace);
 		$statusEnum = $this->parseStatus($status);
 		$position = $this->songProvider->nextPositionForStatus($song, $statusEnum);
 		$moved = $this->songProvider->moveSong($user, $song, $statusEnum, $position);
@@ -228,14 +241,20 @@ final readonly class SongTools
 	#[McpTool(name: 'archive_song', description: 'Archive a song (reversible).')]
 	public function archiveSong(int $songId): McpSongDto
 	{
-		return McpSongDto::fromEntity($this->songProvider->archiveSong($this->userContext->getUser(), $this->requireSong($songId)));
+		$song = $this->requireSong($songId);
+		$this->requireTeacher($song->workspace);
+
+		return McpSongDto::fromEntity($this->songProvider->archiveSong($this->userContext->getUser(), $song));
 	}
 
 	/** @param int $songId Song ID */
 	#[McpTool(name: 'unarchive_song', description: 'Unarchive a song.')]
 	public function unarchiveSong(int $songId): McpSongDto
 	{
-		return McpSongDto::fromEntity($this->songProvider->unarchiveSong($this->userContext->getUser(), $this->requireSong($songId)));
+		$song = $this->requireSong($songId);
+		$this->requireTeacher($song->workspace);
+
+		return McpSongDto::fromEntity($this->songProvider->unarchiveSong($this->userContext->getUser(), $song));
 	}
 
 	/**
@@ -249,6 +268,7 @@ final readonly class SongTools
 	{
 		$user = $this->userContext->getUser();
 		$workspace = $this->requireWorkspace();
+		$this->requireTeacher($workspace);
 		$song = $this->requireSong($songId);
 		$course = $this->requireCourse($workspace, $courseId);
 
@@ -263,14 +283,19 @@ final readonly class SongTools
 	#[McpTool(name: 'remove_song_from_course', description: 'Detach a song from its course (back to the library).')]
 	public function removeSongFromCourse(int $songId): McpSongDto
 	{
-		return McpSongDto::fromEntity($this->songProvider->removeFromCourse($this->userContext->getUser(), $this->requireSong($songId)));
+		$song = $this->requireSong($songId);
+		$this->requireTeacher($song->workspace);
+
+		return McpSongDto::fromEntity($this->songProvider->removeFromCourse($this->userContext->getUser(), $song));
 	}
 
 	/** @param int $songId Song ID */
 	#[McpTool(name: 'delete_song', description: 'Delete a song (irreversible).')]
 	public function deleteSong(int $songId): string
 	{
-		$this->songProvider->deleteSong($this->userContext->getUser(), $this->requireSong($songId));
+		$song = $this->requireSong($songId);
+		$this->requireTeacher($song->workspace);
+		$this->songProvider->deleteSong($this->userContext->getUser(), $song);
 		return 'Song deleted.';
 	}
 

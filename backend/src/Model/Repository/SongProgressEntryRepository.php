@@ -18,9 +18,9 @@ final class SongProgressEntryRepository extends AbstractRepository
 	}
 
 	/** @return Iterator<SongProgressEntry> */
-	public function findBySong(int $songId, ?string $from = null, ?string $to = null): Iterator
+	public function findBySong(int $songId, int $userId, ?string $from = null, ?string $to = null): Iterator
 	{
-		return $this->applyDateRange($this->select()->where(['song_id' => $songId]), $from, $to)
+		return $this->applyDateRange($this->select()->where(['song_id' => $songId, 'user_id' => $userId]), $from, $to)
 			->orderBy('practiced_at', 'ASC')
 			->orderBy('id', 'ASC')
 			->fetchAll();

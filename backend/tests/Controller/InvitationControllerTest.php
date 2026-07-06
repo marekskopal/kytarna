@@ -23,12 +23,12 @@ final class InvitationControllerTest extends IntegrationTestCase
 		$owner = Fixture::createUser(email: 'owner@example.com');
 		$member = Fixture::createUser(email: 'member@example.com');
 		$workspace = Fixture::createWorkspace($owner);
-		Fixture::addMember($workspace, $member, WorkspaceRoleEnum::Member);
+		Fixture::addMember($workspace, $member, WorkspaceRoleEnum::Student);
 
 		$denied = $this->request(
 			'POST',
 			'/api/workspaces/' . $workspace->id . '/invitations',
-			body: ['email' => 'invitee@example.com', 'role' => 'Member'],
+			body: ['email' => 'invitee@example.com', 'role' => 'Student'],
 			authenticatedAs: $member,
 		);
 		self::assertSame(401, $denied->getStatusCode());
@@ -36,7 +36,7 @@ final class InvitationControllerTest extends IntegrationTestCase
 		$ok = $this->request(
 			'POST',
 			'/api/workspaces/' . $workspace->id . '/invitations',
-			body: ['email' => 'invitee@example.com', 'role' => 'Member'],
+			body: ['email' => 'invitee@example.com', 'role' => 'Student'],
 			authenticatedAs: $owner,
 		);
 		self::assertSame(200, $ok->getStatusCode());
@@ -101,7 +101,7 @@ final class InvitationControllerTest extends IntegrationTestCase
 		$response = $this->request(
 			'POST',
 			'/api/workspaces/' . $workspace->id . '/invitations',
-			body: ['email' => 'over-cap@example.com', 'role' => 'Member'],
+			body: ['email' => 'over-cap@example.com', 'role' => 'Student'],
 			authenticatedAs: $owner,
 		);
 
@@ -122,7 +122,7 @@ final class InvitationControllerTest extends IntegrationTestCase
 			inviter: $inviter,
 			email: $email,
 			tokenHash: hash('sha256', $rawToken),
-			role: WorkspaceRoleEnum::Member,
+			role: WorkspaceRoleEnum::Student,
 			expiresAt: $now->modify('+7 days'),
 		);
 		$invitation->createdAt = $now;

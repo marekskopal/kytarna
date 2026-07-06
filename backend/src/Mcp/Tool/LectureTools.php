@@ -12,6 +12,7 @@ use Kytarna\Model\Entity\Enum\DifficultyEnum;
 use Kytarna\Model\Entity\Enum\LearningStatusEnum;
 use Kytarna\Model\Entity\Lecture;
 use Kytarna\Model\Entity\Workspace;
+use Kytarna\Service\Auth\PermissionCheckerInterface;
 use Kytarna\Service\Provider\BulkLectureProviderInterface;
 use Kytarna\Service\Provider\CourseProviderInterface;
 use Kytarna\Service\Provider\Enum\BulkOpEnum;
@@ -32,7 +33,16 @@ final readonly class LectureTools
 		private WorkspaceProviderInterface $workspaceProvider,
 		private LectureTagProviderInterface $lectureTagProvider,
 		private BulkLectureProviderInterface $bulkLectureProvider,
+		private PermissionCheckerInterface $permissionChecker,
 	) {
+	}
+
+	/** Content management (create/edit/move/delete) is Teacher-only; students have read-only content. */
+	private function requireTeacher(Workspace $workspace): void
+	{
+		if (!$this->permissionChecker->canManageLectures($this->userContext->getUser(), $workspace)) {
+			throw new RuntimeException('Only the teacher (workspace owner) can manage lectures.');
+		}
 	}
 
 	/**
@@ -155,6 +165,7 @@ final readonly class LectureTools
 	): McpLectureDto {
 		$user = $this->userContext->getUser();
 		$course = $this->requireCourse($courseId);
+		$this->requireTeacher($course->workspace);
 		$statusEnum = $status !== null && $status !== '' ? $this->parseStatus($status) : LearningStatusEnum::ToLearn;
 
 		$lecture = $this->lectureProvider->createLecture(
@@ -198,6 +209,7 @@ final readonly class LectureTools
 	): McpLectureDto {
 		$user = $this->userContext->getUser();
 		$lecture = $this->requireLecture($lectureId);
+		$this->requireTeacher($lecture->course->workspace);
 
 		$updated = $this->lectureProvider->updateLecture(
 			author: $user,
@@ -228,6 +240,7 @@ final readonly class LectureTools
 	{
 		$user = $this->userContext->getUser();
 		$lecture = $this->requireLecture($lectureId);
+		$this->requireTeacher($lecture->course->workspace);
 		$statusEnum = $this->parseStatus($status);
 
 		$position = $this->lectureProvider->nextPosition($lecture->course, $statusEnum);
@@ -247,6 +260,7 @@ final readonly class LectureTools
 	{
 		$user = $this->userContext->getUser();
 		$lecture = $this->requireLecture($lectureId);
+		$this->requireTeacher($lecture->course->workspace);
 
 		$archived = $this->lectureProvider->archiveLecture($user, $lecture);
 
@@ -264,6 +278,7 @@ final readonly class LectureTools
 	{
 		$user = $this->userContext->getUser();
 		$lecture = $this->requireLecture($lectureId);
+		$this->requireTeacher($lecture->course->workspace);
 
 		$unarchived = $this->lectureProvider->unarchiveLecture($user, $lecture);
 
@@ -280,6 +295,7 @@ final readonly class LectureTools
 	{
 		$user = $this->userContext->getUser();
 		$lecture = $this->requireLecture($lectureId);
+		$this->requireTeacher($lecture->course->workspace);
 
 		$this->lectureProvider->deleteLecture($user, $lecture);
 
@@ -311,6 +327,7 @@ final readonly class LectureTools
 	{
 		$user = $this->userContext->getUser();
 		$workspace = $this->requireWorkspace();
+		$this->requireTeacher($workspace);
 
 		$opEnum = BulkOpEnum::tryFrom($op);
 		if ($opEnum === null) {

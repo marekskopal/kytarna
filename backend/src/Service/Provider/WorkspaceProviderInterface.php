@@ -24,19 +24,32 @@ interface WorkspaceProviderInterface
 
 	public function isMember(User $user, Workspace $workspace): bool;
 
+	/** The one workspace the user owns (is Teacher of), or null. Each user owns at most one. */
+	public function findOwnedWorkspace(User $user): ?Workspace;
+
 	public function createWorkspace(User $owner, string $name): Workspace;
 
-	public function updateWorkspace(Workspace $workspace, string $name): Workspace;
+	public function updateWorkspace(Workspace $workspace, string $name, ?bool $isPublic = null, ?string $description = null): Workspace;
+
+	public function rotateJoinCode(Workspace $workspace): string;
 
 	public function deleteWorkspace(Workspace $workspace): void;
 
 	public function addMember(Workspace $workspace, User $user, WorkspaceRoleEnum $role): WorkspaceUser;
 
+	/** Self-join a workspace as a Student (directory / join-code / accepted invitation). */
+	public function joinAsStudent(User $actor, Workspace $workspace): WorkspaceUser;
+
 	public function removeMember(WorkspaceUser $membership): void;
 
-	public function changeMemberRole(User $actor, WorkspaceUser $membership, WorkspaceRoleEnum $newRole): WorkspaceUser;
+	/**
+	 * Public teacher directory, excluding workspaces the user already belongs to.
+	 *
+	 * @return Iterator<Workspace>
+	 */
+	public function findPublicWorkspaces(User $user, ?string $search, int $limit, int $offset): Iterator;
 
-	public function transferOwnership(User $actor, Workspace $workspace, WorkspaceUser $newOwnerMembership): void;
+	public function findByJoinCode(string $joinCode): ?Workspace;
 
 	public function switchCurrentWorkspace(User $user, Workspace $workspace): void;
 

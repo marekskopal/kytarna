@@ -114,25 +114,4 @@ export class AdminWorkspacesComponent implements OnInit {
             // error interceptor
         }
     }
-
-    protected async transferOwnership(member: WorkspaceMember): Promise<void> {
-        const current = this.detail();
-        if (current === null) return;
-        const confirmMessage = await this.translate.instant('app.admin.workspaces.transferOwnershipConfirm', {
-            name: member.name,
-            workspace: current.workspace.name,
-        }) as string;
-        if (!confirm(confirmMessage)) {
-            return;
-        }
-        try {
-            await this.adminService.transferOwnership(current.workspace.id, member.userId);
-            const refreshed = await this.adminService.getWorkspace(current.workspace.id);
-            this.detail.set(refreshed);
-            this.workspaces.update((all) => all.map((w) => (w.id === refreshed.workspace.id ? refreshed.workspace : w)));
-            this.alertService.success(await this.translate.instant('app.admin.workspaces.ownershipTransferred') as string);
-        } catch {
-            // error interceptor
-        }
-    }
 }

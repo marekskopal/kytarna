@@ -37,6 +37,7 @@ final readonly class SongProvider implements SongProviderInterface
 		private SongTagProviderInterface $songTagProvider,
 		private SongFileProviderInterface $songFileProvider,
 		private SongWatcherProviderInterface $songWatcherProvider,
+		private ProgressStatusProviderInterface $progressStatusProvider,
 	) {
 	}
 
@@ -288,6 +289,7 @@ final readonly class SongProvider implements SongProviderInterface
 		$this->songFileProvider->deleteAllForSong($author, $song);
 		$this->songWatcherProvider->deleteAllForSong($song);
 		$this->songTagProvider->deleteAllForSong($song);
+		$this->progressStatusProvider->deleteAllForSong($song->id);
 		$this->songRepository->delete($song);
 	}
 

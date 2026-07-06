@@ -35,7 +35,6 @@ final class NotificationDispatcherTest extends IntegrationTestCase
 		$course = Fixture::createCourse($owner, $workspace);
 
 		$lecture = $this->createLecture($owner, $course->id, 'Movable lecture');
-		$lectureId = $lecture->id;
 		$this->watcherProvider()->watch($lecture, $bob);
 
 		// An agent-driven move must not ping watchers (agents churn statuses).
@@ -43,13 +42,10 @@ final class NotificationDispatcherTest extends IntegrationTestCase
 		$afterAgentMove = $this->notificationsFor($bob);
 		self::assertCount(0, $afterAgentMove);
 
-		// A human move pings the watcher (Bob), but not the actor (owner).
-		$this->request(
-			'PUT',
-			'/api/lectures/' . $lectureId . '/move',
-			body: ['status' => 'Learning', 'position' => 0],
-			authenticatedAs: $owner,
-		);
+		// A human-authored move event pings the watcher (Bob), but not the actor (owner).
+		// (Board card drags now record personal progress rather than a shared LectureMoved event;
+		// LectureMoved events still come from teacher template ops such as bulk updates and MCP.)
+		$this->dispatcher()->onEvent($this->moveEvent($owner, $workspace, $course, $lecture, ActorTypeEnum::Human));
 
 		$ownerNotifications = $this->notificationsFor($owner);
 		self::assertCount(0, $ownerNotifications);
@@ -104,7 +100,7 @@ final class NotificationDispatcherTest extends IntegrationTestCase
 	private function createMember(Workspace $workspace, string $name): User
 	{
 		$user = Fixture::createUser(name: $name);
-		Fixture::addMember($workspace, $user, WorkspaceRoleEnum::Member);
+		Fixture::addMember($workspace, $user, WorkspaceRoleEnum::Student);
 		return $user;
 	}
 

@@ -30,8 +30,8 @@ enum EventTypeEnum: string
 	case SongFileDeleted = 'SongFileDeleted';
 	case SongTagsUpdated = 'SongTagsUpdated';
 
-	case MemberRoleChanged = 'MemberRoleChanged';
-	case OwnershipTransferred = 'OwnershipTransferred';
+	case MemberJoined = 'MemberJoined';
+	case MemberLeft = 'MemberLeft';
 	case AdminDeletedWorkspace = 'AdminDeletedWorkspace';
 	case AdminDeletedUser = 'AdminDeletedUser';
 	case AdminChangedSystemRole = 'AdminChangedSystemRole';

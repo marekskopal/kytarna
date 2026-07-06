@@ -75,10 +75,11 @@ final readonly class InvitationController
 		}
 
 		$dto = $this->requestService->getRequestBodyDto($request, InvitationCreateDto::class);
-		$role = WorkspaceRoleEnum::tryFrom($dto->role) ?? WorkspaceRoleEnum::Member;
+		// Only Students can be invited; the sole Teacher is the workspace owner.
+		$role = WorkspaceRoleEnum::Student;
 
 		if (!$this->permissionChecker->canInviteAs($user, $workspace, $role)) {
-			return new NotAuthorizedResponse('You cannot invite a member with this role.');
+			return new NotAuthorizedResponse('You cannot invite members to this workspace.');
 		}
 
 		$recentCount = $this->invitationRepository->countByWorkspaceSince(

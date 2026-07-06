@@ -70,10 +70,11 @@ final readonly class SongProgressTools
 	#[McpTool(name: 'list_song_progress_entries', description: 'List a song\'s practice entries, optionally within a date range.')]
 	public function listSongProgressEntries(int $songId, ?string $from = null, ?string $to = null): McpSongProgressEntryListDto
 	{
+		$user = $this->userContext->getUser();
 		$song = $this->requireSong($songId);
 		$entries = array_map(
 			static fn (SongProgressEntry $entry): McpSongProgressEntryDto => McpSongProgressEntryDto::fromEntity($entry),
-			$this->songProgressProvider->getEntriesBySong($song, $this->normalizeDate($from), $this->normalizeDate($to)),
+			$this->songProgressProvider->getEntriesBySong($user, $song, $this->normalizeDate($from), $this->normalizeDate($to)),
 		);
 
 		return new McpSongProgressEntryListDto($entries);
@@ -137,6 +138,7 @@ final readonly class SongProgressTools
 	public function getSongPracticeSummary(int $songId, ?string $from = null, ?string $to = null): McpSongPracticeSummaryDto
 	{
 		$summary = $this->songProgressProvider->summarizeSong(
+			$this->userContext->getUser(),
 			$this->requireSong($songId),
 			$this->normalizeDate($from),
 			$this->normalizeDate($to),

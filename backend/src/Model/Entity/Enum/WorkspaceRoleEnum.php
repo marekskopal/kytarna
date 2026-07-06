@@ -6,7 +6,8 @@ namespace Kytarna\Model\Entity\Enum;
 
 enum WorkspaceRoleEnum: string
 {
-	case Owner = 'Owner';
-	case Admin = 'Admin';
-	case Member = 'Member';
+	/** The workspace owner: creates and edits all content, manages members. Exactly one per workspace. */
+	case Teacher = 'Teacher';
+	/** A learner who joined the workspace: read-only content, tracks their own progress. */
+	case Student = 'Student';
 }
