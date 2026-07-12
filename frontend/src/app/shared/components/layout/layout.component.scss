@@ -49,45 +49,25 @@
 .brand {
     display: inline-flex;
     align-items: center;
-    gap: 11px;
     flex: 0 0 auto;
     color: $color-text;
     text-decoration: none;
 
     &:hover { text-decoration: none; }
-}
-
-.brand-tile {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-    border-radius: $radius-sm;
-    background: $color-accent;
-    box-shadow: 0 2px 8px $color-accent-soft;
-    flex: 0 0 auto;
-}
-
-.brand-tile-mark {
-    width: 11px;
-    height: 11px;
-    border: 2px solid #fff;
-    border-radius: 2px;
-    transform: rotate(45deg);
-}
-
-.brand-name {
-    font-family: $font-display;
-    font-size: $font-size-24;
-    font-weight: 400;
-    line-height: 1;
-    letter-spacing: 0.2px;
-    color: $color-text;
 
     @media (max-width: 520px) {
-        display: none;
+        // Clip to just the mark (first ~40 of the 210 viewBox units) on narrow screens.
+        width: calc(32px * 40 / 48);
+        overflow: hidden;
     }
+}
+
+.brand-logo {
+    display: block;
+    height: 32px;
+    width: auto;
+    flex: 0 0 auto;
+    color: $color-text;
 }
 
 .topbar-divider {

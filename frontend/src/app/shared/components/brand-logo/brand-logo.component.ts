@@ -7,49 +7,31 @@ import {TranslatePipe} from '@ngx-translate/core';
     imports: [TranslatePipe],
     changeDetection: ChangeDetectionStrategy.OnPush,
     template: `
-        <span class="brand-logo" [style.--brand-h.px]="height()">
-            <span class="brand-logo__mark" aria-hidden="true">
-                <svg viewBox="0 0 32 32" fill="none">
-                    <circle cx="16" cy="16" r="10.5" stroke="currentColor" stroke-width="2.6" />
-                    <line x1="11" y1="3" x2="11" y2="29" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
-                    <line x1="16" y1="2" x2="16" y2="30" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
-                    <line x1="21" y1="3" x2="21" y2="29" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
-                </svg>
-            </span>
-            <span class="brand-logo__name">{{ 'app.brand' | translate }}</span>
-        </span>
+        <svg class="brand-logo" [style.--brand-h.px]="height()" viewBox="0 0 210 48" fill="none" [attr.aria-label]="'app.brand' | translate">
+            <g transform="translate(0,4) scale(1.25)">
+                <rect width="32" height="32" rx="8" fill="#c2410c" />
+                <circle cx="16" cy="16" r="9" fill="none" stroke="#fff" stroke-width="2.4" />
+                <line x1="11.5" y1="5" x2="11.5" y2="27" stroke="#fff" stroke-width="1.6" stroke-linecap="round" />
+                <line x1="16" y1="4.5" x2="16" y2="27.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" />
+                <line x1="20.5" y1="5" x2="20.5" y2="27" stroke="#fff" stroke-width="1.6" stroke-linecap="round" />
+            </g>
+            <text
+                x="52"
+                y="34"
+                font-family="'Instrument Serif','Hanken Grotesk',Georgia,'Times New Roman',serif"
+                font-size="34"
+                fill="currentColor"
+            >{{ 'app.brand' | translate }}</text>
+        </svg>
     `,
     styles: `
         :host {
             display: inline-flex;
         }
         .brand-logo {
-            display: inline-flex;
-            align-items: center;
-            gap: calc(var(--brand-h) * 0.34);
-            line-height: 1;
-        }
-        .brand-logo__mark {
-            width: var(--brand-h);
+            display: block;
             height: var(--brand-h);
-            flex: 0 0 auto;
-            border-radius: calc(var(--brand-h) * 0.28);
-            background: var(--color-accent);
-            color: var(--color-accent-fg);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 8px var(--color-accent-soft);
-        }
-        .brand-logo__mark svg {
-            width: 66%;
-            height: 66%;
-        }
-        .brand-logo__name {
-            font-family: 'Instrument Serif', 'Hanken Grotesk', Georgia, 'Times New Roman', serif;
-            font-weight: 400;
-            font-size: calc(var(--brand-h) * 0.86);
-            letter-spacing: 0.2px;
+            width: auto;
             color: var(--color-text);
         }
     `,
