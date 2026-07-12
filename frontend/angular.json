@@ -27,7 +27,8 @@
                         "assets": [
                             {"glob": "**/*", "input": "src/i18n", "output": "i18n"},
                             {"glob": "**/*", "input": "src/assets", "output": "assets"},
-                            {"glob": "**/*", "input": "node_modules/@coderline/alphatab/dist/font", "output": "assets/alphatab/font"}
+                            {"glob": "**/*", "input": "node_modules/@coderline/alphatab/dist/font", "output": "assets/alphatab/font"},
+                            {"glob": "sonivox.sf2", "input": "node_modules/@coderline/alphatab/dist/soundfont", "output": "assets/alphatab/soundfont"}
                         ],
                         "styles": ["src/styles.scss"],
                         "stylePreprocessorOptions": {

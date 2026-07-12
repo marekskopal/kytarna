@@ -686,6 +686,13 @@
       "viewer": {
         "error": "Tento tab se nepodařilo vykreslit."
       },
+      "player": {
+        "play": "Přehrát",
+        "pause": "Pozastavit",
+        "stop": "Zastavit",
+        "seek": "Přetočit",
+        "speed": "Rychlost"
+      },
       "editor": {
         "nameLabel": "Název",
         "alphaTexLabel": "alphaTex",

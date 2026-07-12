@@ -686,6 +686,13 @@
       "viewer": {
         "error": "This tab could not be rendered."
       },
+      "player": {
+        "play": "Play",
+        "pause": "Pause",
+        "stop": "Stop",
+        "seek": "Seek",
+        "speed": "Speed"
+      },
       "editor": {
         "nameLabel": "Name",
         "alphaTexLabel": "alphaTex",

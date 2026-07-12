@@ -32,6 +32,35 @@ describe('TabViewerComponent', () => {
         expect(render.mock.calls[0][1]).toBe('. 3.3.4');
     });
 
+    it('enables the player and renders playback controls when player=true', async () => {
+        const player = {playPause: vi.fn(), stop: vi.fn(), setSpeed: vi.fn(), seek: vi.fn()};
+        render.mockImplementationOnce((_el, _tex, options) => {
+            options.onPlayerReady?.();
+            return Promise.resolve({destroy: vi.fn(), player});
+        });
+        fixture.componentRef.setInput('alphaTex', '. 3.3.4');
+        fixture.componentRef.setInput('player', true);
+        fixture.detectChanges();
+        await fixture.whenStable();
+        fixture.detectChanges();
+
+        expect(render.mock.calls[0][2]).toMatchObject({player: true});
+        const controls = fixture.nativeElement.querySelector('.tab-player');
+        expect(controls).toBeTruthy();
+
+        controls.querySelector('.tab-player-btn').click();
+        expect(player.playPause).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not render playback controls when player is disabled', async () => {
+        fixture.componentRef.setInput('alphaTex', '. 3.3.4');
+        fixture.detectChanges();
+        await fixture.whenStable();
+
+        expect(render.mock.calls[0][2]).toMatchObject({player: false});
+        expect(fixture.nativeElement.querySelector('.tab-player')).toBeNull();
+    });
+
     it('shows an error message when rendering rejects', async () => {
         render.mockRejectedValueOnce(new Error('boom'));
         fixture.componentRef.setInput('alphaTex', 'bad');
