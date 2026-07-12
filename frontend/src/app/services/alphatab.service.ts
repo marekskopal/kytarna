@@ -90,9 +90,10 @@ export class AlphaTabService {
             core: {
                 // Fonts are copied into assets by angular.json; resolve against <base href>.
                 fontDirectory: this.fontDirectory(),
-                // Run on the main thread: avoids shipping/resolving a separate worker script
-                // for the esbuild bundle. Fine for MVP read-mode rendering.
-                useWorkers: false,
+                // Read-only viewers render on the main thread (no worker needed); with the player
+                // enabled we let alphaTab use its standard worker setup so the synth worker and the
+                // renderer stay in sync (the module worker files are served from the app root).
+                useWorkers: withPlayer,
             },
             display: {
                 // Recolor glyphs/staff lines so notation stays legible in dark mode.
@@ -102,6 +103,12 @@ export class AlphaTabService {
                 ? {
                     enablePlayer: true,
                     enableCursor: true,
+                    // In a bundled ("BrowserModule") build alphaTab loads its synth worker and audio
+                    // worklet as ES modules relative to its own chunk URL — i.e. from the app root:
+                    // alphaTab.worker.mjs / alphaTab.worklet.mjs (both import alphaTab.core.mjs).
+                    // angular.json copies those three files to the output root, and the frontend
+                    // nginx serves .mjs as text/javascript, so they resolve; otherwise the SPA
+                    // serves index.html for them (wrong MIME type) and playback never becomes ready.
                     // Load the bundled soundfont; resolve against <base href> like the fonts.
                     soundFont: this.soundFontFile(),
                     // Follow the cursor by scrolling the tab surface itself, not the page.
