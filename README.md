@@ -1,5 +1,8 @@
 <p align="center">
-  <img src="frontend/src/assets/brand/logo-wordmark-inverse.svg" alt="Kytarna" width="320" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/brand/logo-wordmark-inverse.svg" />
+    <img src="frontend/src/assets/brand/logo-wordmark.svg" alt="Kytarna" width="320" />
+  </picture>
 </p>
 
 <p align="center">
