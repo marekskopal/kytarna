@@ -68,6 +68,24 @@ import {TranslatePipe} from '@ngx-translate/core';
         .tab-player-seek { flex: 1 1 120px; min-width: 120px; }
         .tab-player-time { font-variant-numeric: tabular-nums; white-space: nowrap; }
         .tab-player-speed { display: inline-flex; align-items: center; gap: 6px; }
+
+        /*
+         * alphaTab tags the playback cursor and the currently-played beat's notes
+         * (.at-cursor-bar / .at-cursor-beat / .at-highlight) but ships no colours, so
+         * they are invisible by default. Paint them with the accent so the current bar,
+         * the beat line, and the played notes stand out during playback. ::ng-deep is
+         * required because alphaTab renders this SVG outside Angular's view encapsulation.
+         */
+        :host ::ng-deep .at-cursor-bar {
+            background: color-mix(in srgb, var(--color-accent) 16%, transparent);
+        }
+        :host ::ng-deep .at-cursor-beat {
+            background: var(--color-accent);
+        }
+        :host ::ng-deep .at-highlight * {
+            fill: var(--color-accent);
+            stroke: var(--color-accent);
+        }
     `],
 })
 export class TabViewerComponent {
