@@ -103,12 +103,21 @@ export class AlphaTabService {
                 ? {
                     enablePlayer: true,
                     enableCursor: true,
-                    // In a bundled ("BrowserModule") build alphaTab loads its synth worker and audio
-                    // worklet as ES modules relative to its own chunk URL — i.e. from the app root:
-                    // alphaTab.worker.mjs / alphaTab.worklet.mjs (both import alphaTab.core.mjs).
-                    // angular.json copies those three files to the output root, and the frontend
-                    // nginx serves .mjs as text/javascript, so they resolve; otherwise the SPA
-                    // serves index.html for them (wrong MIME type) and playback never becomes ready.
+                    // Play through a ScriptProcessorNode rather than the default AudioWorklet.
+                    // alphaTab's AudioWorklet output creates its node asynchronously in play()
+                    // (audioWorklet.addModule().then(…)); if pause()/stop()/finish fires before that
+                    // resolves, pause() sees no node to disconnect and the later-created node is
+                    // orphaned — still wired to the destination, pulling samples forever. Replaying
+                    // stacks orphans, so playback speeds up each time. The ScriptProcessor output
+                    // creates its node synchronously, so pause() always tears it down. (The base
+                    // WebAudio output resumes the AudioContext on the play gesture in both modes.)
+                    outputMode: alphaTab.PlayerOutputMode.WebAudioScriptProcessor,
+                    // In a bundled ("BrowserModule") build alphaTab loads its synth worker as an ES
+                    // module relative to its own chunk URL — i.e. from the app root:
+                    // alphaTab.worker.mjs (which imports alphaTab.core.mjs). angular.json copies
+                    // those to the output root and the frontend nginx serves .mjs as text/javascript,
+                    // so they resolve; otherwise the SPA serves index.html for them (wrong MIME type)
+                    // and playback never becomes ready.
                     // Load the bundled soundfont; resolve against <base href> like the fonts.
                     soundFont: this.soundFontFile(),
                     // Follow the cursor by scrolling the tab surface itself, not the page.
