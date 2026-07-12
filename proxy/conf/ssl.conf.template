@@ -47,11 +47,12 @@ server {
     gzip_types        text/plain text/css application/json application/javascript application/x-javascript text/xml application/xml application/xml+rss text/javascript;
     gzip_comp_level   6;
 
-    # JSON endpoints get a small body cap; only file uploads (and MCP, whose
+    # JSON endpoints get a small body cap; only binary uploads (lecture/song
+    # file attachments, song covers, Guitar Pro imports) and MCP (whose
     # attach_file tool carries base64 payloads) may go up to 100m.
     client_max_body_size 2m;
 
-    location ~ ^/api/lectures/[A-Z0-9][A-Z0-9-]*/files$ {
+    location ~ ^/api/(lectures/[A-Z0-9][A-Z0-9-]*/(files|tabs/import)|songs/[0-9]+/(files|cover|tabs/import))$ {
         client_max_body_size 100m;
 
         proxy_pass http://http_backend;
