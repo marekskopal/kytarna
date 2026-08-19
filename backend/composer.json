@@ -18,7 +18,7 @@
         "marekskopal/orm": "^1.0",
         "marekskopal/orm-migrations": "^1.0",
         "marekskopal/router": "^1.1",
-        "mcp/sdk": "^0.6.0",
+        "mcp/sdk": "^0.7.1",
         "nette/caching": "^3.3",
         "nette/utils": "^4.0",
         "nyholm/psr7": "^1.8",
