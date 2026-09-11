@@ -18,7 +18,7 @@
   "dependencies": {
     "@coderline/alphatab": "^1.8.3",
     "@angular/cdk": "^22.0.2",
-    "@angular/common": "^22.0.4",
+    "@angular/common": "^22.1.1",
     "@angular/compiler": "^22.0.4",
     "@angular/core": "^22.0.4",
     "@angular/forms": "^22.0.4",
